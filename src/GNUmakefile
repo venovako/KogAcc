@@ -12,17 +12,14 @@ endif # local.mk
 ifndef PLAT
 PLAT=$(COMPILER)/$(OS)-$(ARCH)-$(ABI)$(DEBUG)
 endif # !PLAT
-SRC=SKSVD2.F90 DKSVD2.F90
-OBJ=../obj/$(PLAT)/SKSVD2.o ../obj/$(PLAT)/DKSVD2.o
-ifdef USE_EXTENDED
-SRC += XKSVD2.F90
-OBJ += ../obj/$(PLAT)/XKSVD2.o
-else # !USE_EXTENDED
-ifneq ($(COMPILER),nvfortran)
-SRC += QKSVD2.F90
-OBJ += ../obj/$(PLAT)/QKSVD2.o
-endif # !nvfortran
-endif # ?USE_EXTENDED
+SRC=sksvd2.f90 dksvd2.f90
+OBJ=../obj/$(PLAT)/sksvd2.o ../obj/$(PLAT)/dksvd2.o ../obj/$(PLAT)/qksvd2.o
+ifeq ($(COMPILER),gfortran)
+ifeq ($(ARCH),x86_64)
+SRC += xksvd2.f90
+OBJ += ../obj/$(PLAT)/xksvd2.o
+endif # x86_64
+endif # gfortran
 LIB=../lib/$(PLAT)/libksvd2.a
 
 .PHONY: all help dirs clean purge
@@ -30,45 +27,40 @@ LIB=../lib/$(PLAT)/libksvd2.a
 all: dirs $(LIB)
 
 help:
-	@echo $(MAKE)
+	@echo $(MAKE) "[COMPILER=gfortran|ifort|ifx|nvfortran] [ABI=lp64|ilp64] [NDEBUG=optimization_level] [all|help|clean|purge]"
 
 dirs:
-	-$(MKD) ../bin/$(PLAT) ../lib/$(PLAT) ../obj/$(PLAT)
+	@$(MKD) ../bin/$(PLAT) ../lib/$(PLAT) ../obj/$(PLAT)
 
 $(LIB): $(OBJ) $(MKFS)
 	$(AR) $(ARFLAGS) $@ $(OBJ)
 
-../obj/$(PLAT)/SKSVD2.o: SKSVD2.F90 $(MKFS)
-	$(FC) $(FCFLAGS) -c -o $@ SKSVD2.F90
+../obj/$(PLAT)/sksvd2.o: sksvd2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ sksvd2.f90
 ifdef NDEBUG
 ifeq ($(COMPILER),ifx)
-	-$(MOV) SKSVD2.opt.yaml ../obj/$(PLAT)
+	-$(MOV) sksvd2.opt.yaml ../obj/$(PLAT)
 endif # ifx
 endif # NDEBUG
 
-../obj/$(PLAT)/DKSVD2.o: DKSVD2.F90 $(MKFS)
-	$(FC) $(FCFLAGS) -c -o $@ DKSVD2.F90
+../obj/$(PLAT)/dksvd2.o: dksvd2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ dksvd2.f90
 ifdef NDEBUG
 ifeq ($(COMPILER),ifx)
-	-$(MOV) DKSVD2.opt.yaml ../obj/$(PLAT)
+	-$(MOV) dksvd2.opt.yaml ../obj/$(PLAT)
 endif # ifx
 endif # NDEBUG
 
-../obj/$(PLAT)/XKSVD2.o: XKSVD2.F90 $(MKFS)
-	$(FC) $(FCFLAGS) -c -o $@ XKSVD2.F90
+../obj/$(PLAT)/qksvd2.o: qksvd2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ qksvd2.f90
 ifdef NDEBUG
 ifeq ($(COMPILER),ifx)
-	-$(MOV) XKSVD2.opt.yaml ../obj/$(PLAT)
+	-$(MOV) qksvd2.opt.yaml ../obj/$(PLAT)
 endif # ifx
 endif # NDEBUG
 
-../obj/$(PLAT)/QKSVD2.o: QKSVD2.F90 $(MKFS)
-	$(FC) $(FCFLAGS) -c -o $@ QKSVD2.F90
-ifdef NDEBUG
-ifeq ($(COMPILER),ifx)
-	-$(MOV) QKSVD2.opt.yaml ../obj/$(PLAT)
-endif # ifx
-endif # NDEBUG
+../obj/$(PLAT)/xksvd2.o: xksvd2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ xksvd2.f90
 
 clean:
 	-$(DEL) $(EXE) $(LIB) $(OBJ)

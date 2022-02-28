@@ -1,6 +1,3 @@
-ifndef SHELL
-SHELL=/bin/bash
-endif # !SHELL
 ifndef COMPILER
 COMPILER=gfortran
 endif # !COMPILER

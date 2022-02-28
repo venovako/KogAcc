@@ -1,11 +1,10 @@
 AR=ar
 ARFLAGS=rsv
 FC=gfortran
-FCFLAGS= #-DUSE_IEEE_INTRINSIC
 ifdef NDEBUG
-FCFLAGS += -O$(NDEBUG)
+FCFLAGS=-O$(NDEBUG)
 else # !NDEBUG
-FCFLAGS += -Og -g
+FCFLAGS=-Og -g
 endif # ?NDEBUG
 FCFLAGS += -march=native -fPIC -fexceptions -fno-omit-frame-pointer -rdynamic -ffp-contract=fast -ffree-line-length-none -fstack-arrays
 ifdef NDEBUG
