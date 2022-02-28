@@ -1,0 +1,6 @@
+ifeq ($(COMPILER),gfortran)
+ifndef USE_EXTENDED
+USE_EXTENDED=10
+endif # !USE_EXTENDED
+FCFLAGS += -DEXTENDED_KIND=$(USE_EXTENDED)
+endif # gfortran

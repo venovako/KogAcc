@@ -1,0 +1,6 @@
+ifdef NDEBUG
+DEBUG=
+FCFLAGS += -DNDEBUG
+else # !NDEBUG
+DEBUG=g
+endif # ?NDEBUG

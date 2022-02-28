@@ -1,0 +1,33 @@
+SUBROUTINE QKSVD2
+#ifdef USE_IEEE_INTRINSIC
+  USE, INTRINSIC :: IEEE_ARITHMETIC, ONLY: IEEE_FMA, IEEE_MAX_NUM, IEEE_MIN_NUM
+#endif
+  IMPLICIT NONE
+#ifndef USE_IEEE_INTRINSIC
+#ifndef EXTENDED_KIND
+  INTERFACE
+     FUNCTION IEEE_FMA(X, Y, Z) BIND(C,NAME='fmal')
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
+       REAL(KIND=c_long_double), INTENT(IN), VALUE :: X, Y, Z
+       REAL(KIND=c_long_double) :: IEEE_FMA
+     END FUNCTION IEEE_FMA
+  END INTERFACE
+  INTERFACE
+     FUNCTION IEEE_MAX_NUM(X, Y) BIND(C,NAME='fmaxl')
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
+       REAL(KIND=c_long_double), INTENT(IN), VALUE :: X, Y
+       REAL(KIND=c_long_double) :: IEEE_MAX_NUM
+     END FUNCTION IEEE_MAX_NUM
+  END INTERFACE
+  INTERFACE
+     FUNCTION IEEE_MIN_NUM(X, Y) BIND(C,NAME='fminl')
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
+       REAL(KIND=c_long_double), INTENT(IN), VALUE :: X, Y
+       REAL(KIND=c_long_double) :: IEEE_MIN_NUM
+     END FUNCTION IEEE_MIN_NUM
+  END INTERFACE
+#else
+#error quadruple precision not fully supported
+#endif
+#endif
+END SUBROUTINE QKSVD2
