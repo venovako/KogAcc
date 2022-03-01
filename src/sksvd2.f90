@@ -1,3 +1,12 @@
+!>@brief \b SKSVD2 computes the SVD of a single precision
+!!\f$2\times 2\f$ matrix \f$G\f$ as \f$G=U\Sigma V^T\f$.
+!!
+!!@param G [IN]; \f$G\f$ is a general \f$2\times 2\f$ single precision matrix with finite elements.
+!!@param U [OUT]; \f$U\f$ is an orthogonal single precision matrix of order two.
+!!@param V [OUT]; \f$V\f$ is an orthogonal single precision matrix of order two.
+!!@param S [OUT]; \f$\Sigma'\f$ is a single precision array with two elements, \f$\sigma_{11}'\f$ and \f$\sigma_{22}'\f$, both non-negative and finite.
+!!@param INFO [OUT]; the scaling parameter \f$s\f$ such that \f$2^{-s}\Sigma'=\Sigma\f$.
+!!If \f$G\f$ had a non-finite element \f$(i,j)\f$, then \f$s=-\mathop{\mathtt{HUGE}}(0)\f$, \f$U=V=I\f$, and \f$\sigma_{11}'=i,\sigma_{22}'=j\f$.
 SUBROUTINE SKSVD2(G, U, V, S, INFO)
   IMPLICIT NONE
 
@@ -15,32 +24,42 @@ SUBROUTINE SKSVD2(G, U, V, S, INFO)
   A(2,2) = ABS(G(2,2))
   IF (.NOT. (A(2,2) .LE. HUGE(ZERO))) THEN
      INFO = IERR
-     S(1) = 2
-     S(2) = 2
+     S(1) = REAL(2)
+     S(2) = REAL(2)
   END IF
 
   A(1,2) = ABS(G(1,2))
   IF (.NOT. (A(1,2) .LE. HUGE(ZERO))) THEN
      INFO = IERR
-     S(1) = 1
-     S(2) = 2
+     S(1) = REAL(1)
+     S(2) = REAL(2)
   END IF
 
   A(2,1) = ABS(G(2,1))
   IF (.NOT. (A(2,1) .LE. HUGE(ZERO))) THEN
      INFO = IERR
-     S(1) = 2
-     S(2) = 1
+     S(1) = REAL(2)
+     S(2) = REAL(1)
   END IF
 
   A(1,1) = ABS(G(1,1))
   IF (.NOT. (A(1,1) .LE. HUGE(ZERO))) THEN
      INFO = IERR
-     S(1) = 1
-     S(2) = 1
+     S(1) = REAL(1)
+     S(2) = REAL(1)
   END IF
 
-  IF (INFO .NE. 0) RETURN
+  IF (INFO .NE. 0) THEN
+     U(1,1) = ONE
+     U(2,1) = ZERO
+     U(1,2) = ZERO
+     U(2,2) = ONE
+     V(1,1) = ONE
+     V(2,1) = ZERO
+     V(1,2) = ZERO
+     V(2,2) = ONE
+     RETURN
+  END IF
 
   INFO = IERR
   IF (A(1,1) .NE. ZERO) INFO = MAX(INFO, EXPONENT(A(1,1)))
@@ -58,6 +77,11 @@ SUBROUTINE SKSVD2(G, U, V, S, INFO)
      A(2,1) = SCALE(G(2,1), INFO)
      A(1,2) = SCALE(G(1,2), INFO)
      A(2,2) = SCALE(G(2,2), INFO)
+  ELSE ! no scaling
+     A(1,1) = G(1,1)
+     A(2,1) = G(2,1)
+     A(1,2) = G(1,2)
+     A(2,2) = G(2,2)
   END IF
 
   IF (A(2,1) .EQ. ZERO) THEN
@@ -142,7 +166,7 @@ SUBROUTINE SKSVD2(G, U, V, S, INFO)
   ELSE ! non-zero A
      TG = A(2,1) / A(1,1)
   END IF
-  SG = SQRT(TG * TG + ONE)
+  SG = SQRT(ONE + TG * TG)
 
   A(1,1) = S(1)
   A(2,1) = ZERO

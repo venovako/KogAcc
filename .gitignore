@@ -33,6 +33,7 @@
 
 # Directories
 bin
+doc
 lib
 obj
 var
