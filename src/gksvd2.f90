@@ -159,9 +159,16 @@
      U(2,2) = -U(2,2)
   END IF
 
+  ! exit if B is a nul-matrix
+  IF (B(1,1) .EQ. ZERO) GOTO 1
+
+  ! divide by B(1,1)
+  X = B(1,2) / B(1,1)
+  Y = B(2,2) / B(1,1)
+
   ! TODO
 
   ! transpose U
-  X = U(2,1)
+1 X = U(2,1)
   U(2,1) = U(1,2)
   U(1,2) = X
