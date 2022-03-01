@@ -39,7 +39,7 @@ doc: ../Doxyfile
 $(LIB): $(OBJ) $(MKFS)
 	$(AR) $(ARFLAGS) $@ $(OBJ)
 
-../obj/$(PLAT)/sksvd2.o: sksvd2.f90 $(MKFS)
+../obj/$(PLAT)/sksvd2.o: sksvd2.f90 gksvd2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ sksvd2.f90
 ifdef NDEBUG
 ifeq ($(COMPILER),ifx)
@@ -47,7 +47,7 @@ ifeq ($(COMPILER),ifx)
 endif # ifx
 endif # NDEBUG
 
-../obj/$(PLAT)/dksvd2.o: dksvd2.f90 $(MKFS)
+../obj/$(PLAT)/dksvd2.o: dksvd2.f90 gksvd2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ dksvd2.f90
 ifdef NDEBUG
 ifeq ($(COMPILER),ifx)
@@ -55,7 +55,7 @@ ifeq ($(COMPILER),ifx)
 endif # ifx
 endif # NDEBUG
 
-../obj/$(PLAT)/qksvd2.o: qksvd2.f90 $(MKFS)
+../obj/$(PLAT)/qksvd2.o: qksvd2.f90 gksvd2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ qksvd2.f90
 ifdef NDEBUG
 ifeq ($(COMPILER),ifx)
@@ -63,7 +63,7 @@ ifeq ($(COMPILER),ifx)
 endif # ifx
 endif # NDEBUG
 
-../obj/$(PLAT)/xksvd2.o: xksvd2.f90 $(MKFS)
+../obj/$(PLAT)/xksvd2.o: xksvd2.f90 gksvd2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ xksvd2.f90
 
 clean:
