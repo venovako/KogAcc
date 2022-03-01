@@ -22,15 +22,19 @@ endif # x86_64
 endif # gfortran
 LIB=../lib/$(PLAT)/libksvd2.a
 
-.PHONY: all help dirs clean purge
+.PHONY: all clean dirs doc help purge
 
 all: dirs $(LIB)
+	@echo $(PLAT) "build ended."
 
 help:
-	@echo $(MAKE) "[COMPILER=gfortran|ifort|ifx|nvfortran] [ABI=lp64|ilp64] [NDEBUG=optimization_level] [all|help|clean|purge]"
+	@echo $(MAKE) "[COMPILER=gfortran|ifort|ifx|nvfortran] [ABI=lp64|ilp64] [NDEBUG=optimization_level] [all|clean|dirs|doc|help|purge]"
 
 dirs:
 	@$(MKD) ../bin/$(PLAT) ../lib/$(PLAT) ../obj/$(PLAT)
+
+doc: ../Doxyfile
+	pushd .. && doxygen && popd
 
 $(LIB): $(OBJ) $(MKFS)
 	$(AR) $(ARFLAGS) $@ $(OBJ)
