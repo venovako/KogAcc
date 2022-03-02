@@ -135,13 +135,16 @@
 
   ! apply the Givens rotation
   B(1,1) = S(1)
-  B(2,1) = ZERO
+  B(2,1) = B(1,2)
   B(1,2) = (B(1,2) + TANG * B(2,2)) / SECG
-  B(2,2) = (B(2,2) - TANG * B(1,2)) / SECG
+  B(2,2) = (B(2,2) - TANG * B(2,1)) / SECG
+  B(2,1) = U(1,1)
   U(1,1) = (U(1,1) + TANG * U(2,1)) / SECG
-  U(2,1) = (U(2,1) - TANG * U(1,1)) / SECG
+  U(2,1) = (U(2,1) - TANG * B(2,1)) / SECG
+  B(2,1) = U(1,2)
   U(1,2) = (U(1,2) + TANG * U(2,2)) / SECG
-  U(2,2) = (U(2,2) - TANG * U(1,2)) / SECG
+  U(2,2) = (U(2,2) - TANG * B(2,1)) / SECG
+  B(2,1) = ZERO
 
   ! make B(1,2) non-negative
   IF (SIGN(ONE, B(1,2)) .NE. ONE) THEN

@@ -22,3 +22,31 @@
   ELSE ! all OK
      WRITE (*,2) 'INFO=', INFO
   END IF
+  UX(1,1) = U(1,1)
+  UX(2,1) = U(2,1)
+  UX(1,2) = U(1,2)
+  UX(2,2) = U(2,2)
+  SX(1,1) = 1.0_KX
+  SX(2,1) = 0.0_KX
+  SX(1,2) = 0.0_KX
+  SX(2,2) = 1.0_KX
+  VX = MATMUL(TRANSPOSE(UX), UX) - SX
+  WRITE (*,1) '||U^T U - I||_F=', HYPOT(HYPOT(VX(1,1), VX(2,1)), HYPOT(VX(1,2), VX(2,2)))
+  VX(1,1) = V(1,1)
+  VX(2,1) = V(2,1)
+  VX(1,2) = V(1,2)
+  VX(2,2) = V(2,2)
+  GX = MATMUL(TRANSPOSE(VX), VX) - SX
+  WRITE (*,1) '||V^T V - I||_F=', HYPOT(HYPOT(GX(1,1), GX(2,1)), HYPOT(GX(1,2), GX(2,2)))
+  GX(1,1) = G(1,1)
+  GX(2,1) = G(2,1)
+  GX(1,2) = G(1,2)
+  GX(2,2) = G(2,2)
+  SX(1,1) = SCALE(S(1), -INFO)
+  WRITE (*,1) 'SIGMA(1)=', SX(1,1)
+  SX(2,2) = SCALE(S(2), -INFO)
+  WRITE (*,1) 'SIGMA(2)=', SX(2,2)
+  UX = MATMUL(MATMUL(UX, SX), TRANSPOSE(VX)) - GX
+  WRITE (*,1) '||U SIGMA V^T - G||_F / ||G||_F=', &
+       HYPOT(HYPOT(UX(1,1), UX(2,1)), HYPOT(UX(1,2), UX(2,2))) / &
+       HYPOT(HYPOT(GX(1,1), GX(2,1)), HYPOT(GX(1,2), GX(2,2)))
