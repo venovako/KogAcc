@@ -12,19 +12,23 @@ endif # local.mk
 ifndef PLAT
 PLAT=$(COMPILER)/$(OS)-$(ARCH)-$(ABI)$(DEBUG)
 endif # !PLAT
-SRC=sksvd2.f90 dksvd2.f90
-OBJ=../obj/$(PLAT)/sksvd2.o ../obj/$(PLAT)/dksvd2.o ../obj/$(PLAT)/qksvd2.o
+OBJ=../obj/$(PLAT)/sksvd2.o ../obj/$(PLAT)/dksvd2.o
+EXE=../bin/$(PLAT)/sksvd2.exe ../bin/$(PLAT)/dksvd2.exe
+ifneq ($(COMPILER),nvfortran)
+OBJ += ../obj/$(PLAT)/qksvd2.o
+EXE += ../bin/$(PLAT)/qksvd2.exe
+endif # !nvfortran
 ifeq ($(COMPILER),gfortran)
 ifeq ($(ARCH),x86_64)
-SRC += xksvd2.f90
 OBJ += ../obj/$(PLAT)/xksvd2.o
+EXE += ../bin/$(PLAT)/xksvd2.exe
 endif # x86_64
 endif # gfortran
 LIB=../lib/$(PLAT)/libksvd2.a
 
 .PHONY: all clean dirs doc help purge
 
-all: dirs $(LIB)
+all: dirs $(LIB) $(EXE)
 	@echo $(PLAT) "build ended."
 
 help:
@@ -65,6 +69,33 @@ endif # NDEBUG
 
 ../obj/$(PLAT)/xksvd2.o: xksvd2.f90 gksvd2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ xksvd2.f90
+
+../bin/$(PLAT)/sksvd2.exe: sksvd2x.f90 tksvd2.f90 $(LIB) $(MKFS)
+	$(FC) $(FCFLAGS) -o $@ sksvd2x.f90 -L../lib/$(PLAT) -lksvd2
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) sksvd2x.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../bin/$(PLAT)/dksvd2.exe: dksvd2x.f90 tksvd2.f90 $(LIB) $(MKFS)
+	$(FC) $(FCFLAGS) -o $@ dksvd2x.f90 -L../lib/$(PLAT) -lksvd2
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) dksvd2x.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../bin/$(PLAT)/qksvd2.exe: qksvd2x.f90 tksvd2.f90 $(LIB) $(MKFS)
+	$(FC) $(FCFLAGS) -o $@ qksvd2x.f90 -L../lib/$(PLAT) -lksvd2
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) qksvd2x.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../bin/$(PLAT)/xksvd2.exe: xksvd2x.f90 tksvd2.f90 $(LIB) $(MKFS)
+	$(FC) $(FCFLAGS) -o $@ xksvd2x.f90 -L../lib/$(PLAT) -lksvd2
 
 clean:
 	-$(DEL) $(EXE) $(LIB) $(OBJ)
