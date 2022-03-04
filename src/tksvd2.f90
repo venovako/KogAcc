@@ -1,11 +1,33 @@
-  WRITE (*,'(A)',ADVANCE='NO') 'G(1,1)='
-  READ (*,*) G(1,1)
-  WRITE (*,'(A)',ADVANCE='NO') 'G(2,1)='
-  READ (*,*) G(2,1)
-  WRITE (*,'(A)',ADVANCE='NO') 'G(1,2)='
-  READ (*,*) G(1,2)
-  WRITE (*,'(A)',ADVANCE='NO') 'G(2,2)='
-  READ (*,*) G(2,2)
+  INFO = COMMAND_ARGUMENT_COUNT()
+  IF (INFO .EQ. 4) THEN
+     CALL GET_COMMAND_ARGUMENT(1, CLA, STATUS=INFO)
+     IF (INFO .NE. 0) STOP 'first command line argument is invalid'
+     READ (CLA,*) G(1,1)
+     CALL GET_COMMAND_ARGUMENT(2, CLA, STATUS=INFO)
+     IF (INFO .NE. 0) STOP 'second command line argument is invalid'
+     READ (CLA,*) G(2,1)
+     CALL GET_COMMAND_ARGUMENT(3, CLA, STATUS=INFO)
+     IF (INFO .NE. 0) STOP 'third command line argument is invalid'
+     READ (CLA,*) G(1,2)
+     CALL GET_COMMAND_ARGUMENT(4, CLA, STATUS=INFO)
+     IF (INFO .NE. 0) STOP 'fourth command line argument is invalid'
+     READ (CLA,*) G(2,2)
+  ELSE IF (INFO .EQ. 0) THEN
+     WRITE (*,'(A)',ADVANCE='NO') 'G(1,1)='
+     READ (*,*) G(1,1)
+     WRITE (*,'(A)',ADVANCE='NO') 'G(2,1)='
+     READ (*,*) G(2,1)
+     WRITE (*,'(A)',ADVANCE='NO') 'G(1,2)='
+     READ (*,*) G(1,2)
+     WRITE (*,'(A)',ADVANCE='NO') 'G(2,2)='
+     READ (*,*) G(2,2)
+  ELSE ! invalid command line
+     STOP 'zero or four command line arguments required: G(1,1) G(2,1) G(1,2) G(2,2)'
+  END IF
+  WRITE (*,1) 'G(1,1)=', G(1,1)
+  WRITE (*,1) 'G(2,1)=', G(2,1)
+  WRITE (*,1) 'G(1,2)=', G(1,2)
+  WRITE (*,1) 'G(2,2)=', G(2,2)
   CALL KSVD2(G, U, V, S, INFO)
   WRITE (*,1) 'U(1,1)=', U(1,1)
   WRITE (*,1) 'U(2,1)=', U(2,1)
