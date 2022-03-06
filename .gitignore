@@ -17,6 +17,7 @@
 *.dll
 
 # Fortran module files
+*__genmod.f90
 *.mod
 *.smod
 
@@ -30,6 +31,12 @@
 *.exe
 *.out
 *.app
+
+# Other
+Makefile
+*.optrpt
+*.opt.yaml
+*.pdb
 
 # Directories
 bin

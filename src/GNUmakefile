@@ -4,7 +4,7 @@ include $(ARCH).mk
 include $(ABI).mk
 include $(OS).mk
 include debug.mk
-MKFS += GNUmakefile system.mk $(COMPILER).mk $(ARCH).mk $(ABI).mk $(OS).mk debug.mk
+MKFS=GNUmakefile system.mk $(COMPILER).mk $(ARCH).mk $(ABI).mk $(OS).mk debug.mk
 ifneq ($(wildcard local.mk),)
 include local.mk
 MKFS += local.mk
@@ -19,17 +19,17 @@ OBJ += ../obj/$(PLAT)/qksvd2.o
 EXE += ../bin/$(PLAT)/qksvd2.exe
 endif # !nvfortran
 ifeq ($(COMPILER),gfortran)
-ifeq ($(ARCH),x86_64)
+ifeq ($(findstring 86,$(ARCH)),86)
 OBJ += ../obj/$(PLAT)/xksvd2.o
 EXE += ../bin/$(PLAT)/xksvd2.exe
-endif # x86_64
+endif # x86
 endif # gfortran
 LIB=../lib/$(PLAT)/libksvd2.a
 
 .PHONY: all clean dirs doc help purge
 
 all: dirs $(LIB) $(EXE)
-	@echo $(PLAT) "build ended."
+	@echo $(PLAT)
 
 help:
 	@echo $(MAKE) "[COMPILER=gfortran|ifort|ifx|nvfortran] [ABI=lp64|ilp64] [NDEBUG=optimization_level] [all|clean|dirs|doc|help|purge]"
