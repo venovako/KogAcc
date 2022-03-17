@@ -55,7 +55,16 @@
   ELSE IF (B(1,1) .EQ. ZERO) THEN
      S(1) = ABS(B(2,1))
   ELSE ! full 1st column
-     S(1) = HYPOT(B(1,1), B(2,1))
+     ! S(1) = HYPOT(B(1,1), B(2,1))
+     X = ABS(B(1,1))
+     Y = ABS(B(2,1))
+     Z = MAX(X, Y)
+     IF (Z .EQ. ZERO) THEN
+        S(1) = ZERO
+     ELSE ! general case
+        X = MIN(X, Y) / Z
+        S(1) = SQRT(X * X + ONE) * Z
+     END IF
   END IF
 
   ! compute the second column norm
@@ -64,7 +73,16 @@
   ELSE IF (B(2,2) .EQ. ZERO) THEN
      S(2) = ABS(B(1,2))
   ELSE ! full 2nd column
-     S(2) = HYPOT(B(1,2), B(2,2))
+     ! S(2) = HYPOT(B(1,2), B(2,2))
+     X = ABS(B(1,2))
+     Y = ABS(B(2,2))
+     Z = MAX(X, Y)
+     IF (Z .EQ. ZERO) THEN
+        S(2) = ZERO
+     ELSE ! general case
+        X = MIN(X, Y) / Z
+        S(2) = SQRT(X * X + ONE) * Z
+     END IF
   END IF
 
   ! swap the columns if necessary
