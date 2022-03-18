@@ -1,18 +1,5 @@
-  INFO = COMMAND_ARGUMENT_COUNT()
-  IF (INFO .EQ. 4) THEN
-     CALL GET_COMMAND_ARGUMENT(1, CLA, STATUS=INFO)
-     IF (INFO .NE. 0) STOP 'first command line argument is invalid'
-     READ (CLA,*) G(1,1)
-     CALL GET_COMMAND_ARGUMENT(2, CLA, STATUS=INFO)
-     IF (INFO .NE. 0) STOP 'second command line argument is invalid'
-     READ (CLA,*) G(2,1)
-     CALL GET_COMMAND_ARGUMENT(3, CLA, STATUS=INFO)
-     IF (INFO .NE. 0) STOP 'third command line argument is invalid'
-     READ (CLA,*) G(1,2)
-     CALL GET_COMMAND_ARGUMENT(4, CLA, STATUS=INFO)
-     IF (INFO .NE. 0) STOP 'fourth command line argument is invalid'
-     READ (CLA,*) G(2,2)
-  ELSE IF (INFO .EQ. 0) THEN
+  SELECT CASE (COMMAND_ARGUMENT_COUNT())
+  CASE (0)
      WRITE (*,'(A)',ADVANCE='NO') 'G(1,1)='
      READ (*,*) G(1,1)
      WRITE (*,'(A)',ADVANCE='NO') 'G(2,1)='
@@ -21,9 +8,31 @@
      READ (*,*) G(1,2)
      WRITE (*,'(A)',ADVANCE='NO') 'G(2,2)='
      READ (*,*) G(2,2)
-  ELSE ! invalid command line
-     STOP 'zero or four command line arguments required: G(1,1) G(2,1) G(1,2) G(2,2)'
-  END IF
+  CASE (1)
+     CALL GET_COMMAND_ARGUMENT(1, CLA, STATUS=INFO)
+     IF (INFO .NE. 0) STOP 'the command line argument is invalid'
+     OPEN(UNIT=1, FILE=TRIM(CLA), ACTION='READ', STATUS='OLD', IOSTAT=INFO)
+     IF (INFO .NE. 0) STOP 'cannot open the input file'
+     READ (1,*) G(1,1), G(1,2)
+     READ (1,*) G(2,1), G(2,2)
+     CLOSE(UNIT=1, IOSTAT=INFO)
+     IF (INFO .NE. 0) STOP 'cannot close the input file'
+  CASE (4)
+     CALL GET_COMMAND_ARGUMENT(1, CLA, STATUS=INFO)
+     IF (INFO .NE. 0) STOP 'the first command line argument is invalid'
+     READ (CLA,*) G(1,1)
+     CALL GET_COMMAND_ARGUMENT(2, CLA, STATUS=INFO)
+     IF (INFO .NE. 0) STOP 'the second command line argument is invalid'
+     READ (CLA,*) G(2,1)
+     CALL GET_COMMAND_ARGUMENT(3, CLA, STATUS=INFO)
+     IF (INFO .NE. 0) STOP 'the third command line argument is invalid'
+     READ (CLA,*) G(1,2)
+     CALL GET_COMMAND_ARGUMENT(4, CLA, STATUS=INFO)
+     IF (INFO .NE. 0) STOP 'the fourth command line argument is invalid'
+     READ (CLA,*) G(2,2)
+  CASE DEFAULT
+     STOP 'zero, one, or four command line arguments required: G(1,1) G(2,1) G(1,2) G(2,2)'
+  END SELECT
   WRITE (*,1) 'G(1,1)=', G(1,1)
   WRITE (*,1) 'G(2,1)=', G(2,1)
   WRITE (*,1) 'G(1,2)=', G(1,2)
@@ -77,4 +86,3 @@
      SX(2,1) = SX(2,1) / SX(1,2)
   END IF
   WRITE (*,1) '||U SIGMA V^T - G||_F / ||G||_F=', SX(2,1)
-       
