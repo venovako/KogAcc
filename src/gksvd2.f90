@@ -87,25 +87,25 @@
 
   ! swap the columns if necessary
   IF (S(1) .LT. S(2)) THEN
-     X = B(1,1)
+     Z = B(1,1)
      B(1,1) = B(1,2)
-     B(1,2) = X
+     B(1,2) = Z
 
-     X = B(2,1)
+     Z = B(2,1)
      B(2,1) = B(2,2)
-     B(2,2) = X
+     B(2,2) = Z
 
-     X = S(1)
+     Z = S(1)
      S(1) = S(2)
-     S(2) = X
+     S(2) = Z
 
-     X = V(1,1)
+     Z = V(1,1)
      V(1,1) = V(1,2)
-     V(1,2) = X
+     V(1,2) = Z
 
-     X = V(2,1)
+     Z = V(2,1)
      V(2,1) = V(2,2)
-     V(2,2) = X
+     V(2,2) = Z
   END IF
 
   ! make B(1,1) non-negative
@@ -126,21 +126,21 @@
 
   ! swap the rows if necessary
   IF (B(1,1) .LT. B(2,1)) THEN
-     X = B(1,1)
+     Z = B(1,1)
      B(1,1) = B(2,1)
-     B(2,1) = X
+     B(2,1) = Z
 
-     X = U(1,1)
+     Z = U(1,1)
      U(1,1) = U(2,1)
-     U(2,1) = X
+     U(2,1) = Z
 
-     X = B(1,2)
+     Z = B(1,2)
      B(1,2) = B(2,2)
-     B(2,2) = X
+     B(2,2) = Z
 
-     X = U(1,2)
+     Z = U(1,2)
      U(1,2) = U(2,2)
-     U(2,2) = X
+     U(2,2) = Z
   END IF
 
   ! compute the Givens rotation
@@ -186,6 +186,19 @@
   ! divide by B(1,1)
   X = B(1,2) / B(1,1)
   Y = B(2,2) / B(1,1)
+
+  ! tan(2\varphi)
+  IF (X .LE. Y) THEN
+     Z = SCALE(X, 1) * Y
+  ELSE ! X > Y
+     Z = SCALE(Y, 1) * X
+  END IF
+  Z = Z / ((X - Y) * (X + Y) + ONE)
+  Z = MIN(Z, ROOTH)
+
+  ! functions of \varphi
+  TANF = Z / (ONE + SQRT(Z * Z + ONE))
+  SECF = SQRT(TANF * TANF + ONE)
 
   ! TODO
 

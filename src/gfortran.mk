@@ -10,7 +10,7 @@ FCFLAGS += -march=native -fPIC -fexceptions -fno-omit-frame-pointer -rdynamic -f
 ifdef NDEBUG
 FCFLAGS += -fgcse-las -fgcse-sm -fipa-pta -ftree-loop-distribution -ftree-loop-im -ftree-loop-ivcanon -fivopts -fvect-cost-model=unlimited -fvariable-expansion-in-unroller -fopt-info-optimized-vec
 else # !NDEBUG
-FCFLAGS += -fcheck=array-temps -finit-local-zero -finit-real=snan -finit-derived -Warray-temporaries -Wcharacter-truncation -Wimplicit-procedure -Wfunction-elimination -Wrealloc-lhs-all
+FCFLAGS += -fcheck=all -finit-local-zero -finit-real=snan -finit-derived -Warray-temporaries -Wcharacter-truncation -Wimplicit-procedure -Wfunction-elimination -Wrealloc-lhs-all
 endif # ?NDEBUG
 FCFLAGS += -pedantic -Wall -Wextra -Wno-compare-reals
 ifeq ($(ARCH),Darwin)
