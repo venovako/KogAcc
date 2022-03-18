@@ -69,6 +69,12 @@
   SX(2,2) = SCALE(S(2), -INFO)
   WRITE (*,1) 'SIGMA(2)=', SX(2,2)
   UX = MATMUL(MATMUL(UX, SX), TRANSPOSE(VX)) - GX
-  WRITE (*,1) '||U SIGMA V^T - G||_F / ||G||_F=', &
-       HYPOT(HYPOT(UX(1,1), UX(2,1)), HYPOT(UX(1,2), UX(2,2))) / &
-       HYPOT(HYPOT(GX(1,1), GX(2,1)), HYPOT(GX(1,2), GX(2,2)))
+  SX(2,1) = HYPOT(HYPOT(UX(1,1), UX(2,1)), HYPOT(UX(1,2), UX(2,2)))
+  SX(1,2) = HYPOT(HYPOT(GX(1,1), GX(2,1)), HYPOT(GX(1,2), GX(2,2)))
+  IF ((SX(1,2) .EQ. 0.0_KX) .AND. (SX(2,1) .EQ. 0.0_KX)) THEN
+     SX(2,1) = 0.0_KX
+  ELSE ! general case
+     SX(2,1) = SX(2,1) / SX(1,2)
+  END IF
+  WRITE (*,1) '||U SIGMA V^T - G||_F / ||G||_F=', SX(2,1)
+       

@@ -191,7 +191,7 @@
   X = B(1,2) / B(1,1)
   Y = B(2,2) / B(1,1)
 
-  ! functions of \varphi
+  ! the functions of \varphi
   IF (X .LE. Y) THEN
      Z = SCALE(X, 1) * Y
   ELSE ! X > Y
@@ -206,13 +206,31 @@
      SECF = SQRT(TANF * TANF + ONE)
   END IF
 
-  ! functions of \psi
+  ! the functions of \psi
   TANP = Y * TANF + X
   SECP = SQRT(TANP * TANP + ONE)
 
-  ! TODO
+  ! the scaled singular values
+  S(1) = (SECP / SECF) * B(1,1)
+  S(2) = (SECF / SECP) * B(2,2)
+
+  ! update U
+  X = U(1,1)
+  U(1,1) = (U(1,1) + TANF * U(2,1)) / SECF
+  U(2,1) = (U(2,1) - TANF * X) / SECF
+  Y = U(1,2)
+  U(1,2) = (U(1,2) + TANF * U(2,2)) / SECF
+  U(2,2) = (U(2,2) - TANF * Y) / SECF
+
+  ! update V
+  X = V(1,1)
+  V(1,1) = (V(1,1) + TANP * V(1,2)) / SECP
+  V(1,2) = (V(1,2) - TANP * X) / SECP
+  Y = V(2,1)
+  V(2,1) = (V(2,1) + TANP * V(2,2)) / SECP
+  V(2,2) = (V(2,2) - TANP * Y) / SECP
 
   ! transpose U
-1 X = U(2,1)
+1 Z = U(2,1)
   U(2,1) = U(1,2)
-  U(1,2) = X
+  U(1,2) = Z
