@@ -15,13 +15,13 @@
 
   ! check if G has a non-finite value
   B(2,2) = ABS(G(2,2))
-  IF (.NOT. (B(2,2) .LE. HUGE(ZERO))) INFO = IERR
+  IF (.NOT. (B(2,2) .LE. H)) INFO = IERR
   B(1,2) = ABS(G(1,2))
-  IF (.NOT. (B(1,2) .LE. HUGE(ZERO))) INFO = IERR
+  IF (.NOT. (B(1,2) .LE. H)) INFO = IERR
   B(2,1) = ABS(G(2,1))
-  IF (.NOT. (B(2,1) .LE. HUGE(ZERO))) INFO = IERR
+  IF (.NOT. (B(2,1) .LE. H)) INFO = IERR
   B(1,1) = ABS(G(1,1))
-  IF (.NOT. (B(1,1) .LE. HUGE(ZERO))) INFO = IERR
+  IF (.NOT. (B(1,1) .LE. H)) INFO = IERR
   IF (INFO .NE. 0) RETURN
 
   ! determine the scaling factor s
@@ -33,7 +33,7 @@
   IF (INFO .EQ. IERR) THEN
      INFO = 0
   ELSE ! non-zero B
-     INFO = EXPONENT(HUGE(ZERO)) - INFO - 2
+     INFO = EXPONENT(H) - INFO - 2
   END IF
 
   ! scale G
@@ -55,6 +55,8 @@
   ELSE IF (B(1,1) .EQ. ZERO) THEN
      S(1) = ABS(B(2,1))
   ELSE ! full 1st column
+     ! if numerical compatibility with the vectorized algorithm is not
+     ! required, replace the remaining code in this branch by the line
      ! S(1) = HYPOT(B(1,1), B(2,1))
      X = ABS(B(1,1))
      Y = ABS(B(2,1))
@@ -73,6 +75,8 @@
   ELSE IF (B(2,2) .EQ. ZERO) THEN
      S(2) = ABS(B(1,2))
   ELSE ! full 2nd column
+     ! if numerical compatibility with the vectorized algorithm is not
+     ! required, replace the remaining code in this branch by the line
      ! S(2) = HYPOT(B(1,2), B(2,2))
      X = ABS(B(1,2))
      Y = ABS(B(2,2))
@@ -149,7 +153,7 @@
   ELSE ! non-zero B
      TANG = B(2,1) / B(1,1)
   END IF
-  SECG = SQRT(ONE + TANG * TANG)
+  SECG = SQRT(TANG * TANG + ONE)
 
   ! apply the Givens rotation
   B(1,1) = S(1)
@@ -187,18 +191,24 @@
   X = B(1,2) / B(1,1)
   Y = B(2,2) / B(1,1)
 
-  ! tan(2\varphi)
+  ! functions of \varphi
   IF (X .LE. Y) THEN
      Z = SCALE(X, 1) * Y
   ELSE ! X > Y
      Z = SCALE(Y, 1) * X
   END IF
-  Z = Z / ((X - Y) * (X + Y) + ONE)
-  Z = MIN(Z, ROOTH)
+  IF (Z .EQ. ZERO) THEN
+     TANF = ZERO
+     SECF = ONE
+  ELSE ! Z > 0
+     Z = MIN(Z / ((X - Y) * (X + Y) + ONE), ROOTH)
+     TANF = Z / (ONE + SQRT(Z * Z + ONE))
+     SECF = SQRT(TANF * TANF + ONE)
+  END IF
 
-  ! functions of \varphi
-  TANF = Z / (ONE + SQRT(Z * Z + ONE))
-  SECF = SQRT(TANF * TANF + ONE)
+  ! functions of \psi
+  TANP = Y * TANF + X
+  SECP = SQRT(TANP * TANP + ONE)
 
   ! TODO
 
