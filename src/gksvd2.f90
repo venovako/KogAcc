@@ -67,7 +67,8 @@
         S(1) = ZERO
      ELSE ! general case
         X = MIN(X, Y) / Z
-        S(1) = SQRT(X * X + ONE) * Z
+        Y = X * X + ONE
+        S(1) = SQRT(Y) * Z
      END IF
   END IF
 
@@ -87,7 +88,8 @@
         S(2) = ZERO
      ELSE ! general case
         X = MIN(X, Y) / Z
-        S(2) = SQRT(X * X + ONE) * Z
+        Y = X * X + ONE
+        S(2) = SQRT(Y) * Z
      END IF
   END IF
 
