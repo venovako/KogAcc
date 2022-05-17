@@ -7,9 +7,9 @@ A portable real 2x2 Kogbetliantz-type SVD.
 
 ### Prerequisites
 
-A recent 64-bit Linux (e.g., CentOS 7.9 with devtoolset-11), macOS (e.g., Big Sur), or Windows (e.g., 10) is needed.
+A recent Linux (e.g., CentOS 7.9 with devtoolset-11), macOS (e.g., Big Sur), or Windows (e.g., 10) is needed.
 
-Other OSes (e.g., Oracle Solaris) might also be supported to a certain extent.
+Other 64-bit OSes (e.g., Oracle Solaris) might also be supported to a certain extent.
 
 GNU, Intel, and NVidia Fortran compilers should work, while the others might require tweaking the build system.
 
@@ -18,4 +18,5 @@ GNU, Intel, and NVidia Fortran compilers should work, while the others might req
 On Linux or macOS, run ``make help`` (GNU make assumed).
 
 On antoher \*nix OS where GNU `make` is not the default one, run ``gmake help`` instead.
+
 On Windows, run ``nmake help`` in the Intel oneAPI command prompt.
