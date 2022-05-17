@@ -12,23 +12,23 @@ endif # local.mk
 ifndef PLAT
 PLAT=$(COMPILER)/$(OS)-$(ARCH)-$(ABI)$(DEBUG)
 endif # !PLAT
-OBJ=../obj/$(PLAT)/sksvd2.o ../obj/$(PLAT)/dksvd2.o
-EXE=../bin/$(PLAT)/sksvd2.exe ../bin/$(PLAT)/dksvd2.exe
+OBJS=../obj/$(PLAT)/sksvd2.o ../obj/$(PLAT)/dksvd2.o
+EXES=../bin/$(PLAT)/sksvd2.exe ../bin/$(PLAT)/dksvd2.exe
 ifneq ($(COMPILER),nvfortran)
-OBJ += ../obj/$(PLAT)/qksvd2.o
-EXE += ../bin/$(PLAT)/qksvd2.exe
+OBJS += ../obj/$(PLAT)/qksvd2.o
+EXES += ../bin/$(PLAT)/qksvd2.exe
 endif # !nvfortran
 ifeq ($(COMPILER),gfortran)
 ifeq ($(findstring 86,$(ARCH)),86)
-OBJ += ../obj/$(PLAT)/xksvd2.o
-EXE += ../bin/$(PLAT)/xksvd2.exe
+OBJS += ../obj/$(PLAT)/xksvd2.o
+EXES += ../bin/$(PLAT)/xksvd2.exe
 endif # x86
 endif # gfortran
-STA=../lib/$(PLAT)/libksvd2.a
+LIBS=../lib/$(PLAT)/libksvd2.a
 
 .PHONY: all clean dirs doc help purge
 
-all: dirs $(STA) $(EXE)
+all: dirs $(LIBS) $(EXES)
 	@echo $(PLAT)
 
 help:
@@ -40,8 +40,8 @@ dirs:
 doc: ../Doxyfile
 	cd .. && doxygen && cd src
 
-$(STA): $(OBJ) $(MKFS)
-	$(AR) $(ARFLAGS) $@ $(OBJ)
+$(LIBS): $(OBJS) $(MKFS)
+	$(AR) $(ARFLAGS) $@ $(OBJS)
 
 ../obj/$(PLAT)/sksvd2.o: sksvd2.f90 gksvd2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ sksvd2.f90
@@ -70,7 +70,7 @@ endif # NDEBUG
 ../obj/$(PLAT)/xksvd2.o: xksvd2.f90 gksvd2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ xksvd2.f90
 
-../bin/$(PLAT)/sksvd2.exe: sksvd2x.f90 tksvd2.f90 $(STA) $(MKFS)
+../bin/$(PLAT)/sksvd2.exe: sksvd2x.f90 tksvd2.f90 $(LIBS) $(MKFS)
 	$(FC) $(FCFLAGS) -o $@ sksvd2x.f90 -L../lib/$(PLAT) -lksvd2
 ifdef NDEBUG
 ifeq ($(COMPILER),ifx)
@@ -78,7 +78,7 @@ ifeq ($(COMPILER),ifx)
 endif # ifx
 endif # NDEBUG
 
-../bin/$(PLAT)/dksvd2.exe: dksvd2x.f90 tksvd2.f90 $(STA) $(MKFS)
+../bin/$(PLAT)/dksvd2.exe: dksvd2x.f90 tksvd2.f90 $(LIBS) $(MKFS)
 	$(FC) $(FCFLAGS) -o $@ dksvd2x.f90 -L../lib/$(PLAT) -lksvd2
 ifdef NDEBUG
 ifeq ($(COMPILER),ifx)
@@ -86,7 +86,7 @@ ifeq ($(COMPILER),ifx)
 endif # ifx
 endif # NDEBUG
 
-../bin/$(PLAT)/qksvd2.exe: qksvd2x.f90 tksvd2.f90 $(STA) $(MKFS)
+../bin/$(PLAT)/qksvd2.exe: qksvd2x.f90 tksvd2.f90 $(LIBS) $(MKFS)
 	$(FC) $(FCFLAGS) -o $@ qksvd2x.f90 -L../lib/$(PLAT) -lksvd2
 ifdef NDEBUG
 ifeq ($(COMPILER),ifx)
@@ -94,11 +94,11 @@ ifeq ($(COMPILER),ifx)
 endif # ifx
 endif # NDEBUG
 
-../bin/$(PLAT)/xksvd2.exe: xksvd2x.f90 tksvd2.f90 $(STA) $(MKFS)
+../bin/$(PLAT)/xksvd2.exe: xksvd2x.f90 tksvd2.f90 $(LIBS) $(MKFS)
 	$(FC) $(FCFLAGS) -o $@ xksvd2x.f90 -L../lib/$(PLAT) -lksvd2
 
 clean:
-	-$(DEL) $(EXE) $(STA) $(OBJ)
+	-$(DEL) $(EXES) $(LIBS) $(OBJS)
 
 purge:
 	-$(DEL) ../bin ../lib ../obj

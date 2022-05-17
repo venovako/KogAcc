@@ -29,11 +29,11 @@ LDFLAGS=/link /DEBUG
 PLAT=ifort\$(OS)-$(ARCH)-$(ABI)$(DEBUG)
 !ENDIF # !PLAT
 MKFS=Makefile
-OBJ=..\obj\$(PLAT)\sksvd2.obj ..\obj\$(PLAT)\dksvd2.obj ..\obj\$(PLAT)\qksvd2.obj
-EXE=..\bin\$(PLAT)\sksvd2.exe ..\bin\$(PLAT)\dksvd2.exe ..\bin\$(PLAT)\qksvd2.exe
-STA=..\lib\$(PLAT)\ksvd2.lib
+OBJS=..\obj\$(PLAT)\sksvd2.obj ..\obj\$(PLAT)\dksvd2.obj ..\obj\$(PLAT)\qksvd2.obj
+EXES=..\bin\$(PLAT)\sksvd2.exe ..\bin\$(PLAT)\dksvd2.exe ..\bin\$(PLAT)\qksvd2.exe
+LIBS=..\lib\$(PLAT)\ksvd2.lib
 
-all: dirs $(STA) $(EXE)
+all: dirs $(LIBS) $(EXES)
 	@echo $(PLAT)
 
 help:
@@ -47,8 +47,8 @@ dirs:
 doc: ..\Doxyfile
 	cd .. && doxygen && cd src
 
-$(STA): $(OBJ) $(MKFS)
-	$(AR) $(ARFLAGS) /OUT:$@ $(OBJ)
+$(LIBS): $(OBJS) $(MKFS)
+	$(AR) $(ARFLAGS) /OUT:$@ $(OBJS)
 
 ..\obj\$(PLAT)\sksvd2.obj: sksvd2.f90 gksvd2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) /c /Fo$@ sksvd2.f90
@@ -59,25 +59,19 @@ $(STA): $(OBJ) $(MKFS)
 ..\obj\$(PLAT)\qksvd2.obj: qksvd2.f90 gksvd2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) /c /Fo$@ qksvd2.f90
 
-..\obj\$(PLAT)\xksvd2.obj: xksvd2.f90 gksvd2.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ xksvd2.f90
+..\bin\$(PLAT)\sksvd2.exe: sksvd2x.f90 tksvd2.f90 $(LIBS) $(MKFS)
+	$(FC) $(FCFLAGS) /Fe$@ sksvd2x.f90 $(LDFLAGS) $(LIBS)
 
-..\bin\$(PLAT)\sksvd2.exe: sksvd2x.f90 tksvd2.f90 $(STA) $(MKFS)
-	$(FC) $(FCFLAGS) /Fe$@ sksvd2x.f90 $(LDFLAGS) $(STA)
+..\bin\$(PLAT)\dksvd2.exe: dksvd2x.f90 tksvd2.f90 $(LIBS) $(MKFS)
+	$(FC) $(FCFLAGS) /Fe$@ dksvd2x.f90 $(LDFLAGS) $(LIBS)
 
-..\bin\$(PLAT)\dksvd2.exe: dksvd2x.f90 tksvd2.f90 $(STA) $(MKFS)
-	$(FC) $(FCFLAGS) /Fe$@ dksvd2x.f90 $(LDFLAGS) $(STA)
-
-..\bin\$(PLAT)\qksvd2.exe: qksvd2x.f90 tksvd2.f90 $(STA) $(MKFS)
-	$(FC) $(FCFLAGS) /Fe$@ qksvd2x.f90 $(LDFLAGS) $(STA)
-
-..\bin\$(PLAT)\xksvd2.exe: xksvd2x.f90 tksvd2.f90 $(STA) $(MKFS)
-	$(FC) $(FCFLAGS) /Fe$@ xksvd2x.f90 $(LDFLAGS) $(STA)
+..\bin\$(PLAT)\qksvd2.exe: qksvd2x.f90 tksvd2.f90 $(LIBS) $(MKFS)
+	$(FC) $(FCFLAGS) /Fe$@ qksvd2x.f90 $(LDFLAGS) $(LIBS)
 
 clean:
-	-del /f /q $(EXE)
-	-del /f /q $(STA)
-	-del /f /q $(OBJ)
+	-del /f /q $(EXES)
+	-del /f /q $(LIBS)
+	-del /f /q $(OBJS)
 
 purge:
 	-rd ..\bin /s /q
