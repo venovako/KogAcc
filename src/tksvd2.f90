@@ -1,3 +1,5 @@
+  ! This is the generic part of the tester routines.
+
   SELECT CASE (COMMAND_ARGUMENT_COUNT())
   CASE (0)
      WRITE (*,'(A)',ADVANCE='NO') 'G(1,1)='

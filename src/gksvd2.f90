@@ -1,3 +1,5 @@
+  ! This is the generic part of the Kogbetliantz routines.
+
   ! U = I
   U(1,1) = ONE
   U(2,1) = ZERO
