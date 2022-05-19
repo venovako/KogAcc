@@ -179,7 +179,7 @@
 
      Z = B(1,2)
      B(1,2) = B(2,2)
-     B(2,2) = X
+     B(2,2) = Z
 
      X = A(1,1)
      A(1,1) = A(2,1)
@@ -237,7 +237,6 @@
      IF (SIGN(ONE, REAL(B(2,2))) .NE. ONE) THEN
         U(2,1) = -U(2,1)
         U(2,2) = -U(2,2)
-        B(2,1) = -B(2,1)
         B(2,2) = -B(2,2)
      END IF
   ELSE ! the general case
@@ -249,7 +248,6 @@
 
   ! B is now real so copy it to A
   A(1,1) = REAL(B(1,1))
-  A(2,1) = REAL(B(2,1))
   A(1,2) = REAL(B(1,2))
   A(2,2) = REAL(B(2,2))
 
