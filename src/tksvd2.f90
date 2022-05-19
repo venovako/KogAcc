@@ -12,7 +12,7 @@
      READ (*,*) G(2,2)
   CASE (1)
      CALL GET_COMMAND_ARGUMENT(1, CLA, STATUS=INFO)
-     IF (INFO .NE. 0) STOP 'the command line argument is invalid'
+     IF (INFO .NE. 0) STOP 'the input file name is invalid'
      OPEN(UNIT=1, FILE=TRIM(CLA), ACTION='READ', STATUS='OLD', IOSTAT=INFO)
      IF (INFO .NE. 0) STOP 'cannot open the input file'
      READ (1,*) G(1,1), G(1,2)
@@ -21,19 +21,19 @@
      IF (INFO .NE. 0) STOP 'cannot close the input file'
   CASE (4)
      CALL GET_COMMAND_ARGUMENT(1, CLA, STATUS=INFO)
-     IF (INFO .NE. 0) STOP 'the first command line argument is invalid'
+     IF (INFO .NE. 0) STOP 'the first argument is invalid'
      READ (CLA,*) G(1,1)
      CALL GET_COMMAND_ARGUMENT(2, CLA, STATUS=INFO)
-     IF (INFO .NE. 0) STOP 'the second command line argument is invalid'
+     IF (INFO .NE. 0) STOP 'the second argument is invalid'
      READ (CLA,*) G(2,1)
      CALL GET_COMMAND_ARGUMENT(3, CLA, STATUS=INFO)
-     IF (INFO .NE. 0) STOP 'the third command line argument is invalid'
+     IF (INFO .NE. 0) STOP 'the third argument is invalid'
      READ (CLA,*) G(1,2)
      CALL GET_COMMAND_ARGUMENT(4, CLA, STATUS=INFO)
-     IF (INFO .NE. 0) STOP 'the fourth command line argument is invalid'
+     IF (INFO .NE. 0) STOP 'the fourth argument is invalid'
      READ (CLA,*) G(2,2)
   CASE DEFAULT
-     STOP 'zero, one, or four command line arguments required: G(1,1) G(2,1) G(1,2) G(2,2)'
+     STOP 'zero, one [input file name], or four [G(1,1) G(2,1) G(1,2) G(2,2)] arguments required'
   END SELECT
   WRITE (*,1) 'G(1,1)=', G(1,1)
   WRITE (*,1) 'G(2,1)=', G(2,1)
