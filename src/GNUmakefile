@@ -13,15 +13,15 @@ ifndef PLAT
 PLAT=$(COMPILER)/$(OS)-$(ARCH)-$(ABI)$(DEBUG)
 endif # !PLAT
 OBJS=../obj/$(PLAT)/sksvd2.o ../obj/$(PLAT)/cksvd2.o ../obj/$(PLAT)/dksvd2.o ../obj/$(PLAT)/zksvd2.o
-EXES=../bin/$(PLAT)/sksvd2.exe ../bin/$(PLAT)/dksvd2.exe
+EXES=../bin/$(PLAT)/sksvd2.exe ../bin/$(PLAT)/cksvd2.exe ../bin/$(PLAT)/dksvd2.exe ../bin/$(PLAT)/zksvd2.exe
 ifneq ($(COMPILER),nvfortran)
 OBJS += ../obj/$(PLAT)/qksvd2.o ../obj/$(PLAT)/yksvd2.o
-EXES += ../bin/$(PLAT)/qksvd2.exe
+EXES += ../bin/$(PLAT)/qksvd2.exe ../bin/$(PLAT)/yksvd2.exe
 endif # !nvfortran
 ifeq ($(COMPILER),gfortran)
 ifeq ($(findstring 86,$(ARCH)),86)
 OBJS += ../obj/$(PLAT)/xksvd2.o ../obj/$(PLAT)/wksvd2.o
-EXES += ../bin/$(PLAT)/xksvd2.exe
+EXES += ../bin/$(PLAT)/xksvd2.exe ../bin/$(PLAT)/wksvd2.exe
 endif # x86
 endif # gfortran
 LIBS=../lib/$(PLAT)/libksvd2.a
@@ -105,11 +105,27 @@ ifeq ($(COMPILER),ifx)
 endif # ifx
 endif # NDEBUG
 
+../bin/$(PLAT)/cksvd2.exe: cksvd2x.f90 uksvd2.f90 $(LIBS) $(MKFS)
+	$(FC) $(FCFLAGS) -o $@ cksvd2x.f90 -L../lib/$(PLAT) -lksvd2
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) cksvd2x.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
 ../bin/$(PLAT)/dksvd2.exe: dksvd2x.f90 tksvd2.f90 $(LIBS) $(MKFS)
 	$(FC) $(FCFLAGS) -o $@ dksvd2x.f90 -L../lib/$(PLAT) -lksvd2
 ifdef NDEBUG
 ifeq ($(COMPILER),ifx)
 	-$(MOV) dksvd2x.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../bin/$(PLAT)/zksvd2.exe: zksvd2x.f90 uksvd2.f90 $(LIBS) $(MKFS)
+	$(FC) $(FCFLAGS) -o $@ zksvd2x.f90 -L../lib/$(PLAT) -lksvd2
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) zksvd2x.opt.yaml ../obj/$(PLAT)
 endif # ifx
 endif # NDEBUG
 
@@ -121,8 +137,19 @@ ifeq ($(COMPILER),ifx)
 endif # ifx
 endif # NDEBUG
 
+../bin/$(PLAT)/yksvd2.exe: yksvd2x.f90 uksvd2.f90 $(LIBS) $(MKFS)
+	$(FC) $(FCFLAGS) -o $@ yksvd2x.f90 -L../lib/$(PLAT) -lksvd2
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) yksvd2x.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
 ../bin/$(PLAT)/xksvd2.exe: xksvd2x.f90 tksvd2.f90 $(LIBS) $(MKFS)
 	$(FC) $(FCFLAGS) -o $@ xksvd2x.f90 -L../lib/$(PLAT) -lksvd2
+
+../bin/$(PLAT)/wksvd2.exe: wksvd2x.f90 uksvd2.f90 $(LIBS) $(MKFS)
+	$(FC) $(FCFLAGS) -o $@ wksvd2x.f90 -L../lib/$(PLAT) -lksvd2
 
 clean:
 	-$(DEL) $(EXES) $(LIBS) $(OBJS)

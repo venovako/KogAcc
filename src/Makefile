@@ -30,7 +30,7 @@ PLAT=ifort\$(OS)-$(ARCH)-$(ABI)$(DEBUG)
 !ENDIF # !PLAT
 MKFS=Makefile
 OBJS=..\obj\$(PLAT)\sksvd2.obj ..\obj\$(PLAT)\cksvd2.obj ..\obj\$(PLAT)\dksvd2.obj ..\obj\$(PLAT)\zksvd2.obj ..\obj\$(PLAT)\qksvd2.obj ..\obj\$(PLAT)\yksvd2.obj
-EXES=..\bin\$(PLAT)\sksvd2.exe ..\bin\$(PLAT)\dksvd2.exe ..\bin\$(PLAT)\qksvd2.exe
+EXES=..\bin\$(PLAT)\sksvd2.exe ..\bin\$(PLAT)\cksvd2.exe ..\bin\$(PLAT)\dksvd2.exe ..\bin\$(PLAT)\zksvd2.exe ..\bin\$(PLAT)\qksvd2.exe ..\bin\$(PLAT)\yksvd2.exe
 LIBS=..\lib\$(PLAT)\ksvd2.lib
 
 all: dirs $(LIBS) $(EXES)
@@ -71,11 +71,20 @@ $(LIBS): $(OBJS) $(MKFS)
 ..\bin\$(PLAT)\sksvd2.exe: sksvd2x.f90 tksvd2.f90 $(LIBS) $(MKFS)
 	$(FC) $(FCFLAGS) /Fe$@ sksvd2x.f90 $(LDFLAGS) $(LIBS)
 
+..\bin\$(PLAT)\cksvd2.exe: cksvd2x.f90 uksvd2.f90 $(LIBS) $(MKFS)
+	$(FC) $(FCFLAGS) /Fe$@ cksvd2x.f90 $(LDFLAGS) $(LIBS)
+
 ..\bin\$(PLAT)\dksvd2.exe: dksvd2x.f90 tksvd2.f90 $(LIBS) $(MKFS)
 	$(FC) $(FCFLAGS) /Fe$@ dksvd2x.f90 $(LDFLAGS) $(LIBS)
 
+..\bin\$(PLAT)\zksvd2.exe: zksvd2x.f90 uksvd2.f90 $(LIBS) $(MKFS)
+	$(FC) $(FCFLAGS) /Fe$@ zksvd2x.f90 $(LDFLAGS) $(LIBS)
+
 ..\bin\$(PLAT)\qksvd2.exe: qksvd2x.f90 tksvd2.f90 $(LIBS) $(MKFS)
 	$(FC) $(FCFLAGS) /Fe$@ qksvd2x.f90 $(LDFLAGS) $(LIBS)
+
+..\bin\$(PLAT)\yksvd2.exe: yksvd2x.f90 uksvd2.f90 $(LIBS) $(MKFS)
+	$(FC) $(FCFLAGS) /Fe$@ yksvd2x.f90 $(LDFLAGS) $(LIBS)
 
 clean:
 	-del /f /q $(EXES)

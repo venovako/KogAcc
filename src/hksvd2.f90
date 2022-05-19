@@ -299,7 +299,9 @@
   V(2,1) = (V(2,1) + TANP * V(2,2)) / SECP
   V(2,2) = (V(2,2) - TANP *      Z) / SECP
 
-  ! transpose U
-1 Z = U(2,1)
-  U(2,1) = U(1,2)
+  ! conjugate-transpose U
+1 U(1,1) = CONJG(U(1,1))
+  Z = CONJG(U(2,1))
+  U(2,1) = CONJG(U(1,2))
   U(1,2) = Z
+  U(2,2) = CONJG(U(2,2))
