@@ -12,15 +12,15 @@ endif # local.mk
 ifndef PLAT
 PLAT=$(COMPILER)/$(OS)-$(ARCH)-$(ABI)$(DEBUG)
 endif # !PLAT
-OBJS=../obj/$(PLAT)/sksvd2.o ../obj/$(PLAT)/dksvd2.o
+OBJS=../obj/$(PLAT)/sksvd2.o ../obj/$(PLAT)/cksvd2.o ../obj/$(PLAT)/dksvd2.o ../obj/$(PLAT)/zksvd2.o
 EXES=../bin/$(PLAT)/sksvd2.exe ../bin/$(PLAT)/dksvd2.exe
 ifneq ($(COMPILER),nvfortran)
-OBJS += ../obj/$(PLAT)/qksvd2.o
+OBJS += ../obj/$(PLAT)/qksvd2.o ../obj/$(PLAT)/yksvd2.o
 EXES += ../bin/$(PLAT)/qksvd2.exe
 endif # !nvfortran
 ifeq ($(COMPILER),gfortran)
 ifeq ($(findstring 86,$(ARCH)),86)
-OBJS += ../obj/$(PLAT)/xksvd2.o
+OBJS += ../obj/$(PLAT)/xksvd2.o ../obj/$(PLAT)/wksvd2.o
 EXES += ../bin/$(PLAT)/xksvd2.exe
 endif # x86
 endif # gfortran
@@ -51,11 +51,27 @@ ifeq ($(COMPILER),ifx)
 endif # ifx
 endif # NDEBUG
 
+../obj/$(PLAT)/cksvd2.o: cksvd2.f90 hksvd2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ cksvd2.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) cksvd2.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
 ../obj/$(PLAT)/dksvd2.o: dksvd2.f90 gksvd2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ dksvd2.f90
 ifdef NDEBUG
 ifeq ($(COMPILER),ifx)
 	-$(MOV) dksvd2.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../obj/$(PLAT)/zksvd2.o: zksvd2.f90 hksvd2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ zksvd2.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) zksvd2.opt.yaml ../obj/$(PLAT)
 endif # ifx
 endif # NDEBUG
 
@@ -67,8 +83,19 @@ ifeq ($(COMPILER),ifx)
 endif # ifx
 endif # NDEBUG
 
+../obj/$(PLAT)/yksvd2.o: yksvd2.f90 hksvd2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ yksvd2.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) yksvd2.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
 ../obj/$(PLAT)/xksvd2.o: xksvd2.f90 gksvd2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ xksvd2.f90
+
+../obj/$(PLAT)/wksvd2.o: wksvd2.f90 hksvd2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ wksvd2.f90
 
 ../bin/$(PLAT)/sksvd2.exe: sksvd2x.f90 tksvd2.f90 $(LIBS) $(MKFS)
 	$(FC) $(FCFLAGS) -o $@ sksvd2x.f90 -L../lib/$(PLAT) -lksvd2

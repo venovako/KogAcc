@@ -63,7 +63,7 @@
      ! Z = MAX(X, Y)
      ! IF (Z .EQ. ZERO) THEN
      !    S(1) = ZERO
-     ! ELSE ! general case
+     ! ELSE ! the general case
      !    X = MIN(X, Y) / Z
      !    Y = X * X + ONE
      !    S(1) = SQRT(Y) * Z
@@ -82,7 +82,7 @@
      ! Z = MAX(X, Y)
      ! IF (Z .EQ. ZERO) THEN
      !    S(2) = ZERO
-     ! ELSE ! general case
+     ! ELSE ! the general case
      !    X = MIN(X, Y) / Z
      !    Y = X * X + ONE
      !    S(2) = SQRT(Y) * Z
@@ -157,15 +157,17 @@
 
   ! apply the Givens rotation
   B(1,1) = S(1)
-  B(2,1) = B(1,2)
-  B(1,2) = (B(1,2) + TANG * B(2,2)) / SECG
-  B(2,2) = (B(2,2) - TANG * B(2,1)) / SECG
-  B(2,1) = U(1,1)
-  U(1,1) = (U(1,1) + TANG * U(2,1)) / SECG
-  U(2,1) = (U(2,1) - TANG * B(2,1)) / SECG
-  B(2,1) = U(1,2)
-  U(1,2) = (U(1,2) + TANG * U(2,2)) / SECG
-  U(2,2) = (U(2,2) - TANG * B(2,1)) / SECG
+  IF (TANG .NE. ZERO) THEN
+     B(2,1) = U(1,1)
+     U(1,1) = (U(1,1) + TANG * U(2,1)) / SECG
+     U(2,1) = (U(2,1) - TANG * B(2,1)) / SECG
+     B(2,1) = U(1,2)
+     U(1,2) = (U(1,2) + TANG * U(2,2)) / SECG
+     U(2,2) = (U(2,2) - TANG * B(2,1)) / SECG
+     B(2,1) = B(1,2)
+     B(1,2) = (B(1,2) + TANG * B(2,2)) / SECG
+     B(2,2) = (B(2,2) - TANG * B(2,1)) / SECG
+  END IF
   B(2,1) = ZERO
 
   ! make B(1,2) non-negative
@@ -180,7 +182,6 @@
   IF (SIGN(ONE, B(2,2)) .NE. ONE) THEN
      U(2,1) = -U(2,1)
      U(2,2) = -U(2,2)
-     B(2,1) = -B(2,1)
      B(2,2) = -B(2,2)
   END IF
 
@@ -215,20 +216,20 @@
   S(2) = (SECF / SECP) * B(2,2)
 
   ! update U
-  X = U(1,1)
+  Z = U(1,1)
   U(1,1) = (U(1,1) + TANF * U(2,1)) / SECF
-  U(2,1) = (U(2,1) - TANF * X) / SECF
-  Y = U(1,2)
+  U(2,1) = (U(2,1) - TANF *      Z) / SECF
+  Z = U(1,2)
   U(1,2) = (U(1,2) + TANF * U(2,2)) / SECF
-  U(2,2) = (U(2,2) - TANF * Y) / SECF
+  U(2,2) = (U(2,2) - TANF *      Z) / SECF
 
   ! update V
-  X = V(1,1)
+  Z = V(1,1)
   V(1,1) = (V(1,1) + TANP * V(1,2)) / SECP
-  V(1,2) = (V(1,2) - TANP * X) / SECP
-  Y = V(2,1)
+  V(1,2) = (V(1,2) - TANP *      Z) / SECP
+  Z = V(2,1)
   V(2,1) = (V(2,1) + TANP * V(2,2)) / SECP
-  V(2,2) = (V(2,2) - TANP * Y) / SECP
+  V(2,2) = (V(2,2) - TANP *      Z) / SECP
 
   ! transpose U
 1 Z = U(2,1)

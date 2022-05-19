@@ -29,7 +29,7 @@ LDFLAGS=/link /DEBUG
 PLAT=ifort\$(OS)-$(ARCH)-$(ABI)$(DEBUG)
 !ENDIF # !PLAT
 MKFS=Makefile
-OBJS=..\obj\$(PLAT)\sksvd2.obj ..\obj\$(PLAT)\dksvd2.obj ..\obj\$(PLAT)\qksvd2.obj
+OBJS=..\obj\$(PLAT)\sksvd2.obj ..\obj\$(PLAT)\cksvd2.obj ..\obj\$(PLAT)\dksvd2.obj ..\obj\$(PLAT)\zksvd2.obj ..\obj\$(PLAT)\qksvd2.obj ..\obj\$(PLAT)\yksvd2.obj
 EXES=..\bin\$(PLAT)\sksvd2.exe ..\bin\$(PLAT)\dksvd2.exe ..\bin\$(PLAT)\qksvd2.exe
 LIBS=..\lib\$(PLAT)\ksvd2.lib
 
@@ -53,11 +53,20 @@ $(LIBS): $(OBJS) $(MKFS)
 ..\obj\$(PLAT)\sksvd2.obj: sksvd2.f90 gksvd2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) /c /Fo$@ sksvd2.f90
 
+..\obj\$(PLAT)\cksvd2.obj: cksvd2.f90 hksvd2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) /c /Fo$@ cksvd2.f90
+
 ..\obj\$(PLAT)\dksvd2.obj: dksvd2.f90 gksvd2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) /c /Fo$@ dksvd2.f90
 
+..\obj\$(PLAT)\zksvd2.obj: zksvd2.f90 hksvd2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) /c /Fo$@ zksvd2.f90
+
 ..\obj\$(PLAT)\qksvd2.obj: qksvd2.f90 gksvd2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) /c /Fo$@ qksvd2.f90
+
+..\obj\$(PLAT)\yksvd2.obj: yksvd2.f90 hksvd2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) /c /Fo$@ yksvd2.f90
 
 ..\bin\$(PLAT)\sksvd2.exe: sksvd2x.f90 tksvd2.f90 $(LIBS) $(MKFS)
 	$(FC) $(FCFLAGS) /Fe$@ sksvd2x.f90 $(LDFLAGS) $(LIBS)
