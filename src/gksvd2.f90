@@ -1,4 +1,4 @@
-  ! This is the generic part of the Kogbetliantz routines.
+  ! This is the generic part of the real Kogbetliantz routines.
 
   ! U = I
   U(1,1) = ONE
