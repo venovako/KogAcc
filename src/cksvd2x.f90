@@ -1,4 +1,4 @@
-!>@borief \b CKSVD2X tests the CKSVD2 routine.
+!>@brief \b CKSVD2X tests the CKSVD2 routine.
 PROGRAM CKSVD2X
   IMPLICIT NONE
   EXTERNAL :: CKSVD2

@@ -12,8 +12,8 @@ endif # local.mk
 ifndef PLAT
 PLAT=$(COMPILER)/$(OS)-$(ARCH)-$(ABI)$(DEBUG)
 endif # !PLAT
-OBJS=../obj/$(PLAT)/sksvd2.o ../obj/$(PLAT)/cksvd2.o ../obj/$(PLAT)/dksvd2.o ../obj/$(PLAT)/zksvd2.o
-EXES=../bin/$(PLAT)/sksvd2.exe ../bin/$(PLAT)/cksvd2.exe ../bin/$(PLAT)/dksvd2.exe ../bin/$(PLAT)/zksvd2.exe
+OBJS=../obj/$(PLAT)/sksvd2.o ../obj/$(PLAT)/cksvd2.o ../obj/$(PLAT)/dksvd2.o ../obj/$(PLAT)/zksvd2.o ../obj/$(PLAT)/slwsv2.o ../obj/$(PLAT)/dlwsv2.o
+EXES=../bin/$(PLAT)/sksvd2.exe ../bin/$(PLAT)/cksvd2.exe ../bin/$(PLAT)/dksvd2.exe ../bin/$(PLAT)/zksvd2.exe ../bin/$(PLAT)/slwsv2.exe ../bin/$(PLAT)/dlwsv2.exe
 ifneq ($(COMPILER),nvfortran)
 OBJS += ../obj/$(PLAT)/qksvd2.o ../obj/$(PLAT)/yksvd2.o
 EXES += ../bin/$(PLAT)/qksvd2.exe ../bin/$(PLAT)/yksvd2.exe
@@ -97,6 +97,22 @@ endif # NDEBUG
 ../obj/$(PLAT)/wksvd2.o: wksvd2.f90 hksvd2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ wksvd2.f90
 
+../obj/$(PLAT)/slwsv2.o: slwsv2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ slwsv2.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) slwsv2.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../obj/$(PLAT)/dlwsv2.o: dlwsv2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ dlwsv2.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) dlwsv2.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
 ../bin/$(PLAT)/sksvd2.exe: sksvd2x.f90 tksvd2.f90 $(LIBS) $(MKFS)
 	$(FC) $(FCFLAGS) -o $@ sksvd2x.f90 -L../lib/$(PLAT) -lksvd2
 ifdef NDEBUG
@@ -150,6 +166,22 @@ endif # NDEBUG
 
 ../bin/$(PLAT)/wksvd2.exe: wksvd2x.f90 uksvd2.f90 $(LIBS) $(MKFS)
 	$(FC) $(FCFLAGS) -o $@ wksvd2x.f90 -L../lib/$(PLAT) -lksvd2
+
+../bin/$(PLAT)/slwsv2.exe: slwsv2x.f90 tksvd2.f90 $(LIBS) $(MKFS)
+	$(FC) $(FCFLAGS) -o $@ slwsv2x.f90 -L../lib/$(PLAT) -lksvd2 $(LAPACK)
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) slwsv2x.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../bin/$(PLAT)/dlwsv2.exe: dlwsv2x.f90 tksvd2.f90 $(LIBS) $(MKFS)
+	$(FC) $(FCFLAGS) -o $@ dlwsv2x.f90 -L../lib/$(PLAT) -lksvd2 $(LAPACK)
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) dlwsv2x.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
 
 clean:
 	-$(DEL) $(EXES) $(LIBS) $(OBJS)
