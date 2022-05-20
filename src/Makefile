@@ -93,10 +93,10 @@ $(LIBS): $(OBJS) $(MKFS)
 ..\bin\$(PLAT)\yksvd2.exe: yksvd2x.f90 uksvd2.f90 $(LIBS) $(MKFS)
 	$(FC) $(FCFLAGS) /Fe$@ yksvd2x.f90 $(LDFLAGS) $(LIBS)
 
-..\bin\$(PLAT)\slwsv2.exe: slwsv2x.f90 tksvd2.f90 $(LIBS) $(MKFS)
+..\bin\$(PLAT)\slwsv2.exe: slwsv2x.f90 tlasv2.f90 $(LIBS) $(MKFS)
 	$(FC) $(FCFLAGS) /Fe$@ slwsv2x.f90 $(LDFLAGS) $(LIBS) $(LAPACK)
 
-..\bin\$(PLAT)\dlwsv2.exe: dlwsv2x.f90 tksvd2.f90 $(LIBS) $(MKFS)
+..\bin\$(PLAT)\dlwsv2.exe: dlwsv2x.f90 tlasv2.f90 $(LIBS) $(MKFS)
 	$(FC) $(FCFLAGS) /Fe$@ dlwsv2x.f90 $(LDFLAGS) $(LIBS) $(LAPACK)
 
 clean:

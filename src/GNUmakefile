@@ -167,7 +167,7 @@ endif # NDEBUG
 ../bin/$(PLAT)/wksvd2.exe: wksvd2x.f90 uksvd2.f90 $(LIBS) $(MKFS)
 	$(FC) $(FCFLAGS) -o $@ wksvd2x.f90 -L../lib/$(PLAT) -lksvd2
 
-../bin/$(PLAT)/slwsv2.exe: slwsv2x.f90 tksvd2.f90 $(LIBS) $(MKFS)
+../bin/$(PLAT)/slwsv2.exe: slwsv2x.f90 tlasv2.f90 $(LIBS) $(MKFS)
 	$(FC) $(FCFLAGS) -o $@ slwsv2x.f90 -L../lib/$(PLAT) -lksvd2 $(LAPACK)
 ifdef NDEBUG
 ifeq ($(COMPILER),ifx)
@@ -175,7 +175,7 @@ ifeq ($(COMPILER),ifx)
 endif # ifx
 endif # NDEBUG
 
-../bin/$(PLAT)/dlwsv2.exe: dlwsv2x.f90 tksvd2.f90 $(LIBS) $(MKFS)
+../bin/$(PLAT)/dlwsv2.exe: dlwsv2x.f90 tlasv2.f90 $(LIBS) $(MKFS)
 	$(FC) $(FCFLAGS) -o $@ dlwsv2x.f90 -L../lib/$(PLAT) -lksvd2 $(LAPACK)
 ifdef NDEBUG
 ifeq ($(COMPILER),ifx)
