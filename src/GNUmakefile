@@ -13,7 +13,7 @@ ifndef PLAT
 PLAT=$(COMPILER)/$(OS)-$(ARCH)-$(ABI)$(DEBUG)
 endif # !PLAT
 OBJS=../obj/$(PLAT)/sksvd2.o ../obj/$(PLAT)/cksvd2.o ../obj/$(PLAT)/dksvd2.o ../obj/$(PLAT)/zksvd2.o ../obj/$(PLAT)/slwsv2.o ../obj/$(PLAT)/dlwsv2.o
-EXES=../bin/$(PLAT)/sksvd2.exe ../bin/$(PLAT)/cksvd2.exe ../bin/$(PLAT)/dksvd2.exe ../bin/$(PLAT)/zksvd2.exe ../bin/$(PLAT)/slwsv2.exe ../bin/$(PLAT)/dlwsv2.exe
+EXES=../bin/$(PLAT)/sksvd2.exe ../bin/$(PLAT)/cksvd2.exe ../bin/$(PLAT)/dksvd2.exe ../bin/$(PLAT)/zksvd2.exe ../bin/$(PLAT)/slwsv2.exe ../bin/$(PLAT)/dlwsv2.exe ../bin/$(PLAT)/srnd.exe
 ifneq ($(COMPILER),nvfortran)
 OBJS += ../obj/$(PLAT)/qksvd2.o ../obj/$(PLAT)/yksvd2.o
 EXES += ../bin/$(PLAT)/qksvd2.exe ../bin/$(PLAT)/yksvd2.exe
@@ -180,6 +180,14 @@ endif # NDEBUG
 ifdef NDEBUG
 ifeq ($(COMPILER),ifx)
 	-$(MOV) dlwsv2x.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../bin/$(PLAT)/srnd.exe: srnd.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -o $@ srnd.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) srnd.opt.yaml ../obj/$(PLAT)
 endif # ifx
 endif # NDEBUG
 

@@ -15,6 +15,7 @@ CONTAINS
     CHARACTER(LEN=CLAL) :: CLA
     REAL(KIND=10) :: G(2,2), U(2,2), V(2,2), S(2)
     INTEGER :: INFO
+    LOGICAL :: ONCE
     REAL(KIND=KX) :: GX(2,2), UX(2,2), VX(2,2), SX(2,2)
     INCLUDE 'tksvd2.f90'
 1   FORMAT(A,ES30.21E4)

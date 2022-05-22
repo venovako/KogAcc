@@ -15,6 +15,7 @@ CONTAINS
     CHARACTER(LEN=CLAL) :: CLA
     REAL(KIND=REAL32) :: G(2,2), U(2,2), V(2,2), S(2)
     INTEGER :: INFO
+    LOGICAL :: ONCE
     REAL(KIND=KX) :: GX(2,2), UX(2,2), VX(2,2), SX(2,2)
     G(2,1) = 0.0_REAL32
     INCLUDE 'tlasv2.f90'
