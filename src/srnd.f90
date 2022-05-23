@@ -1,12 +1,14 @@
+!>@brief SRND generates a set of pseudorandom single precision real 2x2 matrices.
 PROGRAM SRND
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: ERROR_UNIT
   IMPLICIT NONE
-  REAL, PARAMETER :: ZERO = 0.0, HALF = 0.5
-  REAL, ALLOCATABLE :: HARVEST(:)
+  REAL, PARAMETER :: ZERO = 0.0
   INTEGER, ALLOCATABLE :: ISEED(:)
+  REAL, ALLOCATABLE :: H(:)
   CHARACTER(LEN=64) :: CLA
   INTEGER :: SSIZE, N, I
   LOGICAL :: UPPER
+  REAL :: T
 
   CALL RANDOM_SEED(SIZE=SSIZE)
   IF (SSIZE .LE. 0) STOP 'seed size non-positive'
@@ -14,9 +16,9 @@ PROGRAM SRND
   IF (I .LT. 2) THEN
      IF (SSIZE .GT. 1) THEN
         WRITE (CLA,'(I1)') SSIZE
-        CLA = 'srnd.exe (U[pper]|G[eneral]) N [SEED1 ... SEED'//TRIM(CLA)//']'
+        CLA = 'srnd.exe ((U|u)[pper]|(G|g)[eneral]) N [SEED1 ... SEED'//TRIM(CLA)//']'
      ELSE ! SSIZE = 1
-        CLA = 'srnd.exe (U[pper]|G[eneral]) N [SEED1]'
+        CLA = 'srnd.exe ((U|u)[pper]|(G|g)[eneral]) N [SEED1]'
      END IF
      WRITE (ERROR_UNIT,*) CLA
      STOP 'All SEED arguments have to be given, or none of them.'
@@ -26,10 +28,18 @@ PROGRAM SRND
   IF (N .LT. 0) STOP 'the second argument is invalid'
   CALL GET_COMMAND_ARGUMENT(1, CLA)
   SELECT CASE (CLA(1:1))
-  CASE ('U','u')
-     UPPER = .TRUE.
-  CASE ('G','g')
+  CASE ('G')
      UPPER = .FALSE.
+     T = TINY(ZERO)
+  CASE ('U')
+     UPPER = .TRUE.
+     T = TINY(ZERO)
+  CASE ('g')
+     UPPER = .FALSE.
+     T = ZERO
+  CASE ('u')
+     UPPER = .TRUE.
+     T = ZERO
   CASE DEFAULT
      STOP 'the first argument is invalid'
   END SELECT
@@ -50,32 +60,39 @@ PROGRAM SRND
      STOP 'invalid number of SEED arguments'
   END IF
   IF (UPPER) THEN
-     ALLOCATE(HARVEST(6))
+     ALLOCATE(H(6))
      DO I = 1, N
-        CALL RANDOM_NUMBER(HARVEST)
-        IF (HARVEST(2) .LT. HALF) HARVEST(1) = -HARVEST(1)
-        WRITE (*,1,ADVANCE='NO') ' ', HARVEST(1)
+        CALL RANDOM_NUMBER(H)
+        IF ((H(1) .GT. ZERO) .AND. (H(1) .LT. T)) H(1) = H(1) + T
+        IF (MOD(EXPONENT(H(2)), 2) .NE. 0) H(1) = -H(1)
+        WRITE (*,1,ADVANCE='NO') '', H(1)
         WRITE (*,1,ADVANCE='NO') ' ', ZERO
-        IF (HARVEST(4) .LT. HALF) HARVEST(3) = -HARVEST(3)
-        WRITE (*,1,ADVANCE='NO') ' ', HARVEST(3)
-        IF (HARVEST(6) .LT. HALF) HARVEST(5) = -HARVEST(5)
-        WRITE (*,1) ' ', HARVEST(5)
+        IF ((H(3) .GT. ZERO) .AND. (H(3) .LT. T)) H(3) = H(3) + T
+        IF (MOD(EXPONENT(H(4)), 2) .NE. 0) H(3) = -H(3)
+        WRITE (*,1,ADVANCE='NO') ' ', H(3)
+        IF ((H(5) .GT. ZERO) .AND. (H(5) .LT. T)) H(5) = H(5) + T
+        IF (MOD(EXPONENT(H(6)), 2) .NE. 0) H(5) = -H(5)
+        WRITE (*,1) ' ', H(5)
      END DO
   ELSE ! general
-     ALLOCATE(HARVEST(8))
+     ALLOCATE(H(8))
      DO I = 1, N
-        CALL RANDOM_NUMBER(HARVEST)
-        IF (HARVEST(2) .LT. HALF) HARVEST(1) = -HARVEST(1)
-        WRITE (*,1,ADVANCE='NO') ' ', HARVEST(1)
-        IF (HARVEST(4) .LT. HALF) HARVEST(3) = -HARVEST(3)
-        WRITE (*,1,ADVANCE='NO') ' ', HARVEST(3)
-        IF (HARVEST(6) .LT. HALF) HARVEST(5) = -HARVEST(5)
-        WRITE (*,1,ADVANCE='NO') ' ', HARVEST(5)
-        IF (HARVEST(8) .LT. HALF) HARVEST(7) = -HARVEST(7)
-        WRITE (*,1) ' ', HARVEST(7)
+        CALL RANDOM_NUMBER(H)
+        IF ((H(1) .GT. ZERO) .AND. (H(1) .LT. T)) H(1) = H(1) + T
+        IF (MOD(EXPONENT(H(2)), 2) .NE. 0) H(1) = -H(1)
+        WRITE (*,1,ADVANCE='NO') '', H(1)
+        IF ((H(3) .GT. ZERO) .AND. (H(3) .LT. T)) H(3) = H(3) + T
+        IF (MOD(EXPONENT(H(4)), 2) .NE. 0) H(3) = -H(3)
+        WRITE (*,1,ADVANCE='NO') ' ', H(3)
+        IF ((H(5) .GT. ZERO) .AND. (H(5) .LT. T)) H(5) = H(5) + T
+        IF (MOD(EXPONENT(H(6)), 2) .NE. 0) H(5) = -H(5)
+        WRITE (*,1,ADVANCE='NO') ' ', H(5)
+        IF ((H(7) .GT. ZERO) .AND. (H(7) .LT. T)) H(7) = H(7) + T
+        IF (MOD(EXPONENT(H(8)), 2) .NE. 0) H(7) = -H(7)
+        WRITE (*,1) ' ', H(7)
      END DO
   END IF
-  IF (ALLOCATED(HARVEST)) DEALLOCATE(HARVEST)
+  IF (ALLOCATED(H)) DEALLOCATE(H)
   IF (ALLOCATED(ISEED)) DEALLOCATE(ISEED)
 1 FORMAT(A,ES16.9E2)
 END PROGRAM SRND
