@@ -195,4 +195,4 @@ clean:
 	-$(DEL) $(EXES) $(LIBS) $(OBJS)
 
 purge:
-	-$(DEL) ../bin ../lib ../obj
+	-$(DEL) ../bin ../lib ../obj ../doc
