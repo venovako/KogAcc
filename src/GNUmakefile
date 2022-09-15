@@ -12,7 +12,7 @@ endif # local.mk
 ifndef PLAT
 PLAT=$(COMPILER)/$(OS)-$(ARCH)-$(ABI)$(DEBUG)
 endif # !PLAT
-OBJS=../obj/$(PLAT)/sksvd2.o ../obj/$(PLAT)/cksvd2.o ../obj/$(PLAT)/dksvd2.o ../obj/$(PLAT)/zksvd2.o ../obj/$(PLAT)/slwsv2.o ../obj/$(PLAT)/dlwsv2.o
+OBJS=../obj/$(PLAT)/sksvd2.o ../obj/$(PLAT)/cksvd2.o ../obj/$(PLAT)/dksvd2.o ../obj/$(PLAT)/zksvd2.o ../obj/$(PLAT)/slwsv2.o ../obj/$(PLAT)/dlwsv2.o ../obj/$(PLAT)/bfopen.o
 EXES=../bin/$(PLAT)/sksvd2.exe ../bin/$(PLAT)/cksvd2.exe ../bin/$(PLAT)/dksvd2.exe ../bin/$(PLAT)/zksvd2.exe ../bin/$(PLAT)/slwsv2.exe ../bin/$(PLAT)/dlwsv2.exe ../bin/$(PLAT)/srnd.exe
 ifneq ($(COMPILER),nvfortran)
 OBJS += ../obj/$(PLAT)/qksvd2.o ../obj/$(PLAT)/yksvd2.o
@@ -32,7 +32,7 @@ all: dirs $(LIBS) $(EXES)
 	@echo $(PLAT)
 
 help:
-	@echo $(MAKE) "[COMPILER=gfortran|ifort|ifx|nvfortran] [ABI=lp64|ilp64] [NDEBUG=optimization_level] [all|clean|dirs|doc|help|purge]"
+	@echo $(MAKE) "[COMPILER=gfortran|ifort|ifx|nvfortran] [COMPILER_PREFIX=...] [COMPILER_SUFFIX=...] [ABI=lp64|ilp64] [NDEBUG=optimization_level] [all|clean|dirs|doc|help|purge]"
 
 dirs:
 	@$(MKD) ../bin/$(PLAT) ../lib/$(PLAT) ../obj/$(PLAT)
@@ -110,6 +110,14 @@ endif # NDEBUG
 ifdef NDEBUG
 ifeq ($(COMPILER),ifx)
 	-$(MOV) dlwsv2.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../obj/$(PLAT)/bfopen.o: bfopen.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ bfopen.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) bfopen.opt.yaml ../obj/$(PLAT)
 endif # ifx
 endif # NDEBUG
 

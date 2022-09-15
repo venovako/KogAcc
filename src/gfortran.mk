@@ -1,6 +1,6 @@
 AR=ar
 ARFLAGS=rsv
-FC=gfortran$(GF_SUFFIX)
+FC=$(COMPILER_PREFIX)gfortran$(COMPILER_SUFFIX)
 ifdef NDEBUG
 FCFLAGS=-O$(NDEBUG)
 else # !NDEBUG

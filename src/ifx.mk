@@ -1,6 +1,6 @@
 AR=xiar
 ARFLAGS=-qnoipo -lib rsv
-FC=ifx
+FC=$(COMPILER_PREFIX)ifx$(COMPILER_SUFFIX)
 ifdef NDEBUG
 FCFLAGS=-O$(NDEBUG)
 else # !NDEBUG
