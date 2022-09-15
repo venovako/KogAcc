@@ -1,1 +1,1 @@
-FCFLAGS += -m64
+FCFLAGS += -m64 -march=native
