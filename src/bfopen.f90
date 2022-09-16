@@ -1,3 +1,9 @@
+!>@brief \b BFOPEN opens a file for binary I/O and returns its newly assigned unit number.
+!!
+!!@param FN [IN]; a file name.
+!!@param ACT [IN]; one of RO, RW (or WR), or WO case-insensitive strings for Read-Only, Read-Write, or Write-Only access mode, respectively.
+!!@param U [OUT]; the file's newly assigned unit number.
+!!@param INFO [OUT]; zero on success, \f$-i\f$ if the \f$i\f$th argument had an illegal value, or a positive I/O error code.
 SUBROUTINE BFOPEN(FN, ACT, U, INFO)
   IMPLICIT NONE
   CHARACTER(LEN=*), INTENT(IN) :: FN, ACT
@@ -6,7 +12,6 @@ SUBROUTINE BFOPEN(FN, ACT, U, INFO)
   CHARACTER(LEN=9) :: FACT
   CHARACTER(LEN=7) :: STAT
 
-  U = -1
   IF (LEN_TRIM(FN) .LE. 0) THEN
      INFO = -1
   ELSE IF (LEN_TRIM(ACT) .NE. 2) THEN

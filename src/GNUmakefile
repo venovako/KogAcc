@@ -12,7 +12,7 @@ endif # local.mk
 ifndef PLAT
 PLAT=$(COMPILER)/$(OS)-$(ARCH)-$(ABI)$(DEBUG)
 endif # !PLAT
-OBJS=../obj/$(PLAT)/sksvd2.o ../obj/$(PLAT)/cksvd2.o ../obj/$(PLAT)/dksvd2.o ../obj/$(PLAT)/zksvd2.o ../obj/$(PLAT)/slwsv2.o ../obj/$(PLAT)/dlwsv2.o ../obj/$(PLAT)/bfopen.o
+OBJS=../obj/$(PLAT)/sksvd2.o ../obj/$(PLAT)/cksvd2.o ../obj/$(PLAT)/dksvd2.o ../obj/$(PLAT)/zksvd2.o ../obj/$(PLAT)/slwsv2.o ../obj/$(PLAT)/dlwsv2.o ../obj/$(PLAT)/sbordg.o ../obj/$(PLAT)/cbordg.o ../obj/$(PLAT)/dbordg.o ../obj/$(PLAT)/zbordg.o ../obj/$(PLAT)/bfopen.o ../obj/$(PLAT)/nb2m.o
 EXES=../bin/$(PLAT)/sksvd2.exe ../bin/$(PLAT)/cksvd2.exe ../bin/$(PLAT)/dksvd2.exe ../bin/$(PLAT)/zksvd2.exe ../bin/$(PLAT)/slwsv2.exe ../bin/$(PLAT)/dlwsv2.exe ../bin/$(PLAT)/srnd.exe
 ifneq ($(COMPILER),nvfortran)
 OBJS += ../obj/$(PLAT)/qksvd2.o ../obj/$(PLAT)/yksvd2.o
@@ -113,11 +113,51 @@ ifeq ($(COMPILER),ifx)
 endif # ifx
 endif # NDEBUG
 
+../obj/$(PLAT)/sbordg.o: sbordg.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ sbordg.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) sbordg.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../obj/$(PLAT)/cbordg.o: cbordg.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ cbordg.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) cbordg.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../obj/$(PLAT)/dbordg.o: dbordg.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ dbordg.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) dbordg.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../obj/$(PLAT)/zbordg.o: zbordg.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ zbordg.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) zbordg.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
 ../obj/$(PLAT)/bfopen.o: bfopen.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ bfopen.f90
 ifdef NDEBUG
 ifeq ($(COMPILER),ifx)
 	-$(MOV) bfopen.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../obj/$(PLAT)/nb2m.o: nb2m.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ nb2m.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) nb2m.opt.yaml ../obj/$(PLAT)
 endif # ifx
 endif # NDEBUG
 
