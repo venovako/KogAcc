@@ -7,11 +7,14 @@
   IF (INFO .NE. 0) RETURN
   IF (M .EQ. 0) RETURN
   IF (N .EQ. M) RETURN
+  !$OMP PARALLEL DO DEFAULT(NONE) SHARED(M,N,G)
   DO J = 1, N
      DO I = N+1, M
         G(I,J) = ZERO
      END DO
   END DO
+  !$OMP END PARALLEL DO
+  !$OMP PARALLEL DO DEFAULT(NONE) SHARED(M,N,G)
   DO J = N+1, M
      DO I = 1, J-1
         G(I,J) = ZERO
@@ -21,3 +24,4 @@
         G(I,J) = ZERO
      END DO
   END DO
+  !$OMP END PARALLEL DO
