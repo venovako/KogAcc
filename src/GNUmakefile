@@ -12,7 +12,8 @@ endif # local.mk
 ifndef PLAT
 PLAT=$(COMPILER)/$(OS)-$(ARCH)-$(ABI)$(DEBUG)
 endif # !PLAT
-OBJS=../obj/$(PLAT)/sksvd2.o ../obj/$(PLAT)/cksvd2.o ../obj/$(PLAT)/dksvd2.o ../obj/$(PLAT)/zksvd2.o ../obj/$(PLAT)/slwsv2.o ../obj/$(PLAT)/dlwsv2.o ../obj/$(PLAT)/sbordg.o ../obj/$(PLAT)/cbordg.o ../obj/$(PLAT)/dbordg.o ../obj/$(PLAT)/zbordg.o ../obj/$(PLAT)/bfopen.o ../obj/$(PLAT)/nb2m.o
+BIO=../obj/$(PLAT)/bfopen.o ../obj/$(PLAT)/sbrd1.o ../obj/$(PLAT)/cbrd1.o ../obj/$(PLAT)/dbrd1.o ../obj/$(PLAT)/zbrd1.o ../obj/$(PLAT)/sbwr1.o ../obj/$(PLAT)/cbwr1.o ../obj/$(PLAT)/dbwr1.o ../obj/$(PLAT)/zbwr1.o ../obj/$(PLAT)/sbrd2.o ../obj/$(PLAT)/cbrd2.o ../obj/$(PLAT)/dbrd2.o ../obj/$(PLAT)/zbrd2.o ../obj/$(PLAT)/sbwr2.o ../obj/$(PLAT)/cbwr2.o ../obj/$(PLAT)/dbwr2.o ../obj/$(PLAT)/zbwr2.o
+OBJS=../obj/$(PLAT)/sksvd2.o ../obj/$(PLAT)/cksvd2.o ../obj/$(PLAT)/dksvd2.o ../obj/$(PLAT)/zksvd2.o ../obj/$(PLAT)/slwsv2.o ../obj/$(PLAT)/dlwsv2.o ../obj/$(PLAT)/sbordg.o ../obj/$(PLAT)/cbordg.o ../obj/$(PLAT)/dbordg.o ../obj/$(PLAT)/zbordg.o ../obj/$(PLAT)/nb2m.o $(BIO)
 EXES=../bin/$(PLAT)/sksvd2.exe ../bin/$(PLAT)/cksvd2.exe ../bin/$(PLAT)/dksvd2.exe ../bin/$(PLAT)/zksvd2.exe ../bin/$(PLAT)/slwsv2.exe ../bin/$(PLAT)/dlwsv2.exe ../bin/$(PLAT)/srnd.exe
 ifneq ($(COMPILER),nvfortran)
 OBJS += ../obj/$(PLAT)/qksvd2.o ../obj/$(PLAT)/yksvd2.o
@@ -145,6 +146,14 @@ ifeq ($(COMPILER),ifx)
 endif # ifx
 endif # NDEBUG
 
+../obj/$(PLAT)/nb2m.o: nb2m.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ nb2m.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) nb2m.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
 ../obj/$(PLAT)/bfopen.o: bfopen.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ bfopen.f90
 ifdef NDEBUG
@@ -153,11 +162,131 @@ ifeq ($(COMPILER),ifx)
 endif # ifx
 endif # NDEBUG
 
-../obj/$(PLAT)/nb2m.o: nb2m.f90 $(MKFS)
-	$(FC) $(FCFLAGS) -c -o $@ nb2m.f90
+../obj/$(PLAT)/sbrd1.o: sbrd1.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ sbrd1.f90
 ifdef NDEBUG
 ifeq ($(COMPILER),ifx)
-	-$(MOV) nb2m.opt.yaml ../obj/$(PLAT)
+	-$(MOV) sbrd1.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../obj/$(PLAT)/cbrd1.o: cbrd1.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ cbrd1.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) cbrd1.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../obj/$(PLAT)/dbrd1.o: dbrd1.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ dbrd1.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) dbrd1.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../obj/$(PLAT)/zbrd1.o: zbrd1.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ zbrd1.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) zbrd1.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../obj/$(PLAT)/sbwr1.o: sbwr1.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ sbwr1.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) sbwr1.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../obj/$(PLAT)/cbwr1.o: cbwr1.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ cbwr1.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) cbwr1.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../obj/$(PLAT)/dbwr1.o: dbwr1.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ dbwr1.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) dbwr1.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../obj/$(PLAT)/zbwr1.o: zbwr1.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ zbwr1.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) zbwr1.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../obj/$(PLAT)/sbrd2.o: sbrd2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ sbrd2.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) sbrd2.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../obj/$(PLAT)/cbrd2.o: cbrd2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ cbrd2.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) cbrd2.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../obj/$(PLAT)/dbrd2.o: dbrd2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ dbrd2.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) dbrd2.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../obj/$(PLAT)/zbrd2.o: zbrd2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ zbrd2.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) zbrd2.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../obj/$(PLAT)/sbwr2.o: sbwr2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ sbwr2.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) sbwr2.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../obj/$(PLAT)/cbwr2.o: cbwr2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ cbwr2.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) cbwr2.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../obj/$(PLAT)/dbwr2.o: dbwr2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ dbwr2.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) dbwr2.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../obj/$(PLAT)/zbwr2.o: zbwr2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ zbwr2.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) zbwr2.opt.yaml ../obj/$(PLAT)
 endif # ifx
 endif # NDEBUG
 

@@ -1,3 +1,9 @@
+!>@brief \b DBWR1 writes a one-dimensional double precision real array to a binary file.
+!!
+!!@param U [IN]; a connected unit.
+!!@param M [IN]; the length of \f$G\f$.
+!!@param G [IN]; a double precision real array to be written.
+!!@param INFO [OUT]; zero on success, \f$-i\f$ if the \f$i\f$th argument had an illegal value, or a positive I/O error code.
 SUBROUTINE DBWR1(U, M, G, INFO)
   IMPLICIT NONE
   INTEGER, INTENT(IN) :: U, M

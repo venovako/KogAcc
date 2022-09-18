@@ -1,3 +1,11 @@
+!>@brief \b SBRD2 reads a two-dimensional single precision real array from a binary file.
+!!
+!!@param U [IN]; a connected unit.
+!!@param M [IN]; the number of rows of \f$G\f$.
+!!@param N [IN]; the number of columns of \f$G\f$.
+!!@param G [OUT]; a single precision real array to be read.
+!!@param LDG [IN]; the leading dimension of \f$G\f$.
+!!@param INFO [OUT]; zero on success, \f$-i\f$ if the \f$i\f$th argument had an illegal value, or a positive I/O error code.
 SUBROUTINE SBRD2(U, M, N, G, LDG, INFO)
   IMPLICIT NONE
   INTEGER, INTENT(IN) :: U, M, N, LDG

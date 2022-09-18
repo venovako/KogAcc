@@ -1,3 +1,9 @@
+!>@brief \b ZBRD1 reads a one-dimensional double precision complex array from a binary file.
+!!
+!!@param U [IN]; a connected unit.
+!!@param M [IN]; the length of \f$G\f$.
+!!@param G [OUT]; a double precision complex array to be read.
+!!@param INFO [OUT]; zero on success, \f$-i\f$ if the \f$i\f$th argument had an illegal value, or a positive I/O error code.
 SUBROUTINE ZBRD1(U, M, G, INFO)
   IMPLICIT NONE
   INTEGER, INTENT(IN) :: U, M
