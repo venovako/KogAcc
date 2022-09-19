@@ -17,7 +17,7 @@ FCFLAGS=$(FCFLAGS) /O$(NDEBUG)
 DEBUG=d
 FCFLAGS=$(FCFLAGS) /Od
 !ENDIF # ?NDEBUG
-FCFLAGS=$(FCFLAGS) /QxHost /Qopt-multi-version-aggressive /fp:precise /Qfma /Qftz- /Qcomplex-limited-range- /Qfast-transcendentals- /Qprec-div /Qprec-sqrt /standard-semantics /traceback /libs:dll /threads
+FCFLAGS=$(FCFLAGS) /QxHost /Qopenmp /Qopt-multi-version-aggressive /fp:precise /Qfma /Qftz- /Qcomplex-limited-range- /Qfast-transcendentals- /Qprec-div /Qprec-sqrt /standard-semantics /traceback /libs:dll /threads
 !IFDEF NDEBUG
 FCFLAGS=$(FCFLAGS) /DNDEBUG /Qopt-report:5 /Ob2 /Qvec-threshold:0
 LDFLAGS=/link /RELEASE

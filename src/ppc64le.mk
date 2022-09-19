@@ -1,2 +1,3 @@
-# for gfortran on a ppc64le Linux
+ifeq ($(COMPILER),gfortran)
 FCFLAGS += -mcpu=native
+endif # gfortran
