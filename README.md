@@ -9,9 +9,9 @@ A portable Kogbetliantz-type SVD for general matrices of order two.
 
 A recent Linux (e.g., CentOS 7.9 with devtoolset-11), macOS (e.g., Big Sur), or Windows (e.g., 10) is needed.
 
-Other 64-bit OSes (e.g., Oracle Solaris) might also be supported to a certain extent.
+Other 64-bit OSes (e.g., Oracle Solaris with gfortran) might also be supported to a certain extent.
 
-GNU, Intel, and NVidia Fortran compilers should work, while the others might require tweaking the build system.
+The recent GNU (gfortran), Intel (ifort and ifx), NVidia (nvfortran), and IBM (xlf) Fortran compilers should work, while the others might require tweaking the build system.
 
 Building the documentation requires a recent version of [Doxygen](https://doxygen.nl).
 
