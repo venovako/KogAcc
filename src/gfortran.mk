@@ -14,5 +14,7 @@ FCFLAGS += -fcheck=all -finit-local-zero -finit-real=snan -finit-derived -Wchara
 endif # ?NDEBUG
 FCFLAGS += -pedantic -Wall -Wextra -Wno-array-temporaries -Wno-compare-reals
 ifeq ($(ARCH),Darwin)
+ifeq ($(ARCH),x86_64)
 FCFLAGS += -Wa,-q
+endif # x86_64
 endif # Darwin

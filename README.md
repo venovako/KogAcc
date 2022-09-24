@@ -7,9 +7,9 @@ A portable Kogbetliantz-type SVD for general matrices of order two.
 
 ### Prerequisites
 
-A recent Linux (e.g., CentOS 7.9 with devtoolset-11), macOS (e.g., Big Sur), or Windows (e.g., 10) is needed.
+A recent Linux (e.g., CentOS 7.9 with devtoolset-11), macOS (e.g., Big Sur), or Windows (e.g., 10) is needed, and the oneAPI Intel Math Kernel Library (MKL) is assumed to be installed on x86_64 platforms.
 
-Other 64-bit OSes (e.g., Oracle Solaris with gfortran) might also be supported to a certain extent.
+Other 64-bit OSes (e.g., Oracle Solaris with gfortran) and non-x86_64 platforms might also be supported to a certain extent, if the reference BLAS and LAPACK libraries have been built.
 
 The recent GNU (gfortran), Intel (ifort and ifx), NVidia (nvfortran), and IBM (xlf) Fortran compilers should work, while the others might require tweaking the build system.
 
