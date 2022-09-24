@@ -13,7 +13,7 @@ else # !NDEBUG
 FCFLAGS += -fcheck=all -finit-local-zero -finit-real=snan -finit-derived -Wcharacter-truncation -Wimplicit-procedure -Wfunction-elimination -Wrealloc-lhs-all
 endif # ?NDEBUG
 FCFLAGS += -pedantic -Wall -Wextra -Wno-array-temporaries -Wno-compare-reals
-ifeq ($(ARCH),Darwin)
+ifeq ($(OS),Darwin)
 ifeq ($(ARCH),x86_64)
 FCFLAGS += -Wa,-q
 endif # x86_64
