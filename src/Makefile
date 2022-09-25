@@ -29,10 +29,13 @@ LDFLAGS=/link /DEBUG
 PLAT=ifort\$(OS)-$(ARCH)-$(ABI)$(DEBUG)
 !ENDIF # !PLAT
 MKFS=Makefile
-BIO=..\obj\$(PLAT)\bfopen.obj ..\obj\$(PLAT)\sbrd1.obj ..\obj\$(PLAT)\cbrd1.obj ..\obj\$(PLAT)\dbrd1.obj ..\obj\$(PLAT)\zbrd1.obj ..\obj\$(PLAT)\sbwr1.obj ..\obj\$(PLAT)\cbwr1.obj ..\obj\$(PLAT)\dbwr1.obj ..\obj\$(PLAT)\zbwr1.obj ..\obj\$(PLAT)\sbrd2.obj ..\obj\$(PLAT)\cbrd2.obj ..\obj\$(PLAT)\dbrd2.obj ..\obj\$(PLAT)\zbrd2.obj ..\obj\$(PLAT)\sbwr2.obj ..\obj\$(PLAT)\cbwr2.obj ..\obj\$(PLAT)\dbwr2.obj ..\obj\$(PLAT)\zbwr2.obj
-OBJS=..\obj\$(PLAT)\sksvd2.obj ..\obj\$(PLAT)\cksvd2.obj ..\obj\$(PLAT)\dksvd2.obj ..\obj\$(PLAT)\zksvd2.obj ..\obj\$(PLAT)\qksvd2.obj ..\obj\$(PLAT)\yksvd2.obj ..\obj\$(PLAT)\slwsv2.obj ..\obj\$(PLAT)\dlwsv2.obj ..\obj\$(PLAT)\sbordg.obj ..\obj\$(PLAT)\cbordg.obj ..\obj\$(PLAT)\dbordg.obj ..\obj\$(PLAT)\zbordg.obj ..\obj\$(PLAT)\nb2m.obj $(BIO)
-EXES=..\bin\$(PLAT)\sksvd2.exe ..\bin\$(PLAT)\cksvd2.exe ..\bin\$(PLAT)\dksvd2.exe ..\bin\$(PLAT)\zksvd2.exe ..\bin\$(PLAT)\qksvd2.exe ..\bin\$(PLAT)\yksvd2.exe ..\bin\$(PLAT)\slwsv2.exe ..\bin\$(PLAT)\dlwsv2.exe ..\bin\$(PLAT)\srnd.exe
-LIBS=..\lib\$(PLAT)\ksvd2.lib
+OBJS_ARRBIO=..\obj\$(PLAT)\bfopen.obj ..\obj\$(PLAT)\sbrd1.obj ..\obj\$(PLAT)\cbrd1.obj ..\obj\$(PLAT)\dbrd1.obj ..\obj\$(PLAT)\zbrd1.obj ..\obj\$(PLAT)\sbwr1.obj ..\obj\$(PLAT)\cbwr1.obj ..\obj\$(PLAT)\dbwr1.obj ..\obj\$(PLAT)\zbwr1.obj ..\obj\$(PLAT)\sbrd2.obj ..\obj\$(PLAT)\cbrd2.obj ..\obj\$(PLAT)\dbrd2.obj ..\obj\$(PLAT)\zbrd2.obj ..\obj\$(PLAT)\sbwr2.obj ..\obj\$(PLAT)\cbwr2.obj ..\obj\$(PLAT)\dbwr2.obj ..\obj\$(PLAT)\zbwr2.obj
+OBJS_BLKSVD=..\obj\$(PLAT)\sbordg.obj ..\obj\$(PLAT)\cbordg.obj ..\obj\$(PLAT)\dbordg.obj ..\obj\$(PLAT)\zbordg.obj ..\obj\$(PLAT)\nb2m.obj
+OBJS_KSVD2=..\obj\$(PLAT)\sksvd2.obj ..\obj\$(PLAT)\cksvd2.obj ..\obj\$(PLAT)\dksvd2.obj ..\obj\$(PLAT)\zksvd2.obj ..\obj\$(PLAT)\qksvd2.obj ..\obj\$(PLAT)\yksvd2.obj ..\obj\$(PLAT)\slwsv2.obj ..\obj\$(PLAT)\dlwsv2.obj
+EXES_KSVD2=..\bin\$(PLAT)\sksvd2.exe ..\bin\$(PLAT)\cksvd2.exe ..\bin\$(PLAT)\dksvd2.exe ..\bin\$(PLAT)\zksvd2.exe ..\bin\$(PLAT)\qksvd2.exe ..\bin\$(PLAT)\yksvd2.exe ..\bin\$(PLAT)\slwsv2.exe ..\bin\$(PLAT)\dlwsv2.exe
+OBJS=$(OBJS_ARRBIO) $(OBJS_BLKSVD) $(OBJS_KSVD2)
+LIBS=..\lib\$(PLAT)\arrbio.lib ..\lib\$(PLAT)\blksvd.a ..\lib\$(PLAT)\ksvd2.lib
+EXES=$(EXES_KSVD2) ..\bin\$(PLAT)\srnd.exe
 LAPACK=mkl_intel_$(ABI)_dll.lib mkl_sequential_dll.lib mkl_core_dll.lib
 
 all: dirs $(LIBS) $(EXES)
@@ -49,8 +52,14 @@ dirs:
 doc: ..\Doxyfile
 	cd .. && doxygen && cd src
 
-$(LIBS): $(OBJS) $(MKFS)
-	$(AR) $(ARFLAGS) /OUT:$@ $(OBJS)
+..\lib\$(PLAT)\arrbio.lib: $(OBJS_ARRBIO) $(MKFS)
+	$(AR) $(ARFLAGS) /OUT:$@ $(OBJS_ARRBIO)
+
+..\lib\$(PLAT)\blksvd.lib: $(OBJS_BLKSVD) $(MKFS)
+	$(AR) $(ARFLAGS) /OUT:$@ $(OBJS_BLKSVD)
+
+..\lib\$(PLAT)\ksvd2.lib: $(OBJS_KSVD2) $(MKFS)
+	$(AR) $(ARFLAGS) /OUT:$@ $(OBJS_KSVD2)
 
 ..\obj\$(PLAT)\sksvd2.obj: sksvd2.f90 gksvd2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) /c /Fo$@ sksvd2.f90
@@ -142,29 +151,29 @@ $(LIBS): $(OBJS) $(MKFS)
 ..\obj\$(PLAT)\zbwr2.obj: zbwr2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) /c /Fo$@ zbwr2.f90
 
-..\bin\$(PLAT)\sksvd2.exe: sksvd2x.f90 tksvd2.f90 $(LIBS) $(MKFS)
-	$(FC) $(FCFLAGS) /Fe$@ sksvd2x.f90 $(LDFLAGS) $(LIBS)
+..\bin\$(PLAT)\sksvd2.exe: sksvd2x.f90 tksvd2.f90 ..\lib\$(PLAT)\ksvd2.lib $(MKFS)
+	$(FC) $(FCFLAGS) /Fe$@ sksvd2x.f90 $(LDFLAGS) ..\lib\$(PLAT)\ksvd2.lib
 
-..\bin\$(PLAT)\cksvd2.exe: cksvd2x.f90 uksvd2.f90 $(LIBS) $(MKFS)
-	$(FC) $(FCFLAGS) /Fe$@ cksvd2x.f90 $(LDFLAGS) $(LIBS)
+..\bin\$(PLAT)\cksvd2.exe: cksvd2x.f90 uksvd2.f90 ..\lib\$(PLAT)\ksvd2.lib $(MKFS)
+	$(FC) $(FCFLAGS) /Fe$@ cksvd2x.f90 $(LDFLAGS) ..\lib\$(PLAT)\ksvd2.lib
 
-..\bin\$(PLAT)\dksvd2.exe: dksvd2x.f90 tksvd2.f90 $(LIBS) $(MKFS)
-	$(FC) $(FCFLAGS) /Fe$@ dksvd2x.f90 $(LDFLAGS) $(LIBS)
+..\bin\$(PLAT)\dksvd2.exe: dksvd2x.f90 tksvd2.f90 ..\lib\$(PLAT)\ksvd2.lib $(MKFS)
+	$(FC) $(FCFLAGS) /Fe$@ dksvd2x.f90 $(LDFLAGS) ..\lib\$(PLAT)\ksvd2.lib
 
-..\bin\$(PLAT)\zksvd2.exe: zksvd2x.f90 uksvd2.f90 $(LIBS) $(MKFS)
-	$(FC) $(FCFLAGS) /Fe$@ zksvd2x.f90 $(LDFLAGS) $(LIBS)
+..\bin\$(PLAT)\zksvd2.exe: zksvd2x.f90 uksvd2.f90 ..\lib\$(PLAT)\ksvd2.lib $(MKFS)
+	$(FC) $(FCFLAGS) /Fe$@ zksvd2x.f90 $(LDFLAGS) ..\lib\$(PLAT)\ksvd2.lib
 
-..\bin\$(PLAT)\qksvd2.exe: qksvd2x.f90 tksvd2.f90 $(LIBS) $(MKFS)
-	$(FC) $(FCFLAGS) /Fe$@ qksvd2x.f90 $(LDFLAGS) $(LIBS)
+..\bin\$(PLAT)\qksvd2.exe: qksvd2x.f90 tksvd2.f90 ..\lib\$(PLAT)\ksvd2.lib $(MKFS)
+	$(FC) $(FCFLAGS) /Fe$@ qksvd2x.f90 $(LDFLAGS) ..\lib\$(PLAT)\ksvd2.lib
 
-..\bin\$(PLAT)\yksvd2.exe: yksvd2x.f90 uksvd2.f90 $(LIBS) $(MKFS)
-	$(FC) $(FCFLAGS) /Fe$@ yksvd2x.f90 $(LDFLAGS) $(LIBS)
+..\bin\$(PLAT)\yksvd2.exe: yksvd2x.f90 uksvd2.f90 ..\lib\$(PLAT)\ksvd2.lib $(MKFS)
+	$(FC) $(FCFLAGS) /Fe$@ yksvd2x.f90 $(LDFLAGS) ..\lib\$(PLAT)\ksvd2.lib
 
-..\bin\$(PLAT)\slwsv2.exe: slwsv2x.f90 tlasv2.f90 $(LIBS) $(MKFS)
-	$(FC) $(FCFLAGS) /Fe$@ slwsv2x.f90 $(LDFLAGS) $(LIBS) $(LAPACK)
+..\bin\$(PLAT)\slwsv2.exe: slwsv2x.f90 tlasv2.f90 ..\lib\$(PLAT)\ksvd2.lib $(MKFS)
+	$(FC) $(FCFLAGS) /Fe$@ slwsv2x.f90 $(LDFLAGS) ..\lib\$(PLAT)\ksvd2.lib $(LAPACK)
 
-..\bin\$(PLAT)\dlwsv2.exe: dlwsv2x.f90 tlasv2.f90 $(LIBS) $(MKFS)
-	$(FC) $(FCFLAGS) /Fe$@ dlwsv2x.f90 $(LDFLAGS) $(LIBS) $(LAPACK)
+..\bin\$(PLAT)\dlwsv2.exe: dlwsv2x.f90 tlasv2.f90 ..\lib\$(PLAT)\ksvd2.lib $(MKFS)
+	$(FC) $(FCFLAGS) /Fe$@ dlwsv2x.f90 $(LDFLAGS) ..\lib\$(PLAT)\ksvd2.lib $(LAPACK)
 
 ..\bin\$(PLAT)\srnd.exe: srnd.f90 $(MKFS)
 	$(FC) $(FCFLAGS) /Fe$@ srnd.f90

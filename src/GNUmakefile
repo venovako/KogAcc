@@ -12,22 +12,25 @@ endif # local.mk
 ifndef PLAT
 PLAT=$(COMPILER)/$(OS)-$(ARCH)-$(ABI)$(DEBUG)
 endif # !PLAT
-BIO=../obj/$(PLAT)/bfopen.o ../obj/$(PLAT)/sbrd1.o ../obj/$(PLAT)/cbrd1.o ../obj/$(PLAT)/dbrd1.o ../obj/$(PLAT)/zbrd1.o ../obj/$(PLAT)/sbwr1.o ../obj/$(PLAT)/cbwr1.o ../obj/$(PLAT)/dbwr1.o ../obj/$(PLAT)/zbwr1.o ../obj/$(PLAT)/sbrd2.o ../obj/$(PLAT)/cbrd2.o ../obj/$(PLAT)/dbrd2.o ../obj/$(PLAT)/zbrd2.o ../obj/$(PLAT)/sbwr2.o ../obj/$(PLAT)/cbwr2.o ../obj/$(PLAT)/dbwr2.o ../obj/$(PLAT)/zbwr2.o
-OBJS=../obj/$(PLAT)/sksvd2.o ../obj/$(PLAT)/cksvd2.o ../obj/$(PLAT)/dksvd2.o ../obj/$(PLAT)/zksvd2.o ../obj/$(PLAT)/slwsv2.o ../obj/$(PLAT)/dlwsv2.o ../obj/$(PLAT)/sbordg.o ../obj/$(PLAT)/cbordg.o ../obj/$(PLAT)/dbordg.o ../obj/$(PLAT)/zbordg.o ../obj/$(PLAT)/nb2m.o $(BIO)
-EXES=../bin/$(PLAT)/sksvd2.exe ../bin/$(PLAT)/cksvd2.exe ../bin/$(PLAT)/dksvd2.exe ../bin/$(PLAT)/zksvd2.exe ../bin/$(PLAT)/slwsv2.exe ../bin/$(PLAT)/dlwsv2.exe ../bin/$(PLAT)/srnd.exe
+OBJS_ARRBIO=../obj/$(PLAT)/bfopen.o ../obj/$(PLAT)/sbrd1.o ../obj/$(PLAT)/cbrd1.o ../obj/$(PLAT)/dbrd1.o ../obj/$(PLAT)/zbrd1.o ../obj/$(PLAT)/sbwr1.o ../obj/$(PLAT)/cbwr1.o ../obj/$(PLAT)/dbwr1.o ../obj/$(PLAT)/zbwr1.o ../obj/$(PLAT)/sbrd2.o ../obj/$(PLAT)/cbrd2.o ../obj/$(PLAT)/dbrd2.o ../obj/$(PLAT)/zbrd2.o ../obj/$(PLAT)/sbwr2.o ../obj/$(PLAT)/cbwr2.o ../obj/$(PLAT)/dbwr2.o ../obj/$(PLAT)/zbwr2.o
+OBJS_BLKSVD=../obj/$(PLAT)/sbordg.o ../obj/$(PLAT)/cbordg.o ../obj/$(PLAT)/dbordg.o ../obj/$(PLAT)/zbordg.o ../obj/$(PLAT)/nb2m.o
+OBJS_KSVD2=../obj/$(PLAT)/sksvd2.o ../obj/$(PLAT)/cksvd2.o ../obj/$(PLAT)/dksvd2.o ../obj/$(PLAT)/zksvd2.o ../obj/$(PLAT)/slwsv2.o ../obj/$(PLAT)/dlwsv2.o
+EXES_KSVD2=../bin/$(PLAT)/sksvd2.exe ../bin/$(PLAT)/cksvd2.exe ../bin/$(PLAT)/dksvd2.exe ../bin/$(PLAT)/zksvd2.exe ../bin/$(PLAT)/slwsv2.exe ../bin/$(PLAT)/dlwsv2.exe
 ifneq ($(COMPILER),nvfortran)
 ifneq ($(COMPILER),xlf)
-OBJS += ../obj/$(PLAT)/qksvd2.o ../obj/$(PLAT)/yksvd2.o
-EXES += ../bin/$(PLAT)/qksvd2.exe ../bin/$(PLAT)/yksvd2.exe
+OBJS_KSVD2 += ../obj/$(PLAT)/qksvd2.o ../obj/$(PLAT)/yksvd2.o
+EXES_KSVD2 += ../bin/$(PLAT)/qksvd2.exe ../bin/$(PLAT)/yksvd2.exe
 endif # !xlf
 endif # !nvfortran
 ifeq ($(COMPILER),gfortran)
 ifeq ($(findstring 86,$(ARCH)),86)
-OBJS += ../obj/$(PLAT)/xksvd2.o ../obj/$(PLAT)/wksvd2.o
-EXES += ../bin/$(PLAT)/xksvd2.exe ../bin/$(PLAT)/wksvd2.exe
+OBJS_KSVD2 += ../obj/$(PLAT)/xksvd2.o ../obj/$(PLAT)/wksvd2.o
+EXES_KSVD2 += ../bin/$(PLAT)/xksvd2.exe ../bin/$(PLAT)/wksvd2.exe
 endif # x86
 endif # gfortran
-LIBS=../lib/$(PLAT)/libksvd2.a
+OBJS=$(OBJS_ARRBIO) $(OBJS_BLKSVD) $(OBJS_KSVD2)
+LIBS=../lib/$(PLAT)/libarrbio.a ../lib/$(PLAT)/libblksvd.a ../lib/$(PLAT)/libksvd2.a
+EXES=$(EXES_KSVD2) ../bin/$(PLAT)/srnd.exe
 
 .PHONY: all clean dirs doc help purge
 
@@ -43,8 +46,14 @@ dirs:
 doc: ../Doxyfile
 	cd .. && doxygen && cd src
 
-$(LIBS): $(OBJS) $(MKFS)
-	$(AR) $(ARFLAGS) $@ $(OBJS)
+../lib/$(PLAT)/libarrbio.a: $(OBJS_ARRBIO) $(MKFS)
+	$(AR) $(ARFLAGS) $@ $(OBJS_ARRBIO)
+
+../lib/$(PLAT)/libblksvd.a: $(OBJS_BLKSVD) $(MKFS)
+	$(AR) $(ARFLAGS) $@ $(OBJS_BLKSVD)
+
+../lib/$(PLAT)/libksvd2.a: $(OBJS_KSVD2) $(MKFS)
+	$(AR) $(ARFLAGS) $@ $(OBJS_KSVD2)
 
 ../obj/$(PLAT)/sksvd2.o: sksvd2.f90 gksvd2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ sksvd2.f90
@@ -292,7 +301,7 @@ ifeq ($(COMPILER),ifx)
 endif # ifx
 endif # NDEBUG
 
-../bin/$(PLAT)/sksvd2.exe: sksvd2x.f90 tksvd2.f90 $(LIBS) $(MKFS)
+../bin/$(PLAT)/sksvd2.exe: sksvd2x.f90 tksvd2.f90 ../lib/$(PLAT)/libksvd2.a $(MKFS)
 	$(FC) $(FCFLAGS) -o $@ sksvd2x.f90 -L../lib/$(PLAT) -lksvd2
 ifdef NDEBUG
 ifeq ($(COMPILER),ifx)
@@ -300,7 +309,7 @@ ifeq ($(COMPILER),ifx)
 endif # ifx
 endif # NDEBUG
 
-../bin/$(PLAT)/cksvd2.exe: cksvd2x.f90 uksvd2.f90 $(LIBS) $(MKFS)
+../bin/$(PLAT)/cksvd2.exe: cksvd2x.f90 uksvd2.f90 ../lib/$(PLAT)/libksvd2.a $(MKFS)
 	$(FC) $(FCFLAGS) -o $@ cksvd2x.f90 -L../lib/$(PLAT) -lksvd2
 ifdef NDEBUG
 ifeq ($(COMPILER),ifx)
@@ -308,7 +317,7 @@ ifeq ($(COMPILER),ifx)
 endif # ifx
 endif # NDEBUG
 
-../bin/$(PLAT)/dksvd2.exe: dksvd2x.f90 tksvd2.f90 $(LIBS) $(MKFS)
+../bin/$(PLAT)/dksvd2.exe: dksvd2x.f90 tksvd2.f90 ../lib/$(PLAT)/libksvd2.a $(MKFS)
 	$(FC) $(FCFLAGS) -o $@ dksvd2x.f90 -L../lib/$(PLAT) -lksvd2
 ifdef NDEBUG
 ifeq ($(COMPILER),ifx)
@@ -316,7 +325,7 @@ ifeq ($(COMPILER),ifx)
 endif # ifx
 endif # NDEBUG
 
-../bin/$(PLAT)/zksvd2.exe: zksvd2x.f90 uksvd2.f90 $(LIBS) $(MKFS)
+../bin/$(PLAT)/zksvd2.exe: zksvd2x.f90 uksvd2.f90 ../lib/$(PLAT)/libksvd2.a $(MKFS)
 	$(FC) $(FCFLAGS) -o $@ zksvd2x.f90 -L../lib/$(PLAT) -lksvd2
 ifdef NDEBUG
 ifeq ($(COMPILER),ifx)
@@ -324,7 +333,7 @@ ifeq ($(COMPILER),ifx)
 endif # ifx
 endif # NDEBUG
 
-../bin/$(PLAT)/qksvd2.exe: qksvd2x.f90 tksvd2.f90 $(LIBS) $(MKFS)
+../bin/$(PLAT)/qksvd2.exe: qksvd2x.f90 tksvd2.f90 ../lib/$(PLAT)/libksvd2.a $(MKFS)
 	$(FC) $(FCFLAGS) -o $@ qksvd2x.f90 -L../lib/$(PLAT) -lksvd2
 ifdef NDEBUG
 ifeq ($(COMPILER),ifx)
@@ -332,7 +341,7 @@ ifeq ($(COMPILER),ifx)
 endif # ifx
 endif # NDEBUG
 
-../bin/$(PLAT)/yksvd2.exe: yksvd2x.f90 uksvd2.f90 $(LIBS) $(MKFS)
+../bin/$(PLAT)/yksvd2.exe: yksvd2x.f90 uksvd2.f90 ../lib/$(PLAT)/libksvd2.a $(MKFS)
 	$(FC) $(FCFLAGS) -o $@ yksvd2x.f90 -L../lib/$(PLAT) -lksvd2
 ifdef NDEBUG
 ifeq ($(COMPILER),ifx)
@@ -340,13 +349,13 @@ ifeq ($(COMPILER),ifx)
 endif # ifx
 endif # NDEBUG
 
-../bin/$(PLAT)/xksvd2.exe: xksvd2x.f90 tksvd2.f90 $(LIBS) $(MKFS)
+../bin/$(PLAT)/xksvd2.exe: xksvd2x.f90 tksvd2.f90 ../lib/$(PLAT)/libksvd2.a $(MKFS)
 	$(FC) $(FCFLAGS) -o $@ xksvd2x.f90 -L../lib/$(PLAT) -lksvd2
 
-../bin/$(PLAT)/wksvd2.exe: wksvd2x.f90 uksvd2.f90 $(LIBS) $(MKFS)
+../bin/$(PLAT)/wksvd2.exe: wksvd2x.f90 uksvd2.f90 ../lib/$(PLAT)/libksvd2.a $(MKFS)
 	$(FC) $(FCFLAGS) -o $@ wksvd2x.f90 -L../lib/$(PLAT) -lksvd2
 
-../bin/$(PLAT)/slwsv2.exe: slwsv2x.f90 tlasv2.f90 $(LIBS) $(MKFS)
+../bin/$(PLAT)/slwsv2.exe: slwsv2x.f90 tlasv2.f90 ../lib/$(PLAT)/libksvd2.a $(MKFS)
 	$(FC) $(FCFLAGS) -o $@ slwsv2x.f90 -L../lib/$(PLAT) -lksvd2 $(LAPACK)
 ifdef NDEBUG
 ifeq ($(COMPILER),ifx)
@@ -354,7 +363,7 @@ ifeq ($(COMPILER),ifx)
 endif # ifx
 endif # NDEBUG
 
-../bin/$(PLAT)/dlwsv2.exe: dlwsv2x.f90 tlasv2.f90 $(LIBS) $(MKFS)
+../bin/$(PLAT)/dlwsv2.exe: dlwsv2x.f90 tlasv2.f90 ../lib/$(PLAT)/libksvd2.a $(MKFS)
 	$(FC) $(FCFLAGS) -o $@ dlwsv2x.f90 -L../lib/$(PLAT) -lksvd2 $(LAPACK)
 ifdef NDEBUG
 ifeq ($(COMPILER),ifx)
