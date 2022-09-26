@@ -13,7 +13,7 @@ ifndef PLAT
 PLAT=$(COMPILER)/$(OS)-$(ARCH)-$(ABI)$(DEBUG)
 endif # !PLAT
 OBJS_ARRBIO=../obj/$(PLAT)/bfopen.o ../obj/$(PLAT)/sbrd1.o ../obj/$(PLAT)/cbrd1.o ../obj/$(PLAT)/dbrd1.o ../obj/$(PLAT)/zbrd1.o ../obj/$(PLAT)/sbwr1.o ../obj/$(PLAT)/cbwr1.o ../obj/$(PLAT)/dbwr1.o ../obj/$(PLAT)/zbwr1.o ../obj/$(PLAT)/sbrd2.o ../obj/$(PLAT)/cbrd2.o ../obj/$(PLAT)/dbrd2.o ../obj/$(PLAT)/zbrd2.o ../obj/$(PLAT)/sbwr2.o ../obj/$(PLAT)/cbwr2.o ../obj/$(PLAT)/dbwr2.o ../obj/$(PLAT)/zbwr2.o
-OBJS_BLKSVD=../obj/$(PLAT)/sbordg.o ../obj/$(PLAT)/cbordg.o ../obj/$(PLAT)/dbordg.o ../obj/$(PLAT)/zbordg.o ../obj/$(PLAT)/nb2m.o
+OBJS_BLKSVD=../obj/$(PLAT)/sbordg.o ../obj/$(PLAT)/cbordg.o ../obj/$(PLAT)/dbordg.o ../obj/$(PLAT)/zbordg.o ../obj/$(PLAT)/nb2m.o ../obj/$(PLAT)/dsoffsq.o ../obj/$(PLAT)/dcoffsq.o
 OBJS_KSVD2=../obj/$(PLAT)/sksvd2.o ../obj/$(PLAT)/cksvd2.o ../obj/$(PLAT)/dksvd2.o ../obj/$(PLAT)/zksvd2.o ../obj/$(PLAT)/slwsv2.o ../obj/$(PLAT)/dlwsv2.o
 EXES_KSVD2=../bin/$(PLAT)/sksvd2.exe ../bin/$(PLAT)/cksvd2.exe ../bin/$(PLAT)/dksvd2.exe ../bin/$(PLAT)/zksvd2.exe ../bin/$(PLAT)/slwsv2.exe ../bin/$(PLAT)/dlwsv2.exe
 ifneq ($(COMPILER),nvfortran)
@@ -162,6 +162,22 @@ endif # NDEBUG
 ifdef NDEBUG
 ifeq ($(COMPILER),ifx)
 	-$(MOV) nb2m.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../obj/$(PLAT)/dsoffsq.o: dsoffsq.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ dsoffsq.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) dsoffsq.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../obj/$(PLAT)/dcoffsq.o: dcoffsq.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ dcoffsq.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) dcoffsq.opt.yaml ../obj/$(PLAT)
 endif # ifx
 endif # NDEBUG
 
