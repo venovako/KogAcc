@@ -17,14 +17,16 @@ OBJS_BLKSVD=../obj/$(PLAT)/sbordg.o ../obj/$(PLAT)/cbordg.o ../obj/$(PLAT)/dbord
 OBJS_KSVD2=../obj/$(PLAT)/sksvd2.o ../obj/$(PLAT)/cksvd2.o ../obj/$(PLAT)/dksvd2.o ../obj/$(PLAT)/zksvd2.o ../obj/$(PLAT)/slwsv2.o ../obj/$(PLAT)/dlwsv2.o
 EXES_KSVD2=../bin/$(PLAT)/sksvd2.exe ../bin/$(PLAT)/cksvd2.exe ../bin/$(PLAT)/dksvd2.exe ../bin/$(PLAT)/zksvd2.exe ../bin/$(PLAT)/slwsv2.exe ../bin/$(PLAT)/dlwsv2.exe
 ifneq ($(COMPILER),nvfortran)
-ifneq ($(COMPILER),xlf)
+OBJS_ARRBIO += ../obj/$(PLAT)/qbrd1.o ../obj/$(PLAT)/qbwr1.o
 OBJS_BLKSVD += ../obj/$(PLAT)/qdoffsq.o ../obj/$(PLAT)/qzoffsq.o
+ifneq ($(COMPILER),xlf)
 OBJS_KSVD2 += ../obj/$(PLAT)/qksvd2.o ../obj/$(PLAT)/yksvd2.o
 EXES_KSVD2 += ../bin/$(PLAT)/qksvd2.exe ../bin/$(PLAT)/yksvd2.exe
 endif # !xlf
 endif # !nvfortran
 ifeq ($(COMPILER),gfortran)
 ifeq ($(findstring 86,$(ARCH)),86)
+OBJS_ARRBIO += ../obj/$(PLAT)/xbrd1.o ../obj/$(PLAT)/xbwr1.o
 OBJS_BLKSVD += ../obj/$(PLAT)/xdoffsq.o ../obj/$(PLAT)/xzoffsq.o
 OBJS_KSVD2 += ../obj/$(PLAT)/xksvd2.o ../obj/$(PLAT)/wksvd2.o
 EXES_KSVD2 += ../bin/$(PLAT)/xksvd2.exe ../bin/$(PLAT)/wksvd2.exe
@@ -245,6 +247,17 @@ ifeq ($(COMPILER),ifx)
 endif # ifx
 endif # NDEBUG
 
+../obj/$(PLAT)/qbrd1.o: qbrd1.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ qbrd1.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) qbrd1.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../obj/$(PLAT)/xbrd1.o: xbrd1.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ xbrd1.f90
+
 ../obj/$(PLAT)/sbwr1.o: sbwr1.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ sbwr1.f90
 ifdef NDEBUG
@@ -276,6 +289,17 @@ ifeq ($(COMPILER),ifx)
 	-$(MOV) zbwr1.opt.yaml ../obj/$(PLAT)
 endif # ifx
 endif # NDEBUG
+
+../obj/$(PLAT)/qbwr1.o: qbwr1.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ qbwr1.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) qbwr1.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../obj/$(PLAT)/xbwr1.o: xbwr1.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ xbwr1.f90
 
 ../obj/$(PLAT)/sbrd2.o: sbrd2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ sbrd2.f90

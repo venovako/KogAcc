@@ -7,8 +7,7 @@
 !!@param INFO [OUT]; zero on success or \f$-i\f$ if the \f$i\f$th argument had an illegal value.
 SUBROUTINE CBORDG(M, N, G, LDG, INFO)
   IMPLICIT NONE
-  REAL, PARAMETER :: SZERO = 0.0, SONE = 1.0
-  COMPLEX, PARAMETER :: ZERO = (SZERO,SZERO), ONE = (SONE,SZERO)
+  COMPLEX, PARAMETER :: ZERO = (0.0,0.0), ONE = (1.0,0.0)
   INTEGER, INTENT(IN) :: M, N, LDG
   COMPLEX, INTENT(OUT) :: G(LDG,M)
   INTEGER, INTENT(OUT) :: INFO
