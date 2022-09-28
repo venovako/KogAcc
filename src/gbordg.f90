@@ -1,5 +1,4 @@
   ! This is the generic part of the bordering routines.
-
   INFO = 0
   IF (LDG .LT. MAX(M, 0)) INFO = -4
   IF (N .LT. 0) INFO = -2

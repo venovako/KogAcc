@@ -5,9 +5,10 @@
 !!@param G [OUT]; a double precision complex array to be read.
 !!@param INFO [OUT]; zero on success, \f$-i\f$ if the \f$i\f$th argument had an illegal value, or a positive I/O error code.
 SUBROUTINE ZBRD1(U, M, G, INFO)
+  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
   IMPLICIT NONE
   INTEGER, INTENT(IN) :: U, M
-  DOUBLE COMPLEX, INTENT(OUT) :: G(M)
+  COMPLEX(KIND=REAL64), INTENT(OUT) :: G(M)
   INTEGER, INTENT(OUT) :: INFO
   INFO = 0
   IF (M .LT. 0) INFO = -2

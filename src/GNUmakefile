@@ -18,12 +18,14 @@ OBJS_KSVD2=../obj/$(PLAT)/sksvd2.o ../obj/$(PLAT)/cksvd2.o ../obj/$(PLAT)/dksvd2
 EXES_KSVD2=../bin/$(PLAT)/sksvd2.exe ../bin/$(PLAT)/cksvd2.exe ../bin/$(PLAT)/dksvd2.exe ../bin/$(PLAT)/zksvd2.exe ../bin/$(PLAT)/slwsv2.exe ../bin/$(PLAT)/dlwsv2.exe
 ifneq ($(COMPILER),nvfortran)
 ifneq ($(COMPILER),xlf)
+OBJS_BLKSVD += ../obj/$(PLAT)/qdoffsq.o ../obj/$(PLAT)/qzoffsq.o
 OBJS_KSVD2 += ../obj/$(PLAT)/qksvd2.o ../obj/$(PLAT)/yksvd2.o
 EXES_KSVD2 += ../bin/$(PLAT)/qksvd2.exe ../bin/$(PLAT)/yksvd2.exe
 endif # !xlf
 endif # !nvfortran
 ifeq ($(COMPILER),gfortran)
 ifeq ($(findstring 86,$(ARCH)),86)
+OBJS_BLKSVD += ../obj/$(PLAT)/xdoffsq.o ../obj/$(PLAT)/xzoffsq.o
 OBJS_KSVD2 += ../obj/$(PLAT)/xksvd2.o ../obj/$(PLAT)/wksvd2.o
 EXES_KSVD2 += ../bin/$(PLAT)/xksvd2.exe ../bin/$(PLAT)/wksvd2.exe
 endif # x86
@@ -165,7 +167,7 @@ ifeq ($(COMPILER),ifx)
 endif # ifx
 endif # NDEBUG
 
-../obj/$(PLAT)/dsoffsq.o: dsoffsq.f90 $(MKFS)
+../obj/$(PLAT)/dsoffsq.o: dsoffsq.f90 goffsq.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ dsoffsq.f90
 ifdef NDEBUG
 ifeq ($(COMPILER),ifx)
@@ -173,13 +175,35 @@ ifeq ($(COMPILER),ifx)
 endif # ifx
 endif # NDEBUG
 
-../obj/$(PLAT)/dcoffsq.o: dcoffsq.f90 $(MKFS)
+../obj/$(PLAT)/dcoffsq.o: dcoffsq.f90 hoffsq.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ dcoffsq.f90
 ifdef NDEBUG
 ifeq ($(COMPILER),ifx)
 	-$(MOV) dcoffsq.opt.yaml ../obj/$(PLAT)
 endif # ifx
 endif # NDEBUG
+
+../obj/$(PLAT)/qdoffsq.o: qdoffsq.f90 goffsq.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ qdoffsq.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) qdoffsq.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../obj/$(PLAT)/qzoffsq.o: qzoffsq.f90 hoffsq.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ qzoffsq.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) qzoffsq.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../obj/$(PLAT)/xdoffsq.o: xdoffsq.f90 goffsq.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ xdoffsq.f90
+
+../obj/$(PLAT)/xzoffsq.o: xzoffsq.f90 hoffsq.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ xzoffsq.f90
 
 ../obj/$(PLAT)/bfopen.o: bfopen.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ bfopen.f90

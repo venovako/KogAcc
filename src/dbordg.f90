@@ -6,10 +6,11 @@
 !!@param LDG [IN]; the leading dimension of \f$G\f$.
 !!@param INFO [OUT]; zero on success or \f$-i\f$ if the \f$i\f$th argument had an illegal value.
 SUBROUTINE DBORDG(M, N, G, LDG, INFO)
+  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
   IMPLICIT NONE
-  DOUBLE PRECISION, PARAMETER :: ZERO = 0.0D0, ONE = 1.0D0
+  REAL(KIND=REAL64), PARAMETER :: ZERO = 0.0_REAL64, ONE = 1.0_REAL64
   INTEGER, INTENT(IN) :: M, N, LDG
-  DOUBLE PRECISION, INTENT(OUT) :: G(LDG,M)
+  REAL(KIND=REAL64), INTENT(OUT) :: G(LDG,M)
   INTEGER, INTENT(OUT) :: INFO
   INTEGER :: I, J
   INCLUDE 'gbordg.f90'
