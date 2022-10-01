@@ -4,7 +4,7 @@
 !!@param B [IN]; \f$1\le B<N\f$.
 !!@param M [OUT]; \f$M\bmod B=0\f$.
 !!@param INFO [OUT]; zero on success or \f$-i\f$ if the \f$i\f$th argument had an illegal value.
-SUBROUTINE NB2M(N, B, M, INFO)
+PURE SUBROUTINE NB2M(N, B, M, INFO)
   IMPLICIT NONE
   INTEGER, INTENT(IN) :: N, B
   INTEGER, INTENT(OUT) :: M, INFO

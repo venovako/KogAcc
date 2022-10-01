@@ -6,7 +6,7 @@
 !!@param S [OUT]; \f$\Sigma'\f$ is a double precision array with two elements, \f$\sigma_{11}'\f$ and \f$\sigma_{22}'\f$, both non-negative and finite.
 !!@param INFO [OUT]; the scaling parameter \f$s\f$ such that \f$2^{-s}\Sigma'=\Sigma\f$.
 !!If \f$G\f$ has a non-finite element, then \f$s=-\mathop{\mathtt{HUGE}}(0)\f$, \f$U=V=I\f$, and \f$\sigma_{11}'=\sigma_{22}'=0\f$.
-SUBROUTINE DKSVD2(G, U, V, S, INFO)
+PURE SUBROUTINE DKSVD2(G, U, V, S, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
   IMPLICIT NONE
 
