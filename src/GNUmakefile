@@ -13,12 +13,13 @@ ifndef PLAT
 PLAT=$(COMPILER)/$(OS)-$(ARCH)-$(ABI)$(DEBUG)
 endif # !PLAT
 OBJS_ARRBIO=../obj/$(PLAT)/bfopen.o ../obj/$(PLAT)/sbrd1.o ../obj/$(PLAT)/cbrd1.o ../obj/$(PLAT)/dbrd1.o ../obj/$(PLAT)/zbrd1.o ../obj/$(PLAT)/sbwr1.o ../obj/$(PLAT)/cbwr1.o ../obj/$(PLAT)/dbwr1.o ../obj/$(PLAT)/zbwr1.o ../obj/$(PLAT)/sbrd2.o ../obj/$(PLAT)/cbrd2.o ../obj/$(PLAT)/dbrd2.o ../obj/$(PLAT)/zbrd2.o ../obj/$(PLAT)/sbwr2.o ../obj/$(PLAT)/cbwr2.o ../obj/$(PLAT)/dbwr2.o ../obj/$(PLAT)/zbwr2.o
-OBJS_BLKSVD=../obj/$(PLAT)/sbordg.o ../obj/$(PLAT)/cbordg.o ../obj/$(PLAT)/dbordg.o ../obj/$(PLAT)/zbordg.o ../obj/$(PLAT)/nb2m.o ../obj/$(PLAT)/dsoffsq.o ../obj/$(PLAT)/dcoffsq.o
+OBJS_BLKSVD=../obj/$(PLAT)/sbordg.o ../obj/$(PLAT)/cbordg.o ../obj/$(PLAT)/dbordg.o ../obj/$(PLAT)/zbordg.o ../obj/$(PLAT)/nb2m.o
+OBJS_DYNORD=../obj/$(PLAT)/dsoffsq.o ../obj/$(PLAT)/dcoffsq.o ../obj/$(PLAT)/dpqcmp.o
 OBJS_KSVD2=../obj/$(PLAT)/sksvd2.o ../obj/$(PLAT)/cksvd2.o ../obj/$(PLAT)/dksvd2.o ../obj/$(PLAT)/zksvd2.o ../obj/$(PLAT)/slwsv2.o ../obj/$(PLAT)/dlwsv2.o
 EXES_KSVD2=../bin/$(PLAT)/sksvd2.exe ../bin/$(PLAT)/cksvd2.exe ../bin/$(PLAT)/dksvd2.exe ../bin/$(PLAT)/zksvd2.exe ../bin/$(PLAT)/slwsv2.exe ../bin/$(PLAT)/dlwsv2.exe
 ifneq ($(COMPILER),nvfortran)
 OBJS_ARRBIO += ../obj/$(PLAT)/qbrd1.o ../obj/$(PLAT)/qbwr1.o
-OBJS_BLKSVD += ../obj/$(PLAT)/qdoffsq.o ../obj/$(PLAT)/qzoffsq.o
+OBJS_DYNORD += ../obj/$(PLAT)/qdoffsq.o ../obj/$(PLAT)/qzoffsq.o ../obj/$(PLAT)/qpqcmp.o
 ifneq ($(COMPILER),xlf)
 OBJS_KSVD2 += ../obj/$(PLAT)/qksvd2.o ../obj/$(PLAT)/yksvd2.o
 EXES_KSVD2 += ../bin/$(PLAT)/qksvd2.exe ../bin/$(PLAT)/yksvd2.exe
@@ -27,13 +28,13 @@ endif # !nvfortran
 ifeq ($(COMPILER),gfortran)
 ifeq ($(findstring 86,$(ARCH)),86)
 OBJS_ARRBIO += ../obj/$(PLAT)/xbrd1.o ../obj/$(PLAT)/xbwr1.o
-OBJS_BLKSVD += ../obj/$(PLAT)/xdoffsq.o ../obj/$(PLAT)/xzoffsq.o
+OBJS_DYNORD += ../obj/$(PLAT)/xdoffsq.o ../obj/$(PLAT)/xzoffsq.o ../obj/$(PLAT)/xpqcmp.o
 OBJS_KSVD2 += ../obj/$(PLAT)/xksvd2.o ../obj/$(PLAT)/wksvd2.o
 EXES_KSVD2 += ../bin/$(PLAT)/xksvd2.exe ../bin/$(PLAT)/wksvd2.exe
 endif # x86
 endif # gfortran
-OBJS=$(OBJS_ARRBIO) $(OBJS_BLKSVD) $(OBJS_KSVD2)
-LIBS=../lib/$(PLAT)/libarrbio.a ../lib/$(PLAT)/libblksvd.a ../lib/$(PLAT)/libksvd2.a
+OBJS=$(OBJS_ARRBIO) $(OBJS_BLKSVD) $(OBJS_DYNORD) $(OBJS_KSVD2)
+LIBS=../lib/$(PLAT)/libarrbio.a ../lib/$(PLAT)/libblksvd.a ../lib/$(PLAT)/libdynord.a ../lib/$(PLAT)/libksvd2.a
 EXES=$(EXES_KSVD2) ../bin/$(PLAT)/srnd.exe
 
 .PHONY: all clean dirs doc help purge
@@ -55,6 +56,9 @@ doc: ../Doxyfile
 
 ../lib/$(PLAT)/libblksvd.a: $(OBJS_BLKSVD) $(MKFS)
 	$(AR) $(ARFLAGS) $@ $(OBJS_BLKSVD)
+
+../lib/$(PLAT)/libdynord.a: $(OBJS_DYNORD) $(MKFS)
+	$(AR) $(ARFLAGS) $@ $(OBJS_DYNORD)
 
 ../lib/$(PLAT)/libksvd2.a: $(OBJS_KSVD2) $(MKFS)
 	$(AR) $(ARFLAGS) $@ $(OBJS_KSVD2)
@@ -206,6 +210,25 @@ endif # NDEBUG
 
 ../obj/$(PLAT)/xzoffsq.o: xzoffsq.f90 hoffsq.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ xzoffsq.f90
+
+../obj/$(PLAT)/dpqcmp.o: dpqcmp.f90 gpqcmp.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ dpqcmp.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) dpqcmp.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../obj/$(PLAT)/qpqcmp.o: qpqcmp.f90 gpqcmp.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ qpqcmp.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) qpqcmp.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../obj/$(PLAT)/xpqcmp.o: xpqcmp.f90 gpqcmp.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ xpqcmp.f90
 
 ../obj/$(PLAT)/bfopen.o: bfopen.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ bfopen.f90

@@ -30,11 +30,12 @@ PLAT=ifort\$(OS)-$(ARCH)-$(ABI)$(DEBUG)
 !ENDIF # !PLAT
 MKFS=Makefile
 OBJS_ARRBIO=..\obj\$(PLAT)\bfopen.obj ..\obj\$(PLAT)\sbrd1.obj ..\obj\$(PLAT)\cbrd1.obj ..\obj\$(PLAT)\dbrd1.obj ..\obj\$(PLAT)\zbrd1.obj ..\obj\$(PLAT)\qbrd1.obj ..\obj\$(PLAT)\sbwr1.obj ..\obj\$(PLAT)\cbwr1.obj ..\obj\$(PLAT)\dbwr1.obj ..\obj\$(PLAT)\zbwr1.obj ..\obj\$(PLAT)\qbwr1.obj ..\obj\$(PLAT)\sbrd2.obj ..\obj\$(PLAT)\cbrd2.obj ..\obj\$(PLAT)\dbrd2.obj ..\obj\$(PLAT)\zbrd2.obj ..\obj\$(PLAT)\sbwr2.obj ..\obj\$(PLAT)\cbwr2.obj ..\obj\$(PLAT)\dbwr2.obj ..\obj\$(PLAT)\zbwr2.obj
-OBJS_BLKSVD=..\obj\$(PLAT)\sbordg.obj ..\obj\$(PLAT)\cbordg.obj ..\obj\$(PLAT)\dbordg.obj ..\obj\$(PLAT)\zbordg.obj ..\obj\$(PLAT)\nb2m.obj  ..\obj\$(PLAT)\dsoffsq.obj ..\obj\$(PLAT)\dcoffsq.obj ..\obj\$(PLAT)\qdoffsq.obj ..\obj\$(PLAT)\qzoffsq.obj
+OBJS_BLKSVD=..\obj\$(PLAT)\sbordg.obj ..\obj\$(PLAT)\cbordg.obj ..\obj\$(PLAT)\dbordg.obj ..\obj\$(PLAT)\zbordg.obj ..\obj\$(PLAT)\nb2m.obj
+OBJS_DYNORD=..\obj\$(PLAT)\dsoffsq.obj ..\obj\$(PLAT)\dcoffsq.obj ..\obj\$(PLAT)\qdoffsq.obj ..\obj\$(PLAT)\qzoffsq.obj ..\obj\$(PLAT)\dpqcmp.obj ..\obj\$(PLAT)\qpqcmp.obj
 OBJS_KSVD2=..\obj\$(PLAT)\sksvd2.obj ..\obj\$(PLAT)\cksvd2.obj ..\obj\$(PLAT)\dksvd2.obj ..\obj\$(PLAT)\zksvd2.obj ..\obj\$(PLAT)\qksvd2.obj ..\obj\$(PLAT)\yksvd2.obj ..\obj\$(PLAT)\slwsv2.obj ..\obj\$(PLAT)\dlwsv2.obj
 EXES_KSVD2=..\bin\$(PLAT)\sksvd2.exe ..\bin\$(PLAT)\cksvd2.exe ..\bin\$(PLAT)\dksvd2.exe ..\bin\$(PLAT)\zksvd2.exe ..\bin\$(PLAT)\qksvd2.exe ..\bin\$(PLAT)\yksvd2.exe ..\bin\$(PLAT)\slwsv2.exe ..\bin\$(PLAT)\dlwsv2.exe
-OBJS=$(OBJS_ARRBIO) $(OBJS_BLKSVD) $(OBJS_KSVD2)
-LIBS=..\lib\$(PLAT)\arrbio.lib ..\lib\$(PLAT)\blksvd.a ..\lib\$(PLAT)\ksvd2.lib
+OBJS=$(OBJS_ARRBIO) $(OBJS_BLKSVD) $(OBJS_DYNORD) $(OBJS_KSVD2)
+LIBS=..\lib\$(PLAT)\arrbio.lib ..\lib\$(PLAT)\blksvd.a ..\lib\$(PLAT)\dynord.a ..\lib\$(PLAT)\ksvd2.lib
 EXES=$(EXES_KSVD2) ..\bin\$(PLAT)\srnd.exe
 LAPACK=mkl_intel_$(ABI)_dll.lib mkl_sequential_dll.lib mkl_core_dll.lib
 
@@ -57,6 +58,9 @@ doc: ..\Doxyfile
 
 ..\lib\$(PLAT)\blksvd.lib: $(OBJS_BLKSVD) $(MKFS)
 	$(AR) $(ARFLAGS) /OUT:$@ $(OBJS_BLKSVD)
+
+..\lib\$(PLAT)\dynord.lib: $(OBJS_DYNORD) $(MKFS)
+	$(AR) $(ARFLAGS) /OUT:$@ $(OBJS_DYNORD)
 
 ..\lib\$(PLAT)\ksvd2.lib: $(OBJS_KSVD2) $(MKFS)
 	$(AR) $(ARFLAGS) /OUT:$@ $(OBJS_KSVD2)
@@ -111,6 +115,12 @@ doc: ..\Doxyfile
 
 ..\obj\$(PLAT)\qzoffsq.obj: qzoffsq.f90 hoffsq.f90 $(MKFS)
 	$(FC) $(FCFLAGS) /c /Fo$@ qzoffsq.f90
+
+..\obj\$(PLAT)\dpqcmp.obj: dpqcmp.f90 gpqcmp.f90 $(MKFS)
+	$(FC) $(FCFLAGS) /c /Fo$@ dpqcmp.f90
+
+..\obj\$(PLAT)\qpqcmp.obj: qpqcmp.f90 gpqcmp.f90 $(MKFS)
+	$(FC) $(FCFLAGS) /c /Fo$@ qpqcmp.f90
 
 ..\obj\$(PLAT)\bfopen.obj: bfopen.f90 $(MKFS)
 	$(FC) $(FCFLAGS) /c /Fo$@ bfopen.f90
