@@ -30,7 +30,7 @@ PLAT=ifort\$(OS)-$(ARCH)-$(ABI)$(DEBUG)
 !ENDIF # !PLAT
 MKFS=Makefile
 OBJS_ARRBIO=..\obj\$(PLAT)\bfopen.obj ..\obj\$(PLAT)\sbrd1.obj ..\obj\$(PLAT)\cbrd1.obj ..\obj\$(PLAT)\dbrd1.obj ..\obj\$(PLAT)\zbrd1.obj ..\obj\$(PLAT)\qbrd1.obj ..\obj\$(PLAT)\sbwr1.obj ..\obj\$(PLAT)\cbwr1.obj ..\obj\$(PLAT)\dbwr1.obj ..\obj\$(PLAT)\zbwr1.obj ..\obj\$(PLAT)\qbwr1.obj ..\obj\$(PLAT)\sbrd2.obj ..\obj\$(PLAT)\cbrd2.obj ..\obj\$(PLAT)\dbrd2.obj ..\obj\$(PLAT)\zbrd2.obj ..\obj\$(PLAT)\sbwr2.obj ..\obj\$(PLAT)\cbwr2.obj ..\obj\$(PLAT)\dbwr2.obj ..\obj\$(PLAT)\zbwr2.obj
-OBJS_BLKSVD=..\obj\$(PLAT)\sbordg.obj ..\obj\$(PLAT)\cbordg.obj ..\obj\$(PLAT)\dbordg.obj ..\obj\$(PLAT)\zbordg.obj ..\obj\$(PLAT)\nb2m.obj
+OBJS_BLKSVD=..\obj\$(PLAT)\sbrdg.obj ..\obj\$(PLAT)\cbrdg.obj ..\obj\$(PLAT)\dbrdg.obj ..\obj\$(PLAT)\zbrdg.obj ..\obj\$(PLAT)\sbordg.obj ..\obj\$(PLAT)\cbordg.obj ..\obj\$(PLAT)\dbordg.obj ..\obj\$(PLAT)\zbordg.obj ..\obj\$(PLAT)\nb2m.obj
 OBJS_DYNORD=..\obj\$(PLAT)\dsoffsq.obj ..\obj\$(PLAT)\dcoffsq.obj ..\obj\$(PLAT)\qdoffsq.obj ..\obj\$(PLAT)\qzoffsq.obj ..\obj\$(PLAT)\dpqcmp.obj ..\obj\$(PLAT)\qpqcmp.obj  ..\obj\$(PLAT)\dpqmrg.obj ..\obj\$(PLAT)\qpqmrg.obj ..\obj\$(PLAT)\dpqsrt.obj ..\obj\$(PLAT)\dpqsort.obj ..\obj\$(PLAT)\qpqsrt.obj ..\obj\$(PLAT)\qpqsort.obj
 OBJS_KSVD2=..\obj\$(PLAT)\sksvd2.obj ..\obj\$(PLAT)\cksvd2.obj ..\obj\$(PLAT)\dksvd2.obj ..\obj\$(PLAT)\zksvd2.obj ..\obj\$(PLAT)\qksvd2.obj ..\obj\$(PLAT)\yksvd2.obj ..\obj\$(PLAT)\slwsv2.obj ..\obj\$(PLAT)\dlwsv2.obj
 EXES_KSVD2=..\bin\$(PLAT)\sksvd2.exe ..\bin\$(PLAT)\cksvd2.exe ..\bin\$(PLAT)\dksvd2.exe ..\bin\$(PLAT)\zksvd2.exe ..\bin\$(PLAT)\qksvd2.exe ..\bin\$(PLAT)\yksvd2.exe ..\bin\$(PLAT)\slwsv2.exe ..\bin\$(PLAT)\dlwsv2.exe
@@ -89,16 +89,28 @@ doc: ..\Doxyfile
 ..\obj\$(PLAT)\dlwsv2.obj: dlwsv2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) /c /Fo$@ dlwsv2.f90
 
-..\obj\$(PLAT)\sbordg.obj: sbordg.f90 $(MKFS)
+..\obj\$(PLAT)\sbrdg.obj: sbrdg.f90 gbrdg.f90 $(MKFS)
+	$(FC) $(FCFLAGS) /c /Fo$@ sbrdg.f90
+
+..\obj\$(PLAT)\cbrdg.obj: cbrdg.f90 gbrdg.f90 $(MKFS)
+	$(FC) $(FCFLAGS) /c /Fo$@ cbrdg.f90
+
+..\obj\$(PLAT)\dbrdg.obj: dbrdg.f90 gbrdg.f90 $(MKFS)
+	$(FC) $(FCFLAGS) /c /Fo$@ dbrdg.f90
+
+..\obj\$(PLAT)\zbrdg.obj: zbrdg.f90 gbrdg.f90 $(MKFS)
+	$(FC) $(FCFLAGS) /c /Fo$@ zbrdg.f90
+
+..\obj\$(PLAT)\sbordg.obj: sbordg.f90 gbordg.f90 $(MKFS)
 	$(FC) $(FCFLAGS) /c /Fo$@ sbordg.f90
 
-..\obj\$(PLAT)\cbordg.obj: cbordg.f90 $(MKFS)
+..\obj\$(PLAT)\cbordg.obj: cbordg.f90 gbordg.f90 $(MKFS)
 	$(FC) $(FCFLAGS) /c /Fo$@ cbordg.f90
 
-..\obj\$(PLAT)\dbordg.obj: dbordg.f90 $(MKFS)
+..\obj\$(PLAT)\dbordg.obj: dbordg.f90 gbordg.f90 $(MKFS)
 	$(FC) $(FCFLAGS) /c /Fo$@ dbordg.f90
 
-..\obj\$(PLAT)\zbordg.obj: zbordg.f90 $(MKFS)
+..\obj\$(PLAT)\zbordg.obj: zbordg.f90 gbordg.f90 $(MKFS)
 	$(FC) $(FCFLAGS) /c /Fo$@ zbordg.f90
 
 ..\obj\$(PLAT)\nb2m.obj: nb2m.f90 $(MKFS)
