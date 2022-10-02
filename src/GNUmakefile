@@ -19,7 +19,7 @@ OBJS_KSVD2=../obj/$(PLAT)/sksvd2.o ../obj/$(PLAT)/cksvd2.o ../obj/$(PLAT)/dksvd2
 EXES_KSVD2=../bin/$(PLAT)/sksvd2.exe ../bin/$(PLAT)/cksvd2.exe ../bin/$(PLAT)/dksvd2.exe ../bin/$(PLAT)/zksvd2.exe ../bin/$(PLAT)/slwsv2.exe ../bin/$(PLAT)/dlwsv2.exe
 ifneq ($(COMPILER),nvfortran)
 OBJS_ARRBIO += ../obj/$(PLAT)/qbrd1.o ../obj/$(PLAT)/qbwr1.o
-OBJS_DYNORD += ../obj/$(PLAT)/qdoffsq.o ../obj/$(PLAT)/qzoffsq.o ../obj/$(PLAT)/qpqcmp.o ../obj/$(PLAT)/qpqmrg.o
+OBJS_DYNORD += ../obj/$(PLAT)/qdoffsq.o ../obj/$(PLAT)/qzoffsq.o ../obj/$(PLAT)/qpqcmp.o ../obj/$(PLAT)/qpqmrg.o ../obj/$(PLAT)/qpqsrt.o ../obj/$(PLAT)/qpqsort.o
 ifneq ($(COMPILER),xlf)
 OBJS_KSVD2 += ../obj/$(PLAT)/qksvd2.o ../obj/$(PLAT)/yksvd2.o
 EXES_KSVD2 += ../bin/$(PLAT)/qksvd2.exe ../bin/$(PLAT)/yksvd2.exe
@@ -28,7 +28,7 @@ endif # !nvfortran
 ifeq ($(COMPILER),gfortran)
 ifeq ($(findstring 86,$(ARCH)),86)
 OBJS_ARRBIO += ../obj/$(PLAT)/xbrd1.o ../obj/$(PLAT)/xbwr1.o
-OBJS_DYNORD += ../obj/$(PLAT)/xdoffsq.o ../obj/$(PLAT)/xzoffsq.o ../obj/$(PLAT)/xpqcmp.o ../obj/$(PLAT)/xpqmrg.o
+OBJS_DYNORD += ../obj/$(PLAT)/xdoffsq.o ../obj/$(PLAT)/xzoffsq.o ../obj/$(PLAT)/xpqcmp.o ../obj/$(PLAT)/xpqmrg.o ../obj/$(PLAT)/xpqsrt.o ../obj/$(PLAT)/xpqsort.o
 OBJS_KSVD2 += ../obj/$(PLAT)/xksvd2.o ../obj/$(PLAT)/wksvd2.o
 EXES_KSVD2 += ../bin/$(PLAT)/xksvd2.exe ../bin/$(PLAT)/wksvd2.exe
 endif # x86
@@ -249,7 +249,7 @@ endif # NDEBUG
 ../obj/$(PLAT)/xpqmrg.o: xpqmrg.f90 gpqmrg.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ xpqmrg.f90
 
-../obj/$(PLAT)/dpqsrt.o: dpqsrt.f90 $(MKFS)
+../obj/$(PLAT)/dpqsrt.o: dpqsrt.f90 gpqsrt.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ dpqsrt.f90
 ifdef NDEBUG
 ifeq ($(COMPILER),ifx)
@@ -257,13 +257,35 @@ ifeq ($(COMPILER),ifx)
 endif # ifx
 endif # NDEBUG
 
-../obj/$(PLAT)/dpqsort.o: dpqsort.f90 $(MKFS)
+../obj/$(PLAT)/dpqsort.o: dpqsort.f90 gpqsort.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ dpqsort.f90
 ifdef NDEBUG
 ifeq ($(COMPILER),ifx)
 	-$(MOV) dpqsort.opt.yaml ../obj/$(PLAT)
 endif # ifx
 endif # NDEBUG
+
+../obj/$(PLAT)/qpqsrt.o: qpqsrt.f90 gpqsrt.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ qpqsrt.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) qpqsrt.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../obj/$(PLAT)/qpqsort.o: qpqsort.f90 gpqsort.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ qpqsort.f90
+ifdef NDEBUG
+ifeq ($(COMPILER),ifx)
+	-$(MOV) qpqsort.opt.yaml ../obj/$(PLAT)
+endif # ifx
+endif # NDEBUG
+
+../obj/$(PLAT)/xpqsrt.o: xpqsrt.f90 gpqsrt.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ xpqsrt.f90
+
+../obj/$(PLAT)/xpqsort.o: xpqsort.f90 gpqsort.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ xpqsort.f90
 
 ../obj/$(PLAT)/bfopen.o: bfopen.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ bfopen.f90
