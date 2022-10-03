@@ -33,10 +33,11 @@ OBJS_ARRBIO=..\obj\$(PLAT)\bfopen.obj ..\obj\$(PLAT)\sbrd1.obj ..\obj\$(PLAT)\cb
 OBJS_BLKSVD=..\obj\$(PLAT)\sbrdg.obj ..\obj\$(PLAT)\cbrdg.obj ..\obj\$(PLAT)\dbrdg.obj ..\obj\$(PLAT)\zbrdg.obj ..\obj\$(PLAT)\sbordg.obj ..\obj\$(PLAT)\cbordg.obj ..\obj\$(PLAT)\dbordg.obj ..\obj\$(PLAT)\zbordg.obj ..\obj\$(PLAT)\nb2m.obj
 OBJS_DYNORD=..\obj\$(PLAT)\dsoffsq.obj ..\obj\$(PLAT)\dcoffsq.obj ..\obj\$(PLAT)\qdoffsq.obj ..\obj\$(PLAT)\qzoffsq.obj ..\obj\$(PLAT)\dpqcmp.obj ..\obj\$(PLAT)\qpqcmp.obj  ..\obj\$(PLAT)\dpqmrg.obj ..\obj\$(PLAT)\qpqmrg.obj ..\obj\$(PLAT)\dpqsrt.obj ..\obj\$(PLAT)\dpqsort.obj ..\obj\$(PLAT)\qpqsrt.obj ..\obj\$(PLAT)\qpqsort.obj
 OBJS_KSVD2=..\obj\$(PLAT)\sksvd2.obj ..\obj\$(PLAT)\cksvd2.obj ..\obj\$(PLAT)\dksvd2.obj ..\obj\$(PLAT)\zksvd2.obj ..\obj\$(PLAT)\qksvd2.obj ..\obj\$(PLAT)\yksvd2.obj ..\obj\$(PLAT)\slwsv2.obj ..\obj\$(PLAT)\dlwsv2.obj
-EXES_KSVD2=..\bin\$(PLAT)\sksvd2.exe ..\bin\$(PLAT)\cksvd2.exe ..\bin\$(PLAT)\dksvd2.exe ..\bin\$(PLAT)\zksvd2.exe ..\bin\$(PLAT)\qksvd2.exe ..\bin\$(PLAT)\yksvd2.exe ..\bin\$(PLAT)\slwsv2.exe ..\bin\$(PLAT)\dlwsv2.exe
+EXES_DYNORD=..\bin\$(PLAT)\dpqsort.exe
+EXES_KSVD2=..\bin\$(PLAT)\sksvd2.exe ..\bin\$(PLAT)\cksvd2.exe ..\bin\$(PLAT)\dksvd2.exe ..\bin\$(PLAT)\zksvd2.exe ..\bin\$(PLAT)\qksvd2.exe ..\bin\$(PLAT)\yksvd2.exe ..\bin\$(PLAT)\slwsv2.exe ..\bin\$(PLAT)\dlwsv2.exe ..\bin\$(PLAT)\srnd.exe
 OBJS=$(OBJS_ARRBIO) $(OBJS_BLKSVD) $(OBJS_DYNORD) $(OBJS_KSVD2)
 LIBS=..\lib\$(PLAT)\arrbio.lib ..\lib\$(PLAT)\blksvd.lib ..\lib\$(PLAT)\dynord.lib ..\lib\$(PLAT)\ksvd2.lib
-EXES=$(EXES_KSVD2) ..\bin\$(PLAT)\srnd.exe
+EXES=$(EXES_KSVD2) $(EXES_DYNORD)
 LAPACK=mkl_intel_$(ABI)_dll.lib mkl_sequential_dll.lib mkl_core_dll.lib
 
 all: dirs $(LIBS) $(EXES)
@@ -234,7 +235,10 @@ doc: ..\Doxyfile
 	$(FC) $(FCFLAGS) /Fe$@ dlwsv2x.f90 $(LDFLAGS) ..\lib\$(PLAT)\ksvd2.lib $(LAPACK)
 
 ..\bin\$(PLAT)\srnd.exe: srnd.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /Fe$@ srnd.f90
+	$(FC) $(FCFLAGS) /Fe$@ srnd.f90 $(LDFLAGS)
+
+..\bin\$(PLAT)\dpqsort.exe: dpqsortx.f90 ..\lib\$(PLAT)\dynord.lib $(MKFS)
+	$(FC) $(FCFLAGS) /Fe$@ dpqsortx.f90 $(LDFLAGS) ..\lib\$(PLAT)\dynord.lib
 
 clean:
 	-del /f /q $(EXES)

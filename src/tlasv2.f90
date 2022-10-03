@@ -11,22 +11,22 @@
      READ (*,*) G(2,2)
   CASE (1)
      CALL GET_COMMAND_ARGUMENT(1, CLA, STATUS=INFO)
-     IF (INFO .NE. 0) STOP 'the input file name is invalid'
+     IF (INFO .NE. 0) ERROR STOP 'the input file name is invalid'
      OPEN(UNIT=1, FILE=TRIM(CLA), ACTION='READ', STATUS='OLD', IOSTAT=INFO)
-     IF (INFO .NE. 0) STOP 'cannot open the input file'
+     IF (INFO .NE. 0) ERROR STOP 'cannot open the input file'
      ONCE = .FALSE.
   CASE (3)
      CALL GET_COMMAND_ARGUMENT(1, CLA, STATUS=INFO)
-     IF (INFO .NE. 0) STOP 'the first argument is invalid'
+     IF (INFO .NE. 0) ERROR STOP 'the first argument is invalid'
      READ (CLA,*) G(1,1)
      CALL GET_COMMAND_ARGUMENT(2, CLA, STATUS=INFO)
-     IF (INFO .NE. 0) STOP 'the second argument is invalid'
+     IF (INFO .NE. 0) ERROR STOP 'the second argument is invalid'
      READ (CLA,*) G(1,2)
      CALL GET_COMMAND_ARGUMENT(3, CLA, STATUS=INFO)
-     IF (INFO .NE. 0) STOP 'the third argument is invalid'
+     IF (INFO .NE. 0) ERROR STOP 'the third argument is invalid'
      READ (CLA,*) G(2,2)
   CASE DEFAULT
-     STOP 'zero, one [input file name], or three [G(1,1) G(1,2) G(2,2)] arguments required'
+     ERROR STOP 'zero, one [input file name], or three [G(1,1) G(1,2) G(2,2)] arguments required'
   END SELECT
   DO WHILE (.TRUE.)
      IF (.NOT. ONCE) THEN
@@ -91,5 +91,5 @@
   END DO
   IF (.NOT. ONCE) THEN
      CLOSE(UNIT=1, IOSTAT=INFO)
-     IF (INFO .NE. 0) STOP 'cannot close the input file'
+     IF (INFO .NE. 0) ERROR STOP 'cannot close the input file'
   END IF

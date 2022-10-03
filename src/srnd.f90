@@ -11,7 +11,7 @@ PROGRAM SRND
   REAL :: T
 
   CALL RANDOM_SEED(SIZE=SSIZE)
-  IF (SSIZE .LE. 0) STOP 'seed size non-positive'
+  IF (SSIZE .LE. 0) ERROR STOP 'seed size non-positive'
   I = COMMAND_ARGUMENT_COUNT()
   IF (I .LT. 2) THEN
      IF (SSIZE .GT. 1) THEN
@@ -21,11 +21,11 @@ PROGRAM SRND
         CLA = 'srnd.exe ((U|u)[pper]|(G|g)[eneral]) N [SEED1]'
      END IF
      WRITE (ERROR_UNIT,*) CLA
-     STOP 'All SEED arguments have to be given, or none of them.'
+     ERROR STOP 'All SEED arguments have to be given, or none of them.'
   END IF
   CALL GET_COMMAND_ARGUMENT(2, CLA)
   READ (CLA,*) N
-  IF (N .LT. 0) STOP 'the second argument is invalid'
+  IF (N .LT. 0) ERROR STOP 'the second argument is invalid'
   CALL GET_COMMAND_ARGUMENT(1, CLA)
   SELECT CASE (CLA(1:1))
   CASE ('G')
@@ -41,7 +41,7 @@ PROGRAM SRND
      UPPER = .TRUE.
      T = ZERO
   CASE DEFAULT
-     STOP 'the first argument is invalid'
+     ERROR STOP 'the first argument is invalid'
   END SELECT
   IF (I .EQ. 2) THEN
      ALLOCATE(ISEED(SSIZE))
@@ -57,7 +57,7 @@ PROGRAM SRND
      END DO
      CALL RANDOM_SEED(PUT=ISEED)
   ELSE ! a wrong SEED
-     STOP 'invalid number of SEED arguments'
+     ERROR STOP 'invalid number of SEED arguments'
   END IF
   IF (UPPER) THEN
      ALLOCATE(H(6))
