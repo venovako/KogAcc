@@ -5,9 +5,10 @@
 !!@param G [IN]; a single precision real array to be written.
 !!@param INFO [OUT]; zero on success, \f$-i\f$ if the \f$i\f$th argument had an illegal value, or a positive I/O error code.
 SUBROUTINE SBWR1(U, M, G, INFO)
+  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
   IMPLICIT NONE
   INTEGER, INTENT(IN) :: U, M
-  REAL, INTENT(IN) :: G(M)
+  REAL(KIND=REAL32), INTENT(IN) :: G(M)
   INTEGER, INTENT(OUT) :: INFO
   INFO = 0
   IF (M .LT. 0) INFO = -2

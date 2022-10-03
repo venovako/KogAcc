@@ -7,11 +7,11 @@
 !!@param S [OUT]; the computed square of the Frobenius norm.
 !!@param INFO [OUT]; zero on success or \f$-i\f$ if the \f$i\f$th argument had an illegal value.
 SUBROUTINE DCOFFSQ(O, N, G, LDG, S, INFO)
-  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
+  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32, REAL64
   IMPLICIT NONE
   CHARACTER, INTENT(IN) :: O
   INTEGER, INTENT(IN) :: N, LDG
-  COMPLEX, INTENT(IN) :: G(LDG,N)
+  COMPLEX(KIND=REAL32), INTENT(IN) :: G(LDG,N)
   REAL(KIND=REAL64), INTENT(OUT) :: S
   INTEGER, INTENT(OUT) :: INFO
   REAL(KIND=REAL64) :: Y

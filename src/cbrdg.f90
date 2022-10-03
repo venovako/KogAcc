@@ -6,10 +6,11 @@
 !!@param LDG [IN]; the leading dimension of \f$G\f$.
 !!@param INFO [OUT]; zero on success or \f$-i\f$ if the \f$i\f$th argument had an illegal value.
 SUBROUTINE CBRDG(M, N, G, LDG, INFO)
+  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
   IMPLICIT NONE
-  COMPLEX, PARAMETER :: ZERO = (0.0,0.0), ONE = (1.0,0.0)
+  COMPLEX(KIND=REAL32), PARAMETER :: ZERO = (0.0_REAL32,0.0_REAL32), ONE = (1.0_REAL32,0.0_REAL32)
   INTEGER, INTENT(IN) :: M, N, LDG
-  COMPLEX, INTENT(OUT) :: G(LDG,M)
+  COMPLEX(KIND=REAL32), INTENT(OUT) :: G(LDG,M)
   INTEGER, INTENT(OUT) :: INFO
   INTEGER :: I, J
   INCLUDE 'gbrdg.f90'
