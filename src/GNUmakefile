@@ -22,12 +22,14 @@ EXES_KSVD2=../bin/$(PLAT)/sksvd2.exe ../bin/$(PLAT)/cksvd2.exe ../bin/$(PLAT)/dk
 OBJS_ARRBIO += ../obj/$(PLAT)/qbrd1.o ../obj/$(PLAT)/qbwr1.o
 OBJS_DYNORD += ../obj/$(PLAT)/qdoffsq.o ../obj/$(PLAT)/qzoffsq.o ../obj/$(PLAT)/qpqcmp.o ../obj/$(PLAT)/qpqmrg.o ../obj/$(PLAT)/qpqsrt.o ../obj/$(PLAT)/qpqsort.o
 OBJS_KSVD2 += ../obj/$(PLAT)/qksvd2.o ../obj/$(PLAT)/yksvd2.o
+EXES_DYNORD += ../bin/$(PLAT)/qpqsort.exe
 EXES_KSVD2 += ../bin/$(PLAT)/qksvd2.exe ../bin/$(PLAT)/yksvd2.exe
 ifeq ($(COMPILER),gfortran)
 ifeq ($(findstring 86,$(ARCH)),86)
 OBJS_ARRBIO += ../obj/$(PLAT)/xbrd1.o ../obj/$(PLAT)/xbwr1.o
 OBJS_DYNORD += ../obj/$(PLAT)/xdoffsq.o ../obj/$(PLAT)/xzoffsq.o ../obj/$(PLAT)/xpqcmp.o ../obj/$(PLAT)/xpqmrg.o ../obj/$(PLAT)/xpqsrt.o ../obj/$(PLAT)/xpqsort.o
 OBJS_KSVD2 += ../obj/$(PLAT)/xksvd2.o ../obj/$(PLAT)/wksvd2.o
+EXES_DYNORD += ../bin/$(PLAT)/xpqsort.exe
 EXES_KSVD2 += ../bin/$(PLAT)/xksvd2.exe ../bin/$(PLAT)/wksvd2.exe
 endif # x86
 endif # gfortran
@@ -270,6 +272,12 @@ doc: ../Doxyfile
 
 ../bin/$(PLAT)/dpqsort.exe: dpqsortx.f90 ../lib/$(PLAT)/libdynord.a $(MKFS)
 	$(FC) $(FCFLAGS) -o $@ dpqsortx.f90 -L../lib/$(PLAT) -ldynord
+
+../bin/$(PLAT)/qpqsort.exe: qpqsortx.f90 ../lib/$(PLAT)/libdynord.a $(MKFS)
+	$(FC) $(FCFLAGS) -o $@ qpqsortx.f90 -L../lib/$(PLAT) -ldynord
+
+../bin/$(PLAT)/xpqsort.exe: xpqsortx.f90 ../lib/$(PLAT)/libdynord.a $(MKFS)
+	$(FC) $(FCFLAGS) -o $@ xpqsortx.f90 -L../lib/$(PLAT) -ldynord
 
 clean:
 	-$(DEL) $(EXES) $(LIBS) $(OBJS)
