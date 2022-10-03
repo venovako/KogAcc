@@ -1,4 +1,4 @@
-  ! This is the generic part of the real tester routines.
+  ! This is the generic part of the real KSVD2 tester routines.
   ONCE = .TRUE.
   SELECT CASE (COMMAND_ARGUMENT_COUNT())
   CASE (0)

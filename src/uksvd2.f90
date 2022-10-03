@@ -1,4 +1,4 @@
-  ! This is the generic part of the complex tester routines.
+  ! This is the generic part of the complex KSVD2 tester routines.
   ONCE = .TRUE.
   SELECT CASE (COMMAND_ARGUMENT_COUNT())
   CASE (0)
@@ -56,7 +56,7 @@
      IF (INFO .EQ. IERR) THEN
         WRITE (*,'(A)') 'INFO=ERROR'
      ELSE ! all OK
-        WRITE (*,2) 'INFO=', INFO
+        WRITE (*,3) 'INFO=', INFO
      END IF
      UX(1,1) = U(1,1)
      UX(2,1) = U(2,1)
