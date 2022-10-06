@@ -1,0 +1,11 @@
+!>@brief \b XPSUM4 sums four non-negative weights in extended precision.
+PURE SUBROUTINE XPSUM4(W1, W2, W3, W4, W, INFO)
+  IMPLICIT NONE
+  REAL(KIND=10), PARAMETER :: ZERO = 0.0_10
+  REAL(KIND=10), INTENT(IN) :: W1, W2, W3, W4
+  REAL(KIND=10), INTENT(OUT) :: W
+  INTEGER, INTENT(OUT) :: INFO
+  REAL(KIND=10) :: T(4)
+  INTEGER :: I, J, K
+  INCLUDE 'gpsum4.f90'
+END SUBROUTINE XPSUM4

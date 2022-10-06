@@ -31,7 +31,7 @@ PLAT=ifort\$(OS)-$(ARCH)-$(ABI)$(DEBUG)
 MKFS=Makefile
 OBJS_ARRBIO=..\obj\$(PLAT)\bfopen.obj ..\obj\$(PLAT)\sbrd1.obj ..\obj\$(PLAT)\cbrd1.obj ..\obj\$(PLAT)\dbrd1.obj ..\obj\$(PLAT)\zbrd1.obj ..\obj\$(PLAT)\qbrd1.obj ..\obj\$(PLAT)\sbwr1.obj ..\obj\$(PLAT)\cbwr1.obj ..\obj\$(PLAT)\dbwr1.obj ..\obj\$(PLAT)\zbwr1.obj ..\obj\$(PLAT)\qbwr1.obj ..\obj\$(PLAT)\sbrd2.obj ..\obj\$(PLAT)\cbrd2.obj ..\obj\$(PLAT)\dbrd2.obj ..\obj\$(PLAT)\zbrd2.obj ..\obj\$(PLAT)\sbwr2.obj ..\obj\$(PLAT)\cbwr2.obj ..\obj\$(PLAT)\dbwr2.obj ..\obj\$(PLAT)\zbwr2.obj
 OBJS_BLKSVD=..\obj\$(PLAT)\sbrdg.obj ..\obj\$(PLAT)\cbrdg.obj ..\obj\$(PLAT)\dbrdg.obj ..\obj\$(PLAT)\zbrdg.obj ..\obj\$(PLAT)\sbordg.obj ..\obj\$(PLAT)\cbordg.obj ..\obj\$(PLAT)\dbordg.obj ..\obj\$(PLAT)\zbordg.obj ..\obj\$(PLAT)\nb2m.obj
-OBJS_DYNORD=..\obj\$(PLAT)\dsoffsq.obj ..\obj\$(PLAT)\dcoffsq.obj ..\obj\$(PLAT)\qdoffsq.obj ..\obj\$(PLAT)\qzoffsq.obj ..\obj\$(PLAT)\dpqcmp.obj ..\obj\$(PLAT)\qpqcmp.obj  ..\obj\$(PLAT)\dpqmrg.obj ..\obj\$(PLAT)\qpqmrg.obj ..\obj\$(PLAT)\dpqsrt.obj ..\obj\$(PLAT)\dpqsort.obj ..\obj\$(PLAT)\qpqsrt.obj ..\obj\$(PLAT)\qpqsort.obj
+OBJS_DYNORD=..\obj\$(PLAT)\dsoffsq.obj ..\obj\$(PLAT)\dcoffsq.obj ..\obj\$(PLAT)\qdoffsq.obj ..\obj\$(PLAT)\qzoffsq.obj ..\obj\$(PLAT)\dpqcmp.obj ..\obj\$(PLAT)\qpqcmp.obj  ..\obj\$(PLAT)\dpqmrg.obj ..\obj\$(PLAT)\qpqmrg.obj ..\obj\$(PLAT)\dpqsrt.obj ..\obj\$(PLAT)\dpqsort.obj ..\obj\$(PLAT)\qpqsrt.obj ..\obj\$(PLAT)\qpqsort.obj ..\obj\$(PLAT)\dpsum4.obj ..\obj\$(PLAT)\qpsum4.obj
 OBJS_KSVD2=..\obj\$(PLAT)\sksvd2.obj ..\obj\$(PLAT)\cksvd2.obj ..\obj\$(PLAT)\dksvd2.obj ..\obj\$(PLAT)\zksvd2.obj ..\obj\$(PLAT)\qksvd2.obj ..\obj\$(PLAT)\yksvd2.obj ..\obj\$(PLAT)\slwsv2.obj ..\obj\$(PLAT)\dlwsv2.obj
 EXES_DYNORD=..\bin\$(PLAT)\dpqsort.exe ..\bin\$(PLAT)\qpqsort.exe
 EXES_KSVD2=..\bin\$(PLAT)\sksvd2.exe ..\bin\$(PLAT)\cksvd2.exe ..\bin\$(PLAT)\dksvd2.exe ..\bin\$(PLAT)\zksvd2.exe ..\bin\$(PLAT)\qksvd2.exe ..\bin\$(PLAT)\yksvd2.exe ..\bin\$(PLAT)\slwsv2.exe ..\bin\$(PLAT)\dlwsv2.exe ..\bin\$(PLAT)\srnd.exe
@@ -152,6 +152,12 @@ doc: ..\Doxyfile
 
 ..\obj\$(PLAT)\qpqsort.obj: qpqsort.f90 gpqsort.f90 $(MKFS)
 	$(FC) $(FCFLAGS) /c /Fo$@ qpqsort.f90
+
+..\obj\$(PLAT)\dpsum4.obj: dpsum4.f90 gpsum4.f90 $(MKFS)
+	$(FC) $(FCFLAGS) /c /Fo$@ dpsum4.f90
+
+..\obj\$(PLAT)\qpsum4.obj: qpsum4.f90 gpsum4.f90 $(MKFS)
+	$(FC) $(FCFLAGS) /c /Fo$@ qpsum4.f90
 
 ..\obj\$(PLAT)\bfopen.obj: bfopen.f90 $(MKFS)
 	$(FC) $(FCFLAGS) /c /Fo$@ bfopen.f90
