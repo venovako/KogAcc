@@ -33,10 +33,11 @@ OBJS_ARRBIO=..\obj\$(PLAT)\bfopen.obj ..\obj\$(PLAT)\sbrd1.obj ..\obj\$(PLAT)\cb
 OBJS_BLKSVD=..\obj\$(PLAT)\sbrdg.obj ..\obj\$(PLAT)\cbrdg.obj ..\obj\$(PLAT)\dbrdg.obj ..\obj\$(PLAT)\zbrdg.obj ..\obj\$(PLAT)\sbordg.obj ..\obj\$(PLAT)\cbordg.obj ..\obj\$(PLAT)\dbordg.obj ..\obj\$(PLAT)\zbordg.obj ..\obj\$(PLAT)\nb2m.obj
 OBJS_DYNORD=..\obj\$(PLAT)\dsoffsq.obj ..\obj\$(PLAT)\dcoffsq.obj ..\obj\$(PLAT)\qdoffsq.obj ..\obj\$(PLAT)\qzoffsq.obj ..\obj\$(PLAT)\dpqcmp.obj ..\obj\$(PLAT)\qpqcmp.obj  ..\obj\$(PLAT)\dpqmrg.obj ..\obj\$(PLAT)\qpqmrg.obj ..\obj\$(PLAT)\dpqsrt.obj ..\obj\$(PLAT)\dpqsort.obj ..\obj\$(PLAT)\qpqsrt.obj ..\obj\$(PLAT)\qpqsort.obj ..\obj\$(PLAT)\dpsum4.obj ..\obj\$(PLAT)\qpsum4.obj
 OBJS_KSVD2=..\obj\$(PLAT)\sksvd2.obj ..\obj\$(PLAT)\cksvd2.obj ..\obj\$(PLAT)\dksvd2.obj ..\obj\$(PLAT)\zksvd2.obj ..\obj\$(PLAT)\qksvd2.obj ..\obj\$(PLAT)\yksvd2.obj ..\obj\$(PLAT)\slwsv2.obj ..\obj\$(PLAT)\dlwsv2.obj
+OBJS_FAUX=..\obj\$(PLAT)\sthalt.obj
 EXES_DYNORD=..\bin\$(PLAT)\dpqsort.exe ..\bin\$(PLAT)\qpqsort.exe
 EXES_KSVD2=..\bin\$(PLAT)\sksvd2.exe ..\bin\$(PLAT)\cksvd2.exe ..\bin\$(PLAT)\dksvd2.exe ..\bin\$(PLAT)\zksvd2.exe ..\bin\$(PLAT)\qksvd2.exe ..\bin\$(PLAT)\yksvd2.exe ..\bin\$(PLAT)\slwsv2.exe ..\bin\$(PLAT)\dlwsv2.exe ..\bin\$(PLAT)\srnd.exe
-OBJS=$(OBJS_ARRBIO) $(OBJS_BLKSVD) $(OBJS_DYNORD) $(OBJS_KSVD2)
-LIBS=..\lib\$(PLAT)\arrbio.lib ..\lib\$(PLAT)\blksvd.lib ..\lib\$(PLAT)\dynord.lib ..\lib\$(PLAT)\ksvd2.lib
+OBJS=$(OBJS_ARRBIO) $(OBJS_BLKSVD) $(OBJS_DYNORD) $(OBJS_KSVD2) $(OBJS_FAUX)
+LIBS=..\lib\$(PLAT)\arrbio.lib ..\lib\$(PLAT)\blksvd.lib ..\lib\$(PLAT)\dynord.lib ..\lib\$(PLAT)\ksvd2.lib ..\lib\$(PLAT)\faux.lib
 EXES=$(EXES_KSVD2) $(EXES_DYNORD)
 LAPACK=mkl_intel_$(ABI)_dll.lib mkl_sequential_dll.lib mkl_core_dll.lib
 
@@ -65,6 +66,9 @@ doc: ..\Doxyfile
 
 ..\lib\$(PLAT)\ksvd2.lib: $(OBJS_KSVD2) $(MKFS)
 	$(AR) $(ARFLAGS) /OUT:$@ $(OBJS_KSVD2)
+
+..\lib\$(PLAT)\faux.lib: $(OBJS_FAUX) $(MKFS)
+	$(AR) $(ARFLAGS) /OUT:$@ $(OBJS_FAUX)
 
 ..\obj\$(PLAT)\sksvd2.obj: sksvd2.f90 gksvd2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) /c /Fo$@ sksvd2.f90
@@ -215,6 +219,9 @@ doc: ..\Doxyfile
 
 ..\obj\$(PLAT)\zbwr2.obj: zbwr2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) /c /Fo$@ zbwr2.f90
+
+..\obj\$(PLAT)\sthalt.obj: sthalt_ifort.f90 $(MKFS)
+	$(FC) $(FCFLAGS) /c /Fo$@ sthalt_ifort.f90
 
 ..\bin\$(PLAT)\sksvd2.exe: sksvd2x.f90 tksvd2.f90 ..\lib\$(PLAT)\ksvd2.lib $(MKFS)
 	$(FC) $(FCFLAGS) /Fe$@ sksvd2x.f90 $(LDFLAGS) ..\lib\$(PLAT)\ksvd2.lib

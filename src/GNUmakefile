@@ -16,6 +16,7 @@ OBJS_ARRBIO=../obj/$(PLAT)/bfopen.o ../obj/$(PLAT)/sbrd1.o ../obj/$(PLAT)/cbrd1.
 OBJS_BLKSVD=../obj/$(PLAT)/sbrdg.o ../obj/$(PLAT)/cbrdg.o ../obj/$(PLAT)/dbrdg.o ../obj/$(PLAT)/zbrdg.o ../obj/$(PLAT)/sbordg.o ../obj/$(PLAT)/cbordg.o ../obj/$(PLAT)/dbordg.o ../obj/$(PLAT)/zbordg.o ../obj/$(PLAT)/nb2m.o
 OBJS_DYNORD=../obj/$(PLAT)/dsoffsq.o ../obj/$(PLAT)/dcoffsq.o ../obj/$(PLAT)/dpqcmp.o ../obj/$(PLAT)/dpqmrg.o ../obj/$(PLAT)/dpqsrt.o ../obj/$(PLAT)/dpqsort.o ../obj/$(PLAT)/dpsum4.o
 OBJS_KSVD2=../obj/$(PLAT)/sksvd2.o ../obj/$(PLAT)/cksvd2.o ../obj/$(PLAT)/dksvd2.o ../obj/$(PLAT)/zksvd2.o ../obj/$(PLAT)/slwsv2.o ../obj/$(PLAT)/dlwsv2.o
+OBJS_FAUX=../obj/$(PLAT)/sthalt.o
 EXES_DYNORD=../bin/$(PLAT)/dpqsort.exe
 EXES_KSVD2=../bin/$(PLAT)/sksvd2.exe ../bin/$(PLAT)/cksvd2.exe ../bin/$(PLAT)/dksvd2.exe ../bin/$(PLAT)/zksvd2.exe ../bin/$(PLAT)/slwsv2.exe ../bin/$(PLAT)/dlwsv2.exe ../bin/$(PLAT)/srnd.exe
 # quad
@@ -33,8 +34,8 @@ EXES_DYNORD += ../bin/$(PLAT)/xpqsort.exe
 EXES_KSVD2 += ../bin/$(PLAT)/xksvd2.exe ../bin/$(PLAT)/wksvd2.exe
 endif # x86
 endif # gfortran
-OBJS=$(OBJS_ARRBIO) $(OBJS_BLKSVD) $(OBJS_DYNORD) $(OBJS_KSVD2)
-LIBS=../lib/$(PLAT)/libarrbio.a ../lib/$(PLAT)/libblksvd.a ../lib/$(PLAT)/libdynord.a ../lib/$(PLAT)/libksvd2.a
+OBJS=$(OBJS_ARRBIO) $(OBJS_BLKSVD) $(OBJS_DYNORD) $(OBJS_KSVD2) $(OBJS_FAUX)
+LIBS=../lib/$(PLAT)/libarrbio.a ../lib/$(PLAT)/libblksvd.a ../lib/$(PLAT)/libdynord.a ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libfaux.a
 EXES=$(EXES_KSVD2) $(EXES_DYNORD)
 
 .PHONY: all clean dirs doc help purge
@@ -62,6 +63,9 @@ doc: ../Doxyfile
 
 ../lib/$(PLAT)/libksvd2.a: $(OBJS_KSVD2) $(MKFS)
 	$(AR) $(ARFLAGS) $@ $(OBJS_KSVD2)
+
+../lib/$(PLAT)/libfaux.a: $(OBJS_FAUX) $(MKFS)
+	$(AR) $(ARFLAGS) $@ $(OBJS_FAUX)
 
 ../obj/$(PLAT)/sksvd2.o: sksvd2.f90 gksvd2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ sksvd2.f90
@@ -245,6 +249,9 @@ doc: ../Doxyfile
 
 ../obj/$(PLAT)/zbwr2.o: zbwr2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ zbwr2.f90
+
+../obj/$(PLAT)/sthalt.o: sthalt_$(COMPILER).f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ sthalt_$(COMPILER).f90
 
 ../bin/$(PLAT)/sksvd2.exe: sksvd2x.f90 tksvd2.f90 ../lib/$(PLAT)/libksvd2.a $(MKFS)
 	$(FC) $(FCFLAGS) -o $@ sksvd2x.f90 -L../lib/$(PLAT) -lksvd2
