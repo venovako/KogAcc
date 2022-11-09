@@ -34,10 +34,6 @@ EXES_DYNORD += ../bin/$(PLAT)/xpqsort.exe
 EXES_KSVD2 += ../bin/$(PLAT)/xksvd2.exe ../bin/$(PLAT)/wksvd2.exe
 endif # x86
 endif # gfortran
-ifdef CR_MATH
-OBJS_CRF_MATH=$(CR_MATH)/src/binary32/hypot/hypotf.o
-OBJS_CRD_MATH=$(CR_MATH)/src/binary64/hypot/hypot.o
-endif # CR_MATH
 OBJS=$(OBJS_ARRBIO) $(OBJS_BLKSVD) $(OBJS_DYNORD) $(OBJS_KSVD2) $(OBJS_FAUX)
 LIBS=../lib/$(PLAT)/libarrbio.a ../lib/$(PLAT)/libblksvd.a ../lib/$(PLAT)/libdynord.a ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libfaux.a
 EXES=$(EXES_KSVD2) $(EXES_DYNORD)
