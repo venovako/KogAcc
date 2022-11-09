@@ -278,10 +278,10 @@ doc: ../Doxyfile
 	$(FC) $(FCFLAGS) -o $@ wksvd2x.F90 -L../lib/$(PLAT) -lksvd2
 
 ../bin/$(PLAT)/slwsv2.exe: slwsv2x.F90 tlasv2.f90 ../lib/$(PLAT)/libksvd2.a $(MKFS)
-	$(FC) $(FCFLAGS) -o $@ slwsv2x.F90 $(OBJS_CRF_MATH) -L../lib/$(PLAT) -lksvd2 $(LAPACK)
+	$(FC) $(FCFLAGS) -o $@ slwsv2x.F90 -L../lib/$(PLAT) -lksvd2 $(LAPACK)
 
 ../bin/$(PLAT)/dlwsv2.exe: dlwsv2x.F90 tlasv2.f90 ../lib/$(PLAT)/libksvd2.a $(MKFS)
-	$(FC) $(FCFLAGS) -o $@ dlwsv2x.F90 $(OBJS_CRD_MATH) -L../lib/$(PLAT) -lksvd2 $(LAPACK)
+	$(FC) $(FCFLAGS) -o $@ dlwsv2x.F90 -L../lib/$(PLAT) -lksvd2 $(LAPACK)
 
 ../bin/$(PLAT)/srnd.exe: srnd.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -o $@ srnd.f90

@@ -15,6 +15,9 @@ The recent GNU (gfortran) and Intel (ifort) Fortran compilers should work, while
 
 Building the documentation requires a recent version of [Doxygen](https://doxygen.nl).
 
+The correctly-rounded ``cr_hypot`` and ``cr_hypotf`` functions might optionally be used if provided by, e.g., the [CORE-MATH](https://core-math.gitlabpages.inria.fr) project.
+If their implementation is to be linked with, set the ``CR_MATH`` variable in ``[n|g]make`` invocation to the cloned ``core-math`` source code directory path.
+
 ### Make options
 
 On Linux or macOS, run ``make help`` (GNU make assumed).
