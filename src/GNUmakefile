@@ -34,6 +34,10 @@ EXES_DYNORD += ../bin/$(PLAT)/xpqsort.exe
 EXES_KSVD2 += ../bin/$(PLAT)/xksvd2.exe ../bin/$(PLAT)/wksvd2.exe
 endif # x86
 endif # gfortran
+ifdef CR_MATH
+OBJS_CRF_MATH=$(CR_MATH)/src/binary32/hypot/hypotf.o
+OBJS_CRD_MATH=$(CR_MATH)/src/binary64/hypot/hypot.o
+endif # CR_MATH
 OBJS=$(OBJS_ARRBIO) $(OBJS_BLKSVD) $(OBJS_DYNORD) $(OBJS_KSVD2) $(OBJS_FAUX)
 LIBS=../lib/$(PLAT)/libarrbio.a ../lib/$(PLAT)/libblksvd.a ../lib/$(PLAT)/libdynord.a ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libfaux.a
 EXES=$(EXES_KSVD2) $(EXES_DYNORD)
@@ -44,7 +48,7 @@ all: dirs $(LIBS) $(EXES)
 	@echo $(PLAT)
 
 help:
-	@echo $(MAKE) "[COMPILER=gfortran|ifort] [COMPILER_PREFIX=...] [COMPILER_SUFFIX=...] [ABI=lp64|ilp64] [NDEBUG=optimization_level] [all|clean|dirs|doc|help|purge]"
+	@echo $(MAKE) "[COMPILER=gfortran|ifort] [COMPILER_PREFIX=...] [COMPILER_SUFFIX=...] [ABI=lp64|ilp64] [NDEBUG=optimization_level] [CR_MATH=dir] [all|clean|dirs|doc|help|purge]"
 
 dirs:
 	@$(MKD) ../bin/$(PLAT) ../lib/$(PLAT) ../obj/$(PLAT)
@@ -67,29 +71,29 @@ doc: ../Doxyfile
 ../lib/$(PLAT)/libfaux.a: $(OBJS_FAUX) $(MKFS)
 	$(AR) $(ARFLAGS) $@ $(OBJS_FAUX)
 
-../obj/$(PLAT)/sksvd2.o: sksvd2.f90 gksvd2.f90 $(MKFS)
-	$(FC) $(FCFLAGS) -c -o $@ sksvd2.f90
+../obj/$(PLAT)/sksvd2.o: sksvd2.F90 gksvd2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ sksvd2.F90
 
-../obj/$(PLAT)/cksvd2.o: cksvd2.f90 hksvd2.f90 $(MKFS)
-	$(FC) $(FCFLAGS) -c -o $@ cksvd2.f90
+../obj/$(PLAT)/cksvd2.o: cksvd2.F90 hksvd2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ cksvd2.F90
 
-../obj/$(PLAT)/dksvd2.o: dksvd2.f90 gksvd2.f90 $(MKFS)
-	$(FC) $(FCFLAGS) -c -o $@ dksvd2.f90
+../obj/$(PLAT)/dksvd2.o: dksvd2.F90 gksvd2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ dksvd2.F90
 
-../obj/$(PLAT)/zksvd2.o: zksvd2.f90 hksvd2.f90 $(MKFS)
-	$(FC) $(FCFLAGS) -c -o $@ zksvd2.f90
+../obj/$(PLAT)/zksvd2.o: zksvd2.F90 hksvd2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ zksvd2.F90
 
-../obj/$(PLAT)/qksvd2.o: qksvd2.f90 gksvd2.f90 $(MKFS)
-	$(FC) $(FCFLAGS) -c -o $@ qksvd2.f90
+../obj/$(PLAT)/qksvd2.o: qksvd2.F90 gksvd2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ qksvd2.F90
 
-../obj/$(PLAT)/yksvd2.o: yksvd2.f90 hksvd2.f90 $(MKFS)
-	$(FC) $(FCFLAGS) -c -o $@ yksvd2.f90
+../obj/$(PLAT)/yksvd2.o: yksvd2.F90 hksvd2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ yksvd2.F90
 
-../obj/$(PLAT)/xksvd2.o: xksvd2.f90 gksvd2.f90 $(MKFS)
-	$(FC) $(FCFLAGS) -c -o $@ xksvd2.f90
+../obj/$(PLAT)/xksvd2.o: xksvd2.F90 gksvd2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ xksvd2.F90
 
-../obj/$(PLAT)/wksvd2.o: wksvd2.f90 hksvd2.f90 $(MKFS)
-	$(FC) $(FCFLAGS) -c -o $@ wksvd2.f90
+../obj/$(PLAT)/wksvd2.o: wksvd2.F90 hksvd2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ wksvd2.F90
 
 ../obj/$(PLAT)/slwsv2.o: slwsv2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ slwsv2.f90
@@ -253,35 +257,35 @@ doc: ../Doxyfile
 ../obj/$(PLAT)/sthalt.o: sthalt_$(COMPILER).f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ sthalt_$(COMPILER).f90
 
-../bin/$(PLAT)/sksvd2.exe: sksvd2x.f90 tksvd2.f90 ../lib/$(PLAT)/libksvd2.a $(MKFS)
-	$(FC) $(FCFLAGS) -o $@ sksvd2x.f90 -L../lib/$(PLAT) -lksvd2
+../bin/$(PLAT)/sksvd2.exe: sksvd2x.F90 tksvd2.f90 ../lib/$(PLAT)/libksvd2.a $(MKFS)
+	$(FC) $(FCFLAGS) -o $@ sksvd2x.F90 $(OBJS_CRF_MATH) -L../lib/$(PLAT) -lksvd2
 
-../bin/$(PLAT)/cksvd2.exe: cksvd2x.f90 uksvd2.f90 ../lib/$(PLAT)/libksvd2.a $(MKFS)
-	$(FC) $(FCFLAGS) -o $@ cksvd2x.f90 -L../lib/$(PLAT) -lksvd2
+../bin/$(PLAT)/cksvd2.exe: cksvd2x.F90 uksvd2.f90 ../lib/$(PLAT)/libksvd2.a $(MKFS)
+	$(FC) $(FCFLAGS) -o $@ cksvd2x.F90 $(OBJS_CRF_MATH) -L../lib/$(PLAT) -lksvd2
 
-../bin/$(PLAT)/dksvd2.exe: dksvd2x.f90 tksvd2.f90 ../lib/$(PLAT)/libksvd2.a $(MKFS)
-	$(FC) $(FCFLAGS) -o $@ dksvd2x.f90 -L../lib/$(PLAT) -lksvd2
+../bin/$(PLAT)/dksvd2.exe: dksvd2x.F90 tksvd2.f90 ../lib/$(PLAT)/libksvd2.a $(MKFS)
+	$(FC) $(FCFLAGS) -o $@ dksvd2x.F90 $(OBJS_CRD_MATH) -L../lib/$(PLAT) -lksvd2
 
-../bin/$(PLAT)/zksvd2.exe: zksvd2x.f90 uksvd2.f90 ../lib/$(PLAT)/libksvd2.a $(MKFS)
-	$(FC) $(FCFLAGS) -o $@ zksvd2x.f90 -L../lib/$(PLAT) -lksvd2
+../bin/$(PLAT)/zksvd2.exe: zksvd2x.F90 uksvd2.f90 ../lib/$(PLAT)/libksvd2.a $(MKFS)
+	$(FC) $(FCFLAGS) -o $@ zksvd2x.F90 $(OBJS_CRD_MATH) -L../lib/$(PLAT) -lksvd2
 
-../bin/$(PLAT)/qksvd2.exe: qksvd2x.f90 tksvd2.f90 ../lib/$(PLAT)/libksvd2.a $(MKFS)
-	$(FC) $(FCFLAGS) -o $@ qksvd2x.f90 -L../lib/$(PLAT) -lksvd2
+../bin/$(PLAT)/qksvd2.exe: qksvd2x.F90 tksvd2.f90 ../lib/$(PLAT)/libksvd2.a $(MKFS)
+	$(FC) $(FCFLAGS) -o $@ qksvd2x.F90 -L../lib/$(PLAT) -lksvd2
 
-../bin/$(PLAT)/yksvd2.exe: yksvd2x.f90 uksvd2.f90 ../lib/$(PLAT)/libksvd2.a $(MKFS)
-	$(FC) $(FCFLAGS) -o $@ yksvd2x.f90 -L../lib/$(PLAT) -lksvd2
+../bin/$(PLAT)/yksvd2.exe: yksvd2x.F90 uksvd2.f90 ../lib/$(PLAT)/libksvd2.a $(MKFS)
+	$(FC) $(FCFLAGS) -o $@ yksvd2x.F90 -L../lib/$(PLAT) -lksvd2
 
-../bin/$(PLAT)/xksvd2.exe: xksvd2x.f90 tksvd2.f90 ../lib/$(PLAT)/libksvd2.a $(MKFS)
-	$(FC) $(FCFLAGS) -o $@ xksvd2x.f90 -L../lib/$(PLAT) -lksvd2
+../bin/$(PLAT)/xksvd2.exe: xksvd2x.F90 tksvd2.f90 ../lib/$(PLAT)/libksvd2.a $(MKFS)
+	$(FC) $(FCFLAGS) -o $@ xksvd2x.F90 -L../lib/$(PLAT) -lksvd2
 
-../bin/$(PLAT)/wksvd2.exe: wksvd2x.f90 uksvd2.f90 ../lib/$(PLAT)/libksvd2.a $(MKFS)
-	$(FC) $(FCFLAGS) -o $@ wksvd2x.f90 -L../lib/$(PLAT) -lksvd2
+../bin/$(PLAT)/wksvd2.exe: wksvd2x.F90 uksvd2.f90 ../lib/$(PLAT)/libksvd2.a $(MKFS)
+	$(FC) $(FCFLAGS) -o $@ wksvd2x.F90 -L../lib/$(PLAT) -lksvd2
 
-../bin/$(PLAT)/slwsv2.exe: slwsv2x.f90 tlasv2.f90 ../lib/$(PLAT)/libksvd2.a $(MKFS)
-	$(FC) $(FCFLAGS) -o $@ slwsv2x.f90 -L../lib/$(PLAT) -lksvd2 $(LAPACK)
+../bin/$(PLAT)/slwsv2.exe: slwsv2x.F90 tlasv2.f90 ../lib/$(PLAT)/libksvd2.a $(MKFS)
+	$(FC) $(FCFLAGS) -o $@ slwsv2x.F90 $(OBJS_CRF_MATH) -L../lib/$(PLAT) -lksvd2 $(LAPACK)
 
-../bin/$(PLAT)/dlwsv2.exe: dlwsv2x.f90 tlasv2.f90 ../lib/$(PLAT)/libksvd2.a $(MKFS)
-	$(FC) $(FCFLAGS) -o $@ dlwsv2x.f90 -L../lib/$(PLAT) -lksvd2 $(LAPACK)
+../bin/$(PLAT)/dlwsv2.exe: dlwsv2x.F90 tlasv2.f90 ../lib/$(PLAT)/libksvd2.a $(MKFS)
+	$(FC) $(FCFLAGS) -o $@ dlwsv2x.F90 $(OBJS_CRD_MATH) -L../lib/$(PLAT) -lksvd2 $(LAPACK)
 
 ../bin/$(PLAT)/srnd.exe: srnd.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -o $@ srnd.f90

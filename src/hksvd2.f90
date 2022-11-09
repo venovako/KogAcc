@@ -79,10 +79,10 @@
   END IF
 
   ! compute the absolute values
-  A(1,1) = ABS(B(1,1))
-  A(2,1) = ABS(B(2,1))
-  A(1,2) = ABS(B(1,2))
-  A(2,2) = ABS(B(2,2))
+  A(1,1) = CR_HYPOT(REAL(B(1,1)), AIMAG(B(1,1)))
+  A(2,1) = CR_HYPOT(REAL(B(2,1)), AIMAG(B(2,1)))
+  A(1,2) = CR_HYPOT(REAL(B(1,2)), AIMAG(B(1,2)))
+  A(2,2) = CR_HYPOT(REAL(B(2,2)), AIMAG(B(2,2)))
 
   ! compute the first column norm
   IF (A(2,1) .EQ. ZERO) THEN
@@ -211,8 +211,8 @@
      B(1,2) = (B(1,2) + TANG * B(2,2)) / SECG
      B(2,2) = (B(2,2) - TANG * B(2,1)) / SECG
      ! recompute the magnitudes in the second column
-     A(1,2) = ABS(B(1,2))
-     A(2,2) = ABS(B(2,2))
+     A(1,2) = CR_HYPOT(REAL(B(1,2)), AIMAG(B(1,2)))
+     A(2,2) = CR_HYPOT(REAL(B(2,2)), AIMAG(B(2,2)))
   END IF
   B(2,1) = CZERO
 

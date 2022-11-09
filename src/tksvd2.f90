@@ -67,13 +67,13 @@
      SX(1,2) = 0.0_KX
      SX(2,2) = 1.0_KX
      VX = MATMUL(TRANSPOSE(UX), UX) - SX
-     WRITE (*,1) '||U^T U - I||_F=', HYPOT(HYPOT(VX(1,1), VX(2,1)), HYPOT(VX(1,2), VX(2,2)))
+     WRITE (*,1) '||U^T U - I||_F=', CR_HYPOT(CR_HYPOT(VX(1,1), VX(2,1)), CR_HYPOT(VX(1,2), VX(2,2)))
      VX(1,1) = V(1,1)
      VX(2,1) = V(2,1)
      VX(1,2) = V(1,2)
      VX(2,2) = V(2,2)
      GX = MATMUL(TRANSPOSE(VX), VX) - SX
-     WRITE (*,1) '||V^T V - I||_F=', HYPOT(HYPOT(GX(1,1), GX(2,1)), HYPOT(GX(1,2), GX(2,2)))
+     WRITE (*,1) '||V^T V - I||_F=', CR_HYPOT(CR_HYPOT(GX(1,1), GX(2,1)), CR_HYPOT(GX(1,2), GX(2,2)))
      GX(1,1) = G(1,1)
      GX(2,1) = G(2,1)
      GX(1,2) = G(1,2)
@@ -83,8 +83,8 @@
      SX(2,2) = SCALE(S(2), -INFO)
      WRITE (*,1) 'SIGMA(2)=', SX(2,2)
      UX = MATMUL(MATMUL(UX, SX), TRANSPOSE(VX)) - GX
-     SX(2,1) = HYPOT(HYPOT(UX(1,1), UX(2,1)), HYPOT(UX(1,2), UX(2,2)))
-     SX(1,2) = HYPOT(HYPOT(GX(1,1), GX(2,1)), HYPOT(GX(1,2), GX(2,2)))
+     SX(2,1) = CR_HYPOT(CR_HYPOT(UX(1,1), UX(2,1)), CR_HYPOT(UX(1,2), UX(2,2)))
+     SX(1,2) = CR_HYPOT(CR_HYPOT(GX(1,1), GX(2,1)), CR_HYPOT(GX(1,2), GX(2,2)))
      IF ((SX(1,2) .EQ. 0.0_KX) .AND. (SX(2,1) .EQ. 0.0_KX)) THEN
         SX(2,1) = 0.0_KX
      ELSE ! the general case

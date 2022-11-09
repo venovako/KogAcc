@@ -6,9 +6,25 @@
 !!@param S [OUT]; \f$\Sigma'\f$ is a double precision real array with two elements, \f$\sigma_{11}'\f$ and \f$\sigma_{22}'\f$, both non-negative and finite.
 !!@param INFO [OUT]; the scaling parameter \f$s\f$ such that \f$2^{-s}\Sigma'=\Sigma\f$.
 !!If \f$G\f$ has a non-finite component, then \f$s=-\mathop{\mathtt{HUGE}}(0)\f$, \f$U=V=I\f$, and \f$\sigma_{11}'=\sigma_{22}'=0\f$.
+#ifdef CR_MATH
+SUBROUTINE ZKSVD2(G, U, V, S, INFO)
+#else
 PURE SUBROUTINE ZKSVD2(G, U, V, S, INFO)
+#endif
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
   IMPLICIT NONE
+
+#ifdef CR_MATH
+  INTERFACE
+     FUNCTION CR_HYPOT(X, Y) BIND(C,NAME='cr_hypot')
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_double
+       REAL(KIND=c_double), INTENT(IN), VALUE :: X, Y
+       REAL(KIND=c_double) :: CR_HYPOT
+     END FUNCTION CR_HYPOT
+  END INTERFACE
+#else
+#define CR_HYPOT HYPOT
+#endif
 
   INTEGER, PARAMETER :: K = REAL64, IERR = -HUGE(0)
   REAL(KIND=K), PARAMETER :: ZERO = 0.0_K, ONE = 1.0_K
@@ -24,5 +40,5 @@ PURE SUBROUTINE ZKSVD2(G, U, V, S, INFO)
   REAL(KIND=K) :: A(2,2), X, Y, T
   REAL(KIND=K) :: TANG, SECG, TANF, SECF, TANP, SECP
 
-  INCLUDE 'hksvd2.f90'
+#include "hksvd2.f90"
 END SUBROUTINE ZKSVD2

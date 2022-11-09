@@ -71,7 +71,9 @@
      VX(1,2) = CONJG(UX(2,1))
      VX(2,2) = CONJG(UX(2,2))
      VX = MATMUL(VX, UX) - SX
-     WRITE (*,1) '||U^H U - I||_F=', HYPOT(HYPOT(ABS(VX(1,1)), ABS(VX(2,1))), HYPOT(ABS(VX(1,2)), ABS(VX(2,2))))
+     WRITE (*,1) '||U^H U - I||_F=',&
+          CR_HYPOT(CR_HYPOT(CR_HYPOT(REAL(VX(1,1)),AIMAG(VX(1,1))), CR_HYPOT(REAL(VX(2,1)),AIMAG(VX(2,1)))),&
+          CR_HYPOT(CR_HYPOT(REAL(VX(1,2)),AIMAG(VX(1,2))), CR_HYPOT(REAL(VX(2,2)),AIMAG(VX(2,2)))))
      VX(1,1) = V(1,1)
      VX(2,1) = V(2,1)
      VX(1,2) = V(1,2)
@@ -81,7 +83,9 @@
      GX(1,2) = CONJG(VX(2,1))
      GX(2,2) = CONJG(VX(2,2))
      GX = MATMUL(GX, VX) - SX
-     WRITE (*,1) '||V^H V - I||_F=', HYPOT(HYPOT(ABS(GX(1,1)), ABS(GX(2,1))), HYPOT(ABS(GX(1,2)), ABS(GX(2,2))))
+     WRITE (*,1) '||V^H V - I||_F=',&
+          CR_HYPOT(CR_HYPOT(CR_HYPOT(REAL(GX(1,1)),AIMAG(GX(1,1))), CR_HYPOT(REAL(GX(2,1)),AIMAG(GX(2,1)))),&
+          CR_HYPOT(CR_HYPOT(REAL(GX(1,2)),AIMAG(GX(1,2))), CR_HYPOT(REAL(GX(2,2)),AIMAG(GX(2,2)))))
      GX(1,1) = G(1,1)
      GX(2,1) = G(2,1)
      GX(1,2) = G(1,2)
@@ -99,8 +103,10 @@
      SX(2,2) = SCALE(S(2), -INFO)
      WRITE (*,1) 'SIGMA(2)=', SX(2,2)
      UX = MATMUL(MATMUL(UX, SX), VX) - GX
-     SX(2,1) = HYPOT(HYPOT(ABS(UX(1,1)), ABS(UX(2,1))), HYPOT(ABS(UX(1,2)), ABS(UX(2,2))))
-     SX(1,2) = HYPOT(HYPOT(ABS(GX(1,1)), ABS(GX(2,1))), HYPOT(ABS(GX(1,2)), ABS(GX(2,2))))
+     SX(2,1) = CR_HYPOT(CR_HYPOT(CR_HYPOT(REAL(UX(1,1)),AIMAG(UX(1,1))), CR_HYPOT(REAL(UX(2,1)),AIMAG(UX(2,1)))),&
+          CR_HYPOT(CR_HYPOT(REAL(UX(1,2)),AIMAG(UX(1,2))), CR_HYPOT(REAL(UX(2,2)),AIMAG(UX(2,2)))))
+     SX(1,2) = CR_HYPOT(CR_HYPOT(CR_HYPOT(REAL(GX(1,1)),AIMAG(GX(1,1))), CR_HYPOT(REAL(GX(2,1)),AIMAG(GX(2,1)))),&
+          CR_HYPOT(CR_HYPOT(REAL(GX(1,2)),AIMAG(GX(1,2))), CR_HYPOT(REAL(GX(2,2)),AIMAG(GX(2,2)))))
      IF ((SX(1,2) .EQ. 0.0_KX) .AND. (SX(2,1) .EQ. 0.0_KX)) THEN
         SX(2,1) = 0.0_KX
      ELSE ! the general case

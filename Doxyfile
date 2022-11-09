@@ -989,6 +989,13 @@ FILE_PATTERNS          = *.c \
                          *.f18 \
                          *.f \
                          *.for \
+                         *.F90 \
+                         *.F95 \
+                         *.F03 \
+                         *.F08 \
+                         *.F18 \
+                         *.F \
+                         *.FOR \
                          *.vhd \
                          *.vhdl \
                          *.ucf \
