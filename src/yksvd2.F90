@@ -7,6 +7,9 @@
 !!@param INFO [OUT]; the scaling parameter \f$s\f$ such that \f$2^{-s}\Sigma'=\Sigma\f$.
 !!If \f$G\f$ has a non-finite component, then \f$s=-\mathop{\mathtt{HUGE}}(0)\f$, \f$U=V=I\f$, and \f$\sigma_{11}'=\sigma_{22}'=0\f$.
 PURE SUBROUTINE YKSVD2(G, U, V, S, INFO)
+#ifdef USE_IEEE_INTRINSIC
+  USE, INTRINSIC :: IEEE_ARITHMETIC, ONLY: IEEE_FMA
+#endif
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL128
   IMPLICIT NONE
 
@@ -26,5 +29,9 @@ PURE SUBROUTINE YKSVD2(G, U, V, S, INFO)
   REAL(KIND=K) :: A(2,2), X, Y, T
   REAL(KIND=K) :: TANG, SECG, TANF, SECF, TANP, SECP
 
+#ifdef USE_IEEE_INTRINSIC
+#include "hksvd2i.f90"
+#else
 #include "hksvd2.f90"
+#endif
 END SUBROUTINE YKSVD2

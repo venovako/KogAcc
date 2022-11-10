@@ -7,6 +7,9 @@
 !!@param INFO [OUT]; the scaling parameter \f$s\f$ such that \f$2^{-s}\Sigma'=\Sigma\f$.
 !!If \f$G\f$ has a non-finite element, then \f$s=-\mathop{\mathtt{HUGE}}(0)\f$, \f$U=V=I\f$, and \f$\sigma_{11}'=\sigma_{22}'=0\f$.
 PURE SUBROUTINE XKSVD2(G, U, V, S, INFO)
+#ifdef USE_IEEE_INTRINSIC
+  USE, INTRINSIC :: IEEE_ARITHMETIC, ONLY: IEEE_FMA
+#endif
   IMPLICIT NONE
 
 #define CR_HYPOT HYPOT
@@ -22,5 +25,9 @@ PURE SUBROUTINE XKSVD2(G, U, V, S, INFO)
   REAL(KIND=K) :: B(2,2), X, Y, Z
   REAL(KIND=K) :: TANG, SECG, TANF, SECF, TANP, SECP
 
+#ifdef USE_IEEE_INTRINSIC
+#include "gksvd2i.f90"
+#else
 #include "gksvd2.f90"
+#endif
 END SUBROUTINE XKSVD2
