@@ -16,7 +16,9 @@ FCFLAGS += -pedantic -Wall -Wextra -Wno-array-temporaries -Wno-compare-reals
 # makes no sense to use CR_MATH without enforcing the FMAs in the rest of the code
 ifdef CR_MATH
 # gfortran might support IEEE_FMA from the version 13 onwards
-# FCFLAGS += -DUSE_IEEE_INTRINSIC
+ifeq ($(COMPILER_SUFFIX),-13)
+FCFLAGS += -DUSE_IEEE_INTRINSIC
+endif # gfortran-13
 endif # CR_MATH
 ifeq ($(OS),Darwin)
 ifeq ($(ARCH),x86_64)
