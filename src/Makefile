@@ -75,22 +75,22 @@ doc: ..\Doxyfile
 	$(AR) $(ARFLAGS) /OUT:$@ $(OBJS_FAUX)
 
 ..\obj\$(PLAT)\sksvd2.obj: sksvd2.F90 gksvd2$(INTRIN).F90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ sksvd2.F90
+	$(FC) $(FCFLAGS) /fpp /c /Fo$@ sksvd2.F90
 
 ..\obj\$(PLAT)\cksvd2.obj: cksvd2.F90 hksvd2$(INTRIN).F90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ cksvd2.F90
+	$(FC) $(FCFLAGS) /fpp /c /Fo$@ cksvd2.F90
 
 ..\obj\$(PLAT)\dksvd2.obj: dksvd2.F90 gksvd2$(INTRIN).F90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ dksvd2.F90
+	$(FC) $(FCFLAGS) /fpp /c /Fo$@ dksvd2.F90
 
 ..\obj\$(PLAT)\zksvd2.obj: zksvd2.F90 hksvd2$(INTRIN).F90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ zksvd2.F90
+	$(FC) $(FCFLAGS) /fpp /c /Fo$@ zksvd2.F90
 
 ..\obj\$(PLAT)\qksvd2.obj: qksvd2.F90 gksvd2$(INTRIN).F90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ qksvd2.F90
+	$(FC) $(FCFLAGS) /fpp /c /Fo$@ qksvd2.F90
 
 ..\obj\$(PLAT)\yksvd2.obj: yksvd2.F90 hksvd2$(INTRIN).F90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ yksvd2.F90
+	$(FC) $(FCFLAGS) /fpp /c /Fo$@ yksvd2.F90
 
 ..\obj\$(PLAT)\slwsv2.obj: slwsv2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) /c /Fo$@ slwsv2.f90
@@ -228,28 +228,28 @@ doc: ..\Doxyfile
 	$(FC) $(FCFLAGS) /c /Fo$@ sthalt_ifort.f90
 
 ..\bin\$(PLAT)\sksvd2.exe: sksvd2x.F90 tksvd2.F90 ..\lib\$(PLAT)\ksvd2.lib $(MKFS)
-	$(FC) $(FCFLAGS) /Fe$@ sksvd2x.F90 $(LDFLAGS) ..\lib\$(PLAT)\ksvd2.lib
+	$(FC) $(FCFLAGS) /fpp sksvd2x.F90 /Fe$@ $(LDFLAGS) ..\lib\$(PLAT)\ksvd2.lib
 
 ..\bin\$(PLAT)\cksvd2.exe: cksvd2x.F90 uksvd2.F90 ..\lib\$(PLAT)\ksvd2.lib $(MKFS)
-	$(FC) $(FCFLAGS) /Fe$@ cksvd2x.F90 $(LDFLAGS) ..\lib\$(PLAT)\ksvd2.lib
+	$(FC) $(FCFLAGS) /fpp cksvd2x.F90 /Fe$@ $(LDFLAGS) ..\lib\$(PLAT)\ksvd2.lib
 
 ..\bin\$(PLAT)\dksvd2.exe: dksvd2x.F90 tksvd2.F90 ..\lib\$(PLAT)\ksvd2.lib $(MKFS)
-	$(FC) $(FCFLAGS) /Fe$@ dksvd2x.F90 $(LDFLAGS) ..\lib\$(PLAT)\ksvd2.lib
+	$(FC) $(FCFLAGS) /fpp dksvd2x.F90 /Fe$@ $(LDFLAGS) ..\lib\$(PLAT)\ksvd2.lib
 
 ..\bin\$(PLAT)\zksvd2.exe: zksvd2x.F90 uksvd2.F90 ..\lib\$(PLAT)\ksvd2.lib $(MKFS)
-	$(FC) $(FCFLAGS) /Fe$@ zksvd2x.F90 $(LDFLAGS) ..\lib\$(PLAT)\ksvd2.lib
+	$(FC) $(FCFLAGS) /fpp zksvd2x.F90 /Fe$@ $(LDFLAGS) ..\lib\$(PLAT)\ksvd2.lib
 
 ..\bin\$(PLAT)\qksvd2.exe: qksvd2x.F90 tksvd2.F90 ..\lib\$(PLAT)\ksvd2.lib $(MKFS)
-	$(FC) $(FCFLAGS) /Fe$@ qksvd2x.F90 $(LDFLAGS) ..\lib\$(PLAT)\ksvd2.lib
+	$(FC) $(FCFLAGS) /fpp qksvd2x.F90 /Fe$@ $(LDFLAGS) ..\lib\$(PLAT)\ksvd2.lib
 
 ..\bin\$(PLAT)\yksvd2.exe: yksvd2x.F90 uksvd2.F90 ..\lib\$(PLAT)\ksvd2.lib $(MKFS)
-	$(FC) $(FCFLAGS) /Fe$@ yksvd2x.F90 $(LDFLAGS) ..\lib\$(PLAT)\ksvd2.lib
+	$(FC) $(FCFLAGS) /fpp yksvd2x.F90 /Fe$@ $(LDFLAGS) ..\lib\$(PLAT)\ksvd2.lib
 
 ..\bin\$(PLAT)\slwsv2.exe: slwsv2x.F90 tlasv2.F90 ..\lib\$(PLAT)\ksvd2.lib $(MKFS)
-	$(FC) $(FCFLAGS) /Fe$@ slwsv2x.F90 $(LDFLAGS) ..\lib\$(PLAT)\ksvd2.lib $(LAPACK)
+	$(FC) $(FCFLAGS) /fpp slwsv2x.F90 /Fe$@ $(LDFLAGS) ..\lib\$(PLAT)\ksvd2.lib $(LAPACK)
 
 ..\bin\$(PLAT)\dlwsv2.exe: dlwsv2x.F90 tlasv2.F90 ..\lib\$(PLAT)\ksvd2.lib $(MKFS)
-	$(FC) $(FCFLAGS) /Fe$@ dlwsv2x.F90 $(LDFLAGS) ..\lib\$(PLAT)\ksvd2.lib $(LAPACK)
+	$(FC) $(FCFLAGS) /fpp dlwsv2x.F90 /Fe$@ $(LDFLAGS) ..\lib\$(PLAT)\ksvd2.lib $(LAPACK)
 
 ..\bin\$(PLAT)\srnd.exe: srnd.f90 $(MKFS)
 	$(FC) $(FCFLAGS) /Fe$@ srnd.f90 $(LDFLAGS)
