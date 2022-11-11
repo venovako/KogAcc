@@ -36,6 +36,7 @@
 *.optrpt
 *.opt.yaml
 *.pdb
+src/local.mk
 
 # Directories
 bin
