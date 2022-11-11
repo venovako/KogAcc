@@ -7,6 +7,9 @@
 !!@param S [OUT]; the computed square of the Frobenius norm.
 !!@param INFO [OUT]; zero on success or \f$-i\f$ if the \f$i\f$th argument had an illegal value.
 SUBROUTINE QZOFFSQ(O, N, G, LDG, S, INFO)
+#ifdef USE_IEEE_INTRINSIC
+  USE, INTRINSIC :: IEEE_ARITHMETIC, ONLY: IEEE_FMA
+#endif
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64, REAL128
   IMPLICIT NONE
   CHARACTER, INTENT(IN) :: O
@@ -17,5 +20,9 @@ SUBROUTINE QZOFFSQ(O, N, G, LDG, S, INFO)
   REAL(KIND=REAL128) :: Y
   INTEGER :: I, J
   S = 0.0_REAL128
-  INCLUDE 'hoffsq.f90'
+#ifdef USE_IEEE_INTRINSIC
+#include "hoffsqi.F90"
+#else
+#include "hoffsq.F90"
+#endif
 END SUBROUTINE QZOFFSQ

@@ -127,23 +127,23 @@ doc: ../Doxyfile
 ../obj/$(PLAT)/nb2m.o: nb2m.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ nb2m.f90
 
-../obj/$(PLAT)/dsoffsq.o: dsoffsq.f90 goffsq.f90 $(MKFS)
-	$(FC) $(FCFLAGS) -c -o $@ dsoffsq.f90
+../obj/$(PLAT)/dsoffsq.o: dsoffsq.F90 goffsq$(INTRIN).F90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ dsoffsq.F90
 
-../obj/$(PLAT)/dcoffsq.o: dcoffsq.f90 hoffsq.f90 $(MKFS)
-	$(FC) $(FCFLAGS) -c -o $@ dcoffsq.f90
+../obj/$(PLAT)/dcoffsq.o: dcoffsq.F90 hoffsq$(INTRIN).F90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ dcoffsq.F90
 
-../obj/$(PLAT)/qdoffsq.o: qdoffsq.f90 goffsq.f90 $(MKFS)
-	$(FC) $(FCFLAGS) -c -o $@ qdoffsq.f90
+../obj/$(PLAT)/qdoffsq.o: qdoffsq.F90 goffsq$(INTRIN).F90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ qdoffsq.F90
 
-../obj/$(PLAT)/qzoffsq.o: qzoffsq.f90 hoffsq.f90 $(MKFS)
-	$(FC) $(FCFLAGS) -c -o $@ qzoffsq.f90
+../obj/$(PLAT)/qzoffsq.o: qzoffsq.F90 hoffsq$(INTRIN).F90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ qzoffsq.F90
 
-../obj/$(PLAT)/xdoffsq.o: xdoffsq.f90 goffsq.f90 $(MKFS)
-	$(FC) $(FCFLAGS) -c -o $@ xdoffsq.f90
+../obj/$(PLAT)/xdoffsq.o: xdoffsq.F90 goffsq$(INTRIN).F90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ xdoffsq.F90
 
-../obj/$(PLAT)/xzoffsq.o: xzoffsq.f90 hoffsq.f90 $(MKFS)
-	$(FC) $(FCFLAGS) -c -o $@ xzoffsq.f90
+../obj/$(PLAT)/xzoffsq.o: xzoffsq.F90 hoffsq$(INTRIN).F90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ xzoffsq.F90
 
 ../obj/$(PLAT)/dpqcmp.o: dpqcmp.f90 gpqcmp.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ dpqcmp.f90

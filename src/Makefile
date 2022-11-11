@@ -75,157 +75,157 @@ doc: ..\Doxyfile
 	$(AR) $(ARFLAGS) /OUT:$@ $(OBJS_FAUX)
 
 ..\obj\$(PLAT)\sksvd2.obj: sksvd2.F90 gksvd2$(INTRIN).F90 $(MKFS)
-	$(FC) $(FCFLAGS) /fpp /c /Fo$@ sksvd2.F90
+	$(FC) $(FCFLAGS) /fpp /c sksvd2.F90 /Fo$@
 
 ..\obj\$(PLAT)\cksvd2.obj: cksvd2.F90 hksvd2$(INTRIN).F90 $(MKFS)
-	$(FC) $(FCFLAGS) /fpp /c /Fo$@ cksvd2.F90
+	$(FC) $(FCFLAGS) /fpp /c cksvd2.F90 /Fo$@
 
 ..\obj\$(PLAT)\dksvd2.obj: dksvd2.F90 gksvd2$(INTRIN).F90 $(MKFS)
-	$(FC) $(FCFLAGS) /fpp /c /Fo$@ dksvd2.F90
+	$(FC) $(FCFLAGS) /fpp /c dksvd2.F90 /Fo$@
 
 ..\obj\$(PLAT)\zksvd2.obj: zksvd2.F90 hksvd2$(INTRIN).F90 $(MKFS)
-	$(FC) $(FCFLAGS) /fpp /c /Fo$@ zksvd2.F90
+	$(FC) $(FCFLAGS) /fpp /c zksvd2.F90 /Fo$@
 
 ..\obj\$(PLAT)\qksvd2.obj: qksvd2.F90 gksvd2$(INTRIN).F90 $(MKFS)
-	$(FC) $(FCFLAGS) /fpp /c /Fo$@ qksvd2.F90
+	$(FC) $(FCFLAGS) /fpp /c qksvd2.F90 /Fo$@
 
 ..\obj\$(PLAT)\yksvd2.obj: yksvd2.F90 hksvd2$(INTRIN).F90 $(MKFS)
-	$(FC) $(FCFLAGS) /fpp /c /Fo$@ yksvd2.F90
+	$(FC) $(FCFLAGS) /fpp /c yksvd2.F90 /Fo$@
 
 ..\obj\$(PLAT)\slwsv2.obj: slwsv2.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ slwsv2.f90
+	$(FC) $(FCFLAGS) /c slwsv2.f90 /Fo$@
 
 ..\obj\$(PLAT)\dlwsv2.obj: dlwsv2.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ dlwsv2.f90
+	$(FC) $(FCFLAGS) /c dlwsv2.f90 /Fo$@
 
 ..\obj\$(PLAT)\sbrdg.obj: sbrdg.f90 gbrdg.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ sbrdg.f90
+	$(FC) $(FCFLAGS) /c sbrdg.f90 /Fo$@
 
 ..\obj\$(PLAT)\cbrdg.obj: cbrdg.f90 gbrdg.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ cbrdg.f90
+	$(FC) $(FCFLAGS) /c cbrdg.f90 /Fo$@
 
 ..\obj\$(PLAT)\dbrdg.obj: dbrdg.f90 gbrdg.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ dbrdg.f90
+	$(FC) $(FCFLAGS) /c dbrdg.f90 /Fo$@
 
 ..\obj\$(PLAT)\zbrdg.obj: zbrdg.f90 gbrdg.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ zbrdg.f90
+	$(FC) $(FCFLAGS) /c zbrdg.f90 /Fo$@
 
 ..\obj\$(PLAT)\sbordg.obj: sbordg.f90 gbordg.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ sbordg.f90
+	$(FC) $(FCFLAGS) /c sbordg.f90 /Fo$@
 
 ..\obj\$(PLAT)\cbordg.obj: cbordg.f90 gbordg.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ cbordg.f90
+	$(FC) $(FCFLAGS) /c cbordg.f90 /Fo$@
 
 ..\obj\$(PLAT)\dbordg.obj: dbordg.f90 gbordg.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ dbordg.f90
+	$(FC) $(FCFLAGS) /c dbordg.f90 /Fo$@
 
 ..\obj\$(PLAT)\zbordg.obj: zbordg.f90 gbordg.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ zbordg.f90
+	$(FC) $(FCFLAGS) /c zbordg.f90 /Fo$@
 
 ..\obj\$(PLAT)\nb2m.obj: nb2m.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ nb2m.f90
+	$(FC) $(FCFLAGS) /c nb2m.f90 /Fo$@
 
-..\obj\$(PLAT)\dsoffsq.obj: dsoffsq.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ dsoffsq.f90
+..\obj\$(PLAT)\dsoffsq.obj: dsoffsq.F90 goffsq$(INTRIN).F90 $(MKFS)
+	$(FC) $(FCFLAGS) /fpp /c dsoffsq.F90 /Fo$@
 
-..\obj\$(PLAT)\dcoffsq.obj: dcoffsq.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ dcoffsq.f90
+..\obj\$(PLAT)\dcoffsq.obj: dcoffsq.F90 hoffsq$(INTRIN).F90 $(MKFS)
+	$(FC) $(FCFLAGS) /fpp /c dcoffsq.F90 /Fo$@
 
-..\obj\$(PLAT)\qdoffsq.obj: qdoffsq.f90 goffsq.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ qdoffsq.f90
+..\obj\$(PLAT)\qdoffsq.obj: qdoffsq.F90 goffsq$(INTRIN).F90 $(MKFS)
+	$(FC) $(FCFLAGS) /fpp /c qdoffsq.F90 /Fo$@
 
-..\obj\$(PLAT)\qzoffsq.obj: qzoffsq.f90 hoffsq.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ qzoffsq.f90
+..\obj\$(PLAT)\qzoffsq.obj: qzoffsq.F90 hoffsq$(INTRIN).F90 $(MKFS)
+	$(FC) $(FCFLAGS) /fpp /c qzoffsq.F90 /Fo$@
 
 ..\obj\$(PLAT)\dpqcmp.obj: dpqcmp.f90 gpqcmp.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ dpqcmp.f90
+	$(FC) $(FCFLAGS) /c dpqcmp.f90 /Fo$@
 
 ..\obj\$(PLAT)\qpqcmp.obj: qpqcmp.f90 gpqcmp.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ qpqcmp.f90
+	$(FC) $(FCFLAGS) /c qpqcmp.f90 /Fo$@
 
 ..\obj\$(PLAT)\dpqmrg.obj: dpqmrg.f90 gpqmrg.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ dpqmrg.f90
+	$(FC) $(FCFLAGS) /c dpqmrg.f90 /Fo$@
 
 ..\obj\$(PLAT)\qpqmrg.obj: qpqmrg.f90 gpqmrg.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ qpqmrg.f90
+	$(FC) $(FCFLAGS) /c qpqmrg.f90 /Fo$@
 
 ..\obj\$(PLAT)\dpqsrt.obj: dpqsrt.f90 gpqsrt.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ dpqsrt.f90
+	$(FC) $(FCFLAGS) /c dpqsrt.f90 /Fo$@
 
 ..\obj\$(PLAT)\dpqsort.obj: dpqsort.f90 gpqsort.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ dpqsort.f90
+	$(FC) $(FCFLAGS) /c dpqsort.f90 /Fo$@
 
 ..\obj\$(PLAT)\qpqsrt.obj: qpqsrt.f90 gpqsrt.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ qpqsrt.f90
+	$(FC) $(FCFLAGS) /c qpqsrt.f90 /Fo$@
 
 ..\obj\$(PLAT)\qpqsort.obj: qpqsort.f90 gpqsort.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ qpqsort.f90
+	$(FC) $(FCFLAGS) /c qpqsort.f90 /Fo$@
 
 ..\obj\$(PLAT)\dpsum4.obj: dpsum4.f90 gpsum4.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ dpsum4.f90
+	$(FC) $(FCFLAGS) /c dpsum4.f90 /Fo$@
 
 ..\obj\$(PLAT)\qpsum4.obj: qpsum4.f90 gpsum4.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ qpsum4.f90
+	$(FC) $(FCFLAGS) /c qpsum4.f90 /Fo$@
 
 ..\obj\$(PLAT)\bfopen.obj: bfopen.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ bfopen.f90
+	$(FC) $(FCFLAGS) /c bfopen.f90 /Fo$@
 
 ..\obj\$(PLAT)\sbrd1.obj: sbrd1.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ sbrd1.f90
+	$(FC) $(FCFLAGS) /c sbrd1.f90 /Fo$@
 
 ..\obj\$(PLAT)\cbrd1.obj: cbrd1.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ cbrd1.f90
+	$(FC) $(FCFLAGS) /c cbrd1.f90 /Fo$@
 
 ..\obj\$(PLAT)\dbrd1.obj: dbrd1.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ dbrd1.f90
+	$(FC) $(FCFLAGS) /c dbrd1.f90 /Fo$@
 
 ..\obj\$(PLAT)\zbrd1.obj: zbrd1.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ zbrd1.f90
+	$(FC) $(FCFLAGS) /c zbrd1.f90 /Fo$@
 
 ..\obj\$(PLAT)\qbrd1.obj: qbrd1.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ qbrd1.f90
+	$(FC) $(FCFLAGS) /c qbrd1.f90 /Fo$@
 
 ..\obj\$(PLAT)\sbwr1.obj: sbwr1.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ sbwr1.f90
+	$(FC) $(FCFLAGS) /c sbwr1.f90 /Fo$@
 
 ..\obj\$(PLAT)\cbwr1.obj: cbwr1.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ cbwr1.f90
+	$(FC) $(FCFLAGS) /c cbwr1.f90 /Fo$@
 
 ..\obj\$(PLAT)\dbwr1.obj: dbwr1.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ dbwr1.f90
+	$(FC) $(FCFLAGS) /c dbwr1.f90 /Fo$@
 
 ..\obj\$(PLAT)\zbwr1.obj: zbwr1.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ zbwr1.f90
+	$(FC) $(FCFLAGS) /c zbwr1.f90 /Fo$@
 
 ..\obj\$(PLAT)\qbwr1.obj: qbwr1.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ qbwr1.f90
+	$(FC) $(FCFLAGS) /c qbwr1.f90 /Fo$@
 
 ..\obj\$(PLAT)\sbrd2.obj: sbrd2.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ sbrd2.f90
+	$(FC) $(FCFLAGS) /c sbrd2.f90 /Fo$@
 
 ..\obj\$(PLAT)\cbrd2.obj: cbrd2.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ cbrd2.f90
+	$(FC) $(FCFLAGS) /c cbrd2.f90 /Fo$@
 
 ..\obj\$(PLAT)\dbrd2.obj: dbrd2.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ dbrd2.f90
+	$(FC) $(FCFLAGS) /c dbrd2.f90 /Fo$@
 
 ..\obj\$(PLAT)\zbrd2.obj: zbrd2.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ zbrd2.f90
+	$(FC) $(FCFLAGS) /c zbrd2.f90 /Fo$@
 
 ..\obj\$(PLAT)\sbwr2.obj: sbwr2.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ sbwr2.f90
+	$(FC) $(FCFLAGS) /c sbwr2.f90 /Fo$@
 
 ..\obj\$(PLAT)\cbwr2.obj: cbwr2.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ cbwr2.f90
+	$(FC) $(FCFLAGS) /c cbwr2.f90 /Fo$@
 
 ..\obj\$(PLAT)\dbwr2.obj: dbwr2.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ dbwr2.f90
+	$(FC) $(FCFLAGS) /c dbwr2.f90 /Fo$@
 
 ..\obj\$(PLAT)\zbwr2.obj: zbwr2.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ zbwr2.f90
+	$(FC) $(FCFLAGS) /c zbwr2.f90 /Fo$@
 
 ..\obj\$(PLAT)\sthalt.obj: sthalt_ifort.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c /Fo$@ sthalt_ifort.f90
+	$(FC) $(FCFLAGS) /c sthalt_ifort.f90 /Fo$@
 
 ..\bin\$(PLAT)\sksvd2.exe: sksvd2x.F90 tksvd2.F90 ..\lib\$(PLAT)\ksvd2.lib $(MKFS)
 	$(FC) $(FCFLAGS) /fpp sksvd2x.F90 /Fe$@ $(LDFLAGS) ..\lib\$(PLAT)\ksvd2.lib
@@ -252,13 +252,13 @@ doc: ..\Doxyfile
 	$(FC) $(FCFLAGS) /fpp dlwsv2x.F90 /Fe$@ $(LDFLAGS) ..\lib\$(PLAT)\ksvd2.lib $(LAPACK)
 
 ..\bin\$(PLAT)\srnd.exe: srnd.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /Fe$@ srnd.f90 $(LDFLAGS)
+	$(FC) $(FCFLAGS) srnd.f90 /Fe$@ $(LDFLAGS)
 
 ..\bin\$(PLAT)\dpqsort.exe: dpqsortx.f90 ..\lib\$(PLAT)\dynord.lib $(MKFS)
-	$(FC) $(FCFLAGS) /Fe$@ dpqsortx.f90 $(LDFLAGS) ..\lib\$(PLAT)\dynord.lib
+	$(FC) $(FCFLAGS) dpqsortx.f90 /Fe$@ $(LDFLAGS) ..\lib\$(PLAT)\dynord.lib
 
 ..\bin\$(PLAT)\qpqsort.exe: qpqsortx.f90 ..\lib\$(PLAT)\dynord.lib $(MKFS)
-	$(FC) $(FCFLAGS) /Fe$@ qpqsortx.f90 $(LDFLAGS) ..\lib\$(PLAT)\dynord.lib
+	$(FC) $(FCFLAGS) qpqsortx.f90 /Fe$@ $(LDFLAGS) ..\lib\$(PLAT)\dynord.lib
 
 clean:
 	-del /f /q $(EXES)

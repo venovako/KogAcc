@@ -7,6 +7,9 @@
 !!@param S [OUT]; the computed square of the Frobenius norm.
 !!@param INFO [OUT]; zero on success or \f$-i\f$ if the \f$i\f$th argument had an illegal value.
 SUBROUTINE DSOFFSQ(O, N, G, LDG, S, INFO)
+#ifdef USE_IEEE_INTRINSIC
+  USE, INTRINSIC :: IEEE_ARITHMETIC, ONLY: IEEE_FMA
+#endif
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32, REAL64
   IMPLICIT NONE
   CHARACTER, INTENT(IN) :: O
@@ -17,5 +20,9 @@ SUBROUTINE DSOFFSQ(O, N, G, LDG, S, INFO)
   REAL(KIND=REAL64) :: Y
   INTEGER :: I, J
   S = 0.0_REAL64
-  INCLUDE 'goffsq.f90'
+#ifdef USE_IEEE_INTRINSIC
+#include "goffsqi.F90"
+#else
+#include "goffsq.F90"
+#endif
 END SUBROUTINE DSOFFSQ
