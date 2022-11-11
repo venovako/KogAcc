@@ -172,7 +172,7 @@
   X = B(1,2) / B(1,1)
   Y = B(2,2) / B(1,1)
 
-  ! the functions of \varphi
+  ! TODO: the functions of \varphi
   IF (X .LE. Y) THEN
      Z = SCALE(X, 1) * Y
   ELSE ! X > Y

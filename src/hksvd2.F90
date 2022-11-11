@@ -90,7 +90,7 @@
   ELSE IF (A(1,1) .EQ. ZERO) THEN
      S(1) = A(2,1)
   ELSE ! full 1st column
-     S(1) = HYPOT(A(1,1), A(2,1))
+     S(1) = CR_HYPOT(A(1,1), A(2,1))
   END IF
 
   ! compute the second column norm
@@ -99,7 +99,7 @@
   ELSE IF (A(2,2) .EQ. ZERO) THEN
      S(2) = A(1,2)
   ELSE ! full 2nd column
-     S(2) = HYPOT(A(1,2), A(2,2))
+     S(2) = CR_HYPOT(A(1,2), A(2,2))
   END IF
 
   ! swap the columns if necessary
@@ -258,7 +258,7 @@
   X = A(1,2) / A(1,1)
   Y = A(2,2) / A(1,1)
 
-  ! the functions of \varphi
+  ! TODO: the functions of \varphi
   IF (X .LE. Y) THEN
      T = SCALE(X, 1) * Y
   ELSE ! X > Y
