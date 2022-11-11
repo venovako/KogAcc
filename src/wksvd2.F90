@@ -29,8 +29,8 @@ PURE SUBROUTINE WKSVD2(G, U, V, S, INFO)
   REAL(KIND=K) :: TANG, SECG, TANF, SECF, TANP, SECP
 
 #ifdef USE_IEEE_INTRINSIC
-#include "hksvd2i.f90"
+#include "hksvd2i.F90"
 #else
-#include "hksvd2.f90"
+#include "hksvd2.F90"
 #endif
 END SUBROUTINE WKSVD2

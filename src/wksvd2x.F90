@@ -22,7 +22,7 @@ CONTAINS
     LOGICAL :: ONCE
     COMPLEX(KIND=KX) :: GX(2,2), UX(2,2), VX(2,2)
     REAL(KIND=KX) :: SX(2,2)
-#include "uksvd2.f90"
+#include "uksvd2.F90"
 1   FORMAT(A,ES30.21E4)
 2   FORMAT(A,'(',ES30.21E4,',',ES30.21E4,')')
 3   FORMAT(A,I6)

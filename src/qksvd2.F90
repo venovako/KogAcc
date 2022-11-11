@@ -27,8 +27,8 @@ PURE SUBROUTINE QKSVD2(G, U, V, S, INFO)
   REAL(KIND=K) :: TANG, SECG, TANF, SECF, TANP, SECP
 
 #ifdef USE_IEEE_INTRINSIC
-#include "gksvd2i.f90"
+#include "gksvd2i.F90"
 #else
-#include "gksvd2.f90"
+#include "gksvd2.F90"
 #endif
 END SUBROUTINE QKSVD2

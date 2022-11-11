@@ -1,5 +1,7 @@
   ! This is the generic part of the complex Kogbetliantz routines.
 
+#define CMUL(A,B) CMPLX(IEEE_FMA(REAL(A),REAL(B),-AIMAG(A)*AIMAG(B)),IEEE_FMA(REAL(A),AIMAG(B),AIMAG(A)*REAL(B)),K)
+
   ! U = I
   U(1,1) = CONE
   U(2,1) = CZERO
@@ -145,8 +147,7 @@
      Z = CONJG(B(1,1)) / A(1,1)
      U(1,1) = Z
      B(1,1) = A(1,1)
-     ! TODO: complex multiplication might not be reproducible
-     B(1,2) = Z * B(1,2)
+     B(1,2) = CMUL(Z, B(1,2))
   END IF
 
   ! make B(2,1) real and non-negative
@@ -161,8 +162,7 @@
      Z = CONJG(B(2,1)) / A(2,1)
      U(2,2) = Z
      B(2,1) = A(2,1)
-     ! TODO: complex multiplication might not be reproducible
-     B(2,2) = Z * B(2,2)
+     B(2,2) = CMUL(Z, B(2,2))
   END IF
 
   ! swap the rows if necessary
@@ -204,14 +204,14 @@
   B(1,1) = S(1)
   IF (TANG .NE. ZERO) THEN
      B(2,1) = U(1,1)
-     U(1,1) = CMPLX(IEEE_FMA( TANG, REAL(U(2,1)), REAL(U(1,1)))/SECG, IEEE_FMA( TANG, AIMAG(U(2,1)), AIMAG(U(1,1)))/SECG, K)
-     U(2,1) = CMPLX(IEEE_FMA(-TANG, REAL(B(2,1)), REAL(U(2,1)))/SECG, IEEE_FMA(-TANG, AIMAG(B(2,1)), AIMAG(U(2,1)))/SECG, K)
+     U(1,1) = CMPLX(IEEE_FMA( TANG, REAL(U(2,1)), REAL(U(1,1))) / SECG, IEEE_FMA( TANG, AIMAG(U(2,1)), AIMAG(U(1,1))) / SECG, K)
+     U(2,1) = CMPLX(IEEE_FMA(-TANG, REAL(B(2,1)), REAL(U(2,1))) / SECG, IEEE_FMA(-TANG, AIMAG(B(2,1)), AIMAG(U(2,1))) / SECG, K)
      B(2,1) = U(1,2)
-     U(1,2) = CMPLX(IEEE_FMA( TANG, REAL(U(2,2)), REAL(U(1,2)))/SECG, IEEE_FMA( TANG, AIMAG(U(2,2)), AIMAG(U(1,2)))/SECG, K)
-     U(2,2) = CMPLX(IEEE_FMA(-TANG, REAL(B(2,1)), REAL(U(2,2)))/SECG, IEEE_FMA(-TANG, AIMAG(B(2,1)), AIMAG(U(2,2)))/SECG, K)
+     U(1,2) = CMPLX(IEEE_FMA( TANG, REAL(U(2,2)), REAL(U(1,2))) / SECG, IEEE_FMA( TANG, AIMAG(U(2,2)), AIMAG(U(1,2))) / SECG, K)
+     U(2,2) = CMPLX(IEEE_FMA(-TANG, REAL(B(2,1)), REAL(U(2,2))) / SECG, IEEE_FMA(-TANG, AIMAG(B(2,1)), AIMAG(U(2,2))) / SECG, K)
      B(2,1) = B(1,2)
-     B(1,2) = CMPLX(IEEE_FMA( TANG, REAL(B(2,2)), REAL(B(1,2)))/SECG, IEEE_FMA( TANG, AIMAG(B(2,2)), AIMAG(B(1,2)))/SECG, K)
-     B(2,2) = CMPLX(IEEE_FMA(-TANG, REAL(B(2,1)), REAL(B(2,2)))/SECG, IEEE_FMA(-TANG, AIMAG(B(2,1)), AIMAG(B(2,2)))/SECG, K)
+     B(1,2) = CMPLX(IEEE_FMA( TANG, REAL(B(2,2)), REAL(B(1,2))) / SECG, IEEE_FMA( TANG, AIMAG(B(2,2)), AIMAG(B(1,2))) / SECG, K)
+     B(2,2) = CMPLX(IEEE_FMA(-TANG, REAL(B(2,1)), REAL(B(2,2))) / SECG, IEEE_FMA(-TANG, AIMAG(B(2,1)), AIMAG(B(2,2))) / SECG, K)
      ! recompute the magnitudes in the second column
      A(1,2) = CR_HYPOT(REAL(B(1,2)), AIMAG(B(1,2)))
      A(2,2) = CR_HYPOT(REAL(B(2,2)), AIMAG(B(2,2)))
@@ -229,10 +229,9 @@
   ELSE ! the general case
      Z = CONJG(B(1,2)) / A(1,2)
      B(1,2) = A(1,2)
-     ! TODO: complex multiplication might not be reproducible
-     B(2,2) = B(2,2) * Z
-     V(1,2) = V(1,2) * Z
-     V(2,2) = V(2,2) * Z
+     B(2,2) = CMUL(B(2,2), Z)
+     V(1,2) = CMUL(V(1,2), Z)
+     V(2,2) = CMUL(V(2,2), Z)
   END IF
 
   ! make B(2,2) real and non-negative
@@ -244,9 +243,8 @@
      END IF
   ELSE ! the general case
      Z = CONJG(B(2,2)) / A(2,2)
-     ! TODO: complex multiplication might not be reproducible
-     U(2,1) = Z * U(2,1)
-     U(2,2) = Z * U(2,2)
+     U(2,1) = CMUL(Z, U(2,1))
+     U(2,2) = CMUL(Z, U(2,2))
      B(2,2) = A(2,2)
   END IF
 

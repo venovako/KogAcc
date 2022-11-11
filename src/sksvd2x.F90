@@ -20,7 +20,7 @@ CONTAINS
     INTEGER :: INFO
     LOGICAL :: ONCE
     REAL(KIND=KX) :: GX(2,2), UX(2,2), VX(2,2), SX(2,2)
-#include "tksvd2.f90"
+#include "tksvd2.F90"
 1   FORMAT(A,ES16.9E2)
 2   FORMAT(A,I4)
   END SUBROUTINE STEST

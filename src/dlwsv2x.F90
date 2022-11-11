@@ -21,7 +21,7 @@ CONTAINS
     LOGICAL :: ONCE
     REAL(KIND=KX) :: GX(2,2), UX(2,2), VX(2,2), SX(2,2)
     G(2,1) = 0.0_REAL64
-#include "tlasv2.f90"
+#include "tlasv2.F90"
 1   FORMAT(A,ES25.17E3)
 2   FORMAT(A,I5)
   END SUBROUTINE DLTEST
