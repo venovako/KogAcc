@@ -47,7 +47,7 @@ all: dirs $(LIBS) $(EXES)
 	@echo $(PLAT)
 
 help:
-	@echo $(MAKE) "[COMPILER=gfortran|ifort] [COMPILER_PREFIX=...] [COMPILER_SUFFIX=...] [ABI=lp64|ilp64] [NDEBUG=optimization_level] [CR_MATH=dir] [all|clean|dirs|doc|help|purge]"
+	@echo $(MAKE) "[COMPILER=gfortran|ifort] [COMPILER_PREFIX=...] [COMPILER_SUFFIX=...] [ABI=ilp64|lp64] [NDEBUG=optimization_level] [CR_MATH=dir] [all|clean|dirs|doc|help|purge]"
 
 dirs:
 	@$(MKD) ../bin/$(PLAT) ../lib/$(PLAT) ../obj/$(PLAT)
@@ -253,8 +253,8 @@ doc: ../Doxyfile
 ../obj/$(PLAT)/zbwr2.o: zbwr2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ zbwr2.f90
 
-../obj/$(PLAT)/sthalt.o: sthalt_$(COMPILER).f90 $(MKFS)
-	$(FC) $(FCFLAGS) -c -o $@ sthalt_$(COMPILER).f90
+../obj/$(PLAT)/sthalt.o: sthalt.F90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ sthalt.F90
 
 ../bin/$(PLAT)/sksvd2.exe: sksvd2x.F90 tksvd2.F90 ../lib/$(PLAT)/libksvd2.a $(MKFS)
 	$(FC) $(FCFLAGS) -o $@ sksvd2x.F90 $(OBJS_CRF_MATH) -L../lib/$(PLAT) -lksvd2

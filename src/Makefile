@@ -4,7 +4,7 @@ AR=xilib.exe
 ARFLAGS=-qnoipo -lib /NOLOGO /VERBOSE
 FC=ifort.exe
 !IFNDEF ABI
-ABI=lp64
+ABI=ilp64
 !ENDIF # !ABI
 FCFLAGS=/nologo
 !IF "$(ABI)"=="ilp64"
@@ -49,7 +49,7 @@ all: dirs $(LIBS) $(EXES)
 	@echo $(PLAT)
 
 help:
-	@echo "nmake.exe [ABI=lp64|ilp64] [NDEBUG=optimization_level] [all|clean|dirs|doc|help|purge]"
+	@echo "nmake.exe [ABI=ilp64|lp64] [NDEBUG=optimization_level] [all|clean|dirs|doc|help|purge]"
 
 dirs:
 	-md ..\bin\$(PLAT)
@@ -224,8 +224,8 @@ doc: ..\Doxyfile
 ..\obj\$(PLAT)\zbwr2.obj: zbwr2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) /c zbwr2.f90 /Fo$@
 
-..\obj\$(PLAT)\sthalt.obj: sthalt_ifort.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c sthalt_ifort.f90 /Fo$@
+..\obj\$(PLAT)\sthalt.obj: sthalt.F90 $(MKFS)
+	$(FC) $(FCFLAGS) /fpp /c sthalt.F90 /Fo$@
 
 ..\bin\$(PLAT)\sksvd2.exe: sksvd2x.F90 tksvd2.F90 ..\lib\$(PLAT)\ksvd2.lib $(MKFS)
 	$(FC) $(FCFLAGS) /fpp sksvd2x.F90 /Fe$@ $(LDFLAGS) ..\lib\$(PLAT)\ksvd2.lib
