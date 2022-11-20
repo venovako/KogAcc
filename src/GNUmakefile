@@ -14,9 +14,9 @@ PLAT=$(COMPILER)/$(OS)-$(ARCH)-$(ABI)$(DEBUG)
 endif # !PLAT
 OBJS_ARRBIO=../obj/$(PLAT)/bfopen.o ../obj/$(PLAT)/sbrd1.o ../obj/$(PLAT)/cbrd1.o ../obj/$(PLAT)/dbrd1.o ../obj/$(PLAT)/zbrd1.o ../obj/$(PLAT)/sbwr1.o ../obj/$(PLAT)/cbwr1.o ../obj/$(PLAT)/dbwr1.o ../obj/$(PLAT)/zbwr1.o ../obj/$(PLAT)/sbrd2.o ../obj/$(PLAT)/cbrd2.o ../obj/$(PLAT)/dbrd2.o ../obj/$(PLAT)/zbrd2.o ../obj/$(PLAT)/sbwr2.o ../obj/$(PLAT)/cbwr2.o ../obj/$(PLAT)/dbwr2.o ../obj/$(PLAT)/zbwr2.o
 OBJS_BLKSVD=../obj/$(PLAT)/sbrdg.o ../obj/$(PLAT)/cbrdg.o ../obj/$(PLAT)/dbrdg.o ../obj/$(PLAT)/zbrdg.o ../obj/$(PLAT)/sbordg.o ../obj/$(PLAT)/cbordg.o ../obj/$(PLAT)/dbordg.o ../obj/$(PLAT)/zbordg.o ../obj/$(PLAT)/nb2m.o
-OBJS_DYNORD=../obj/$(PLAT)/dsoffsq.o ../obj/$(PLAT)/dcoffsq.o ../obj/$(PLAT)/dpqcmp.o ../obj/$(PLAT)/dpqmrg.o ../obj/$(PLAT)/dpqsrt.o ../obj/$(PLAT)/dpqsort.o ../obj/$(PLAT)/dpsum4.o
+OBJS_DYNORD=../obj/$(PLAT)/dsoffsq.o ../obj/$(PLAT)/dcoffsq.o ../obj/$(PLAT)/dpqcmp.o ../obj/$(PLAT)/dpqmrg.o ../obj/$(PLAT)/dpqsrt.o ../obj/$(PLAT)/dpqsort.o ../obj/$(PLAT)/sosum4.o ../obj/$(PLAT)/dosum4.o ../obj/$(PLAT)/dpsum4.o
 OBJS_KSVD2=../obj/$(PLAT)/sksvd2.o ../obj/$(PLAT)/cksvd2.o ../obj/$(PLAT)/dksvd2.o ../obj/$(PLAT)/zksvd2.o ../obj/$(PLAT)/slwsv2.o ../obj/$(PLAT)/dlwsv2.o
-OBJS_FAUX=../obj/$(PLAT)/sthalt.o
+OBJS_FAUX=../obj/$(PLAT)/slango.o ../obj/$(PLAT)/clango.o ../obj/$(PLAT)/dlango.o ../obj/$(PLAT)/zlango.o ../obj/$(PLAT)/sthalt.o
 EXES_DYNORD=../bin/$(PLAT)/dpqsort.exe
 EXES_KSVD2=../bin/$(PLAT)/sksvd2.exe ../bin/$(PLAT)/cksvd2.exe ../bin/$(PLAT)/dksvd2.exe ../bin/$(PLAT)/zksvd2.exe ../bin/$(PLAT)/slwsv2.exe ../bin/$(PLAT)/dlwsv2.exe ../bin/$(PLAT)/srnd.exe
 # quad
@@ -181,6 +181,12 @@ doc: ../Doxyfile
 ../obj/$(PLAT)/xpqsort.o: xpqsort.f90 gpqsort.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ xpqsort.f90
 
+../obj/$(PLAT)/sosum4.o: sosum4.F90 gosum4.F90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ sosum4.F90
+
+../obj/$(PLAT)/dosum4.o: dosum4.F90 gosum4.F90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ dosum4.F90
+
 ../obj/$(PLAT)/dpsum4.o: dpsum4.f90 gpsum4.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ dpsum4.f90
 
@@ -252,6 +258,18 @@ doc: ../Doxyfile
 
 ../obj/$(PLAT)/zbwr2.o: zbwr2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ zbwr2.f90
+
+../obj/$(PLAT)/slango.o: slango.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ slango.f90
+
+../obj/$(PLAT)/clango.o: clango.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ clango.f90
+
+../obj/$(PLAT)/dlango.o: dlango.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ dlango.f90
+
+../obj/$(PLAT)/zlango.o: zlango.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ zlango.f90
 
 ../obj/$(PLAT)/sthalt.o: sthalt.F90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ sthalt.F90
