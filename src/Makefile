@@ -33,7 +33,7 @@ INTRIN=i
 PLAT=ifort\$(OS)-$(ARCH)-$(ABI)$(DEBUG)
 !ENDIF # !PLAT
 MKFS=Makefile
-OBJS_ARRBIO=..\obj\$(PLAT)\bfopen.obj ..\obj\$(PLAT)\sbrd1.obj ..\obj\$(PLAT)\cbrd1.obj ..\obj\$(PLAT)\dbrd1.obj ..\obj\$(PLAT)\zbrd1.obj ..\obj\$(PLAT)\qbrd1.obj ..\obj\$(PLAT)\sbwr1.obj ..\obj\$(PLAT)\cbwr1.obj ..\obj\$(PLAT)\dbwr1.obj ..\obj\$(PLAT)\zbwr1.obj ..\obj\$(PLAT)\qbwr1.obj ..\obj\$(PLAT)\sbrd2.obj ..\obj\$(PLAT)\cbrd2.obj ..\obj\$(PLAT)\dbrd2.obj ..\obj\$(PLAT)\zbrd2.obj ..\obj\$(PLAT)\sbwr2.obj ..\obj\$(PLAT)\cbwr2.obj ..\obj\$(PLAT)\dbwr2.obj ..\obj\$(PLAT)\zbwr2.obj
+OBJS_ARRBIO=..\obj\$(PLAT)\bfopen.obj ..\obj\$(PLAT)\ibrd1.obj ..\obj\$(PLAT)\sbrd1.obj ..\obj\$(PLAT)\cbrd1.obj ..\obj\$(PLAT)\dbrd1.obj ..\obj\$(PLAT)\zbrd1.obj ..\obj\$(PLAT)\qbrd1.obj ..\obj\$(PLAT)\ibwr1.obj ..\obj\$(PLAT)\sbwr1.obj ..\obj\$(PLAT)\cbwr1.obj ..\obj\$(PLAT)\dbwr1.obj ..\obj\$(PLAT)\zbwr1.obj ..\obj\$(PLAT)\qbwr1.obj ..\obj\$(PLAT)\ibrd2.obj ..\obj\$(PLAT)\sbrd2.obj ..\obj\$(PLAT)\cbrd2.obj ..\obj\$(PLAT)\dbrd2.obj ..\obj\$(PLAT)\zbrd2.obj ..\obj\$(PLAT)\qbrd2.obj ..\obj\$(PLAT)\ibwr2.obj ..\obj\$(PLAT)\sbwr2.obj ..\obj\$(PLAT)\cbwr2.obj ..\obj\$(PLAT)\dbwr2.obj ..\obj\$(PLAT)\zbwr2.obj ..\obj\$(PLAT)\qbwr2.obj
 OBJS_BLKSVD=..\obj\$(PLAT)\sbrdg.obj ..\obj\$(PLAT)\cbrdg.obj ..\obj\$(PLAT)\dbrdg.obj ..\obj\$(PLAT)\zbrdg.obj ..\obj\$(PLAT)\sbordg.obj ..\obj\$(PLAT)\cbordg.obj ..\obj\$(PLAT)\dbordg.obj ..\obj\$(PLAT)\zbordg.obj ..\obj\$(PLAT)\nb2m.obj
 OBJS_DYNORD=..\obj\$(PLAT)\dsoffsq.obj ..\obj\$(PLAT)\dcoffsq.obj ..\obj\$(PLAT)\qdoffsq.obj ..\obj\$(PLAT)\qzoffsq.obj ..\obj\$(PLAT)\spqcmp.obj ..\obj\$(PLAT)\spqmrg.obj ..\obj\$(PLAT)\spqsrt.obj ..\obj\$(PLAT)\spqsort.obj ..\obj\$(PLAT)\dpqcmp.obj ..\obj\$(PLAT)\dpqmrg.obj ..\obj\$(PLAT)\dpqsrt.obj ..\obj\$(PLAT)\dpqsort.obj ..\obj\$(PLAT)\qpqcmp.obj ..\obj\$(PLAT)\qpqmrg.obj ..\obj\$(PLAT)\qpqsrt.obj ..\obj\$(PLAT)\qpqsort.obj ..\obj\$(PLAT)\sosum4.obj ..\obj\$(PLAT)\dosum4.obj ..\obj\$(PLAT)\spsum4.obj ..\obj\$(PLAT)\dpsum4.obj ..\obj\$(PLAT)\qpsum4.obj
 OBJS_KSVD2=..\obj\$(PLAT)\sksvd2.obj ..\obj\$(PLAT)\cksvd2.obj ..\obj\$(PLAT)\dksvd2.obj ..\obj\$(PLAT)\zksvd2.obj ..\obj\$(PLAT)\qksvd2.obj ..\obj\$(PLAT)\yksvd2.obj ..\obj\$(PLAT)\slwsv2.obj ..\obj\$(PLAT)\dlwsv2.obj
@@ -191,6 +191,9 @@ doc: ..\Doxyfile
 ..\obj\$(PLAT)\bfopen.obj: bfopen.f90 $(MKFS)
 	$(FC) $(FCFLAGS) /c bfopen.f90 /Fo$@
 
+..\obj\$(PLAT)\ibrd1.obj: ibrd1.f90 $(MKFS)
+	$(FC) $(FCFLAGS) /c ibrd1.f90 /Fo$@
+
 ..\obj\$(PLAT)\sbrd1.obj: sbrd1.f90 $(MKFS)
 	$(FC) $(FCFLAGS) /c sbrd1.f90 /Fo$@
 
@@ -205,6 +208,9 @@ doc: ..\Doxyfile
 
 ..\obj\$(PLAT)\qbrd1.obj: qbrd1.f90 $(MKFS)
 	$(FC) $(FCFLAGS) /c qbrd1.f90 /Fo$@
+
+..\obj\$(PLAT)\ibwr1.obj: ibwr1.f90 $(MKFS)
+	$(FC) $(FCFLAGS) /c ibwr1.f90 /Fo$@
 
 ..\obj\$(PLAT)\sbwr1.obj: sbwr1.f90 $(MKFS)
 	$(FC) $(FCFLAGS) /c sbwr1.f90 /Fo$@
@@ -221,6 +227,9 @@ doc: ..\Doxyfile
 ..\obj\$(PLAT)\qbwr1.obj: qbwr1.f90 $(MKFS)
 	$(FC) $(FCFLAGS) /c qbwr1.f90 /Fo$@
 
+..\obj\$(PLAT)\ibrd2.obj: ibrd2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) /c ibrd2.f90 /Fo$@
+
 ..\obj\$(PLAT)\sbrd2.obj: sbrd2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) /c sbrd2.f90 /Fo$@
 
@@ -233,6 +242,12 @@ doc: ..\Doxyfile
 ..\obj\$(PLAT)\zbrd2.obj: zbrd2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) /c zbrd2.f90 /Fo$@
 
+..\obj\$(PLAT)\qbrd2.obj: qbrd2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) /c qbrd2.f90 /Fo$@
+
+..\obj\$(PLAT)\ibwr2.obj: ibwr2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) /c ibwr2.f90 /Fo$@
+
 ..\obj\$(PLAT)\sbwr2.obj: sbwr2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) /c sbwr2.f90 /Fo$@
 
@@ -244,6 +259,9 @@ doc: ..\Doxyfile
 
 ..\obj\$(PLAT)\zbwr2.obj: zbwr2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) /c zbwr2.f90 /Fo$@
+
+..\obj\$(PLAT)\qbwr2.obj: qbwr2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) /c qbwr2.f90 /Fo$@
 
 ..\obj\$(PLAT)\slango.obj: slango.f90 $(MKFS)
 	$(FC) $(FCFLAGS) /c slango.f90 /Fo$@

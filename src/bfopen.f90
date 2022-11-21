@@ -6,7 +6,8 @@
 !!@param INFO [OUT]; zero on success, \f$-i\f$ if the \f$i\f$th argument had an illegal value, or a positive I/O error code.
 SUBROUTINE BFOPEN(FN, ACT, U, INFO)
   IMPLICIT NONE
-  CHARACTER(LEN=*), INTENT(IN) :: FN, ACT
+  CHARACTER(LEN=*), INTENT(IN) :: FN
+  CHARACTER(LEN=2), INTENT(IN) :: ACT
   INTEGER, INTENT(OUT) :: U, INFO
 
   CHARACTER(LEN=9) :: FACT
@@ -14,8 +15,6 @@ SUBROUTINE BFOPEN(FN, ACT, U, INFO)
 
   IF (LEN_TRIM(FN) .LE. 0) THEN
      INFO = -1
-  ELSE IF (LEN_TRIM(ACT) .NE. 2) THEN
-     INFO = -2
   ELSE
      INFO = 0
   END IF

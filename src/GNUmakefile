@@ -12,7 +12,7 @@ endif # local.mk
 ifndef PLAT
 PLAT=$(COMPILER)/$(OS)-$(ARCH)-$(ABI)$(DEBUG)
 endif # !PLAT
-OBJS_ARRBIO=../obj/$(PLAT)/bfopen.o ../obj/$(PLAT)/sbrd1.o ../obj/$(PLAT)/cbrd1.o ../obj/$(PLAT)/dbrd1.o ../obj/$(PLAT)/zbrd1.o ../obj/$(PLAT)/sbwr1.o ../obj/$(PLAT)/cbwr1.o ../obj/$(PLAT)/dbwr1.o ../obj/$(PLAT)/zbwr1.o ../obj/$(PLAT)/sbrd2.o ../obj/$(PLAT)/cbrd2.o ../obj/$(PLAT)/dbrd2.o ../obj/$(PLAT)/zbrd2.o ../obj/$(PLAT)/sbwr2.o ../obj/$(PLAT)/cbwr2.o ../obj/$(PLAT)/dbwr2.o ../obj/$(PLAT)/zbwr2.o
+OBJS_ARRBIO=../obj/$(PLAT)/bfopen.o ../obj/$(PLAT)/ibrd1.o ../obj/$(PLAT)/sbrd1.o ../obj/$(PLAT)/cbrd1.o ../obj/$(PLAT)/dbrd1.o ../obj/$(PLAT)/zbrd1.o ../obj/$(PLAT)/ibwr1.o ../obj/$(PLAT)/sbwr1.o ../obj/$(PLAT)/cbwr1.o ../obj/$(PLAT)/dbwr1.o ../obj/$(PLAT)/zbwr1.o ../obj/$(PLAT)/sbrd2.o ../obj/$(PLAT)/ibrd2.o ../obj/$(PLAT)/cbrd2.o ../obj/$(PLAT)/dbrd2.o ../obj/$(PLAT)/zbrd2.o ../obj/$(PLAT)/ibwr2.o ../obj/$(PLAT)/sbwr2.o ../obj/$(PLAT)/cbwr2.o ../obj/$(PLAT)/dbwr2.o ../obj/$(PLAT)/zbwr2.o
 OBJS_BLKSVD=../obj/$(PLAT)/sbrdg.o ../obj/$(PLAT)/cbrdg.o ../obj/$(PLAT)/dbrdg.o ../obj/$(PLAT)/zbrdg.o ../obj/$(PLAT)/sbordg.o ../obj/$(PLAT)/cbordg.o ../obj/$(PLAT)/dbordg.o ../obj/$(PLAT)/zbordg.o ../obj/$(PLAT)/nb2m.o
 OBJS_DYNORD=../obj/$(PLAT)/dsoffsq.o ../obj/$(PLAT)/dcoffsq.o ../obj/$(PLAT)/spqcmp.o ../obj/$(PLAT)/spqmrg.o ../obj/$(PLAT)/spqsrt.o ../obj/$(PLAT)/spqsort.o ../obj/$(PLAT)/dpqcmp.o ../obj/$(PLAT)/dpqmrg.o ../obj/$(PLAT)/dpqsrt.o ../obj/$(PLAT)/dpqsort.o ../obj/$(PLAT)/sosum4.o ../obj/$(PLAT)/dosum4.o ../obj/$(PLAT)/spsum4.o ../obj/$(PLAT)/dpsum4.o
 OBJS_KSVD2=../obj/$(PLAT)/sksvd2.o ../obj/$(PLAT)/cksvd2.o ../obj/$(PLAT)/dksvd2.o ../obj/$(PLAT)/zksvd2.o ../obj/$(PLAT)/slwsv2.o ../obj/$(PLAT)/dlwsv2.o
@@ -20,14 +20,14 @@ OBJS_FAUX=../obj/$(PLAT)/slango.o ../obj/$(PLAT)/clango.o ../obj/$(PLAT)/dlango.
 EXES_DYNORD=../bin/$(PLAT)/spqsort.exe ../bin/$(PLAT)/dpqsort.exe
 EXES_KSVD2=../bin/$(PLAT)/sksvd2.exe ../bin/$(PLAT)/cksvd2.exe ../bin/$(PLAT)/dksvd2.exe ../bin/$(PLAT)/zksvd2.exe ../bin/$(PLAT)/slwsv2.exe ../bin/$(PLAT)/dlwsv2.exe ../bin/$(PLAT)/srnd.exe
 # quad
-OBJS_ARRBIO += ../obj/$(PLAT)/qbrd1.o ../obj/$(PLAT)/qbwr1.o
+OBJS_ARRBIO += ../obj/$(PLAT)/qbrd1.o ../obj/$(PLAT)/qbwr1.o ../obj/$(PLAT)/qbrd2.o ../obj/$(PLAT)/qbwr2.o
 OBJS_DYNORD += ../obj/$(PLAT)/qdoffsq.o ../obj/$(PLAT)/qzoffsq.o ../obj/$(PLAT)/qpqcmp.o ../obj/$(PLAT)/qpqmrg.o ../obj/$(PLAT)/qpqsrt.o ../obj/$(PLAT)/qpqsort.o ../obj/$(PLAT)/qpsum4.o
 OBJS_KSVD2 += ../obj/$(PLAT)/qksvd2.o ../obj/$(PLAT)/yksvd2.o
 EXES_DYNORD += ../bin/$(PLAT)/qpqsort.exe
 EXES_KSVD2 += ../bin/$(PLAT)/qksvd2.exe ../bin/$(PLAT)/yksvd2.exe
 ifeq ($(COMPILER),gfortran)
 ifeq ($(findstring 86,$(ARCH)),86)
-OBJS_ARRBIO += ../obj/$(PLAT)/xbrd1.o ../obj/$(PLAT)/xbwr1.o
+OBJS_ARRBIO += ../obj/$(PLAT)/xbrd1.o ../obj/$(PLAT)/xbwr1.o ../obj/$(PLAT)/xbrd2.o ../obj/$(PLAT)/xbwr2.o
 OBJS_DYNORD += ../obj/$(PLAT)/xdoffsq.o ../obj/$(PLAT)/xzoffsq.o ../obj/$(PLAT)/qxoffsq.o ../obj/$(PLAT)/qwoffsq.o ../obj/$(PLAT)/xpqcmp.o ../obj/$(PLAT)/xpqmrg.o ../obj/$(PLAT)/xpqsrt.o ../obj/$(PLAT)/xpqsort.o ../obj/$(PLAT)/xpsum4.o
 OBJS_KSVD2 += ../obj/$(PLAT)/xksvd2.o ../obj/$(PLAT)/wksvd2.o
 EXES_DYNORD += ../bin/$(PLAT)/xpqsort.exe
@@ -220,6 +220,9 @@ doc: ../Doxyfile
 ../obj/$(PLAT)/bfopen.o: bfopen.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ bfopen.f90
 
+../obj/$(PLAT)/ibrd1.o: ibrd1.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ ibrd1.f90
+
 ../obj/$(PLAT)/sbrd1.o: sbrd1.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ sbrd1.f90
 
@@ -237,6 +240,9 @@ doc: ../Doxyfile
 
 ../obj/$(PLAT)/xbrd1.o: xbrd1.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ xbrd1.f90
+
+../obj/$(PLAT)/ibwr1.o: ibwr1.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ ibwr1.f90
 
 ../obj/$(PLAT)/sbwr1.o: sbwr1.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ sbwr1.f90
@@ -256,6 +262,9 @@ doc: ../Doxyfile
 ../obj/$(PLAT)/xbwr1.o: xbwr1.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ xbwr1.f90
 
+../obj/$(PLAT)/ibrd2.o: ibrd2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ ibrd2.f90
+
 ../obj/$(PLAT)/sbrd2.o: sbrd2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ sbrd2.f90
 
@@ -268,6 +277,15 @@ doc: ../Doxyfile
 ../obj/$(PLAT)/zbrd2.o: zbrd2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ zbrd2.f90
 
+../obj/$(PLAT)/qbrd2.o: qbrd2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ qbrd2.f90
+
+../obj/$(PLAT)/xbrd2.o: xbrd2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ xbrd2.f90
+
+../obj/$(PLAT)/ibwr2.o: ibwr2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ ibwr2.f90
+
 ../obj/$(PLAT)/sbwr2.o: sbwr2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ sbwr2.f90
 
@@ -279,6 +297,12 @@ doc: ../Doxyfile
 
 ../obj/$(PLAT)/zbwr2.o: zbwr2.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ zbwr2.f90
+
+../obj/$(PLAT)/qbwr2.o: qbwr2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ qbwr2.f90
+
+../obj/$(PLAT)/xbwr2.o: xbwr2.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ xbwr2.f90
 
 ../obj/$(PLAT)/slango.o: slango.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ slango.f90
