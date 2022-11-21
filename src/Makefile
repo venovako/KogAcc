@@ -155,23 +155,23 @@ doc: ..\Doxyfile
 ..\obj\$(PLAT)\qpqmrg.obj: qpqmrg.f90 gpqmrg.f90 $(MKFS)
 	$(FC) $(FCFLAGS) /c qpqmrg.f90 /Fo$@
 
-..\obj\$(PLAT)\spqsrt.obj: spqsrt.f90 gpqsrt.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c spqsrt.f90 /Fo$@
+..\obj\$(PLAT)\spqsrt.obj: spqsrt.F90 gpqsrt.F90 $(MKFS)
+	$(FC) $(FCFLAGS) /fpp /c spqsrt.F90 /Fo$@
 
-..\obj\$(PLAT)\dpqsrt.obj: dpqsrt.f90 gpqsrt.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c dpqsrt.f90 /Fo$@
+..\obj\$(PLAT)\dpqsrt.obj: dpqsrt.F90 gpqsrt.F90 $(MKFS)
+	$(FC) $(FCFLAGS) /fpp /c dpqsrt.F90 /Fo$@
 
-..\obj\$(PLAT)\qpqsrt.obj: qpqsrt.f90 gpqsrt.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c qpqsrt.f90 /Fo$@
+..\obj\$(PLAT)\qpqsrt.obj: qpqsrt.F90 gpqsrt.F90 $(MKFS)
+	$(FC) $(FCFLAGS) /fpp /c qpqsrt.F90 /Fo$@
 
-..\obj\$(PLAT)\spqsort.obj: spqsort.f90 gpqsort.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c spqsort.f90 /Fo$@
+..\obj\$(PLAT)\spqsort.obj: spqsort.F90 gpqsort.F90 $(MKFS)
+	$(FC) $(FCFLAGS) /fpp /c spqsort.F90 /Fo$@
 
-..\obj\$(PLAT)\dpqsort.obj: dpqsort.f90 gpqsort.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c dpqsort.f90 /Fo$@
+..\obj\$(PLAT)\dpqsort.obj: dpqsort.F90 gpqsort.F90 $(MKFS)
+	$(FC) $(FCFLAGS) /fpp /c dpqsort.F90 /Fo$@
 
-..\obj\$(PLAT)\qpqsort.obj: qpqsort.f90 gpqsort.f90 $(MKFS)
-	$(FC) $(FCFLAGS) /c qpqsort.f90 /Fo$@
+..\obj\$(PLAT)\qpqsort.obj: qpqsort.F90 gpqsort.F90 $(MKFS)
+	$(FC) $(FCFLAGS) /fpp /c qpqsort.F90 /Fo$@
 
 ..\obj\$(PLAT)\sosum4.obj: sosum4.F90 gosum4.F90 $(MKFS)
 	$(FC) $(FCFLAGS) /fpp /c sosum4.F90 /Fo$@

@@ -16,13 +16,14 @@ OBJS_ARRBIO=../obj/$(PLAT)/bfopen.o ../obj/$(PLAT)/ibrd1.o ../obj/$(PLAT)/sbrd1.
 OBJS_BLKSVD=../obj/$(PLAT)/sbrdg.o ../obj/$(PLAT)/cbrdg.o ../obj/$(PLAT)/dbrdg.o ../obj/$(PLAT)/zbrdg.o ../obj/$(PLAT)/sbordg.o ../obj/$(PLAT)/cbordg.o ../obj/$(PLAT)/dbordg.o ../obj/$(PLAT)/zbordg.o ../obj/$(PLAT)/nb2m.o
 OBJS_DYNORD=../obj/$(PLAT)/dsoffsq.o ../obj/$(PLAT)/dcoffsq.o ../obj/$(PLAT)/spqcmp.o ../obj/$(PLAT)/spqmrg.o ../obj/$(PLAT)/spqsrt.o ../obj/$(PLAT)/spqsort.o ../obj/$(PLAT)/dpqcmp.o ../obj/$(PLAT)/dpqmrg.o ../obj/$(PLAT)/dpqsrt.o ../obj/$(PLAT)/dpqsort.o ../obj/$(PLAT)/sosum4.o ../obj/$(PLAT)/dosum4.o ../obj/$(PLAT)/spsum4.o ../obj/$(PLAT)/dpsum4.o
 OBJS_KSVD2=../obj/$(PLAT)/sksvd2.o ../obj/$(PLAT)/cksvd2.o ../obj/$(PLAT)/dksvd2.o ../obj/$(PLAT)/zksvd2.o ../obj/$(PLAT)/slwsv2.o ../obj/$(PLAT)/dlwsv2.o
-OBJS_FAUX=../obj/$(PLAT)/slango.o ../obj/$(PLAT)/clango.o ../obj/$(PLAT)/dlango.o ../obj/$(PLAT)/zlango.o ../obj/$(PLAT)/sthalt.o
+OBJS_FAUX=../obj/$(PLAT)/slango.o ../obj/$(PLAT)/clango.o ../obj/$(PLAT)/dlango.o ../obj/$(PLAT)/zlango.o
 EXES_DYNORD=../bin/$(PLAT)/spqsort.exe ../bin/$(PLAT)/dpqsort.exe
 EXES_KSVD2=../bin/$(PLAT)/sksvd2.exe ../bin/$(PLAT)/cksvd2.exe ../bin/$(PLAT)/dksvd2.exe ../bin/$(PLAT)/zksvd2.exe ../bin/$(PLAT)/slwsv2.exe ../bin/$(PLAT)/dlwsv2.exe ../bin/$(PLAT)/srnd.exe
-# quad
+ifneq ($(COMPILER),nvfortran)
 OBJS_ARRBIO += ../obj/$(PLAT)/qbrd1.o ../obj/$(PLAT)/qbwr1.o ../obj/$(PLAT)/qbrd2.o ../obj/$(PLAT)/qbwr2.o
 OBJS_DYNORD += ../obj/$(PLAT)/qdoffsq.o ../obj/$(PLAT)/qzoffsq.o ../obj/$(PLAT)/qpqcmp.o ../obj/$(PLAT)/qpqmrg.o ../obj/$(PLAT)/qpqsrt.o ../obj/$(PLAT)/qpqsort.o ../obj/$(PLAT)/qpsum4.o
 OBJS_KSVD2 += ../obj/$(PLAT)/qksvd2.o ../obj/$(PLAT)/yksvd2.o
+OBJS_FAUX += ../obj/$(PLAT)/sthalt.o
 EXES_DYNORD += ../bin/$(PLAT)/qpqsort.exe
 EXES_KSVD2 += ../bin/$(PLAT)/qksvd2.exe ../bin/$(PLAT)/yksvd2.exe
 ifeq ($(COMPILER),gfortran)
@@ -34,6 +35,7 @@ EXES_DYNORD += ../bin/$(PLAT)/xpqsort.exe
 EXES_KSVD2 += ../bin/$(PLAT)/xksvd2.exe ../bin/$(PLAT)/wksvd2.exe
 endif # x86
 endif # gfortran
+endif # !nvfortran
 ifeq ($(findstring DUSE_IEEE_INTRINSIC,$(FCFLAGS)),DUSE_IEEE_INTRINSIC)
 INTRIN=i
 endif # DUSE_IEEE_INTRINSIC
@@ -47,7 +49,7 @@ all: dirs $(LIBS) $(EXES)
 	@echo $(PLAT)
 
 help:
-	@echo $(MAKE) "[COMPILER=gfortran|ifort] [COMPILER_PREFIX=...] [COMPILER_SUFFIX=...] [ABI=ilp64|lp64] [NDEBUG=optimization_level] [CR_MATH=dir] [all|clean|dirs|doc|help|purge]"
+	@echo $(MAKE) "[COMPILER=gfortran|ifort|ifx] [COMPILER_PREFIX=...] [COMPILER_SUFFIX=...] [ABI=ilp64|lp64] [NDEBUG=optimization_level] [CR_MATH=dir] [all|clean|dirs|doc|help|purge]"
 
 dirs:
 	@$(MKD) ../bin/$(PLAT) ../lib/$(PLAT) ../obj/$(PLAT)
@@ -175,29 +177,29 @@ doc: ../Doxyfile
 ../obj/$(PLAT)/xpqmrg.o: xpqmrg.f90 gpqmrg.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ xpqmrg.f90
 
-../obj/$(PLAT)/spqsrt.o: spqsrt.f90 gpqsrt.f90 $(MKFS)
-	$(FC) $(FCFLAGS) -c -o $@ spqsrt.f90
+../obj/$(PLAT)/spqsrt.o: spqsrt.F90 gpqsrt.F90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ spqsrt.F90
 
-../obj/$(PLAT)/dpqsrt.o: dpqsrt.f90 gpqsrt.f90 $(MKFS)
-	$(FC) $(FCFLAGS) -c -o $@ dpqsrt.f90
+../obj/$(PLAT)/dpqsrt.o: dpqsrt.F90 gpqsrt.F90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ dpqsrt.F90
 
-../obj/$(PLAT)/spqsort.o: spqsort.f90 gpqsort.f90 $(MKFS)
-	$(FC) $(FCFLAGS) -c -o $@ spqsort.f90
+../obj/$(PLAT)/spqsort.o: spqsort.F90 gpqsort.F90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ spqsort.F90
 
-../obj/$(PLAT)/dpqsort.o: dpqsort.f90 gpqsort.f90 $(MKFS)
-	$(FC) $(FCFLAGS) -c -o $@ dpqsort.f90
+../obj/$(PLAT)/dpqsort.o: dpqsort.F90 gpqsort.F90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ dpqsort.F90
 
-../obj/$(PLAT)/qpqsrt.o: qpqsrt.f90 gpqsrt.f90 $(MKFS)
-	$(FC) $(FCFLAGS) -c -o $@ qpqsrt.f90
+../obj/$(PLAT)/qpqsrt.o: qpqsrt.F90 gpqsrt.F90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ qpqsrt.F90
 
-../obj/$(PLAT)/qpqsort.o: qpqsort.f90 gpqsort.f90 $(MKFS)
-	$(FC) $(FCFLAGS) -c -o $@ qpqsort.f90
+../obj/$(PLAT)/qpqsort.o: qpqsort.F90 gpqsort.F90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ qpqsort.F90
 
-../obj/$(PLAT)/xpqsrt.o: xpqsrt.f90 gpqsrt.f90 $(MKFS)
-	$(FC) $(FCFLAGS) -c -o $@ xpqsrt.f90
+../obj/$(PLAT)/xpqsrt.o: xpqsrt.F90 gpqsrt.F90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ xpqsrt.F90
 
-../obj/$(PLAT)/xpqsort.o: xpqsort.f90 gpqsort.f90 $(MKFS)
-	$(FC) $(FCFLAGS) -c -o $@ xpqsort.f90
+../obj/$(PLAT)/xpqsort.o: xpqsort.F90 gpqsort.F90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ xpqsort.F90
 
 ../obj/$(PLAT)/sosum4.o: sosum4.F90 gosum4.F90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ sosum4.F90
