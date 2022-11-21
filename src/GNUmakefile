@@ -14,10 +14,10 @@ PLAT=$(COMPILER)/$(OS)-$(ARCH)-$(ABI)$(DEBUG)
 endif # !PLAT
 OBJS_ARRBIO=../obj/$(PLAT)/bfopen.o ../obj/$(PLAT)/sbrd1.o ../obj/$(PLAT)/cbrd1.o ../obj/$(PLAT)/dbrd1.o ../obj/$(PLAT)/zbrd1.o ../obj/$(PLAT)/sbwr1.o ../obj/$(PLAT)/cbwr1.o ../obj/$(PLAT)/dbwr1.o ../obj/$(PLAT)/zbwr1.o ../obj/$(PLAT)/sbrd2.o ../obj/$(PLAT)/cbrd2.o ../obj/$(PLAT)/dbrd2.o ../obj/$(PLAT)/zbrd2.o ../obj/$(PLAT)/sbwr2.o ../obj/$(PLAT)/cbwr2.o ../obj/$(PLAT)/dbwr2.o ../obj/$(PLAT)/zbwr2.o
 OBJS_BLKSVD=../obj/$(PLAT)/sbrdg.o ../obj/$(PLAT)/cbrdg.o ../obj/$(PLAT)/dbrdg.o ../obj/$(PLAT)/zbrdg.o ../obj/$(PLAT)/sbordg.o ../obj/$(PLAT)/cbordg.o ../obj/$(PLAT)/dbordg.o ../obj/$(PLAT)/zbordg.o ../obj/$(PLAT)/nb2m.o
-OBJS_DYNORD=../obj/$(PLAT)/dsoffsq.o ../obj/$(PLAT)/dcoffsq.o ../obj/$(PLAT)/dpqcmp.o ../obj/$(PLAT)/dpqmrg.o ../obj/$(PLAT)/dpqsrt.o ../obj/$(PLAT)/dpqsort.o ../obj/$(PLAT)/sosum4.o ../obj/$(PLAT)/dosum4.o ../obj/$(PLAT)/dpsum4.o
+OBJS_DYNORD=../obj/$(PLAT)/dsoffsq.o ../obj/$(PLAT)/dcoffsq.o ../obj/$(PLAT)/spqcmp.o ../obj/$(PLAT)/spqmrg.o ../obj/$(PLAT)/spqsrt.o ../obj/$(PLAT)/spqsort.o ../obj/$(PLAT)/dpqcmp.o ../obj/$(PLAT)/dpqmrg.o ../obj/$(PLAT)/dpqsrt.o ../obj/$(PLAT)/dpqsort.o ../obj/$(PLAT)/sosum4.o ../obj/$(PLAT)/dosum4.o ../obj/$(PLAT)/spsum4.o ../obj/$(PLAT)/dpsum4.o
 OBJS_KSVD2=../obj/$(PLAT)/sksvd2.o ../obj/$(PLAT)/cksvd2.o ../obj/$(PLAT)/dksvd2.o ../obj/$(PLAT)/zksvd2.o ../obj/$(PLAT)/slwsv2.o ../obj/$(PLAT)/dlwsv2.o
 OBJS_FAUX=../obj/$(PLAT)/slango.o ../obj/$(PLAT)/clango.o ../obj/$(PLAT)/dlango.o ../obj/$(PLAT)/zlango.o ../obj/$(PLAT)/sthalt.o
-EXES_DYNORD=../bin/$(PLAT)/dpqsort.exe
+EXES_DYNORD=../bin/$(PLAT)/spqsort.exe ../bin/$(PLAT)/dpqsort.exe
 EXES_KSVD2=../bin/$(PLAT)/sksvd2.exe ../bin/$(PLAT)/cksvd2.exe ../bin/$(PLAT)/dksvd2.exe ../bin/$(PLAT)/zksvd2.exe ../bin/$(PLAT)/slwsv2.exe ../bin/$(PLAT)/dlwsv2.exe ../bin/$(PLAT)/srnd.exe
 # quad
 OBJS_ARRBIO += ../obj/$(PLAT)/qbrd1.o ../obj/$(PLAT)/qbwr1.o
@@ -28,7 +28,7 @@ EXES_KSVD2 += ../bin/$(PLAT)/qksvd2.exe ../bin/$(PLAT)/yksvd2.exe
 ifeq ($(COMPILER),gfortran)
 ifeq ($(findstring 86,$(ARCH)),86)
 OBJS_ARRBIO += ../obj/$(PLAT)/xbrd1.o ../obj/$(PLAT)/xbwr1.o
-OBJS_DYNORD += ../obj/$(PLAT)/xdoffsq.o ../obj/$(PLAT)/xzoffsq.o ../obj/$(PLAT)/xpqcmp.o ../obj/$(PLAT)/xpqmrg.o ../obj/$(PLAT)/xpqsrt.o ../obj/$(PLAT)/xpqsort.o ../obj/$(PLAT)/xpsum4.o
+OBJS_DYNORD += ../obj/$(PLAT)/xdoffsq.o ../obj/$(PLAT)/xzoffsq.o ../obj/$(PLAT)/qxoffsq.o ../obj/$(PLAT)/qwoffsq.o ../obj/$(PLAT)/xpqcmp.o ../obj/$(PLAT)/xpqmrg.o ../obj/$(PLAT)/xpqsrt.o ../obj/$(PLAT)/xpqsort.o ../obj/$(PLAT)/xpsum4.o
 OBJS_KSVD2 += ../obj/$(PLAT)/xksvd2.o ../obj/$(PLAT)/wksvd2.o
 EXES_DYNORD += ../bin/$(PLAT)/xpqsort.exe
 EXES_KSVD2 += ../bin/$(PLAT)/xksvd2.exe ../bin/$(PLAT)/wksvd2.exe
@@ -145,6 +145,15 @@ doc: ../Doxyfile
 ../obj/$(PLAT)/xzoffsq.o: xzoffsq.F90 hoffsq$(INTRIN).F90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ xzoffsq.F90
 
+../obj/$(PLAT)/qxoffsq.o: qxoffsq.F90 goffsq$(INTRIN).F90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ qxoffsq.F90
+
+../obj/$(PLAT)/qwoffsq.o: qwoffsq.F90 hoffsq$(INTRIN).F90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ qwoffsq.F90
+
+../obj/$(PLAT)/spqcmp.o: spqcmp.f90 gpqcmp.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ spqcmp.f90
+
 ../obj/$(PLAT)/dpqcmp.o: dpqcmp.f90 gpqcmp.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ dpqcmp.f90
 
@@ -153,6 +162,9 @@ doc: ../Doxyfile
 
 ../obj/$(PLAT)/xpqcmp.o: xpqcmp.f90 gpqcmp.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ xpqcmp.f90
+
+../obj/$(PLAT)/spqmrg.o: spqmrg.f90 gpqmrg.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ spqmrg.f90
 
 ../obj/$(PLAT)/dpqmrg.o: dpqmrg.f90 gpqmrg.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ dpqmrg.f90
@@ -163,8 +175,14 @@ doc: ../Doxyfile
 ../obj/$(PLAT)/xpqmrg.o: xpqmrg.f90 gpqmrg.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ xpqmrg.f90
 
+../obj/$(PLAT)/spqsrt.o: spqsrt.f90 gpqsrt.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ spqsrt.f90
+
 ../obj/$(PLAT)/dpqsrt.o: dpqsrt.f90 gpqsrt.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ dpqsrt.f90
+
+../obj/$(PLAT)/spqsort.o: spqsort.f90 gpqsort.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ spqsort.f90
 
 ../obj/$(PLAT)/dpqsort.o: dpqsort.f90 gpqsort.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ dpqsort.f90
@@ -186,6 +204,9 @@ doc: ../Doxyfile
 
 ../obj/$(PLAT)/dosum4.o: dosum4.F90 gosum4.F90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ dosum4.F90
+
+../obj/$(PLAT)/spsum4.o: spsum4.f90 gpsum4.f90 $(MKFS)
+	$(FC) $(FCFLAGS) -c -o $@ spsum4.f90
 
 ../obj/$(PLAT)/dpsum4.o: dpsum4.f90 gpsum4.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -c -o $@ dpsum4.f90
@@ -306,6 +327,9 @@ doc: ../Doxyfile
 
 ../bin/$(PLAT)/srnd.exe: srnd.f90 $(MKFS)
 	$(FC) $(FCFLAGS) -o $@ srnd.f90
+
+../bin/$(PLAT)/spqsort.exe: spqsortx.f90 ../lib/$(PLAT)/libdynord.a $(MKFS)
+	$(FC) $(FCFLAGS) -o $@ spqsortx.f90 -L../lib/$(PLAT) -ldynord
 
 ../bin/$(PLAT)/dpqsort.exe: dpqsortx.f90 ../lib/$(PLAT)/libdynord.a $(MKFS)
 	$(FC) $(FCFLAGS) -o $@ dpqsortx.f90 -L../lib/$(PLAT) -ldynord

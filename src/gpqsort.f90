@@ -1,6 +1,6 @@
   ! This is the generic part of the (w,p,q)-arrays OpenMP-parallel sorting routines.
   INFO = 0
-  IF (N .LT. 0) INFO = -2
+  IF (N .LT. 0) INFO = -1
   IF (INFO .NE. 0) RETURN
   FLIP = .FALSE.
   L = 1
@@ -8,7 +8,7 @@
      K = L
      L = L * 2
      M = 0
-     !$OMP PARALLEL DO DEFAULT(NONE) SHARED(WPQMRG,AW,AP,AQ,BW,BP,BQ,K,L,N,FLIP) PRIVATE(J,X,Y) REDUCTION(+:INFO,M)
+     !$OMP PARALLEL DO DEFAULT(NONE) SHARED(WPQCMP,WPQMRG,AW,AP,AQ,BW,BP,BQ,K,L,N,FLIP) PRIVATE(J,X,Y) REDUCTION(+:INFO,M)
      DO I = 1, N, L
         X = MIN(K, N-I+1)
         IF (X .LT. K) THEN

@@ -1,6 +1,6 @@
   ! This is the generic part of the (w,p,q)-arrays sequential sorting routines.
   INFO = 0
-  IF (N .LT. 0) INFO = -2
+  IF (N .LT. 0) INFO = -1
   IF (INFO .NE. 0) RETURN
   FLIP = .FALSE.
   L = 1
