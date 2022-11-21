@@ -17,10 +17,10 @@ CONTAINS
 #ifdef __NVCOMPILER
 #ifdef CR_MATH
     INTERFACE
-       FUNCTION CR_HYPOT(X, Y) BIND(C,NAME='cr_hypotf')
-         USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_float
-         REAL(KIND=c_float), INTENT(IN), VALUE :: X, Y
-         REAL(KIND=c_float) :: CR_HYPOT
+       FUNCTION CR_HYPOT(X, Y) BIND(C,NAME='cr_hypot')
+         USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_double
+         REAL(KIND=c_double), INTENT(IN), VALUE :: X, Y
+         REAL(KIND=c_double) :: CR_HYPOT
        END FUNCTION CR_HYPOT
     END INTERFACE
 #else
