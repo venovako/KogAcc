@@ -138,15 +138,17 @@
   ! apply the Givens rotation
   B(1,1) = S(1)
   IF (TANG .NE. ZERO) THEN
+     X =  TANG
+     Y = -TANG
      B(2,1) = U(1,1)
-     U(1,1) = IEEE_FMA( TANG, U(2,1), U(1,1)) / SECG
-     U(2,1) = IEEE_FMA(-TANG, B(2,1), U(2,1)) / SECG
+     U(1,1) = IEEE_FMA(X, U(2,1), U(1,1)) / SECG
+     U(2,1) = IEEE_FMA(Y, B(2,1), U(2,1)) / SECG
      B(2,1) = U(1,2)
-     U(1,2) = IEEE_FMA( TANG, U(2,2), U(1,2)) / SECG
-     U(2,2) = IEEE_FMA(-TANG, B(2,1), U(2,2)) / SECG
+     U(1,2) = IEEE_FMA(X, U(2,2), U(1,2)) / SECG
+     U(2,2) = IEEE_FMA(Y, B(2,1), U(2,2)) / SECG
      B(2,1) = B(1,2)
-     B(1,2) = IEEE_FMA( TANG, B(2,2), B(1,2)) / SECG
-     B(2,2) = IEEE_FMA(-TANG, B(2,1), B(2,2)) / SECG
+     B(1,2) = IEEE_FMA(X, B(2,2), B(1,2)) / SECG
+     B(2,2) = IEEE_FMA(Y, B(2,1), B(2,2)) / SECG
   END IF
   B(2,1) = ZERO
 
@@ -172,7 +174,7 @@
   X = B(1,2) / B(1,1)
   Y = B(2,2) / B(1,1)
 
-  ! TODO: the functions of \varphi
+  ! the functions of \varphi
   IF (X .LE. Y) THEN
      Z = SCALE(X, 1) * Y
   ELSE ! X > Y
@@ -196,20 +198,24 @@
   S(2) = (SECF / SECP) * B(2,2)
 
   ! update U
+  X =  TANF
+  Y = -TANF
   Z = U(1,1)
-  U(1,1) = IEEE_FMA( TANF, U(2,1), U(1,1)) / SECF
-  U(2,1) = IEEE_FMA(-TANF,      Z, U(2,1)) / SECF
+  U(1,1) = IEEE_FMA(X, U(2,1), U(1,1)) / SECF
+  U(2,1) = IEEE_FMA(Y,      Z, U(2,1)) / SECF
   Z = U(1,2)
-  U(1,2) = IEEE_FMA( TANF, U(2,2), U(1,2)) / SECF
-  U(2,2) = IEEE_FMA(-TANF,      Z, U(2,2)) / SECF
+  U(1,2) = IEEE_FMA(X, U(2,2), U(1,2)) / SECF
+  U(2,2) = IEEE_FMA(Y,      Z, U(2,2)) / SECF
 
   ! update V
+  X =  TANP
+  Y = -TANP
   Z = V(1,1)
-  V(1,1) = IEEE_FMA( TANP, V(1,2), V(1,1)) / SECP
-  V(1,2) = IEEE_FMA(-TANP,      Z, V(1,2)) / SECP
+  V(1,1) = IEEE_FMA(X, V(1,2), V(1,1)) / SECP
+  V(1,2) = IEEE_FMA(Y,      Z, V(1,2)) / SECP
   Z = V(2,1)
-  V(2,1) = IEEE_FMA( TANP, V(2,2), V(2,1)) / SECP
-  V(2,2) = IEEE_FMA(-TANP,      Z, V(2,2)) / SECP
+  V(2,1) = IEEE_FMA(X, V(2,2), V(2,1)) / SECP
+  V(2,2) = IEEE_FMA(Y,      Z, V(2,2)) / SECP
 
   ! transpose U
 1 Z = U(2,1)

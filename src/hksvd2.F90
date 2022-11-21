@@ -258,7 +258,7 @@
   X = A(1,2) / A(1,1)
   Y = A(2,2) / A(1,1)
 
-  ! TODO: the functions of \varphi
+  ! the functions of \varphi
   IF (X .LE. Y) THEN
      T = SCALE(X, 1) * Y
   ELSE ! X > Y
