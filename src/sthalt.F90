@@ -1,22 +1,76 @@
-!>@brief \b STHALT writes MSG and the stack trace to ERROR_UNIT and stops the program.
+!>@brief \b STHALT writes MSG and the stack trace to ERROR_UNIT (OUTPUT_UNIT for nvfortran and xlf) and stops the program.
 SUBROUTINE STHALT(MSG)
-#ifdef __NVCOMPILER
-  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: ERROR_UNIT
-#else
 #ifdef __GFORTRAN__
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: ERROR_UNIT
 #else
+#ifdef __INTEL_COMPILER
   USE IFCORE, ONLY: TRACEBACKQQ
+#else
+#define USE_C_BACKTRACE
+  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: OUTPUT_UNIT
+  USE, INTRINSIC :: ISO_C_BINDING
 #endif
 #endif
   USE OMP_LIB, ONLY: OMP_GET_THREAD_NUM
   IMPLICIT NONE
+#ifdef USE_C_BACKTRACE
+  INTERFACE
+     FUNCTION BTRACE(ARR, SIZ) BIND(C,NAME='backtrace')
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_int, c_ptr
+       IMPLICIT NONE
+       INTEGER(KIND=c_int), INTENT(IN), VALUE :: SIZ
+       TYPE(c_ptr), INTENT(OUT), TARGET :: ARR(SIZ)
+       INTEGER(KIND=c_int) :: BTRACE
+     END FUNCTION BTRACE
+  END INTERFACE
+  INTERFACE
+     FUNCTION BTSYM(ARR, SIZ) BIND(C,NAME='backtrace_symbols')
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_int, c_ptr
+       IMPLICIT NONE
+       INTEGER(KIND=c_int), INTENT(IN), VALUE :: SIZ
+       TYPE(c_ptr), INTENT(IN), TARGET :: ARR(SIZ)
+       TYPE(c_ptr) :: BTSYM
+     END FUNCTION BTSYM
+  END INTERFACE
+  INTERFACE
+     FUNCTION OPUTS(S) BIND(C,NAME='puts')
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_int, c_ptr
+       IMPLICIT NONE
+       TYPE(c_ptr), INTENT(IN), VALUE :: S
+       INTEGER(KIND=c_int) :: OPUTS
+     END FUNCTION OPUTS
+  END INTERFACE
+  INTERFACE
+     SUBROUTINE CFREE(P) BIND(C,NAME='free')
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_ptr
+       IMPLICIT NONE
+       TYPE(c_ptr), INTENT(IN), VALUE :: P
+     END SUBROUTINE CFREE
+  END INTERFACE
+  INTEGER(KIND=c_int), PARAMETER :: BTSIZ = 64_c_int
+#endif
   CHARACTER(LEN=*), INTENT(IN) :: MSG
   CHARACTER(LEN=6) :: THR
+#ifdef USE_C_BACKTRACE
+  TYPE(c_ptr) :: BTARR(BTSIZ), SYMA
+  TYPE(c_ptr), POINTER :: CA(:)
+  INTEGER(KIND=c_int) :: ASIZ, I
+#endif
   WRITE (THR,'(A,I3,A)') '[', OMP_GET_THREAD_NUM(), '] '
-#ifdef __NVCOMPILER
-  WRITE (ERROR_UNIT,'(A)') NEW_LINE(MSG)//THR//TRIM(MSG)
-  ! TODO: backtrace
+#ifdef USE_C_BACKTRACE
+  WRITE (OUTPUT_UNIT,'(A)') NEW_LINE(MSG)//THR//TRIM(MSG)
+  FLUSH(OUTPUT_UNIT)
+  ASIZ = BTRACE(BTARR, BTSIZ)
+  IF (ASIZ .GT. 0) THEN
+     SYMA = BTSYM(BTARR, ASIZ)
+     CALL C_F_POINTER(SYMA, CA, [ASIZ])
+     DO I = 1_c_int, ASIZ
+        IF (OPUTS(CA(I)) .LT. 0_c_int) EXIT
+     END DO
+     FLUSH(OUTPUT_UNIT)
+     CALL CFREE(SYMA)
+  END IF
+  CA => NULL()
 #else
 #ifdef __GFORTRAN__
   WRITE (ERROR_UNIT,'(A)') NEW_LINE(MSG)//THR//TRIM(MSG)
