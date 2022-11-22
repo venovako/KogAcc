@@ -11,7 +11,7 @@ A recent Linux (e.g., CentOS 7.9 with devtoolset-11), macOS (e.g., Big Sur), or 
 
 Other 64-bit OSes (e.g., Oracle Solaris with gfortran) and non-x86_64 platforms might also be supported to a certain extent, if the reference BLAS and LAPACK libraries have been built.
 
-The recent GNU (gfortran) and Intel (ifort) Fortran compilers should work, while the others might require tweaking the build system.
+The recent GNU (gfortran) and Intel (ifort) Fortran compilers should work, while the others (ifx, nvfortran, and xlf) might require tweaking the build system and have not been extensively tested.
 
 Building the documentation requires a recent version of [Doxygen](https://doxygen.nl).
 
