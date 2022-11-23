@@ -11,7 +11,9 @@ SUBROUTINE STHALT(MSG)
   USE, INTRINSIC :: ISO_C_BINDING
 #endif
 #endif
+#ifdef _OPENMP
   USE OMP_LIB, ONLY: OMP_GET_THREAD_NUM
+#endif
   IMPLICIT NONE
 #ifdef USE_C_BACKTRACE
   INTERFACE
@@ -56,7 +58,12 @@ SUBROUTINE STHALT(MSG)
   TYPE(c_ptr), POINTER :: CA(:)
   INTEGER(KIND=c_int) :: ASIZ, I
 #endif
+#ifdef _OPENMP
   WRITE (THR,'(A,I3,A)') '[', OMP_GET_THREAD_NUM(), '] '
+#else
+#error bla
+  THR = '[???] '
+#endif
 #ifdef USE_C_BACKTRACE
   WRITE (OUTPUT_UNIT,'(A)') NEW_LINE(MSG)//THR//TRIM(MSG)
   FLUSH(OUTPUT_UNIT)
