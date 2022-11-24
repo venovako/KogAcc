@@ -15,11 +15,7 @@
   !$OMP END PARALLEL DO
   !$OMP PARALLEL DO DEFAULT(NONE) SHARED(M,N,G)
   DO J = N+1, M
-     DO I = 1, J-1
-        G(I,J) = ZERO
-     END DO
-     G(J,J) = ONE
-     DO I = J+1, M
+     DO I = 1, M
         G(I,J) = ZERO
      END DO
   END DO
