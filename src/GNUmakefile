@@ -28,7 +28,7 @@ EXES_DYNORD += ../bin/$(PLAT)/qpqsort.exe
 EXES_KSVD2 += ../bin/$(PLAT)/qksvd2.exe ../bin/$(PLAT)/yksvd2.exe
 ifeq ($(COMPILER),gfortran)
 ifeq ($(findstring 86,$(ARCH)),86)
-OBJS_ARRBIO += ../obj/$(PLAT)/xbrd1.o ../obj/$(PLAT)/xbwr1.o ../obj/$(PLAT)/xbrd2.o ../obj/$(PLAT)/xbwr2.o
+OBJS_ARRBIO += ../obj/$(PLAT)/xbrd1.o ../obj/$(PLAT)/xbwr1.o ../obj/$(PLAT)/xbrd2.o ../obj/$(PLAT)/xbwr2.o ../obj/$(PLAT)/wbrd1.o ../obj/$(PLAT)/wbwr1.o ../obj/$(PLAT)/wbrd2.o ../obj/$(PLAT)/wbwr2.o
 OBJS_DYNORD += ../obj/$(PLAT)/xpqcmp.o ../obj/$(PLAT)/xpqmrg.o ../obj/$(PLAT)/xpqsrt.o ../obj/$(PLAT)/xpqsort.o
 OBJS_KSVD2 += ../obj/$(PLAT)/xksvd2.o ../obj/$(PLAT)/wksvd2.o
 OBJS_FAUX += ../obj/$(PLAT)/xdoffsq.o ../obj/$(PLAT)/xzoffsq.o ../obj/$(PLAT)/qxoffsq.o ../obj/$(PLAT)/qwoffsq.o ../obj/$(PLAT)/xpsum4.o
