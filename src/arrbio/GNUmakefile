@@ -7,6 +7,9 @@
 ../obj/$(PLAT)/ibrd1.o: arrbio/ibrd1.f90 $(MKFS) arrbio/GNUmakefile
 	$(FC) $(FCFLAGS) -c -o $@ arrbio/ibrd1.f90
 
+../obj/$(PLAT)/jbrd1.o: arrbio/jbrd1.f90 $(MKFS) arrbio/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ arrbio/jbrd1.f90
+
 ../obj/$(PLAT)/sbrd1.o: arrbio/sbrd1.f90 $(MKFS) arrbio/GNUmakefile
 	$(FC) $(FCFLAGS) -c -o $@ arrbio/sbrd1.f90
 
@@ -33,6 +36,9 @@
 
 ../obj/$(PLAT)/ibwr1.o: arrbio/ibwr1.f90 $(MKFS) arrbio/GNUmakefile
 	$(FC) $(FCFLAGS) -c -o $@ arrbio/ibwr1.f90
+
+../obj/$(PLAT)/jbwr1.o: arrbio/jbwr1.f90 $(MKFS) arrbio/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ arrbio/jbwr1.f90
 
 ../obj/$(PLAT)/sbwr1.o: arrbio/sbwr1.f90 $(MKFS) arrbio/GNUmakefile
 	$(FC) $(FCFLAGS) -c -o $@ arrbio/sbwr1.f90
@@ -61,6 +67,9 @@
 ../obj/$(PLAT)/ibrd2.o: arrbio/ibrd2.f90 $(MKFS) arrbio/GNUmakefile
 	$(FC) $(FCFLAGS) -c -o $@ arrbio/ibrd2.f90
 
+../obj/$(PLAT)/jbrd2.o: arrbio/jbrd2.f90 $(MKFS) arrbio/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ arrbio/jbrd2.f90
+
 ../obj/$(PLAT)/sbrd2.o: arrbio/sbrd2.f90 $(MKFS) arrbio/GNUmakefile
 	$(FC) $(FCFLAGS) -c -o $@ arrbio/sbrd2.f90
 
@@ -87,6 +96,9 @@
 
 ../obj/$(PLAT)/ibwr2.o: arrbio/ibwr2.f90 $(MKFS) arrbio/GNUmakefile
 	$(FC) $(FCFLAGS) -c -o $@ arrbio/ibwr2.f90
+
+../obj/$(PLAT)/jbwr2.o: arrbio/jbwr2.f90 $(MKFS) arrbio/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ arrbio/jbwr2.f90
 
 ../obj/$(PLAT)/sbwr2.o: arrbio/sbwr2.f90 $(MKFS) arrbio/GNUmakefile
 	$(FC) $(FCFLAGS) -c -o $@ arrbio/sbwr2.f90

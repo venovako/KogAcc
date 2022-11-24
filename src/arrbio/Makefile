@@ -7,6 +7,9 @@
 ..\obj\$(PLAT)\ibrd1.obj: arrbio\ibrd1.f90 $(MKFS) arrbio\Makefile
 	$(FC) $(FCFLAGS) /c arrbio\ibrd1.f90 /Fo$@
 
+..\obj\$(PLAT)\jbrd1.obj: arrbio\jbrd1.f90 $(MKFS) arrbio\Makefile
+	$(FC) $(FCFLAGS) /c arrbio\jbrd1.f90 /Fo$@
+
 ..\obj\$(PLAT)\sbrd1.obj: arrbio\sbrd1.f90 $(MKFS) arrbio\Makefile
 	$(FC) $(FCFLAGS) /c arrbio\sbrd1.f90 /Fo$@
 
@@ -27,6 +30,9 @@
 
 ..\obj\$(PLAT)\ibwr1.obj: arrbio\ibwr1.f90 $(MKFS) arrbio\Makefile
 	$(FC) $(FCFLAGS) /c arrbio\ibwr1.f90 /Fo$@
+
+..\obj\$(PLAT)\jbwr1.obj: arrbio\jbwr1.f90 $(MKFS) arrbio\Makefile
+	$(FC) $(FCFLAGS) /c arrbio\jbwr1.f90 /Fo$@
 
 ..\obj\$(PLAT)\sbwr1.obj: arrbio\sbwr1.f90 $(MKFS) arrbio\Makefile
 	$(FC) $(FCFLAGS) /c arrbio\sbwr1.f90 /Fo$@
@@ -49,6 +55,9 @@
 ..\obj\$(PLAT)\ibrd2.obj: arrbio\ibrd2.f90 $(MKFS) arrbio\Makefile
 	$(FC) $(FCFLAGS) /c arrbio\ibrd2.f90 /Fo$@
 
+..\obj\$(PLAT)\jbrd2.obj: arrbio\jbrd2.f90 $(MKFS) arrbio\Makefile
+	$(FC) $(FCFLAGS) /c arrbio\jbrd2.f90 /Fo$@
+
 ..\obj\$(PLAT)\sbrd2.obj: arrbio\sbrd2.f90 $(MKFS) arrbio\Makefile
 	$(FC) $(FCFLAGS) /c arrbio\sbrd2.f90 /Fo$@
 
@@ -69,6 +78,9 @@
 
 ..\obj\$(PLAT)\ibwr2.obj: arrbio\ibwr2.f90 $(MKFS) arrbio\Makefile
 	$(FC) $(FCFLAGS) /c arrbio\ibwr2.f90 /Fo$@
+
+..\obj\$(PLAT)\jbwr2.obj: arrbio\jbwr2.f90 $(MKFS) arrbio\Makefile
+	$(FC) $(FCFLAGS) /c arrbio\jbwr2.f90 /Fo$@
 
 ..\obj\$(PLAT)\sbwr2.obj: arrbio\sbwr2.f90 $(MKFS) arrbio\Makefile
 	$(FC) $(FCFLAGS) /c arrbio\sbwr2.f90 /Fo$@
