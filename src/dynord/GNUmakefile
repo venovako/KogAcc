@@ -1,6 +1,54 @@
 ../lib/$(PLAT)/libdynord.a: $(OBJS_DYNORD) $(MKFS) dynord/GNUmakefile
 	$(AR) $(ARFLAGS) $@ $(OBJS_DYNORD)
 
+../obj/$(PLAT)/sabsg.o: dynord/sabsg.F90 dynord/gabsg.F90 $(MKFS) dynord/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ dynord/sabsg.F90
+
+../obj/$(PLAT)/cabsg.o: dynord/cabsg.F90 dynord/habsg.F90 $(MKFS) dynord/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ dynord/cabsg.F90
+
+../obj/$(PLAT)/dabsg.o: dynord/dabsg.F90 dynord/gabsg.F90 $(MKFS) dynord/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ dynord/dabsg.F90
+
+../obj/$(PLAT)/zabsg.o: dynord/zabsg.F90 dynord/habsg.F90 $(MKFS) dynord/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ dynord/zabsg.F90
+
+../obj/$(PLAT)/qabsg.o: dynord/qabsg.F90 dynord/gabsg.F90 $(MKFS) dynord/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ dynord/qabsg.F90
+
+../obj/$(PLAT)/yabsg.o: dynord/yabsg.F90 dynord/habsg.F90 $(MKFS) dynord/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ dynord/yabsg.F90
+
+../obj/$(PLAT)/xabsg.o: dynord/xabsg.F90 dynord/gabsg.F90 $(MKFS) dynord/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ dynord/xabsg.F90
+
+../obj/$(PLAT)/wabsg.o: dynord/wabsg.F90 dynord/habsg.F90 $(MKFS) dynord/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ dynord/wabsg.F90
+
+../obj/$(PLAT)/sabsog.o: dynord/sabsog.F90 dynord/gabsog.F90 $(MKFS) dynord/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ dynord/sabsog.F90
+
+../obj/$(PLAT)/cabsog.o: dynord/cabsog.F90 dynord/habsog.F90 $(MKFS) dynord/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ dynord/cabsog.F90
+
+../obj/$(PLAT)/dabsog.o: dynord/dabsog.F90 dynord/gabsog.F90 $(MKFS) dynord/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ dynord/dabsog.F90
+
+../obj/$(PLAT)/zabsog.o: dynord/zabsog.F90 dynord/habsog.F90 $(MKFS) dynord/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ dynord/zabsog.F90
+
+../obj/$(PLAT)/qabsog.o: dynord/qabsog.F90 dynord/gabsog.F90 $(MKFS) dynord/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ dynord/qabsog.F90
+
+../obj/$(PLAT)/yabsog.o: dynord/yabsog.F90 dynord/habsog.F90 $(MKFS) dynord/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ dynord/yabsog.F90
+
+../obj/$(PLAT)/xabsog.o: dynord/xabsog.F90 dynord/gabsog.F90 $(MKFS) dynord/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ dynord/xabsog.F90
+
+../obj/$(PLAT)/wabsog.o: dynord/wabsog.F90 dynord/habsog.F90 $(MKFS) dynord/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ dynord/wabsog.F90
+
 ../obj/$(PLAT)/spqcmp.o: dynord/spqcmp.f90 dynord/gpqcmp.f90 $(MKFS) dynord/GNUmakefile
 	$(FC) $(FCFLAGS) -c -o $@ dynord/spqcmp.f90
 

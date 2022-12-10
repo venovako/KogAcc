@@ -1,6 +1,42 @@
 ..\lib\$(PLAT)\dynord.lib: $(OBJS_DYNORD) $(MKFS) dynord\Makefile
 	$(AR) $(ARFLAGS) /OUT:$@ $(OBJS_DYNORD)
 
+..\obj\$(PLAT)\sabsg.obj: dynord\sabsg.F90 dynord\gabsg.F90 $(MKFS) dynord\Makefile
+	$(FC) $(FCFLAGS) /fpp /c dynord\sabsg.F90 /Fo$@
+
+..\obj\$(PLAT)\cabsg.obj: dynord\cabsg.F90 dynord\habsg.F90 $(MKFS) dynord\Makefile
+	$(FC) $(FCFLAGS) /fpp /c dynord\cabsg.F90 /Fo$@
+
+..\obj\$(PLAT)\dabsg.obj: dynord\dabsg.F90 dynord\gabsg.F90 $(MKFS) dynord\Makefile
+	$(FC) $(FCFLAGS) /fpp /c dynord\dabsg.F90 /Fo$@
+
+..\obj\$(PLAT)\zabsg.obj: dynord\zabsg.F90 dynord\habsg.F90 $(MKFS) dynord\Makefile
+	$(FC) $(FCFLAGS) /fpp /c dynord\zabsg.F90 /Fo$@
+
+..\obj\$(PLAT)\qabsg.obj: dynord\qabsg.F90 dynord\gabsg.F90 $(MKFS) dynord\Makefile
+	$(FC) $(FCFLAGS) /fpp /c dynord\qabsg.F90 /Fo$@
+
+..\obj\$(PLAT)\yabsg.obj: dynord\yabsg.F90 dynord\habsg.F90 $(MKFS) dynord\Makefile
+	$(FC) $(FCFLAGS) /fpp /c dynord\yabsg.F90 /Fo$@
+
+..\obj\$(PLAT)\sabsog.obj: dynord\sabsog.F90 dynord\gabsog.F90 $(MKFS) dynord\Makefile
+	$(FC) $(FCFLAGS) /fpp /c dynord\sabsog.F90 /Fo$@
+
+..\obj\$(PLAT)\cabsog.obj: dynord\cabsog.F90 dynord\habsog.F90 $(MKFS) dynord\Makefile
+	$(FC) $(FCFLAGS) /fpp /c dynord\cabsog.F90 /Fo$@
+
+..\obj\$(PLAT)\dabsog.obj: dynord\dabsog.F90 dynord\gabsog.F90 $(MKFS) dynord\Makefile
+	$(FC) $(FCFLAGS) /fpp /c dynord\dabsog.F90 /Fo$@
+
+..\obj\$(PLAT)\zabsog.obj: dynord\zabsog.F90 dynord\habsog.F90 $(MKFS) dynord\Makefile
+	$(FC) $(FCFLAGS) /fpp /c dynord\zabsog.F90 /Fo$@
+
+..\obj\$(PLAT)\qabsog.obj: dynord\qabsog.F90 dynord\gabsog.F90 $(MKFS) dynord\Makefile
+	$(FC) $(FCFLAGS) /fpp /c dynord\qabsog.F90 /Fo$@
+
+..\obj\$(PLAT)\yabsog.obj: dynord\yabsog.F90 dynord\habsog.F90 $(MKFS) dynord\Makefile
+	$(FC) $(FCFLAGS) /fpp /c dynord\yabsog.F90 /Fo$@
+
 ..\obj\$(PLAT)\spqcmp.obj: dynord\spqcmp.f90 dynord\gpqcmp.f90 $(MKFS) dynord\Makefile
 	$(FC) $(FCFLAGS) /c dynord\spqcmp.f90 /Fo$@
 
