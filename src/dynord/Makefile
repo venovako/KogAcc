@@ -37,6 +37,15 @@
 ..\obj\$(PLAT)\yabsog.obj: dynord\yabsog.F90 dynord\habsog.F90 $(MKFS) dynord\Makefile
 	$(FC) $(FCFLAGS) /fpp /c dynord\yabsog.F90 /Fo$@
 
+..\obj\$(PLAT)\smkwpq.obj: dynord\smkwpq.F90 dynord\gmkwpq.F90 $(MKFS) dynord\Makefile
+	$(FC) $(FCFLAGS) /fpp /c dynord\smkwpq.F90 /Fo$@
+
+..\obj\$(PLAT)\dmkwpq.obj: dynord\dmkwpq.F90 dynord\gmkwpq.F90 $(MKFS) dynord\Makefile
+	$(FC) $(FCFLAGS) /fpp /c dynord\dmkwpq.F90 /Fo$@
+
+..\obj\$(PLAT)\qmkwpq.obj: dynord\qmkwpq.F90 dynord\gmkwpq.F90 $(MKFS) dynord\Makefile
+	$(FC) $(FCFLAGS) /fpp /c dynord\qmkwpq.F90 /Fo$@
+
 ..\obj\$(PLAT)\spqcmp.obj: dynord\spqcmp.f90 dynord\gpqcmp.f90 $(MKFS) dynord\Makefile
 	$(FC) $(FCFLAGS) /c dynord\spqcmp.f90 /Fo$@
 

@@ -49,6 +49,18 @@
 ../obj/$(PLAT)/wabsog.o: dynord/wabsog.F90 dynord/habsog.F90 $(MKFS) dynord/GNUmakefile
 	$(FC) $(FCFLAGS) -c -o $@ dynord/wabsog.F90
 
+../obj/$(PLAT)/smkwpq.o: dynord/smkwpq.F90 dynord/gmkwpq.F90 $(MKFS) dynord/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ dynord/smkwpq.F90
+
+../obj/$(PLAT)/dmkwpq.o: dynord/dmkwpq.F90 dynord/gmkwpq.F90 $(MKFS) dynord/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ dynord/dmkwpq.F90
+
+../obj/$(PLAT)/qmkwpq.o: dynord/qmkwpq.F90 dynord/gmkwpq.F90 $(MKFS) dynord/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ dynord/qmkwpq.F90
+
+../obj/$(PLAT)/xmkwpq.o: dynord/xmkwpq.F90 dynord/gmkwpq.F90 $(MKFS) dynord/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ dynord/xmkwpq.F90
+
 ../obj/$(PLAT)/spqcmp.o: dynord/spqcmp.f90 dynord/gpqcmp.f90 $(MKFS) dynord/GNUmakefile
 	$(FC) $(FCFLAGS) -c -o $@ dynord/spqcmp.f90
 

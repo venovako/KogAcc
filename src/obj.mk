@@ -57,6 +57,9 @@ OBJS_DYNORD=\
 ..\obj\$(PLAT)\zabsog.obj\
 ..\obj\$(PLAT)\qabsog.obj\
 ..\obj\$(PLAT)\yabsog.obj\
+..\obj\$(PLAT)\smkwpq.obj\
+..\obj\$(PLAT)\dmkwpq.obj\
+..\obj\$(PLAT)\qmkwpq.obj\
 ..\obj\$(PLAT)\spqcmp.obj\
 ..\obj\$(PLAT)\dpqcmp.obj\
 ..\obj\$(PLAT)\qpqcmp.obj\
