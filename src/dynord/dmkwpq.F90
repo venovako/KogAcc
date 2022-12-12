@@ -1,8 +1,8 @@
-!>@brief \b DMKWPQ builds the matrices \f$W,P,Q\f$ of weights and indexes, respectively, where their first \f$(N\cdot(N-1))/2\f$ elements are set, from the \f$N\times N\f$ double precision matrix \f$W\f$.
+!>@brief \b DMKWPQ builds the weights \f$W\f$ and the corresponding indexes \f$O\f$ from the \f$N\times N\f$ double precision matrix \f$W\f$.
 #ifdef CR_MATH
-SUBROUTINE DMKWPQ(N, W, P, Q, INFO)
+SUBROUTINE DMKWPQ(N, W, O, INFO)
 #else
-PURE SUBROUTINE DMKWPQ(N, W, P, Q, INFO)
+PURE SUBROUTINE DMKWPQ(N, W, O, INFO)
 #endif
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
   IMPLICIT NONE
@@ -21,7 +21,7 @@ PURE SUBROUTINE DMKWPQ(N, W, P, Q, INFO)
 
   INTEGER, INTENT(IN) :: N
   REAL(KIND=REAL64), INTENT(INOUT) :: W(N,N)
-  INTEGER, INTENT(OUT) :: P(N,N-1), Q(N,N-1), INFO
-  INTEGER :: I, J, K, L
+  INTEGER, INTENT(OUT) :: O(N*(N-1)), INFO
+  INTEGER :: I, J, K, L, M, N2
 #include "gmkwpq.F90"
 END SUBROUTINE DMKWPQ
