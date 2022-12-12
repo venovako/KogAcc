@@ -14,7 +14,14 @@
   END IF
   DO I = 1, N-1
      DO J = I+1, N
-        W(K,L) = CR_HYPOT(W(J,I), W(I,J))
+        H = CR_HYPOT(W(J,I), W(I,J))
+#ifndef NDEBUG
+        IF (.NOT. (H .LE. HUGE(H))) THEN
+           INFO = -4 - M
+           RETURN
+        END IF
+#endif
+        W(K,L) = H
         O(M) = I
         O(M + N2) = J
         K = K + 1
