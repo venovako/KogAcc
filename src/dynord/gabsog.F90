@@ -10,11 +10,21 @@
      IF (MIN(LDG,LDW) .LT. P) THEN
         INFO = -5
      ELSE ! all OK
-        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J) SHARED(G,W,P,Q)
+        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J,H) SHARED(G,W,P,Q) REDUCTION(MIN:INFO)
         DO J = 1, Q
-           DO I = 1, P
-              W(I,J) = ABS(G(I,J))
-           END DO
+           INFO = MIN(INFO, 0)
+           IF (INFO .EQ. 0) THEN
+              DO I = 1, P
+                 H = ABS(G(I,J))
+#ifndef NDEBUG
+                 IF (.NOT. (H .LE. HUGE(H))) THEN
+                    INFO = MIN(INFO, -1)
+                    EXIT
+                 END IF
+#endif
+                 W(I,J) = H
+              END DO
+           END IF
         END DO
         !$OMP END PARALLEL DO
      END IF
@@ -30,24 +40,63 @@
         QB = (Q - 1) * B + 1
         UP = PB + B - 1
         UQ = QB + B - 1
-        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J) SHARED(G,W,PB,QB,UP,UQ)
+        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J,H) SHARED(G,W,PB,QB,UP,UQ) REDUCTION(MIN:INFO)
         DO J = PB, UP
-           DO I = PB, UP
-              W(I,J) = ABS(G(I,J))
-           END DO
-           DO I = QB, UQ
-              W(I,J) = ABS(G(I,J))
-           END DO
+           INFO = MIN(INFO, 0)
+           IF (INFO .EQ. 0) THEN
+              DO I = PB, UP
+                 H = ABS(G(I,J))
+#ifndef NDEBUG
+                 IF (.NOT. (H .LE. HUGE(H))) THEN
+                    INFO = MIN(INFO, -1)
+                    EXIT
+                 END IF
+#endif
+                 W(I,J) = H
+              END DO
+           END IF
+           IF (INFO .EQ. 0) THEN
+              DO I = QB, UQ
+                 H = ABS(G(I,J))
+#ifndef NDEBUG
+                 IF (.NOT. (H .LE. HUGE(H))) THEN
+                    INFO = MIN(INFO, -1)
+                    EXIT
+                 END IF
+#endif
+                 W(I,J) = H
+              END DO
+           END IF
         END DO
         !$OMP END PARALLEL DO
-        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J) SHARED(G,W,PB,QB,UP,UQ)
+        IF (INFO .NE. 0) RETURN
+        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J,H) SHARED(G,W,PB,QB,UP,UQ) REDUCTION(MIN:INFO)
         DO J = QB, UQ
-           DO I = PB, UP
-              W(I,J) = ABS(G(I,J))
-           END DO
-           DO I = QB, UQ
-              W(I,J) = ABS(G(I,J))
-           END DO
+           INFO = MIN(INFO, 0)
+           IF (INFO .EQ. 0) THEN
+              DO I = PB, UP
+                 H = ABS(G(I,J))
+#ifndef NDEBUG
+                 IF (.NOT. (H .LE. HUGE(H))) THEN
+                    INFO = MIN(INFO, -1)
+                    EXIT
+                 END IF
+#endif
+                 W(I,J) = H
+              END DO
+           END IF
+           IF (INFO .EQ. 0) THEN
+              DO I = QB, UQ
+                 H = ABS(G(I,J))
+#ifndef NDEBUG
+                 IF (.NOT. (H .LE. HUGE(H))) THEN
+                    INFO = MIN(INFO, -1)
+                    EXIT
+                 END IF
+#endif
+                 W(I,J) = H
+              END DO
+           END IF
         END DO
         !$OMP END PARALLEL DO
      END IF
