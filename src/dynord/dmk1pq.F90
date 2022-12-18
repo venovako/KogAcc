@@ -1,0 +1,16 @@
+!>@brief \b DMK1PQ builds at most one \f$(p,q)\f$ pivot index pair for the next transformation of \f$G\f$.
+SUBROUTINE DMK1PQ(K, N, G, LDG, W, O, INFO)
+  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
+  IMPLICIT NONE
+  REAL(KIND=REAL64), PARAMETER :: ZERO = 0.0_REAL64
+  INTEGER, INTENT(IN) :: K, N, LDG
+  REAL(KIND=REAL64), INTENT(IN) :: G(LDG,N)
+  REAL(KIND=REAL64), INTENT(OUT) :: W(N*N)
+  INTEGER, INTENT(OUT) :: O(2*N*(N-1)), INFO
+  INTEGER :: M, M_2
+  EXTERNAL :: DABSG, DMKWPQ, DPQSRT
+#define ABSG DABSG
+#define MKWPQ DMKWPQ
+#define PQSRT DPQSRT
+#include "gmk1pq.F90"
+END SUBROUTINE DMK1PQ
