@@ -1,8 +1,9 @@
-!>@brief \b YMK1PQ builds at most one \f$(p,q)\f$ pivot index pair for the next transformation of \f$G\f$.
+!>@brief \b YMK1PQ builds at most \f$K\f$ pivot index pairs for the next transformation of \f$G\f$.
 PURE SUBROUTINE YMK1PQ(K, N, G, LDG, W, O, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL128
   IMPLICIT NONE
 
+#define CR_HYPOT HYPOT
   INTERFACE
      PURE SUBROUTINE YABSG(G, LDG, W, LDW, P, Q, B, INFO)
        USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL128
@@ -58,7 +59,7 @@ PURE SUBROUTINE YMK1PQ(K, N, G, LDG, W, O, INFO)
   COMPLEX(KIND=REAL128), INTENT(IN) :: G(LDG,N)
   REAL(KIND=REAL128), INTENT(OUT) :: W(N*N)
   INTEGER, INTENT(OUT) :: O(2*N*(N-1)), INFO
-  INTEGER :: M, M_2
+  INTEGER :: I, J, L, M, M_2
 #define ABSG YABSG
 #define MKWPQ QMKWPQ
 #define PQCMP QPQCMP

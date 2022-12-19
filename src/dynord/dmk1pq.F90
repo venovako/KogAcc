@@ -1,8 +1,20 @@
-!>@brief \b DMK1PQ builds at most one \f$(p,q)\f$ pivot index pair for the next transformation of \f$G\f$.
+!>@brief \b DMK1PQ builds at most \f$K\f$ pivot index pairs for the next transformation of \f$G\f$.
 PURE SUBROUTINE DMK1PQ(K, N, G, LDG, W, O, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
   IMPLICIT NONE
 
+#ifdef CR_MATH
+  INTERFACE
+     ! TODO: cr_hypot might change errno but a copy can be made that does not
+     PURE FUNCTION CR_HYPOT(X, Y) BIND(C,NAME='cr_hypot')
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_double
+       REAL(KIND=c_double), INTENT(IN), VALUE :: X, Y
+       REAL(KIND=c_double) :: CR_HYPOT
+     END FUNCTION CR_HYPOT
+  END INTERFACE
+#else
+#define CR_HYPOT HYPOT
+#endif
   INTERFACE
      PURE SUBROUTINE DABSG(G, LDG, W, LDW, P, Q, B, INFO)
        USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
@@ -58,7 +70,7 @@ PURE SUBROUTINE DMK1PQ(K, N, G, LDG, W, O, INFO)
   REAL(KIND=REAL64), INTENT(IN) :: G(LDG,N)
   REAL(KIND=REAL64), INTENT(OUT) :: W(N*N)
   INTEGER, INTENT(OUT) :: O(2*N*(N-1)), INFO
-  INTEGER :: M, M_2
+  INTEGER :: I, J, L, M, M_2
 #define ABSG DABSG
 #define MKWPQ DMKWPQ
 #define PQCMP DPQCMP

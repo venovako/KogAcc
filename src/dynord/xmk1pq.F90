@@ -1,7 +1,8 @@
-!>@brief \b XMK1PQ builds at most one \f$(p,q)\f$ pivot index pair for the next transformation of \f$G\f$.
+!>@brief \b XMK1PQ builds at most \f$K\f$ pivot index pairs for the next transformation of \f$G\f$.
 PURE SUBROUTINE XMK1PQ(K, N, G, LDG, W, O, INFO)
   IMPLICIT NONE
 
+#define CR_HYPOT HYPOT
   INTERFACE
      PURE SUBROUTINE XABSG(G, LDG, W, LDW, P, Q, B, INFO)
        IMPLICIT NONE
@@ -52,7 +53,7 @@ PURE SUBROUTINE XMK1PQ(K, N, G, LDG, W, O, INFO)
   REAL(KIND=10), INTENT(IN) :: G(LDG,N)
   REAL(KIND=10), INTENT(OUT) :: W(N*N)
   INTEGER, INTENT(OUT) :: O(2*N*(N-1)), INFO
-  INTEGER :: M, M_2
+  INTEGER :: I, J, L, M, M_2
 #define ABSG XABSG
 #define MKWPQ XMKWPQ
 #define PQCMP XPQCMP

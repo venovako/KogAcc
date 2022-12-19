@@ -1,8 +1,20 @@
-!>@brief \b CMK1PQ builds at most one \f$(p,q)\f$ pivot index pair for the next transformation of \f$G\f$.
+!>@brief \b CMK1PQ builds at most \f$K\f$ pivot index pairs for the next transformation of \f$G\f$.
 PURE SUBROUTINE CMK1PQ(K, N, G, LDG, W, O, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
   IMPLICIT NONE
 
+#ifdef CR_MATH
+  INTERFACE
+     ! TODO: cr_hypotf might change errno but a copy can be made that does not
+     PURE FUNCTION CR_HYPOT(X, Y) BIND(C,NAME='cr_hypotf')
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_float
+       REAL(KIND=c_float), INTENT(IN), VALUE :: X, Y
+       REAL(KIND=c_float) :: CR_HYPOT
+     END FUNCTION CR_HYPOT
+  END INTERFACE
+#else
+#define CR_HYPOT HYPOT
+#endif
   INTERFACE
      PURE SUBROUTINE CABSG(G, LDG, W, LDW, P, Q, B, INFO)
        USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
@@ -58,7 +70,7 @@ PURE SUBROUTINE CMK1PQ(K, N, G, LDG, W, O, INFO)
   COMPLEX(KIND=REAL32), INTENT(IN) :: G(LDG,N)
   REAL(KIND=REAL32), INTENT(OUT) :: W(N*N)
   INTEGER, INTENT(OUT) :: O(2*N*(N-1)), INFO
-  INTEGER :: M, M_2
+  INTEGER :: I, J, L, M, M_2
 #define ABSG CABSG
 #define MKWPQ SMKWPQ
 #define PQCMP SPQCMP
