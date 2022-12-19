@@ -15,7 +15,7 @@ SUBROUTINE SBWR2(U, M, N, G, LDG, INFO)
   INTEGER :: J
   EXTERNAL :: SBWR1
   INFO = 0
-  IF (LDG .LT. MAX(M, 0)) INFO = -5
+  IF (LDG .LT. M) INFO = -5
   IF (N .LT. 0) INFO = -3
   IF (M .LT. 0) INFO = -2
   IF (INFO .NE. 0) RETURN

@@ -104,6 +104,11 @@ OBJS_ARRBIO += \
 ../obj/$(PLAT)/ybrd2.o\
 ../obj/$(PLAT)/qbwr2.o\
 ../obj/$(PLAT)/ybwr2.o
+OBJS_BLKSVD += \
+../obj/$(PLAT)/qbrdg.o\
+../obj/$(PLAT)/ybrdg.o\
+../obj/$(PLAT)/qbordg.o\
+../obj/$(PLAT)/ybordg.o
 OBJS_DYNORD += \
 ../obj/$(PLAT)/qabsg.o\
 ../obj/$(PLAT)/yabsg.o\
@@ -139,6 +144,11 @@ OBJS_ARRBIO += \
 ../obj/$(PLAT)/wbrd2.o\
 ../obj/$(PLAT)/xbwr2.o\
 ../obj/$(PLAT)/wbwr2.o
+OBJS_BLKSVD += \
+../obj/$(PLAT)/xbrdg.o\
+../obj/$(PLAT)/wbrdg.o\
+../obj/$(PLAT)/xbordg.o\
+../obj/$(PLAT)/wbordg.o
 OBJS_DYNORD += \
 ../obj/$(PLAT)/xabsg.o\
 ../obj/$(PLAT)/wabsg.o\

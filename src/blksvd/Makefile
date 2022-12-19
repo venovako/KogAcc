@@ -13,6 +13,12 @@
 ..\obj\$(PLAT)\zbrdg.obj: blksvd\zbrdg.f90 blksvd\gbrdg.f90 $(MKFS) blksvd\Makefile
 	$(FC) $(FCFLAGS) /c blksvd\zbrdg.f90 /Fo$@
 
+..\obj\$(PLAT)\qbrdg.obj: blksvd\qbrdg.f90 blksvd\gbrdg.f90 $(MKFS) blksvd\Makefile
+	$(FC) $(FCFLAGS) /c blksvd\qbrdg.f90 /Fo$@
+
+..\obj\$(PLAT)\ybrdg.obj: blksvd\ybrdg.f90 blksvd\gbrdg.f90 $(MKFS) blksvd\Makefile
+	$(FC) $(FCFLAGS) /c blksvd\ybrdg.f90 /Fo$@
+
 ..\obj\$(PLAT)\sbordg.obj: blksvd\sbordg.f90 blksvd\gbordg.f90 $(MKFS) blksvd\Makefile
 	$(FC) $(FCFLAGS) /c blksvd\sbordg.f90 /Fo$@
 

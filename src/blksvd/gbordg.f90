@@ -1,6 +1,6 @@
   ! This is the generic part of the OpenMP-parallel bordering routines.
   INFO = 0
-  IF (LDG .LT. MAX(M, 0)) INFO = -4
+  IF (LDG .LT. M) INFO = -4
   IF (N .LT. 0) INFO = -2
   IF (M .LT. N) INFO = -1
   IF (INFO .NE. 0) RETURN

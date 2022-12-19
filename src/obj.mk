@@ -38,10 +38,14 @@ OBJS_BLKSVD=\
 ..\obj\$(PLAT)\cbrdg.obj\
 ..\obj\$(PLAT)\dbrdg.obj\
 ..\obj\$(PLAT)\zbrdg.obj\
+..\obj\$(PLAT)\qbrdg.obj\
+..\obj\$(PLAT)\ybrdg.obj\
 ..\obj\$(PLAT)\sbordg.obj\
 ..\obj\$(PLAT)\cbordg.obj\
 ..\obj\$(PLAT)\dbordg.obj\
 ..\obj\$(PLAT)\zbordg.obj\
+..\obj\$(PLAT)\qbordg.obj\
+..\obj\$(PLAT)\ybordg.obj\
 ..\obj\$(PLAT)\nb2m.obj
 
 OBJS_DYNORD=\

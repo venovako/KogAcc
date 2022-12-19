@@ -1,6 +1,6 @@
   ! This is the generic part of the (off-)norm-squared routines for real matrices.
   INFO = 0
-  IF (LDG .LT. MAX(N, 0)) INFO = -4
+  IF (LDG .LT. N) INFO = -4
   IF (N .LT. 0) INFO = -2
   IF (INFO .NE. 0) RETURN
   IF (N .EQ. 0) RETURN
