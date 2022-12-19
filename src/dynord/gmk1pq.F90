@@ -21,6 +21,13 @@
   IF (INFO .NE. 0) RETURN
   CALL PQSRT(PQCMP, M_2, W, O, O(M_2+1), W(M_2+1), O(M+1), O(M+M_2+1), INFO)
   IF (INFO .LT. 0) RETURN
+
+  DO I = M_2+1, N*N
+     W(I) = ZERO
+  END DO
+  DO I = M+1, 2*M-1
+     O(I) = 0
+  END DO
   O(2*M) = INFO
 
   I = 1
@@ -37,10 +44,8 @@
      IF (I .GT. M_2) EXIT
   END DO
 
-  J = M_2 + 1
-  IF (INFO .EQ. 0) THEN
-     W(J) = ZERO
-  ELSE ! INFO >= 1
+  IF (INFO .GT. 0) THEN
+     J = M_2 + 1
      W(J) = W(O(M+INFO))
      DO I = INFO-1, 1, -1
         W(J) = CR_HYPOT(W(J), W(O(M+I)))
