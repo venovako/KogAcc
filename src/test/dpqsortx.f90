@@ -19,9 +19,9 @@ PROGRAM DPQSORTX
      READ (*,*) W(I), P(I), Q(I)
   END DO
   IF (N .GT. 0) THEN
-     CALL DPQSORT(N, W, P, Q, W(N+1), P(N+1), Q(N+1), INFO)
+     CALL DPQSORT(DPQCMP, N, W, P, Q, W(N+1), P(N+1), Q(N+1), INFO)
   ELSE ! N .LT. 0
-     CALL DPQSRT(M, W, P, Q, W(M+1), P(M+1), Q(M+1), INFO)
+     CALL DPQSRT(DPQCMP, M, W, P, Q, W(M+1), P(M+1), Q(M+1), INFO)
   END IF
   WRITE (OUTPUT_UNIT,'(A,I11)') 'INFO = ', INFO
   IF (INFO .GE. 0) THEN

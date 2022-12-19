@@ -1,15 +1,42 @@
-!>@brief \b XPQSORT sorts the arrays \f$AW,AP,AQ\f$ by the OpenMP-parallel merge sort algorithm, using the workspace arrays \f$BW,BP,BQ\f$ of the same length \f$N\f$, according to the ordering \f$\prec\f$ defined by the XPQCMP subroutine, and returns a non-negative value in INFO if successful, or a negative value on failure.
-SUBROUTINE XPQSORT(N, AW, AP, AQ, BW, BP, BQ, INFO)
+!>@brief \b XPQSORT sorts the arrays \f$AW,AP,AQ\f$ by the OpenMP-parallel merge sort algorithm, using the workspace arrays \f$BW,BP,BQ\f$ of the same length \f$N\f$, according to the ordering \f$\prec\f$ defined by the WPQCMP subroutine, and returns a non-negative value in INFO if successful, or a negative value on failure.
+SUBROUTINE XPQSORT(WPQCMP, N, AW, AP, AQ, BW, BP, BQ, INFO)
   IMPLICIT NONE
+
+  ABSTRACT INTERFACE
+     PURE SUBROUTINE PQCMP(XW, XP, XQ, YW, YP, YQ, INFO)
+       IMPLICIT NONE
+       INTEGER, INTENT(IN) :: XP, XQ, YP, YQ
+       REAL(KIND=10), INTENT(IN) :: XW, YW
+       INTEGER, INTENT(OUT) :: INFO
+     END SUBROUTINE PQCMP
+  END INTERFACE
+  INTERFACE
+     PURE SUBROUTINE XPQMRG(WPQCMP, M, N, AW, AP, AQ, BW, BP, BQ, XW, XP, XQ, INFO)
+       IMPLICIT NONE
+       ABSTRACT INTERFACE
+          PURE SUBROUTINE PQCMP(XW, XP, XQ, YW, YP, YQ, INFO)
+            IMPLICIT NONE
+            INTEGER, INTENT(IN) :: XP, XQ, YP, YQ
+            REAL(KIND=10), INTENT(IN) :: XW, YW
+            INTEGER, INTENT(OUT) :: INFO
+          END SUBROUTINE PQCMP
+       END INTERFACE
+       INTEGER, INTENT(IN) :: M, N, AP(M), AQ(M), BP(N), BQ(N)
+       REAL(KIND=10), INTENT(IN) :: AW(M), BW(N)
+       REAL(KIND=10), INTENT(OUT) :: XW(M+N)
+       INTEGER, INTENT(OUT) :: XP(M+N), XQ(M+N), INFO
+       PROCEDURE(PQCMP) :: WPQCMP
+     END SUBROUTINE XPQMRG
+  END INTERFACE
+
   INTEGER, INTENT(IN) :: N
   REAL(KIND=10), INTENT(INOUT) :: AW(N)
   INTEGER, INTENT(INOUT) :: AP(N), AQ(N)
   REAL(KIND=10), INTENT(OUT) :: BW(N)
   INTEGER, INTENT(OUT) :: BP(N), BQ(N), INFO
-  EXTERNAL :: XPQCMP, XPQMRG
+  PROCEDURE(PQCMP) :: WPQCMP
   INTEGER :: I, J, K, L, M, X, Y
   LOGICAL :: FLIP
-#define PQCMP XPQCMP
-#define PQMRG XPQMRG
+#define WPQMRG XPQMRG
 #include "gpqsort.F90"
 END SUBROUTINE XPQSORT

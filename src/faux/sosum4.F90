@@ -1,15 +1,11 @@
 !>@brief \b SOSUM4 sums four norms in single precision.
-#ifdef CR_MATH
-SUBROUTINE SOSUM4(W1, W2, W3, W4, W, INFO)
-#else
 PURE SUBROUTINE SOSUM4(W1, W2, W3, W4, W, INFO)
-#endif
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
   IMPLICIT NONE
 
 #ifdef CR_MATH
   INTERFACE
-     FUNCTION CR_HYPOT(X, Y) BIND(C,NAME='cr_hypotf')
+     PURE FUNCTION CR_HYPOT(X, Y) BIND(C,NAME='cr_hypotf')
        USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_float
        REAL(KIND=c_float), INTENT(IN), VALUE :: X, Y
        REAL(KIND=c_float) :: CR_HYPOT

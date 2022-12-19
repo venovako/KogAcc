@@ -1,7 +1,30 @@
 !>@brief \b SLANGO computes \f$S=\|G\|_F\f$ for \f$\mathrm{O}\in\{\mathrm{'A'},\mathrm{'a'}\}\f$ or \f$S=\|\mathop{\mathrm{off}}(G)\|_F\f$ for \f$\mathrm{O}\in\{\mathrm{'O'},\mathrm{'o'}\}\f$ of a square single precision real matrix \f$G\f$ of order \f$N\f$.
-SUBROUTINE SLANGO(O, N, G, LDG, S, INFO)
+PURE SUBROUTINE SLANGO(O, N, G, LDG, S, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
   IMPLICIT NONE
+
+  INTERFACE
+     PURE FUNCTION SLANGE(NORM, M, N, A, LDA, WORK)
+       USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
+       IMPLICIT NONE
+       CHARACTER, INTENT(IN) :: NORM
+       INTEGER, INTENT(IN) :: M, N, LDA
+       REAL(KIND=REAL32), INTENT(IN) :: A(LDA,*)
+       ! a dirty trick to preserve purity since WORK should not be referenced here
+       REAL(KIND=REAL32), INTENT(IN) :: WORK
+       REAL(KIND=REAL32) :: SLANGE
+     END FUNCTION SLANGE
+  END INTERFACE
+  INTERFACE
+     PURE SUBROUTINE SLASSQ(N, X, INCX, SC, SM)
+       USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
+       IMPLICIT NONE
+       INTEGER, INTENT(IN) :: N, INCX
+       REAL(KIND=REAL32), INTENT(IN) :: X(*)
+       REAL(KIND=REAL32), INTENT(INOUT) :: SC, SM
+     END SUBROUTINE SLASSQ
+  END INTERFACE
+
   CHARACTER, INTENT(IN) :: O
   INTEGER, INTENT(IN) :: N, LDG
   REAL(KIND=REAL32), INTENT(IN) :: G(N,LDG)
@@ -9,8 +32,7 @@ SUBROUTINE SLANGO(O, N, G, LDG, S, INFO)
   INTEGER, INTENT(OUT) :: INFO
   REAL(KIND=REAL32) :: SC, SM
   INTEGER :: J
-  REAL(KIND=REAL32), EXTERNAL :: SLANGE
-  EXTERNAL :: SLASSQ
+
   S = 0.0_REAL32
   INFO = 0
   IF (LDG .LT. MAX(N, 0)) INFO = -4

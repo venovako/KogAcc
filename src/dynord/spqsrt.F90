@@ -1,17 +1,46 @@
-!>@brief \b SPQSRT sorts the arrays \f$AW,AP,AQ\f$ by the sequential merge sort algorithm, using the workspace arrays \f$BW,BP,BQ\f$ of the same length \f$N\f$, according to the ordering \f$\prec\f$ defined by the SPQCMP subroutine, and returns a non-negative value in INFO if successful, or a negative value on failure.
-SUBROUTINE SPQSRT(N, AW, AP, AQ, BW, BP, BQ, INFO)
+!>@brief \b SPQSRT sorts the arrays \f$AW,AP,AQ\f$ by the sequential merge sort algorithm, using the workspace arrays \f$BW,BP,BQ\f$ of the same length \f$N\f$, according to the ordering \f$\prec\f$ defined by the WPQCMP subroutine, and returns a non-negative value in INFO if successful, or a negative value on failure.
+PURE SUBROUTINE SPQSRT(WPQCMP, N, AW, AP, AQ, BW, BP, BQ, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
   IMPLICIT NONE
+
+  ABSTRACT INTERFACE
+     PURE SUBROUTINE PQCMP(XW, XP, XQ, YW, YP, YQ, INFO)
+       USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
+       IMPLICIT NONE
+       INTEGER, INTENT(IN) :: XP, XQ, YP, YQ
+       REAL(KIND=REAL32), INTENT(IN) :: XW, YW
+       INTEGER, INTENT(OUT) :: INFO
+     END SUBROUTINE PQCMP
+  END INTERFACE
+  INTERFACE
+     PURE SUBROUTINE SPQMRG(WPQCMP, M, N, AW, AP, AQ, BW, BP, BQ, XW, XP, XQ, INFO)
+       USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
+       IMPLICIT NONE
+       ABSTRACT INTERFACE
+          PURE SUBROUTINE PQCMP(XW, XP, XQ, YW, YP, YQ, INFO)
+            USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
+            IMPLICIT NONE
+            INTEGER, INTENT(IN) :: XP, XQ, YP, YQ
+            REAL(KIND=REAL32), INTENT(IN) :: XW, YW
+            INTEGER, INTENT(OUT) :: INFO
+          END SUBROUTINE PQCMP
+       END INTERFACE
+       INTEGER, INTENT(IN) :: M, N, AP(M), AQ(M), BP(N), BQ(N)
+       REAL(KIND=REAL32), INTENT(IN) :: AW(M), BW(N)
+       REAL(KIND=REAL32), INTENT(OUT) :: XW(M+N)
+       INTEGER, INTENT(OUT) :: XP(M+N), XQ(M+N), INFO
+       PROCEDURE(PQCMP) :: WPQCMP
+     END SUBROUTINE SPQMRG
+  END INTERFACE
+
   INTEGER, INTENT(IN) :: N
   REAL(KIND=REAL32), INTENT(INOUT) :: AW(N)
   INTEGER, INTENT(INOUT) :: AP(N), AQ(N)
   REAL(KIND=REAL32), INTENT(OUT) :: BW(N)
   INTEGER, INTENT(OUT) :: BP(N), BQ(N), INFO
-  EXTERNAL :: SPQCMP, SPQMRG
-  ! PROCEDURE(), POINTER :: PQCMP => SPQCMP, PQMRG => SPQMRG
+  PROCEDURE(PQCMP) :: WPQCMP
   INTEGER :: I, J, K, L, X, Y
   LOGICAL :: FLIP
-#define PQCMP SPQCMP
-#define PQMRG SPQMRG
+#define WPQMRG SPQMRG
 #include "gpqsrt.F90"
 END SUBROUTINE SPQSRT

@@ -5,7 +5,7 @@
 !!@param G [OUT]; \f$G\f$ is a single precision complex square matrix that gets bordered, such that the \f$M-N\f$ appended rows and columns are set to zero, except on the diagonal, which is set to unity, while the first \f$N\f$ rows and columns of \f$G\f$ are not touched.
 !!@param LDG [IN]; the leading dimension of \f$G\f$.
 !!@param INFO [OUT]; zero on success or \f$-i\f$ if the \f$i\f$th argument had an illegal value.
-SUBROUTINE CBRDG(M, N, G, LDG, INFO)
+PURE SUBROUTINE CBRDG(M, N, G, LDG, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
   IMPLICIT NONE
   COMPLEX(KIND=REAL32), PARAMETER :: ZERO = (0.0_REAL32,0.0_REAL32)

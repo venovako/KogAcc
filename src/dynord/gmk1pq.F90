@@ -12,7 +12,7 @@
   IF (INFO .NE. 0) RETURN
   CALL MKWPQ(N, W, O, INFO)
   IF (INFO .NE. 0) RETURN
-  CALL PQSRT(M_2, W, O, O(M_2+1), W(M_2+1), O(M+1), O(M+M_2+1), INFO)
+  CALL PQSRT(PQCMP, M_2, W, O, O(M_2+1), W(M_2+1), O(M+1), O(M+M_2+1), INFO)
   IF (INFO .LT. 0) RETURN
   IF (W(1) .EQ. ZERO) THEN
      O(M+1) = 0

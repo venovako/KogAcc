@@ -1,7 +1,30 @@
 !>@brief \b ZLANGO computes \f$S=\|G\|_F\f$ for \f$\mathrm{O}\in\{\mathrm{'A'},\mathrm{'a'}\}\f$ or \f$S=\|\mathop{\mathrm{off}}(G)\|_F\f$ for \f$\mathrm{O}\in\{\mathrm{'O'},\mathrm{'o'}\}\f$ of a square double precision complex matrix \f$G\f$ of order \f$N\f$.
-SUBROUTINE ZLANGO(O, N, G, LDG, S, INFO)
+PURE SUBROUTINE ZLANGO(O, N, G, LDG, S, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
   IMPLICIT NONE
+
+  INTERFACE
+     PURE FUNCTION ZLANGE(NORM, M, N, A, LDA, WORK)
+       USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
+       IMPLICIT NONE
+       CHARACTER, INTENT(IN) :: NORM
+       INTEGER, INTENT(IN) :: M, N, LDA
+       COMPLEX(KIND=REAL64), INTENT(IN) :: A(LDA,*)
+       ! a dirty trick to preserve purity since WORK should not be referenced here
+       REAL(KIND=REAL64), INTENT(IN) :: WORK
+       REAL(KIND=REAL64) :: ZLANGE
+     END FUNCTION ZLANGE
+  END INTERFACE
+  INTERFACE
+     PURE SUBROUTINE ZLASSQ(N, X, INCX, SC, SM)
+       USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
+       IMPLICIT NONE
+       INTEGER, INTENT(IN) :: N, INCX
+       COMPLEX(KIND=REAL64), INTENT(IN) :: X(*)
+       REAL(KIND=REAL64), INTENT(INOUT) :: SC, SM
+     END SUBROUTINE ZLASSQ
+  END INTERFACE
+
   CHARACTER, INTENT(IN) :: O
   INTEGER, INTENT(IN) :: N, LDG
   COMPLEX(KIND=REAL64), INTENT(IN) :: G(N,LDG)
@@ -9,8 +32,7 @@ SUBROUTINE ZLANGO(O, N, G, LDG, S, INFO)
   INTEGER, INTENT(OUT) :: INFO
   REAL(KIND=REAL64) :: SC, SM
   INTEGER :: J
-  REAL(KIND=REAL64), EXTERNAL :: ZLANGE
-  EXTERNAL :: ZLASSQ
+
   S = 0.0_REAL64
   INFO = 0
   IF (LDG .LT. MAX(N, 0)) INFO = -4

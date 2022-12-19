@@ -6,11 +6,7 @@
 !!@param S [OUT]; \f$\Sigma'\f$ is a single precision real array with two elements, \f$\sigma_{11}'\f$ and \f$\sigma_{22}'\f$, both non-negative and finite.
 !!@param INFO [OUT]; the scaling parameter \f$s\f$ such that \f$2^{-s}\Sigma'=\Sigma\f$.
 !!If \f$G\f$ has a non-finite component, then \f$s=-\mathop{\mathtt{HUGE}}(0)\f$, \f$U=V=I\f$, and \f$\sigma_{11}'=\sigma_{22}'=0\f$.
-#ifdef CR_MATH
-SUBROUTINE CKSVD2(G, U, V, S, INFO)
-#else
 PURE SUBROUTINE CKSVD2(G, U, V, S, INFO)
-#endif
 #ifdef USE_IEEE_INTRINSIC
   USE, INTRINSIC :: IEEE_ARITHMETIC, ONLY: IEEE_FMA
 #endif
@@ -19,7 +15,8 @@ PURE SUBROUTINE CKSVD2(G, U, V, S, INFO)
 
 #ifdef CR_MATH
   INTERFACE
-     FUNCTION CR_HYPOT(X, Y) BIND(C,NAME='cr_hypotf')
+     ! TODO: cr_hypotf might change errno but a copy can be made that does not
+     PURE FUNCTION CR_HYPOT(X, Y) BIND(C,NAME='cr_hypotf')
        USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_float
        REAL(KIND=c_float), INTENT(IN), VALUE :: X, Y
        REAL(KIND=c_float) :: CR_HYPOT

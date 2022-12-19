@@ -1,15 +1,12 @@
 !>@brief \b ZABSG sequentially computes \f$W=|G|\f$ for the \f$(P,P),(Q,P),(P,Q),(Q,Q)\f$ blocks if the block size \f$B\ge 1\f$, or for the whole \f$P\times Q\f$ double precision complex matrix \f$G\f$ if \f$B=0\f$.
-#ifdef CR_MATH
-SUBROUTINE ZABSG(G, LDG, W, LDW, P, Q, B, INFO)
-#else
 PURE SUBROUTINE ZABSG(G, LDG, W, LDW, P, Q, B, INFO)
-#endif
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
   IMPLICIT NONE
 
 #ifdef CR_MATH
   INTERFACE
-     FUNCTION CR_HYPOT(X, Y) BIND(C,NAME='cr_hypot')
+     ! TODO: cr_hypot might change errno but a copy can be made that does not
+     PURE FUNCTION CR_HYPOT(X, Y) BIND(C,NAME='cr_hypot')
        USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_double
        REAL(KIND=c_double), INTENT(IN), VALUE :: X, Y
        REAL(KIND=c_double) :: CR_HYPOT

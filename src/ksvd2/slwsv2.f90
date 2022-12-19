@@ -5,9 +5,18 @@
 !!@param V [OUT]; \f$V\f$ is an orthogonal single precision matrix of order two.
 !!@param S [OUT]; \f$\Sigma\f$ is a single precision array with two elements, \f$\sigma_{11}\f$ and \f$\sigma_{22}\f$.
 !!@param INFO [OUT]; On success, \f$0\f$; else, if \f$G\f$ is not upper triangular, \f$-\mathop{\mathtt{HUGE}}(0)\f$ (and \f$U=V=I\f$, \f$\sigma_{11}=\sigma_{22}=0\f$).
-SUBROUTINE SLWSV2(G, U, V, S, INFO)
+PURE SUBROUTINE SLWSV2(G, U, V, S, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
   IMPLICIT NONE
+
+  INTERFACE
+     PURE SUBROUTINE SLASV2(F, G, H, SSMIN, SSMAX, SNR, CSR, SNL, CSL)
+       USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
+       IMPLICIT NONE
+       REAL(KIND=REAL32), INTENT(IN) :: F, G, H
+       REAL(KIND=REAL32), INTENT(OUT) :: SSMIN, SSMAX, SNR, CSR, SNL, CSL
+     END SUBROUTINE SLASV2
+  END INTERFACE
 
   INTEGER, PARAMETER :: K = REAL32, IERR = -HUGE(0)
   REAL(KIND=K), PARAMETER :: ZERO = 0.0_K, ONE = 1.0_K
@@ -15,8 +24,6 @@ SUBROUTINE SLWSV2(G, U, V, S, INFO)
   REAL(KIND=K), INTENT(IN) :: G(2,2)
   REAL(KIND=K), INTENT(OUT) :: U(2,2), V(2,2), S(2)
   INTEGER, INTENT(OUT) :: INFO
-
-  EXTERNAL :: SLASV2
 
   U(1,1) = ONE
   U(2,1) = ZERO

@@ -1,15 +1,12 @@
 !>@brief \b SMKWPQ builds the weights \f$W\f$ and the corresponding indexes \f$O\f$ from the \f$N\times N\f$ single precision matrix \f$W\f$.
-#ifdef CR_MATH
-SUBROUTINE SMKWPQ(N, W, O, INFO)
-#else
 PURE SUBROUTINE SMKWPQ(N, W, O, INFO)
-#endif
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
   IMPLICIT NONE
 
 #ifdef CR_MATH
   INTERFACE
-     FUNCTION CR_HYPOT(X, Y) BIND(C,NAME='cr_hypotf')
+     ! TODO: cr_hypotf might change errno but a copy can be made that does not
+     PURE FUNCTION CR_HYPOT(X, Y) BIND(C,NAME='cr_hypotf')
        USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_float
        REAL(KIND=c_float), INTENT(IN), VALUE :: X, Y
        REAL(KIND=c_float) :: CR_HYPOT

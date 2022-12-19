@@ -1,15 +1,12 @@
 !>@brief \b CABSG sequentially computes \f$W=|G|\f$ for the \f$(P,P),(Q,P),(P,Q),(Q,Q)\f$ blocks if the block size \f$B\ge 1\f$, or for the whole \f$P\times Q\f$ single precision complex matrix \f$G\f$ if \f$B=0\f$.
-#ifdef CR_MATH
-SUBROUTINE CABSG(G, LDG, W, LDW, P, Q, B, INFO)
-#else
 PURE SUBROUTINE CABSG(G, LDG, W, LDW, P, Q, B, INFO)
-#endif
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
   IMPLICIT NONE
 
 #ifdef CR_MATH
   INTERFACE
-     FUNCTION CR_HYPOT(X, Y) BIND(C,NAME='cr_hypotf')
+     ! TODO: cr_hypotf might change errno but a copy can be made that does not
+     PURE FUNCTION CR_HYPOT(X, Y) BIND(C,NAME='cr_hypotf')
        USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_float
        REAL(KIND=c_float), INTENT(IN), VALUE :: X, Y
        REAL(KIND=c_float) :: CR_HYPOT
