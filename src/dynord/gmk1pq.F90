@@ -36,8 +36,8 @@
      J = M_2 + I
      IF ((W(M+O(I)) .EQ. ZERO) .AND. (W(M+O(J)) .EQ. ZERO)) THEN
         INFO = INFO + 1
-        W(M+O(I)) = I
-        W(M+O(J)) = I
+        W(M+O(I)) = W(I)
+        W(M+O(J)) = W(I)
         O(M+INFO) = I
      END IF
      I = I + 1

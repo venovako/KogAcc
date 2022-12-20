@@ -100,7 +100,13 @@ OBJS_FAUX=\
 ..\obj\$(PLAT)\dlango.obj\
 ..\obj\$(PLAT)\zlango.obj\
 ..\obj\$(PLAT)\sosum4.obj\
-..\obj\$(PLAT)\dosum4.obj
+..\obj\$(PLAT)\dosum4.obj\
+..\obj\$(PLAT)\srotc.obj\
+..\obj\$(PLAT)\crotc.obj\
+..\obj\$(PLAT)\drotc.obj\
+..\obj\$(PLAT)\zrotc.obj\
+..\obj\$(PLAT)\qrotc.obj\
+..\obj\$(PLAT)\yrotc.obj
 
 EXES_DYNORD=\
 ..\bin\$(PLAT)\spqsort.exe\

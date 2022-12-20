@@ -21,3 +21,21 @@
 
 ..\obj\$(PLAT)\dosum4.obj: faux\dosum4.F90 faux\gosum4.F90 $(MKFS) faux\Makefile
 	$(FC) $(FCFLAGS) /fpp /c faux\dosum4.F90 /Fo$@
+
+..\obj\$(PLAT)\srotc.obj: faux\srotc.f90 faux\grotc.f90 $(MKFS) faux\Makefile
+	$(FC) $(FCFLAGS) /c faux\srotc.f90 /Fo$@
+
+..\obj\$(PLAT)\crotc.obj: faux\crotc.f90 faux\grotc.f90 $(MKFS) faux\Makefile
+	$(FC) $(FCFLAGS) /c faux\crotc.f90 /Fo$@
+
+..\obj\$(PLAT)\drotc.obj: faux\drotc.f90 faux\grotc.f90 $(MKFS) faux\Makefile
+	$(FC) $(FCFLAGS) /c faux\drotc.f90 /Fo$@
+
+..\obj\$(PLAT)\zrotc.obj: faux\zrotc.f90 faux\grotc.f90 $(MKFS) faux\Makefile
+	$(FC) $(FCFLAGS) /c faux\zrotc.f90 /Fo$@
+
+..\obj\$(PLAT)\qrotc.obj: faux\qrotc.f90 faux\grotc.f90 $(MKFS) faux\Makefile
+	$(FC) $(FCFLAGS) /c faux\qrotc.f90 /Fo$@
+
+..\obj\$(PLAT)\yrotc.obj: faux\yrotc.f90 faux\grotc.f90 $(MKFS) faux\Makefile
+	$(FC) $(FCFLAGS) /c faux\yrotc.f90 /Fo$@

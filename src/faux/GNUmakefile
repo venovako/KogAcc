@@ -21,3 +21,27 @@
 
 ../obj/$(PLAT)/dosum4.o: faux/dosum4.F90 faux/gosum4.F90 $(MKFS) faux/GNUmakefile
 	$(FC) $(FCFLAGS) -c -o $@ faux/dosum4.F90
+
+../obj/$(PLAT)/srotc.o: faux/srotc.f90 faux/grotc.f90 $(MKFS) faux/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ faux/srotc.f90
+
+../obj/$(PLAT)/crotc.o: faux/crotc.f90 faux/grotc.f90 $(MKFS) faux/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ faux/crotc.f90
+
+../obj/$(PLAT)/drotc.o: faux/drotc.f90 faux/grotc.f90 $(MKFS) faux/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ faux/drotc.f90
+
+../obj/$(PLAT)/zrotc.o: faux/zrotc.f90 faux/grotc.f90 $(MKFS) faux/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ faux/zrotc.f90
+
+../obj/$(PLAT)/qrotc.o: faux/qrotc.f90 faux/grotc.f90 $(MKFS) faux/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ faux/qrotc.f90
+
+../obj/$(PLAT)/yrotc.o: faux/yrotc.f90 faux/grotc.f90 $(MKFS) faux/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ faux/yrotc.f90
+
+../obj/$(PLAT)/xrotc.o: faux/xrotc.f90 faux/grotc.f90 $(MKFS) faux/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ faux/xrotc.f90
+
+../obj/$(PLAT)/wrotc.o: faux/wrotc.f90 faux/grotc.f90 $(MKFS) faux/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ faux/wrotc.f90
