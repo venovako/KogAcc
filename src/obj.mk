@@ -106,7 +106,13 @@ OBJS_FAUX=\
 ..\obj\$(PLAT)\drotc.obj\
 ..\obj\$(PLAT)\zrotc.obj\
 ..\obj\$(PLAT)\qrotc.obj\
-..\obj\$(PLAT)\yrotc.obj
+..\obj\$(PLAT)\yrotc.obj\
+..\obj\$(PLAT)\srotr.obj\
+..\obj\$(PLAT)\crotr.obj\
+..\obj\$(PLAT)\drotr.obj\
+..\obj\$(PLAT)\zrotr.obj\
+..\obj\$(PLAT)\qrotr.obj\
+..\obj\$(PLAT)\yrotr.obj
 
 EXES_DYNORD=\
 ..\bin\$(PLAT)\spqsort.exe\

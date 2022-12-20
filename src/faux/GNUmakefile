@@ -45,3 +45,27 @@
 
 ../obj/$(PLAT)/wrotc.o: faux/wrotc.f90 faux/grotc.f90 $(MKFS) faux/GNUmakefile
 	$(FC) $(FCFLAGS) -c -o $@ faux/wrotc.f90
+
+../obj/$(PLAT)/srotr.o: faux/srotr.f90 faux/grotr.f90 $(MKFS) faux/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ faux/srotr.f90
+
+../obj/$(PLAT)/crotr.o: faux/crotr.f90 faux/grotr.f90 $(MKFS) faux/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ faux/crotr.f90
+
+../obj/$(PLAT)/drotr.o: faux/drotr.f90 faux/grotr.f90 $(MKFS) faux/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ faux/drotr.f90
+
+../obj/$(PLAT)/zrotr.o: faux/zrotr.f90 faux/grotr.f90 $(MKFS) faux/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ faux/zrotr.f90
+
+../obj/$(PLAT)/qrotr.o: faux/qrotr.f90 faux/grotr.f90 $(MKFS) faux/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ faux/qrotr.f90
+
+../obj/$(PLAT)/yrotr.o: faux/yrotr.f90 faux/grotr.f90 $(MKFS) faux/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ faux/yrotr.f90
+
+../obj/$(PLAT)/xrotr.o: faux/xrotr.f90 faux/grotr.f90 $(MKFS) faux/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ faux/xrotr.f90
+
+../obj/$(PLAT)/wrotr.o: faux/wrotr.f90 faux/grotr.f90 $(MKFS) faux/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ faux/wrotr.f90

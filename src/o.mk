@@ -79,7 +79,11 @@ OBJS_FAUX=\
 ../obj/$(PLAT)/srotc.o\
 ../obj/$(PLAT)/crotc.o\
 ../obj/$(PLAT)/drotc.o\
-../obj/$(PLAT)/zrotc.o
+../obj/$(PLAT)/zrotc.o\
+../obj/$(PLAT)/srotr.o\
+../obj/$(PLAT)/crotr.o\
+../obj/$(PLAT)/drotr.o\
+../obj/$(PLAT)/zrotr.o
 
 EXES_DYNORD=\
 ../bin/$(PLAT)/spqsort.exe\
@@ -126,7 +130,9 @@ OBJS_KSVD2 += \
 ../obj/$(PLAT)/yksvd2.o
 OBJS_FAUX += \
 ../obj/$(PLAT)/qrotc.o\
-../obj/$(PLAT)/yrotc.o
+../obj/$(PLAT)/yrotc.o\
+../obj/$(PLAT)/qrotr.o\
+../obj/$(PLAT)/yrotr.o
 EXES_DYNORD += \
 ../bin/$(PLAT)/qpqsort.exe
 EXES_KSVD2 += \
@@ -165,7 +171,9 @@ OBJS_KSVD2 += \
 ../obj/$(PLAT)/wksvd2.o
 OBJS_FAUX += \
 ../obj/$(PLAT)/xrotc.o\
-../obj/$(PLAT)/wrotc.o
+../obj/$(PLAT)/wrotc.o\
+../obj/$(PLAT)/xrotr.o\
+../obj/$(PLAT)/wrotr.o
 EXES_DYNORD += \
 ../bin/$(PLAT)/xpqsort.exe
 EXES_KSVD2 += \

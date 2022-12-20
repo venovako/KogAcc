@@ -39,3 +39,21 @@
 
 ..\obj\$(PLAT)\yrotc.obj: faux\yrotc.f90 faux\grotc.f90 $(MKFS) faux\Makefile
 	$(FC) $(FCFLAGS) /c faux\yrotc.f90 /Fo$@
+
+..\obj\$(PLAT)\srotr.obj: faux\srotr.f90 faux\grotr.f90 $(MKFS) faux\Makefile
+	$(FC) $(FCFLAGS) /c faux\srotr.f90 /Fo$@
+
+..\obj\$(PLAT)\crotr.obj: faux\crotr.f90 faux\grotr.f90 $(MKFS) faux\Makefile
+	$(FC) $(FCFLAGS) /c faux\crotr.f90 /Fo$@
+
+..\obj\$(PLAT)\drotr.obj: faux\drotr.f90 faux\grotr.f90 $(MKFS) faux\Makefile
+	$(FC) $(FCFLAGS) /c faux\drotr.f90 /Fo$@
+
+..\obj\$(PLAT)\zrotr.obj: faux\zrotr.f90 faux\grotr.f90 $(MKFS) faux\Makefile
+	$(FC) $(FCFLAGS) /c faux\zrotr.f90 /Fo$@
+
+..\obj\$(PLAT)\qrotr.obj: faux\qrotr.f90 faux\grotr.f90 $(MKFS) faux\Makefile
+	$(FC) $(FCFLAGS) /c faux\qrotr.f90 /Fo$@
+
+..\obj\$(PLAT)\yrotr.obj: faux\yrotr.f90 faux\grotr.f90 $(MKFS) faux\Makefile
+	$(FC) $(FCFLAGS) /c faux\yrotr.f90 /Fo$@
