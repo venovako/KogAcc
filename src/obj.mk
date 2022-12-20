@@ -100,14 +100,7 @@ OBJS_FAUX=\
 ..\obj\$(PLAT)\dlango.obj\
 ..\obj\$(PLAT)\zlango.obj\
 ..\obj\$(PLAT)\sosum4.obj\
-..\obj\$(PLAT)\dosum4.obj\
-..\obj\$(PLAT)\dsoffsq.obj\
-..\obj\$(PLAT)\dcoffsq.obj\
-..\obj\$(PLAT)\qdoffsq.obj\
-..\obj\$(PLAT)\qzoffsq.obj\
-..\obj\$(PLAT)\spsum4.obj\
-..\obj\$(PLAT)\dpsum4.obj\
-..\obj\$(PLAT)\qpsum4.obj
+..\obj\$(PLAT)\dosum4.obj
 
 EXES_DYNORD=\
 ..\bin\$(PLAT)\spqsort.exe\

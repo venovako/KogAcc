@@ -75,11 +75,7 @@ OBJS_FAUX=\
 ../obj/$(PLAT)/dlango.o\
 ../obj/$(PLAT)/zlango.o\
 ../obj/$(PLAT)/sosum4.o\
-../obj/$(PLAT)/dosum4.o\
-../obj/$(PLAT)/dsoffsq.o\
-../obj/$(PLAT)/dcoffsq.o\
-../obj/$(PLAT)/spsum4.o\
-../obj/$(PLAT)/dpsum4.o
+../obj/$(PLAT)/dosum4.o
 
 EXES_DYNORD=\
 ../bin/$(PLAT)/spqsort.exe\
@@ -124,10 +120,6 @@ OBJS_DYNORD += \
 OBJS_KSVD2 += \
 ../obj/$(PLAT)/qksvd2.o\
 ../obj/$(PLAT)/yksvd2.o
-OBJS_FAUX += \
-../obj/$(PLAT)/qdoffsq.o\
-../obj/$(PLAT)/qzoffsq.o\
-../obj/$(PLAT)/qpsum4.o
 EXES_DYNORD += \
 ../bin/$(PLAT)/qpqsort.exe
 EXES_KSVD2 += \
@@ -164,12 +156,6 @@ OBJS_DYNORD += \
 OBJS_KSVD2 += \
 ../obj/$(PLAT)/xksvd2.o\
 ../obj/$(PLAT)/wksvd2.o
-OBJS_FAUX += \
-../obj/$(PLAT)/xdoffsq.o\
-../obj/$(PLAT)/xzoffsq.o\
-../obj/$(PLAT)/qxoffsq.o\
-../obj/$(PLAT)/qwoffsq.o\
-../obj/$(PLAT)/xpsum4.o
 EXES_DYNORD += \
 ../bin/$(PLAT)/xpqsort.exe
 EXES_KSVD2 += \
