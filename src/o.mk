@@ -6,34 +6,46 @@ OBJS_ARRBIO=\
 ../obj/$(PLAT)/cbrd1.o\
 ../obj/$(PLAT)/dbrd1.o\
 ../obj/$(PLAT)/zbrd1.o\
+../obj/$(PLAT)/qbrd1.o\
+../obj/$(PLAT)/ybrd1.o\
 ../obj/$(PLAT)/ibwr1.o\
 ../obj/$(PLAT)/jbwr1.o\
 ../obj/$(PLAT)/sbwr1.o\
 ../obj/$(PLAT)/cbwr1.o\
 ../obj/$(PLAT)/dbwr1.o\
 ../obj/$(PLAT)/zbwr1.o\
+../obj/$(PLAT)/qbwr1.o\
+../obj/$(PLAT)/ybwr1.o\
 ../obj/$(PLAT)/ibrd2.o\
 ../obj/$(PLAT)/jbrd2.o\
 ../obj/$(PLAT)/sbrd2.o\
 ../obj/$(PLAT)/cbrd2.o\
 ../obj/$(PLAT)/dbrd2.o\
 ../obj/$(PLAT)/zbrd2.o\
+../obj/$(PLAT)/qbrd2.o\
+../obj/$(PLAT)/ybrd2.o\
 ../obj/$(PLAT)/ibwr2.o\
 ../obj/$(PLAT)/jbwr2.o\
 ../obj/$(PLAT)/sbwr2.o\
 ../obj/$(PLAT)/cbwr2.o\
 ../obj/$(PLAT)/dbwr2.o\
-../obj/$(PLAT)/zbwr2.o
+../obj/$(PLAT)/zbwr2.o\
+../obj/$(PLAT)/qbwr2.o\
+../obj/$(PLAT)/ybwr2.o
 
 OBJS_BLKSVD=\
 ../obj/$(PLAT)/sbrdg.o\
 ../obj/$(PLAT)/cbrdg.o\
 ../obj/$(PLAT)/dbrdg.o\
 ../obj/$(PLAT)/zbrdg.o\
+../obj/$(PLAT)/qbrdg.o\
+../obj/$(PLAT)/ybrdg.o\
 ../obj/$(PLAT)/sbordg.o\
 ../obj/$(PLAT)/cbordg.o\
 ../obj/$(PLAT)/dbordg.o\
 ../obj/$(PLAT)/zbordg.o\
+../obj/$(PLAT)/qbordg.o\
+../obj/$(PLAT)/ybordg.o\
 ../obj/$(PLAT)/nb2m.o
 
 OBJS_DYNORD=\
@@ -41,32 +53,46 @@ OBJS_DYNORD=\
 ../obj/$(PLAT)/cabsg.o\
 ../obj/$(PLAT)/dabsg.o\
 ../obj/$(PLAT)/zabsg.o\
+../obj/$(PLAT)/qabsg.o\
+../obj/$(PLAT)/yabsg.o\
 ../obj/$(PLAT)/sabsog.o\
 ../obj/$(PLAT)/cabsog.o\
 ../obj/$(PLAT)/dabsog.o\
 ../obj/$(PLAT)/zabsog.o\
+../obj/$(PLAT)/qabsog.o\
+../obj/$(PLAT)/yabsog.o\
 ../obj/$(PLAT)/smkwpq.o\
 ../obj/$(PLAT)/cmkwpq.o\
 ../obj/$(PLAT)/dmkwpq.o\
 ../obj/$(PLAT)/zmkwpq.o\
+../obj/$(PLAT)/qmkwpq.o\
+../obj/$(PLAT)/ymkwpq.o\
 ../obj/$(PLAT)/smk1pq.o\
 ../obj/$(PLAT)/cmk1pq.o\
 ../obj/$(PLAT)/dmk1pq.o\
 ../obj/$(PLAT)/zmk1pq.o\
+../obj/$(PLAT)/qmk1pq.o\
+../obj/$(PLAT)/ymk1pq.o\
 ../obj/$(PLAT)/spqcmp.o\
 ../obj/$(PLAT)/dpqcmp.o\
+../obj/$(PLAT)/qpqcmp.o\
 ../obj/$(PLAT)/spqmrg.o\
 ../obj/$(PLAT)/dpqmrg.o\
+../obj/$(PLAT)/qpqmrg.o\
 ../obj/$(PLAT)/spqsrt.o\
 ../obj/$(PLAT)/dpqsrt.o\
+../obj/$(PLAT)/qpqsrt.o\
 ../obj/$(PLAT)/spqsort.o\
-../obj/$(PLAT)/dpqsort.o
+../obj/$(PLAT)/dpqsort.o\
+../obj/$(PLAT)/qpqsort.o
 
 OBJS_KSVD2=\
 ../obj/$(PLAT)/sksvd2.o\
 ../obj/$(PLAT)/cksvd2.o\
 ../obj/$(PLAT)/dksvd2.o\
 ../obj/$(PLAT)/zksvd2.o\
+../obj/$(PLAT)/qksvd2.o\
+../obj/$(PLAT)/yksvd2.o\
 ../obj/$(PLAT)/slwsv2.o\
 ../obj/$(PLAT)/dlwsv2.o
 
@@ -82,65 +108,31 @@ OBJS_FAUX=\
 ../obj/$(PLAT)/crotc.o\
 ../obj/$(PLAT)/drotc.o\
 ../obj/$(PLAT)/zrotc.o\
+../obj/$(PLAT)/qrotc.o\
+../obj/$(PLAT)/yrotc.o\
 ../obj/$(PLAT)/srotr.o\
 ../obj/$(PLAT)/crotr.o\
 ../obj/$(PLAT)/drotr.o\
-../obj/$(PLAT)/zrotr.o
+../obj/$(PLAT)/zrotr.o\
+../obj/$(PLAT)/qrotr.o\
+../obj/$(PLAT)/yrotr.o
 
 EXES_DYNORD=\
 ../bin/$(PLAT)/spqsort.exe\
-../bin/$(PLAT)/dpqsort.exe
+../bin/$(PLAT)/dpqsort.exe\
+../bin/$(PLAT)/qpqsort.exe
 
 EXES_KSVD2=\
 ../bin/$(PLAT)/sksvd2.exe\
 ../bin/$(PLAT)/cksvd2.exe\
 ../bin/$(PLAT)/dksvd2.exe\
 ../bin/$(PLAT)/zksvd2.exe\
+../bin/$(PLAT)/qksvd2.exe\
+../bin/$(PLAT)/yksvd2.exe\
 ../bin/$(PLAT)/slwsv2.exe\
 ../bin/$(PLAT)/dlwsv2.exe\
 ../bin/$(PLAT)/srnd.exe
 
-ifneq ($(COMPILER),nvfortran)
-OBJS_ARRBIO += \
-../obj/$(PLAT)/qbrd1.o\
-../obj/$(PLAT)/ybrd1.o\
-../obj/$(PLAT)/qbwr1.o\
-../obj/$(PLAT)/ybwr1.o\
-../obj/$(PLAT)/qbrd2.o\
-../obj/$(PLAT)/ybrd2.o\
-../obj/$(PLAT)/qbwr2.o\
-../obj/$(PLAT)/ybwr2.o
-OBJS_BLKSVD += \
-../obj/$(PLAT)/qbrdg.o\
-../obj/$(PLAT)/ybrdg.o\
-../obj/$(PLAT)/qbordg.o\
-../obj/$(PLAT)/ybordg.o
-OBJS_DYNORD += \
-../obj/$(PLAT)/qabsg.o\
-../obj/$(PLAT)/yabsg.o\
-../obj/$(PLAT)/qabsog.o\
-../obj/$(PLAT)/yabsog.o\
-../obj/$(PLAT)/qmkwpq.o\
-../obj/$(PLAT)/ymkwpq.o\
-../obj/$(PLAT)/qmk1pq.o\
-../obj/$(PLAT)/ymk1pq.o\
-../obj/$(PLAT)/qpqcmp.o\
-../obj/$(PLAT)/qpqmrg.o\
-../obj/$(PLAT)/qpqsrt.o\
-../obj/$(PLAT)/qpqsort.o
-OBJS_KSVD2 += \
-../obj/$(PLAT)/qksvd2.o\
-../obj/$(PLAT)/yksvd2.o
-OBJS_FAUX += \
-../obj/$(PLAT)/qrotc.o\
-../obj/$(PLAT)/yrotc.o\
-../obj/$(PLAT)/qrotr.o\
-../obj/$(PLAT)/yrotr.o
-EXES_DYNORD += \
-../bin/$(PLAT)/qpqsort.exe
-EXES_KSVD2 += \
-../bin/$(PLAT)/qksvd2.exe\
-../bin/$(PLAT)/yksvd2.exe
 ifeq ($(COMPILER),gfortran)
 ifeq ($(findstring 86,$(ARCH)),86)
 OBJS_ARRBIO += \
@@ -185,7 +177,6 @@ EXES_KSVD2 += \
 ../bin/$(PLAT)/wksvd2.exe
 endif # x86
 endif # gfortran
-endif # !nvfortran
 ifeq ($(findstring DUSE_IEEE_INTRINSIC,$(FCFLAGS)),DUSE_IEEE_INTRINSIC)
 INTRIN=i
 endif # DUSE_IEEE_INTRINSIC

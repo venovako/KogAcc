@@ -8,31 +8,10 @@ CONTAINS
   !!
   !!@param KSVD2 is ZKSVD2.
   SUBROUTINE ZTEST(KSVD2)
-#ifdef __NVCOMPILER
-    USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
-#else
     USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64, REAL128
-#endif
     IMPLICIT NONE
-#ifdef __NVCOMPILER
-#ifdef CR_MATH
-    INTERFACE
-       ! TODO: cr_hypot might change errno but a copy can be made that does not
-       PURE FUNCTION CR_HYPOT(X, Y) BIND(C,NAME='cr_hypot')
-         USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_double
-         REAL(KIND=c_double), INTENT(IN), VALUE :: X, Y
-         REAL(KIND=c_double) :: CR_HYPOT
-       END FUNCTION CR_HYPOT
-    END INTERFACE
-#else
 #define CR_HYPOT HYPOT
-#endif
-    INTEGER, PARAMETER :: KX = REAL64
-#else
-#define CR_HYPOT HYPOT
-    INTEGER, PARAMETER :: KX = REAL128
-#endif
-    INTEGER, PARAMETER :: IERR = -HUGE(0), CLAL = 132
+    INTEGER, PARAMETER :: KX = REAL128, IERR = -HUGE(0), CLAL = 132
     EXTERNAL :: KSVD2
     CHARACTER(LEN=CLAL) :: CLA
     COMPLEX(KIND=REAL64) :: G(2,2), U(2,2), V(2,2)
