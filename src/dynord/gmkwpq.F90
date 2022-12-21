@@ -24,6 +24,7 @@
            W(K,L) = -ONE
         ELSE ! transformation required
            W(K,L) = H
+           INFO = INFO + 1
         END IF
         O(M) = I
         O(M + N2) = J

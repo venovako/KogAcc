@@ -18,18 +18,26 @@
   CALL ABSG(G, LDG, W, N, N, N, 0, INFO)
   IF (INFO .NE. 0) RETURN
   CALL MKWPQ(N, G, LDG, W, O, INFO)
-  IF (INFO .NE. 0) RETURN
+  IF (INFO .LE. 0) RETURN
+  L = MIN(L, INFO)
   CALL PQSRT(PQCMP, M_2, W, O, O(M_2+1), W(M_2+1), O(M+1), O(M+M_2+1), INFO)
   IF (INFO .LT. 0) RETURN
 
   J = M_2 + 1
   W(J) = ZERO
-  DO I = J+1, N*N
+#ifndef NDEBUG
+  DO I = J+1, M
+     W(I) = ZERO
+  END DO
+#endif
+  DO I = M+1, N*N
      W(I) = MONE
   END DO
+#ifndef NDEBUG
   DO I = M+1, 2*M-1
      O(I) = 0
   END DO
+#endif
   O(2*M) = INFO
 
   I = 1
