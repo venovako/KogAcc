@@ -1,5 +1,5 @@
-!>@brief \b CABSG sequentially computes \f$W=|G|\f$ for the \f$(P,P),(Q,P),(P,Q),(Q,Q)\f$ blocks if the block size \f$B\ge 1\f$, or for the whole \f$P\times Q\f$ single precision complex matrix \f$G\f$ if \f$B=0\f$.
-PURE SUBROUTINE CABSG(G, LDG, W, LDW, P, Q, B, INFO)
+!>@brief \b CABSG sequentially computes \f$W=|G|\f$.
+PURE SUBROUTINE CABSG(M, N, G, LDG, W, LDW, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
   IMPLICIT NONE
 
@@ -16,11 +16,11 @@ PURE SUBROUTINE CABSG(G, LDG, W, LDW, P, Q, B, INFO)
 #define CR_HYPOT HYPOT
 #endif
 
-  INTEGER, INTENT(IN) :: LDG, LDW, P, Q, B
-  COMPLEX(KIND=REAL32), INTENT(IN) :: G(LDG,*)
-  REAL(KIND=REAL32), INTENT(OUT) :: W(LDW,*)
+  INTEGER, INTENT(IN) :: M, N, LDG, LDW
+  COMPLEX(KIND=REAL32), INTENT(IN) :: G(LDG,N)
+  REAL(KIND=REAL32), INTENT(OUT) :: W(LDW,N)
   INTEGER, INTENT(OUT) :: INFO
   REAL(KIND=REAL32) :: H
-  INTEGER :: I, J, PB, QB, UP, UQ
+  INTEGER :: I, J
 #include "habsg.F90"
 END SUBROUTINE CABSG

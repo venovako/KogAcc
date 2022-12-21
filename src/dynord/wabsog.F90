@@ -1,14 +1,14 @@
-!>@brief \b WABSOG computes \f$W=|G|\f$ in parallel for the \f$(P,P),(Q,P),(P,Q),(Q,Q)\f$ blocks if the block size \f$B\ge 1\f$, or for the whole \f$P\times Q\f$ extended precision complex matrix \f$G\f$ if \f$B=0\f$.
-SUBROUTINE WABSOG(G, LDG, W, LDW, P, Q, B, INFO)
+!>@brief \b WABSOG computes \f$W=|G|\f$ in parallel.
+SUBROUTINE WABSOG(M, N, G, LDG, W, LDW, INFO)
   IMPLICIT NONE
 
 #define CR_HYPOT HYPOT
 
-  INTEGER, INTENT(IN) :: LDG, LDW, P, Q, B
-  COMPLEX(KIND=10), INTENT(IN) :: G(LDG,*)
-  REAL(KIND=10), INTENT(OUT) :: W(LDW,*)
+  INTEGER, INTENT(IN) :: M, N, LDG, LDW
+  COMPLEX(KIND=10), INTENT(IN) :: G(LDG,N)
+  REAL(KIND=10), INTENT(OUT) :: W(LDW,N)
   INTEGER, INTENT(OUT) :: INFO
   REAL(KIND=10) :: H
-  INTEGER :: I, J, PB, QB, UP, UQ
+  INTEGER :: I, J
 #include "habsog.F90"
 END SUBROUTINE WABSOG

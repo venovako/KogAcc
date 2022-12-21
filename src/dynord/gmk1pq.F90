@@ -15,7 +15,7 @@
   M = N * (N - 1)
   M_2 = M / 2
 
-  CALL ABSG(G, LDG, W, N, N, N, 0, INFO)
+  CALL ABSG(N, N, G, LDG, W, N, INFO)
   IF (INFO .NE. 0) RETURN
   CALL MKWPQ(N, G, LDG, W, O, INFO)
   IF (INFO .LE. 0) RETURN

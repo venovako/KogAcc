@@ -1,5 +1,5 @@
-!>@brief \b ZABSOG computes \f$W=|G|\f$ in parallel for the \f$(P,P),(Q,P),(P,Q),(Q,Q)\f$ blocks if the block size \f$B\ge 1\f$, or for the whole \f$P\times Q\f$ double precision complex matrix \f$G\f$ if \f$B=0\f$.
-SUBROUTINE ZABSOG(G, LDG, W, LDW, P, Q, B, INFO)
+!>@brief \b ZABSOG computes \f$W=|G|\f$ in parallel.
+SUBROUTINE ZABSOG(M, N, G, LDG, W, LDW, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
   IMPLICIT NONE
 
@@ -16,11 +16,11 @@ SUBROUTINE ZABSOG(G, LDG, W, LDW, P, Q, B, INFO)
 #define CR_HYPOT HYPOT
 #endif
 
-  INTEGER, INTENT(IN) :: LDG, LDW, P, Q, B
-  COMPLEX(KIND=REAL64), INTENT(IN) :: G(LDG,*)
-  REAL(KIND=REAL64), INTENT(OUT) :: W(LDW,*)
+  INTEGER, INTENT(IN) :: M, N, LDG, LDW
+  COMPLEX(KIND=REAL64), INTENT(IN) :: G(LDG,N)
+  REAL(KIND=REAL64), INTENT(OUT) :: W(LDW,N)
   INTEGER, INTENT(OUT) :: INFO
   REAL(KIND=REAL64) :: H
-  INTEGER :: I, J, PB, QB, UP, UQ
+  INTEGER :: I, J
 #include "habsog.F90"
 END SUBROUTINE ZABSOG

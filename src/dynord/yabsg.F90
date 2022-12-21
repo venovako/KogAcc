@@ -1,15 +1,15 @@
-!>@brief \b YABSG sequentially computes \f$W=|G|\f$ for the \f$(P,P),(Q,P),(P,Q),(Q,Q)\f$ blocks if the block size \f$B\ge 1\f$, or for the whole \f$P\times Q\f$ quadruple precision complex matrix \f$G\f$ if \f$B=0\f$.
-PURE SUBROUTINE YABSG(G, LDG, W, LDW, P, Q, B, INFO)
+!>@brief \b YABSG sequentially computes \f$W=|G|\f$.
+PURE SUBROUTINE YABSG(M, N, G, LDG, W, LDW, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL128
   IMPLICIT NONE
 
 #define CR_HYPOT HYPOT
 
-  INTEGER, INTENT(IN) :: LDG, LDW, P, Q, B
-  COMPLEX(KIND=REAL128), INTENT(IN) :: G(LDG,*)
-  REAL(KIND=REAL128), INTENT(OUT) :: W(LDW,*)
+  INTEGER, INTENT(IN) :: M, N, LDG, LDW
+  COMPLEX(KIND=REAL128), INTENT(IN) :: G(LDG,N)
+  REAL(KIND=REAL128), INTENT(OUT) :: W(LDW,N)
   INTEGER, INTENT(OUT) :: INFO
   REAL(KIND=REAL128) :: H
-  INTEGER :: I, J, PB, QB, UP, UQ
+  INTEGER :: I, J
 #include "habsg.F90"
 END SUBROUTINE YABSG
