@@ -1,5 +1,5 @@
-!>@brief \b DMKWPQ builds the weights \f$W\f$ and the corresponding indexes \f$O\f$ from the \f$N\times N\f$ double precision matrix \f$W\f$.
-PURE SUBROUTINE DMKWPQ(N, G, LDG, W, O, INFO)
+!>@brief \b ZMKWPQ builds the weights \f$W\f$ and the corresponding indexes \f$O\f$ from the \f$N\times N\f$ double precision matrix \f$W\f$.
+PURE SUBROUTINE ZMKWPQ(N, G, LDG, W, O, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
   IMPLICIT NONE
 
@@ -18,10 +18,10 @@ PURE SUBROUTINE DMKWPQ(N, G, LDG, W, O, INFO)
 
   REAL(KIND=REAL64), PARAMETER :: ZERO = 0.0_REAL64, ONE = 1.0_REAL64
   INTEGER, INTENT(IN) :: N, LDG
-  REAL(KIND=REAL64), INTENT(IN) :: G(LDG,N)
+  COMPLEX(KIND=REAL64), INTENT(IN) :: G(LDG,N)
   REAL(KIND=REAL64), INTENT(INOUT) :: W(N,N)
   INTEGER, INTENT(OUT) :: O(N*(N-1)), INFO
   REAL(KIND=REAL64) :: H
   INTEGER :: I, J, K, L, M, N2
-#include "gmkwpq.F90"
-END SUBROUTINE DMKWPQ
+#include "hmkwpq.F90"
+END SUBROUTINE ZMKWPQ

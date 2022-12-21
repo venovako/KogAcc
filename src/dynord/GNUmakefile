@@ -52,14 +52,26 @@
 ../obj/$(PLAT)/smkwpq.o: dynord/smkwpq.F90 dynord/gmkwpq.F90 $(MKFS) dynord/GNUmakefile
 	$(FC) $(FCFLAGS) -c -o $@ dynord/smkwpq.F90
 
+../obj/$(PLAT)/cmkwpq.o: dynord/cmkwpq.F90 dynord/hmkwpq.F90 $(MKFS) dynord/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ dynord/cmkwpq.F90
+
 ../obj/$(PLAT)/dmkwpq.o: dynord/dmkwpq.F90 dynord/gmkwpq.F90 $(MKFS) dynord/GNUmakefile
 	$(FC) $(FCFLAGS) -c -o $@ dynord/dmkwpq.F90
+
+../obj/$(PLAT)/zmkwpq.o: dynord/zmkwpq.F90 dynord/hmkwpq.F90 $(MKFS) dynord/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ dynord/zmkwpq.F90
 
 ../obj/$(PLAT)/qmkwpq.o: dynord/qmkwpq.F90 dynord/gmkwpq.F90 $(MKFS) dynord/GNUmakefile
 	$(FC) $(FCFLAGS) -c -o $@ dynord/qmkwpq.F90
 
+../obj/$(PLAT)/ymkwpq.o: dynord/ymkwpq.F90 dynord/hmkwpq.F90 $(MKFS) dynord/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ dynord/ymkwpq.F90
+
 ../obj/$(PLAT)/xmkwpq.o: dynord/xmkwpq.F90 dynord/gmkwpq.F90 $(MKFS) dynord/GNUmakefile
 	$(FC) $(FCFLAGS) -c -o $@ dynord/xmkwpq.F90
+
+../obj/$(PLAT)/wmkwpq.o: dynord/wmkwpq.F90 dynord/hmkwpq.F90 $(MKFS) dynord/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ dynord/wmkwpq.F90
 
 ../obj/$(PLAT)/smk1pq.o: dynord/smk1pq.F90 dynord/gmk1pq.F90 $(MKFS) dynord/GNUmakefile
 	$(FC) $(FCFLAGS) -c -o $@ dynord/smk1pq.F90

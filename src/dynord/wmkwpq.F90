@@ -1,0 +1,15 @@
+!>@brief \b WMKWPQ builds the weights \f$W\f$ and the corresponding indexes \f$O\f$ from the \f$N\times N\f$ extended precision matrix \f$W\f$.
+PURE SUBROUTINE WMKWPQ(N, G, LDG, W, O, INFO)
+  IMPLICIT NONE
+
+#define CR_HYPOT HYPOT
+
+  REAL(KIND=10), PARAMETER :: ZERO = 0.0_10, ONE = 1.0_10
+  INTEGER, INTENT(IN) :: N, LDG
+  COMPLEX(KIND=10), INTENT(IN) :: G(LDG,N)
+  REAL(KIND=10), INTENT(INOUT) :: W(N,N)
+  INTEGER, INTENT(OUT) :: O(N*(N-1)), INFO
+  REAL(KIND=10) :: H
+  INTEGER :: I, J, K, L, M, N2
+#include "hmkwpq.F90"
+END SUBROUTINE WMKWPQ

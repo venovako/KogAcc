@@ -20,7 +20,10 @@
            INFO = -4 - M
            RETURN
         END IF
-        IF ((H .EQ. ZERO) .AND. (SIGN(ONE,G(I,I)) .EQ. ONE) .AND. (SIGN(ONE,G(J,J)) .EQ. ONE) .AND. (G(I,I) .GE. G(J,J))) THEN
+        IF ((H .EQ. ZERO) .AND. &
+             (AIMAG(G(I,I)) .EQ. ZERO) .AND. (SIGN(ONE,AIMAG(G(I,I))) .EQ. ONE) .AND. (SIGN(ONE,REAL(G(I,I))) .EQ. ONE) .AND. &
+             (AIMAG(G(J,J)) .EQ. ZERO) .AND. (SIGN(ONE,AIMAG(G(J,J))) .EQ. ONE) .AND. (SIGN(ONE,REAL(G(J,J))) .EQ. ONE) .AND. &
+             (REAL(G(I,I)) .GE. REAL(G(J,J)))) THEN
            W(K,L) = -ONE
         ELSE ! transformation required
            W(K,L) = H

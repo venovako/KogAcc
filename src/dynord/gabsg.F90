@@ -13,12 +13,10 @@
         DO J = 1, Q
            DO I = 1, P
               H = ABS(G(I,J))
-#ifndef NDEBUG
               IF (.NOT. (H .LE. HUGE(H))) THEN
                  INFO = -1
                  RETURN
               END IF
-#endif
               W(I,J) = H
            END DO
         END DO
@@ -38,44 +36,36 @@
         DO J = PB, UP
            DO I = PB, UP
               H = ABS(G(I,J))
-#ifndef NDEBUG
               IF (.NOT. (H .LE. HUGE(H))) THEN
                  INFO = -1
                  RETURN
               END IF
-#endif
               W(I,J) = H
            END DO
            DO I = QB, UQ
               H = ABS(G(I,J))
-#ifndef NDEBUG
               IF (.NOT. (H .LE. HUGE(H))) THEN
                  INFO = -1
                  RETURN
               END IF
-#endif
               W(I,J) = H
            END DO
         END DO
         DO J = QB, UQ
            DO I = PB, UP
               H = ABS(G(I,J))
-#ifndef NDEBUG
               IF (.NOT. (H .LE. HUGE(H))) THEN
                  INFO = -1
                  RETURN
               END IF
-#endif
               W(I,J) = H
            END DO
            DO I = QB, UQ
               H = ABS(G(I,J))
-#ifndef NDEBUG
               IF (.NOT. (H .LE. HUGE(H))) THEN
                  INFO = -1
                  RETURN
               END IF
-#endif
               W(I,J) = H
            END DO
         END DO

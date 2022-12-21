@@ -40,11 +40,20 @@
 ..\obj\$(PLAT)\smkwpq.obj: dynord\smkwpq.F90 dynord\gmkwpq.F90 $(MKFS) dynord\Makefile
 	$(FC) $(FCFLAGS) /fpp /c dynord\smkwpq.F90 /Fo$@
 
+..\obj\$(PLAT)\cmkwpq.obj: dynord\cmkwpq.F90 dynord\hmkwpq.F90 $(MKFS) dynord\Makefile
+	$(FC) $(FCFLAGS) /fpp /c dynord\cmkwpq.F90 /Fo$@
+
 ..\obj\$(PLAT)\dmkwpq.obj: dynord\dmkwpq.F90 dynord\gmkwpq.F90 $(MKFS) dynord\Makefile
 	$(FC) $(FCFLAGS) /fpp /c dynord\dmkwpq.F90 /Fo$@
 
+..\obj\$(PLAT)\zmkwpq.obj: dynord\zmkwpq.F90 dynord\hmkwpq.F90 $(MKFS) dynord\Makefile
+	$(FC) $(FCFLAGS) /fpp /c dynord\zmkwpq.F90 /Fo$@
+
 ..\obj\$(PLAT)\qmkwpq.obj: dynord\qmkwpq.F90 dynord\gmkwpq.F90 $(MKFS) dynord\Makefile
 	$(FC) $(FCFLAGS) /fpp /c dynord\qmkwpq.F90 /Fo$@
+
+..\obj\$(PLAT)\ymkwpq.obj: dynord\ymkwpq.F90 dynord\hmkwpq.F90 $(MKFS) dynord\Makefile
+	$(FC) $(FCFLAGS) /fpp /c dynord\ymkwpq.F90 /Fo$@
 
 ..\obj\$(PLAT)\smk1pq.obj: dynord\smk1pq.F90 dynord\gmk1pq.F90 $(MKFS) dynord\Makefile
 	$(FC) $(FCFLAGS) /fpp /c dynord\smk1pq.F90 /Fo$@

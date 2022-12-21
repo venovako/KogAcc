@@ -16,12 +16,10 @@
            IF (INFO .EQ. 0) THEN
               DO I = 1, P
                  H = ABS(G(I,J))
-#ifndef NDEBUG
                  IF (.NOT. (H .LE. HUGE(H))) THEN
                     INFO = MIN(INFO, -1)
                     EXIT
                  END IF
-#endif
                  W(I,J) = H
               END DO
            END IF
@@ -46,24 +44,20 @@
            IF (INFO .EQ. 0) THEN
               DO I = PB, UP
                  H = ABS(G(I,J))
-#ifndef NDEBUG
                  IF (.NOT. (H .LE. HUGE(H))) THEN
                     INFO = MIN(INFO, -1)
                     EXIT
                  END IF
-#endif
                  W(I,J) = H
               END DO
            END IF
            IF (INFO .EQ. 0) THEN
               DO I = QB, UQ
                  H = ABS(G(I,J))
-#ifndef NDEBUG
                  IF (.NOT. (H .LE. HUGE(H))) THEN
                     INFO = MIN(INFO, -1)
                     EXIT
                  END IF
-#endif
                  W(I,J) = H
               END DO
            END IF
@@ -76,24 +70,20 @@
            IF (INFO .EQ. 0) THEN
               DO I = PB, UP
                  H = ABS(G(I,J))
-#ifndef NDEBUG
                  IF (.NOT. (H .LE. HUGE(H))) THEN
                     INFO = MIN(INFO, -1)
                     EXIT
                  END IF
-#endif
                  W(I,J) = H
               END DO
            END IF
            IF (INFO .EQ. 0) THEN
               DO I = QB, UQ
                  H = ABS(G(I,J))
-#ifndef NDEBUG
                  IF (.NOT. (H .LE. HUGE(H))) THEN
                     INFO = MIN(INFO, -1)
                     EXIT
                  END IF
-#endif
                  W(I,J) = H
               END DO
            END IF

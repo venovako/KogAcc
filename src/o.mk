@@ -46,7 +46,9 @@ OBJS_DYNORD=\
 ../obj/$(PLAT)/dabsog.o\
 ../obj/$(PLAT)/zabsog.o\
 ../obj/$(PLAT)/smkwpq.o\
+../obj/$(PLAT)/cmkwpq.o\
 ../obj/$(PLAT)/dmkwpq.o\
+../obj/$(PLAT)/zmkwpq.o\
 ../obj/$(PLAT)/smk1pq.o\
 ../obj/$(PLAT)/cmk1pq.o\
 ../obj/$(PLAT)/dmk1pq.o\
@@ -119,6 +121,7 @@ OBJS_DYNORD += \
 ../obj/$(PLAT)/qabsog.o\
 ../obj/$(PLAT)/yabsog.o\
 ../obj/$(PLAT)/qmkwpq.o\
+../obj/$(PLAT)/ymkwpq.o\
 ../obj/$(PLAT)/qmk1pq.o\
 ../obj/$(PLAT)/ymk1pq.o\
 ../obj/$(PLAT)/qpqcmp.o\
@@ -160,6 +163,7 @@ OBJS_DYNORD += \
 ../obj/$(PLAT)/xabsog.o\
 ../obj/$(PLAT)/wabsog.o\
 ../obj/$(PLAT)/xmkwpq.o\
+../obj/$(PLAT)/wmkwpq.o\
 ../obj/$(PLAT)/xmk1pq.o\
 ../obj/$(PLAT)/wmk1pq.o\
 ../obj/$(PLAT)/xpqcmp.o\

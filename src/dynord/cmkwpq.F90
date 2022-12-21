@@ -1,5 +1,5 @@
-!>@brief \b SMKWPQ builds the weights \f$W\f$ and the corresponding indexes \f$O\f$ from the \f$N\times N\f$ single precision matrix \f$W\f$.
-PURE SUBROUTINE SMKWPQ(N, G, LDG, W, O, INFO)
+!>@brief \b CMKWPQ builds the weights \f$W\f$ and the corresponding indexes \f$O\f$ from the \f$N\times N\f$ single precision matrix \f$W\f$.
+PURE SUBROUTINE CMKWPQ(N, G, LDG, W, O, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
   IMPLICIT NONE
 
@@ -18,10 +18,10 @@ PURE SUBROUTINE SMKWPQ(N, G, LDG, W, O, INFO)
 
   REAL(KIND=REAL32), PARAMETER :: ZERO = 0.0_REAL32, ONE = 1.0_REAL32
   INTEGER, INTENT(IN) :: N, LDG
-  REAL(KIND=REAL32), INTENT(IN) :: G(LDG,N)
+  COMPLEX(KIND=REAL32), INTENT(IN) :: G(LDG,N)
   REAL(KIND=REAL32), INTENT(INOUT) :: W(N,N)
   INTEGER, INTENT(OUT) :: O(N*(N-1)), INFO
   REAL(KIND=REAL32) :: H
   INTEGER :: I, J, K, L, M, N2
-#include "gmkwpq.F90"
-END SUBROUTINE SMKWPQ
+#include "hmkwpq.F90"
+END SUBROUTINE CMKWPQ
