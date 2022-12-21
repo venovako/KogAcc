@@ -17,14 +17,20 @@
 
   CALL ABSG(N, N, G, LDG, W, N, INFO)
   IF (INFO .NE. 0) RETURN
+  J = N * N
+  DO I = 1, J, N+1
+     W(I) = ZERO
+  END DO
+  W(J) = NORM2(W)
   CALL MKWPQ(N, G, LDG, W, O, INFO)
   IF (INFO .LE. 0) RETURN
   L = MIN(L, INFO)
   CALL PQSRT(PQCMP, M_2, W, O, O(M_2+1), W(M_2+1), O(M+1), O(M+M_2+1), INFO)
   IF (INFO .LT. 0) RETURN
 
+  I = J
   J = M_2 + 1
-  W(J) = ZERO
+  W(J) = W(I)
 #ifndef NDEBUG
   DO I = J+1, M
      W(I) = ZERO
@@ -53,11 +59,3 @@
      I = I + 1
      IF (I .GT. M_2) EXIT
   END DO
-
-  IF (INFO .GT. 0) THEN
-     J = M_2 + 1
-     W(J) = W(O(M+INFO))
-     DO I = INFO-1, 1, -1
-        W(J) = CR_HYPOT(W(J), W(O(M+I)))
-     END DO
-  END IF

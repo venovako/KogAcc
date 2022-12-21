@@ -3,18 +3,6 @@ PURE SUBROUTINE SMK1PQ(K, N, G, LDG, W, O, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
   IMPLICIT NONE
 
-#ifdef CR_MATH
-  INTERFACE
-     ! TODO: cr_hypotf might change errno but a copy can be made that does not
-     PURE FUNCTION CR_HYPOT(X, Y) BIND(C,NAME='cr_hypotf')
-       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_float
-       REAL(KIND=c_float), INTENT(IN), VALUE :: X, Y
-       REAL(KIND=c_float) :: CR_HYPOT
-     END FUNCTION CR_HYPOT
-  END INTERFACE
-#else
-#define CR_HYPOT HYPOT
-#endif
   INTERFACE
      PURE SUBROUTINE SABSG(M, N, G, LDG, W, LDW, INFO)
        USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
