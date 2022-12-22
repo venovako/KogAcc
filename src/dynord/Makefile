@@ -73,6 +73,24 @@
 ..\obj\$(PLAT)\ymk1pq.obj: dynord\ymk1pq.F90 dynord\gmk1pq.F90 $(MKFS) dynord\Makefile
 	$(FC) $(FCFLAGS) /fpp /c dynord\ymk1pq.F90 /Fo$@
 
+..\obj\$(PLAT)\smkopq.obj: dynord\smkopq.F90 dynord\gmkopq.F90 $(MKFS) dynord\Makefile
+	$(FC) $(FCFLAGS) /fpp /c dynord\smkopq.F90 /Fo$@
+
+..\obj\$(PLAT)\cmkopq.obj: dynord\cmkopq.F90 dynord\gmkopq.F90 $(MKFS) dynord\Makefile
+	$(FC) $(FCFLAGS) /fpp /c dynord\cmkopq.F90 /Fo$@
+
+..\obj\$(PLAT)\dmkopq.obj: dynord\dmkopq.F90 dynord\gmkopq.F90 $(MKFS) dynord\Makefile
+	$(FC) $(FCFLAGS) /fpp /c dynord\dmkopq.F90 /Fo$@
+
+..\obj\$(PLAT)\zmkopq.obj: dynord\zmkopq.F90 dynord\gmkopq.F90 $(MKFS) dynord\Makefile
+	$(FC) $(FCFLAGS) /fpp /c dynord\zmkopq.F90 /Fo$@
+
+..\obj\$(PLAT)\qmkopq.obj: dynord\qmkopq.F90 dynord\gmkopq.F90 $(MKFS) dynord\Makefile
+	$(FC) $(FCFLAGS) /fpp /c dynord\qmkopq.F90 /Fo$@
+
+..\obj\$(PLAT)\ymkopq.obj: dynord\ymkopq.F90 dynord\gmkopq.F90 $(MKFS) dynord\Makefile
+	$(FC) $(FCFLAGS) /fpp /c dynord\ymkopq.F90 /Fo$@
+
 ..\obj\$(PLAT)\spqcmp.obj: dynord\spqcmp.f90 dynord\gpqcmp.f90 $(MKFS) dynord\Makefile
 	$(FC) $(FCFLAGS) /c dynord\spqcmp.f90 /Fo$@
 
