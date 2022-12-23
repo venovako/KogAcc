@@ -198,7 +198,11 @@
   ELSE ! non-zero B
      TANG = A(2,1) / A(1,1)
   END IF
+#ifdef CR_MATH
+  SECG = CR_HYPOT(TANG, ONE)
+#else
   SECG = SQRT(IEEE_FMA(TANG, TANG, ONE))
+#endif
 
   ! apply the Givens rotation
   B(1,1) = S(1)
@@ -271,15 +275,28 @@
   IF (T .EQ. ZERO) THEN
      TANF = ZERO
      SECF = ONE
-  ELSE ! T > 0
-     T = MIN(T / IEEE_FMA(X - Y, X + Y, ONE), ROOTH)
-     TANF = T / (ONE + SQRT(IEEE_FMA(T, T, ONE)))
+  ELSE ! T > 0, ABS & MAX are here for extra safety only
+     T = MIN(T / ABS(MAX(IEEE_FMA(X - Y, X + Y, ONE), ZERO)), ROOTH)
+#ifdef CR_MATH
+     TANF = CR_HYPOT(T, ONE)
+#else
+     TANF = SQRT(IEEE_FMA(T, T, ONE))
+#endif
+     TANF = T / (ONE + TANF)
+#ifdef CR_MATH
+     SECF = CR_HYPOT(TANF, ONE)
+#else
      SECF = SQRT(IEEE_FMA(TANF, TANF, ONE))
+#endif
   END IF
 
   ! the functions of \psi
   TANP = IEEE_FMA(Y, TANF, X)
+#ifdef CR_MATH
+  SECP = CR_HYPOT(TANP, ONE)
+#else
   SECP = SQRT(IEEE_FMA(TANP, TANP, ONE))
+#endif
 
   ! the scaled singular values
   S(1) = (SECP / SECF) * A(1,1)
