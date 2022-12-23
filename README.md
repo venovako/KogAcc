@@ -16,7 +16,7 @@ Other 64-bit OSes (e.g., Oracle Solaris) and non-x86_64 (e.g., ppc64le) platform
 Building the documentation requires a recent version of [Doxygen](https://doxygen.nl).
 
 The correctly-rounded ``cr_hypot`` and ``cr_hypotf`` functions might optionally be used if provided by, e.g., the [CORE-MATH](https://core-math.gitlabpages.inria.fr) project.
-If their implementation is to be linked with, set the ``CR_MATH`` variable in ``[n|g]make`` invocation to the cloned ``core-math`` source code directory path.
+If their implementation is to be linked with, set the ``CR_MATH`` variable in ``[g]make`` invocation to the cloned ``core-math`` source code directory path.
 
 ### Make options
 

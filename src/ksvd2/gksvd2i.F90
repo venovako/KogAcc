@@ -187,7 +187,7 @@
   IF (Z .EQ. ZERO) THEN
      TANF = ZERO
      SECF = ONE
-  ELSE ! Z > 0, ABS & MAX are here for extra safety only
+  ELSE ! Z > 0, ABS & MAX are here for extra safety
      Z = MIN(Z / ABS(MAX(IEEE_FMA(X - Y, X + Y, ONE), ZERO)), ROOTH)
 #ifdef CR_MATH
      TANF = CR_HYPOT(Z, ONE)

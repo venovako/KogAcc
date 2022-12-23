@@ -275,7 +275,7 @@
   IF (T .EQ. ZERO) THEN
      TANF = ZERO
      SECF = ONE
-  ELSE ! T > 0, ABS & MAX are here for extra safety only
+  ELSE ! T > 0, ABS & MAX are here for extra safety
      T = MIN(T / ABS(MAX(IEEE_FMA(X - Y, X + Y, ONE), ZERO)), ROOTH)
 #ifdef CR_MATH
      TANF = CR_HYPOT(T, ONE)
