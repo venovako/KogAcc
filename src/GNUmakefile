@@ -4,11 +4,12 @@ include $(ARCH).mk
 include $(ABI).mk
 include $(OS).mk
 include debug.mk
-MKFS=system.mk $(COMPILER).mk $(ARCH).mk $(ABI).mk $(OS).mk debug.mk #o.mk GNUmakefile
+MKFS=system.mk $(COMPILER).mk $(ARCH).mk $(ABI).mk $(OS).mk debug.mk
 ifneq ($(wildcard local.mk),)
 include local.mk
 MKFS += local.mk
 endif # local.mk
+MKFS += o.mk GNUmakefile arrbio/GNUmakefile blksvd/GNUmakefile dynord/GNUmakefile ksvd2/GNUmakefile faux/GNUmakefile test/GNUmakefile
 ifndef PLAT
 PLAT=$(COMPILER)/$(OS)-$(ARCH)-$(ABI)$(DEBUG)
 endif # !PLAT
