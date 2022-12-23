@@ -22,9 +22,6 @@
 ..\bin\$(PLAT)\dlwsv2.exe: test\dlwsv2x.F90 test\tlasv2.F90 ..\lib\$(PLAT)\ksvd2.lib $(MKFS) test\Makefile
 	$(FC) $(FCFLAGS) /fpp test\dlwsv2x.F90 /Fe$@ $(LDFLAGS) ..\lib\$(PLAT)\ksvd2.lib $(LAPACK)
 
-..\bin\$(PLAT)\srnd.exe: test\srnd.f90 $(MKFS) test\Makefile
-	$(FC) $(FCFLAGS) test\srnd.f90 /Fe$@ $(LDFLAGS)
-
 ..\bin\$(PLAT)\spqsort.exe: test\spqsortx.f90 ..\lib\$(PLAT)\dynord.lib $(MKFS) test\Makefile
 	$(FC) $(FCFLAGS) test\spqsortx.f90 /Fe$@ $(LDFLAGS) ..\lib\$(PLAT)\dynord.lib
 
@@ -33,3 +30,9 @@
 
 ..\bin\$(PLAT)\qpqsort.exe: test\qpqsortx.f90 ..\lib\$(PLAT)\dynord.lib $(MKFS) test\Makefile
 	$(FC) $(FCFLAGS) test\qpqsortx.f90 /Fe$@ $(LDFLAGS) ..\lib\$(PLAT)\dynord.lib
+
+..\bin\$(PLAT)\srnd.exe: test\srnd.f90 $(MKFS) test\Makefile
+	$(FC) $(FCFLAGS) test\srnd.f90 /Fe$@ $(LDFLAGS)
+
+..\bin\$(PLAT)\sthalt.exe: test\sthaltx.f90 ..\lib\$(PLAT)\faux.lib $(MKFS) test\Makefile
+	$(FC) $(FCFLAGS) test\sthaltx.f90 /Fe$@ $(LDFLAGS) ..\lib\$(PLAT)\faux.lib

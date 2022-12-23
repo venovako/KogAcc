@@ -28,9 +28,6 @@
 ../bin/$(PLAT)/dlwsv2.exe: test/dlwsv2x.F90 test/tlasv2.F90 ../lib/$(PLAT)/libksvd2.a $(MKFS) test/GNUmakefile
 	$(FC) $(FCFLAGS) -o $@ test/dlwsv2x.F90 -L../lib/$(PLAT) -lksvd2 $(LAPACK)
 
-../bin/$(PLAT)/srnd.exe: test/srnd.f90 $(MKFS) test/GNUmakefile
-	$(FC) $(FCFLAGS) -o $@ test/srnd.f90
-
 ../bin/$(PLAT)/spqsort.exe: test/spqsortx.f90 ../lib/$(PLAT)/libdynord.a $(MKFS) test/GNUmakefile
 	$(FC) $(FCFLAGS) -o $@ test/spqsortx.f90 -L../lib/$(PLAT) -ldynord
 
@@ -43,3 +40,8 @@
 ../bin/$(PLAT)/xpqsort.exe: test/xpqsortx.f90 ../lib/$(PLAT)/libdynord.a $(MKFS) test/GNUmakefile
 	$(FC) $(FCFLAGS) -o $@ test/xpqsortx.f90 -L../lib/$(PLAT) -ldynord
 
+../bin/$(PLAT)/srnd.exe: test/srnd.f90 $(MKFS) test/GNUmakefile
+	$(FC) $(FCFLAGS) -o $@ test/srnd.f90
+
+../bin/$(PLAT)/sthalt.exe: test/sthaltx.f90 ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
+	$(FC) $(FCFLAGS) -o $@ test/sthaltx.f90 -L../lib/$(PLAT) -lfaux

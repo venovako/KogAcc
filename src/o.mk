@@ -142,8 +142,11 @@ EXES_KSVD2=\
 ../bin/$(PLAT)/qksvd2.exe\
 ../bin/$(PLAT)/yksvd2.exe\
 ../bin/$(PLAT)/slwsv2.exe\
-../bin/$(PLAT)/dlwsv2.exe\
-../bin/$(PLAT)/srnd.exe
+../bin/$(PLAT)/dlwsv2.exe
+
+EXES_TEST=\
+../bin/$(PLAT)/srnd.exe\
+../bin/$(PLAT)/sthalt.exe
 
 ifeq ($(COMPILER),gfortran)
 ifeq ($(findstring 86,$(ARCH)),86)
@@ -206,4 +209,4 @@ LIBS=\
 ../lib/$(PLAT)/libksvd2.a\
 ../lib/$(PLAT)/libfaux.a
 
-EXES=$(EXES_KSVD2) $(EXES_DYNORD)
+EXES=$(EXES_KSVD2) $(EXES_DYNORD) $(EXES_TEST)

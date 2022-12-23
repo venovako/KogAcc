@@ -22,6 +22,9 @@
 ../obj/$(PLAT)/xksvd2.o: ksvd2/xksvd2.F90 ksvd2/gksvd2$(INTRIN).F90 $(MKFS) ksvd2/GNUmakefile
 	$(FC) $(FCFLAGS) -c -o $@ ksvd2/xksvd2.F90
 
+../obj/$(PLAT)/wksvd2.o: ksvd2/wksvd2.F90 ksvd2/hksvd2$(INTRIN).F90 $(MKFS) ksvd2/GNUmakefile
+	$(FC) $(FCFLAGS) -c -o $@ ksvd2/wksvd2.F90
+
 ../obj/$(PLAT)/scvgpp.o: ksvd2/scvgpp.f90 ksvd2/gcvgpp.f90 $(MKFS) ksvd2/GNUmakefile
 	$(FC) $(FCFLAGS) -c -o $@ ksvd2/scvgpp.f90
 

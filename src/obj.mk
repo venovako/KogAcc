@@ -142,8 +142,11 @@ EXES_KSVD2=\
 ..\bin\$(PLAT)\qksvd2.exe\
 ..\bin\$(PLAT)\yksvd2.exe\
 ..\bin\$(PLAT)\slwsv2.exe\
-..\bin\$(PLAT)\dlwsv2.exe\
-..\bin\$(PLAT)\srnd.exe
+..\bin\$(PLAT)\dlwsv2.exe
+
+EXES_TEST=\
+..\bin\$(PLAT)\srnd.exe\
+..\bin\$(PLAT)\sthalt.exe
 
 OBJS=$(OBJS_ARRBIO) $(OBJS_BLKSVD) $(OBJS_DYNORD) $(OBJS_KSVD2) $(OBJS_FAUX)
 
@@ -154,4 +157,4 @@ LIBS=\
 ..\lib\$(PLAT)\ksvd2.lib\
 ..\lib\$(PLAT)\faux.lib
 
-EXES=$(EXES_KSVD2) $(EXES_DYNORD)
+EXES=$(EXES_KSVD2) $(EXES_DYNORD) $(EXES_TEST)
