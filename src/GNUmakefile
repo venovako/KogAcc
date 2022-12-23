@@ -4,7 +4,7 @@ include $(ARCH).mk
 include $(ABI).mk
 include $(OS).mk
 include debug.mk
-MKFS=GNUmakefile system.mk $(COMPILER).mk $(ARCH).mk $(ABI).mk $(OS).mk debug.mk o.mk
+MKFS=system.mk $(COMPILER).mk $(ARCH).mk $(ABI).mk $(OS).mk debug.mk #o.mk GNUmakefile
 ifneq ($(wildcard local.mk),)
 include local.mk
 MKFS += local.mk

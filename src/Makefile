@@ -43,7 +43,7 @@ INTRIN=i
 !IFNDEF PLAT
 PLAT=$(FORT)\$(OS)-$(ARCH)-$(ABI)$(DEBUG)
 !ENDIF # !PLAT
-MKFS=Makefile obj.mk
+MKFS=Makefile #obj.mk
 !INCLUDE obj.mk
 LAPACK=mkl_intel_$(ABI)_dll.lib mkl_sequential_dll.lib mkl_core_dll.lib
 
