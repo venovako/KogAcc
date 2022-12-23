@@ -99,6 +99,12 @@ OBJS_KSVD2=\
 ../obj/$(PLAT)/zksvd2.o\
 ../obj/$(PLAT)/qksvd2.o\
 ../obj/$(PLAT)/yksvd2.o\
+../obj/$(PLAT)/scvgpp.o\
+../obj/$(PLAT)/ccvgpp.o\
+../obj/$(PLAT)/dcvgpp.o\
+../obj/$(PLAT)/zcvgpp.o\
+../obj/$(PLAT)/qcvgpp.o\
+../obj/$(PLAT)/ycvgpp.o\
 ../obj/$(PLAT)/slwsv2.o\
 ../obj/$(PLAT)/dlwsv2.o
 
@@ -172,7 +178,9 @@ OBJS_DYNORD += \
 ../obj/$(PLAT)/xpqsort.o
 OBJS_KSVD2 += \
 ../obj/$(PLAT)/xksvd2.o\
-../obj/$(PLAT)/wksvd2.o
+../obj/$(PLAT)/wksvd2.o\
+../obj/$(PLAT)/xcvgpp.o\
+../obj/$(PLAT)/wcvgpp.o
 OBJS_FAUX += \
 ../obj/$(PLAT)/xrotc.o\
 ../obj/$(PLAT)/wrotc.o\

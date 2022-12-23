@@ -17,7 +17,25 @@
 	$(FC) $(FCFLAGS) /fpp /c ksvd2\qksvd2.F90 /Fo$@
 
 ..\obj\$(PLAT)\yksvd2.obj: ksvd2\yksvd2.F90 ksvd2\hksvd2$(INTRIN).F90 $(MKFS) ksvd2\Makefile
-	$(FC) $(FCFLAGS) /fpp /c ksvd2\yksvd2.F90 /Fo$@
+	$(FC) $(FCFLAGS) /c ksvd2\yksvd2.F90 /Fo$@
+
+..\obj\$(PLAT)\scvgpp.obj: ksvd2\scvgpp.f90 ksvd2\gcvgpp.f90 $(MKFS) ksvd2\Makefile
+	$(FC) $(FCFLAGS) /c ksvd2\scvgpp.f90 /Fo$@
+
+..\obj\$(PLAT)\ccvgpp.obj: ksvd2\ccvgpp.f90 ksvd2\gcvgpp.f90 $(MKFS) ksvd2\Makefile
+	$(FC) $(FCFLAGS) /c ksvd2\ccvgpp.f90 /Fo$@
+
+..\obj\$(PLAT)\dcvgpp.obj: ksvd2\dcvgpp.f90 ksvd2\gcvgpp.f90 $(MKFS) ksvd2\Makefile
+	$(FC) $(FCFLAGS) /c ksvd2\dcvgpp.f90 /Fo$@
+
+..\obj\$(PLAT)\zcvgpp.obj: ksvd2\zcvgpp.f90 ksvd2\gcvgpp.f90 $(MKFS) ksvd2\Makefile
+	$(FC) $(FCFLAGS) /c ksvd2\zcvgpp.f90 /Fo$@
+
+..\obj\$(PLAT)\qcvgpp.obj: ksvd2\qcvgpp.f90 ksvd2\gcvgpp.f90 $(MKFS) ksvd2\Makefile
+	$(FC) $(FCFLAGS) /c ksvd2\qcvgpp.f90 /Fo$@
+
+..\obj\$(PLAT)\ycvgpp.obj: ksvd2\ycvgpp.f90 ksvd2\gcvgpp.f90 $(MKFS) ksvd2\Makefile
+	$(FC) $(FCFLAGS) /c ksvd2\ycvgpp.f90 /Fo$@
 
 ..\obj\$(PLAT)\slwsv2.obj: ksvd2\slwsv2.f90 $(MKFS) ksvd2\Makefile
 	$(FC) $(FCFLAGS) /c ksvd2\slwsv2.f90 /Fo$@

@@ -99,6 +99,12 @@ OBJS_KSVD2=\
 ..\obj\$(PLAT)\zksvd2.obj\
 ..\obj\$(PLAT)\qksvd2.obj\
 ..\obj\$(PLAT)\yksvd2.obj\
+..\obj\$(PLAT)\scvgpp.obj\
+..\obj\$(PLAT)\ccvgpp.obj\
+..\obj\$(PLAT)\dcvgpp.obj\
+..\obj\$(PLAT)\zcvgpp.obj\
+..\obj\$(PLAT)\qcvgpp.obj\
+..\obj\$(PLAT)\ycvgpp.obj\
 ..\obj\$(PLAT)\slwsv2.obj\
 ..\obj\$(PLAT)\dlwsv2.obj
 
