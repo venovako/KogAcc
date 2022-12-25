@@ -128,16 +128,17 @@
   END IF
 
   ! compute the Givens rotation
-  IF (B(1,1) .EQ. ZERO) THEN
+  IF (B(2,1) .EQ. ZERO) THEN
      TANG = ZERO
-  ELSE ! non-zero B
+     SECG = ONE
+  ELSE ! B not upper triangular
      TANG = B(2,1) / B(1,1)
-  END IF
 #ifdef CR_MATH
-  SECG = CR_HYPOT(TANG, ONE)
+     SECG = CR_HYPOT(TANG, ONE)
 #else
-  SECG = SQRT(IEEE_FMA(TANG, TANG, ONE))
+     SECG = SQRT(IEEE_FMA(TANG, TANG, ONE))
 #endif
+  END IF
 
   ! apply the Givens rotation
   B(1,1) = S(1)

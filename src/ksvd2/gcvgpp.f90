@@ -1,4 +1,4 @@
-  IF (INFO .EQ. -HUGE(INFO)) RETURN
+  IF (INFO .LE. -HUGE(INFO)) RETURN
   IF (INFO .NE. 0) THEN
      INFO = -INFO
      S(1) = SCALE(S(1), INFO)
