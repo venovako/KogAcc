@@ -255,8 +255,8 @@
   A(1,2) = REAL(B(1,2))
   A(2,2) = REAL(B(2,2))
 
-  ! exit if A is a nul-matrix
-  IF (A(1,1) .EQ. ZERO) GOTO 1
+  ! exit if A is diagonal
+  IF (A(1,2) .EQ. ZERO) GOTO 1
 
   ! divide by A(1,1)
   X = A(1,2) / A(1,1)

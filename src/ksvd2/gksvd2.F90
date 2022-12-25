@@ -169,8 +169,8 @@
      B(2,2) = -B(2,2)
   END IF
 
-  ! exit if B is a nul-matrix
-  IF (B(1,1) .EQ. ZERO) GOTO 1
+  ! exit if B is diagonal
+  IF (B(1,2) .EQ. ZERO) GOTO 1
 
   ! divide by B(1,1)
   X = B(1,2) / B(1,1)
