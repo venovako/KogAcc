@@ -6,11 +6,16 @@
 !!@param S [OUT]; \f$\Sigma'\f$ is a quadruple precision real array with two elements, \f$\sigma_{11}'\f$ and \f$\sigma_{22}'\f$, both non-negative and finite.
 !!@param INFO [OUT]; the scaling parameter \f$s\f$ such that \f$2^{-s}\Sigma'=\Sigma\f$.
 !!If \f$G\f$ has a non-finite component, then \f$s=-\mathop{\mathtt{HUGE}}(0)\f$, \f$U=V=I\f$, and \f$\sigma_{11}'=\sigma_{22}'=0\f$.
+#ifdef NDEBUG
 PURE SUBROUTINE YKSVD2(G, U, V, S, INFO)
+  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL128
+#else
+SUBROUTINE YKSVD2(G, U, V, S, INFO)
+  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: ERROR_UNIT, REAL128
+#endif
 #ifdef USE_IEEE_INTRINSIC
   USE, INTRINSIC :: IEEE_ARITHMETIC, ONLY: IEEE_FMA
 #endif
-  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL128
   IMPLICIT NONE
 
 #define CR_HYPOT HYPOT
@@ -33,5 +38,8 @@ PURE SUBROUTINE YKSVD2(G, U, V, S, INFO)
 #include "hksvd2i.F90"
 #else
 #include "hksvd2.F90"
+#endif
+#ifndef NDEBUG
+2 FORMAT(2(A,ES45.36E4))
 #endif
 END SUBROUTINE YKSVD2

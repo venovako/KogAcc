@@ -52,8 +52,7 @@
      WRITE (*,2) 'V(2,2)=', V(2,2)
      WRITE (*,1) 'S(1)=', S(1)
      WRITE (*,1) 'S(2)=', S(2)
-     WRITE (*,3) 'INFO=', INFO
-     IF (INFO .EQ. IERR) THEN
+     IF (INFO .LE. IERR) THEN
         WRITE (*,'(A)') 'INFO=ERROR'
      ELSE ! all OK
         WRITE (*,3) 'INFO=', INFO

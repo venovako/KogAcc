@@ -6,7 +6,12 @@
 !!@param S [OUT]; \f$\Sigma'\f$ is a extended precision real array with two elements, \f$\sigma_{11}'\f$ and \f$\sigma_{22}'\f$, both non-negative and finite.
 !!@param INFO [OUT]; the scaling parameter \f$s\f$ such that \f$2^{-s}\Sigma'=\Sigma\f$.
 !!If \f$G\f$ has a non-finite component, then \f$s=-\mathop{\mathtt{HUGE}}(0)\f$, \f$U=V=I\f$, and \f$\sigma_{11}'=\sigma_{22}'=0\f$.
+#ifdef NDEBUG
 PURE SUBROUTINE WKSVD2(G, U, V, S, INFO)
+#else
+SUBROUTINE WKSVD2(G, U, V, S, INFO)
+  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: ERROR_UNIT
+#endif
 #ifdef USE_IEEE_INTRINSIC
   USE, INTRINSIC :: IEEE_ARITHMETIC, ONLY: IEEE_FMA
 #endif
@@ -32,5 +37,8 @@ PURE SUBROUTINE WKSVD2(G, U, V, S, INFO)
 #include "hksvd2i.F90"
 #else
 #include "hksvd2.F90"
+#endif
+#ifndef NDEBUG
+2 FORMAT(2(A,ES30.21E4))
 #endif
 END SUBROUTINE WKSVD2

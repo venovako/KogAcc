@@ -6,11 +6,16 @@
 !!@param S [OUT]; \f$\Sigma'\f$ is a double precision real array with two elements, \f$\sigma_{11}'\f$ and \f$\sigma_{22}'\f$, both non-negative and finite.
 !!@param INFO [OUT]; the scaling parameter \f$s\f$ such that \f$2^{-s}\Sigma'=\Sigma\f$.
 !!If \f$G\f$ has a non-finite component, then \f$s=-\mathop{\mathtt{HUGE}}(0)\f$, \f$U=V=I\f$, and \f$\sigma_{11}'=\sigma_{22}'=0\f$.
+#ifdef NDEBUG
 PURE SUBROUTINE ZKSVD2(G, U, V, S, INFO)
+  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
+#else
+SUBROUTINE ZKSVD2(G, U, V, S, INFO)
+  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: ERROR_UNIT, REAL64
+#endif
 #ifdef USE_IEEE_INTRINSIC
   USE, INTRINSIC :: IEEE_ARITHMETIC, ONLY: IEEE_FMA
 #endif
-  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
   IMPLICIT NONE
 
 #ifdef CR_MATH
@@ -44,5 +49,8 @@ PURE SUBROUTINE ZKSVD2(G, U, V, S, INFO)
 #include "hksvd2i.F90"
 #else
 #include "hksvd2.F90"
+#endif
+#ifndef NDEBUG
+2 FORMAT(2(A,ES25.17E3))
 #endif
 END SUBROUTINE ZKSVD2

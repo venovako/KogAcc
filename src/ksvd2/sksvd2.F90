@@ -6,11 +6,16 @@
 !!@param S [OUT]; \f$\Sigma'\f$ is a single precision array with two elements, \f$\sigma_{11}'\f$ and \f$\sigma_{22}'\f$, both non-negative and finite.
 !!@param INFO [OUT]; the scaling parameter \f$s\f$ such that \f$2^{-s}\Sigma'=\Sigma\f$.
 !!If \f$G\f$ has a non-finite element, then \f$s=-\mathop{\mathtt{HUGE}}(0)\f$, \f$U=V=I\f$, and \f$\sigma_{11}'=\sigma_{22}'=0\f$.
+#ifdef NDEBUG
 PURE SUBROUTINE SKSVD2(G, U, V, S, INFO)
+  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
+#else
+SUBROUTINE SKSVD2(G, U, V, S, INFO)
+  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: ERROR_UNIT, REAL32
+#endif
 #ifdef USE_IEEE_INTRINSIC
   USE, INTRINSIC :: IEEE_ARITHMETIC, ONLY: IEEE_FMA
 #endif
-  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
   IMPLICIT NONE
 
 #ifdef CR_MATH
@@ -41,5 +46,8 @@ PURE SUBROUTINE SKSVD2(G, U, V, S, INFO)
 #include "gksvd2i.F90"
 #else
 #include "gksvd2.F90"
+#endif
+#ifndef NDEBUG
+2 FORMAT(2(A,ES16.9E2))
 #endif
 END SUBROUTINE SKSVD2

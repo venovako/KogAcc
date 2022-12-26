@@ -205,6 +205,10 @@
 #endif
   END IF
 
+#ifndef NDEBUG
+  WRITE (ERROR_UNIT,2) 'TANG=', TANG, ', SECG=', SECG
+#endif
+
   ! apply the Givens rotation
   B(1,1) = S(1)
   IF (TANG .NE. ZERO) THEN
@@ -279,6 +283,10 @@
   X = A(1,2) / A(1,1)
   Y = A(2,2) / A(1,1)
 
+#ifndef NDEBUG
+  WRITE (ERROR_UNIT,2) '   X=', X, ',    Y=', Y
+#endif
+
   ! the functions of \varphi
   IF (X .LE. Y) THEN
      T = SCALE(X, 1) * Y
@@ -305,12 +313,20 @@
 #endif
   END IF
 
+#ifndef NDEBUG
+  WRITE (ERROR_UNIT,2) 'TANF=', TANF, ', SECF=', SECF
+#endif
+
   ! the functions of \psi
   TANP = IEEE_FMA(Y, TANF, X)
 #ifdef CR_MATH
   SECP = CR_HYPOT(TANP, ONE)
 #else
   SECP = SQRT(IEEE_FMA(TANP, TANP, ONE))
+#endif
+
+#ifndef NDEBUG
+  WRITE (ERROR_UNIT,2) 'TANP=', TANP, ', SECP=', SECP
 #endif
 
   ! the scaled singular values
