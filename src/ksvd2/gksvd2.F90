@@ -143,15 +143,27 @@
   ! apply the Givens rotation
   B(1,1) = S(1)
   IF (TANG .NE. ZERO) THEN
-     B(2,1) = U(1,1)
-     U(1,1) = (U(1,1) + TANG * U(2,1)) / SECG
-     U(2,1) = (U(2,1) - TANG * B(2,1)) / SECG
-     B(2,1) = U(1,2)
-     U(1,2) = (U(1,2) + TANG * U(2,2)) / SECG
-     U(2,2) = (U(2,2) - TANG * B(2,1)) / SECG
-     B(2,1) = B(1,2)
-     B(1,2) = (B(1,2) + TANG * B(2,2)) / SECG
-     B(2,2) = (B(2,2) - TANG * B(2,1)) / SECG
+     IF (SECG .NE. ONE) THEN
+        B(2,1) = U(1,1)
+        U(1,1) = (U(1,1) + TANG * U(2,1)) / SECG
+        U(2,1) = (U(2,1) - TANG * B(2,1)) / SECG
+        B(2,1) = U(1,2)
+        U(1,2) = (U(1,2) + TANG * U(2,2)) / SECG
+        U(2,2) = (U(2,2) - TANG * B(2,1)) / SECG
+        B(2,1) = B(1,2)
+        B(1,2) = (B(1,2) + TANG * B(2,2)) / SECG
+        B(2,2) = (B(2,2) - TANG * B(2,1)) / SECG
+     ELSE ! SECG = 1
+        B(2,1) = U(1,1)
+        U(1,1) = U(1,1) + TANG * U(2,1)
+        U(2,1) = U(2,1) - TANG * B(2,1)
+        B(2,1) = U(1,2)
+        U(1,2) = U(1,2) + TANG * U(2,2)
+        U(2,2) = U(2,2) - TANG * B(2,1)
+        B(2,1) = B(1,2)
+        B(1,2) = B(1,2) + TANG * B(2,2)
+        B(2,2) = B(2,2) - TANG * B(2,1)
+     END IF
   END IF
   B(2,1) = ZERO
 
@@ -186,8 +198,10 @@
   IF (Z .EQ. ZERO) THEN
      TANF = ZERO
      SECF = ONE
-  ELSE ! Z > 0, ABS & MAX are here for extra safety
-     Z = MIN(Z / ABS(MAX((X - Y) * (X + Y) + ONE, ZERO)), ROOTH)
+  ELSE ! Z > 0
+     Z = Z / ((X - Y) * (X + Y) + ONE)
+     ! TODO: mathematically, Z >= 0, but...
+     Z = SIGN(MIN(ABS(Z), ROOTH), Z)
 #ifdef CR_MATH
      TANF = CR_HYPOT(Z, ONE)
 #else

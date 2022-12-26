@@ -210,15 +210,27 @@
   IF (TANG .NE. ZERO) THEN
      X =  TANG
      Y = -TANG
-     B(2,1) = U(1,1)
-     U(1,1) = CMPLX(IEEE_FMA(X, REAL(U(2,1)), REAL(U(1,1))) / SECG, IEEE_FMA(X, AIMAG(U(2,1)), AIMAG(U(1,1))) / SECG, K)
-     U(2,1) = CMPLX(IEEE_FMA(Y, REAL(B(2,1)), REAL(U(2,1))) / SECG, IEEE_FMA(Y, AIMAG(B(2,1)), AIMAG(U(2,1))) / SECG, K)
-     B(2,1) = U(1,2)
-     U(1,2) = CMPLX(IEEE_FMA(X, REAL(U(2,2)), REAL(U(1,2))) / SECG, IEEE_FMA(X, AIMAG(U(2,2)), AIMAG(U(1,2))) / SECG, K)
-     U(2,2) = CMPLX(IEEE_FMA(Y, REAL(B(2,1)), REAL(U(2,2))) / SECG, IEEE_FMA(Y, AIMAG(B(2,1)), AIMAG(U(2,2))) / SECG, K)
-     B(2,1) = B(1,2)
-     B(1,2) = CMPLX(IEEE_FMA(X, REAL(B(2,2)), REAL(B(1,2))) / SECG, IEEE_FMA(X, AIMAG(B(2,2)), AIMAG(B(1,2))) / SECG, K)
-     B(2,2) = CMPLX(IEEE_FMA(Y, REAL(B(2,1)), REAL(B(2,2))) / SECG, IEEE_FMA(Y, AIMAG(B(2,1)), AIMAG(B(2,2))) / SECG, K)
+     IF (SECG .NE. ONE) THEN
+        B(2,1) = U(1,1)
+        U(1,1) = CMPLX(IEEE_FMA(X, REAL(U(2,1)), REAL(U(1,1))) / SECG, IEEE_FMA(X, AIMAG(U(2,1)), AIMAG(U(1,1))) / SECG, K)
+        U(2,1) = CMPLX(IEEE_FMA(Y, REAL(B(2,1)), REAL(U(2,1))) / SECG, IEEE_FMA(Y, AIMAG(B(2,1)), AIMAG(U(2,1))) / SECG, K)
+        B(2,1) = U(1,2)
+        U(1,2) = CMPLX(IEEE_FMA(X, REAL(U(2,2)), REAL(U(1,2))) / SECG, IEEE_FMA(X, AIMAG(U(2,2)), AIMAG(U(1,2))) / SECG, K)
+        U(2,2) = CMPLX(IEEE_FMA(Y, REAL(B(2,1)), REAL(U(2,2))) / SECG, IEEE_FMA(Y, AIMAG(B(2,1)), AIMAG(U(2,2))) / SECG, K)
+        B(2,1) = B(1,2)
+        B(1,2) = CMPLX(IEEE_FMA(X, REAL(B(2,2)), REAL(B(1,2))) / SECG, IEEE_FMA(X, AIMAG(B(2,2)), AIMAG(B(1,2))) / SECG, K)
+        B(2,2) = CMPLX(IEEE_FMA(Y, REAL(B(2,1)), REAL(B(2,2))) / SECG, IEEE_FMA(Y, AIMAG(B(2,1)), AIMAG(B(2,2))) / SECG, K)
+     ELSE ! SECG = 1
+        B(2,1) = U(1,1)
+        U(1,1) = CMPLX(IEEE_FMA(X, REAL(U(2,1)), REAL(U(1,1))), IEEE_FMA(X, AIMAG(U(2,1)), AIMAG(U(1,1))), K)
+        U(2,1) = CMPLX(IEEE_FMA(Y, REAL(B(2,1)), REAL(U(2,1))), IEEE_FMA(Y, AIMAG(B(2,1)), AIMAG(U(2,1))), K)
+        B(2,1) = U(1,2)
+        U(1,2) = CMPLX(IEEE_FMA(X, REAL(U(2,2)), REAL(U(1,2))), IEEE_FMA(X, AIMAG(U(2,2)), AIMAG(U(1,2))), K)
+        U(2,2) = CMPLX(IEEE_FMA(Y, REAL(B(2,1)), REAL(U(2,2))), IEEE_FMA(Y, AIMAG(B(2,1)), AIMAG(U(2,2))), K)
+        B(2,1) = B(1,2)
+        B(1,2) = CMPLX(IEEE_FMA(X, REAL(B(2,2)), REAL(B(1,2))), IEEE_FMA(X, AIMAG(B(2,2)), AIMAG(B(1,2))), K)
+        B(2,2) = CMPLX(IEEE_FMA(Y, REAL(B(2,1)), REAL(B(2,2))), IEEE_FMA(Y, AIMAG(B(2,1)), AIMAG(B(2,2))), K)
+     END IF
      ! recompute the magnitudes in the second column
      A(1,2) = CR_HYPOT(REAL(B(1,2)), AIMAG(B(1,2)))
      A(2,2) = CR_HYPOT(REAL(B(2,2)), AIMAG(B(2,2)))
@@ -276,8 +288,10 @@
   IF (T .EQ. ZERO) THEN
      TANF = ZERO
      SECF = ONE
-  ELSE ! T > 0, ABS & MAX are here for extra safety
-     T = MIN(T / ABS(MAX(IEEE_FMA(X - Y, X + Y, ONE), ZERO)), ROOTH)
+  ELSE ! T > 0
+     T = T / IEEE_FMA(X - Y, X + Y, ONE)
+     ! mathematically, T >= 0, but...
+     T = SIGN(MIN(ABS(T), ROOTH), T)
 #ifdef CR_MATH
      TANF = CR_HYPOT(T, ONE)
 #else
