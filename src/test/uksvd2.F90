@@ -95,12 +95,19 @@
      VX(2,1) = CONJG(VX(1,2))
      VX(1,2) = CMPLX(SX(2,1), SX(1,2), KX)
      VX(2,2) = CONJG(VX(2,2))
-     SX(1,1) = SCALE(S(1), -INFO)
-     WRITE (*,1) 'SIGMA(1)=', SX(1,1)
+     ! avoid a possible overflow due to the backscaling
+     SX(1,1) = S(1)
+     SX(1,1) = SCALE(SX(1,1), -INFO)
+     WRITE (*,1,ADVANCE='NO') 'SIGMA(1)=', SX(1,1)
+     IF (.NOT. (SX(1,1) .LE. HUGE(S(1)))) WRITE(*,'(A)',ADVANCE='NO') ' !'
+     WRITE (*,*)
      SX(2,1) = 0.0_KX
      SX(1,2) = 0.0_KX
-     SX(2,2) = SCALE(S(2), -INFO)
-     WRITE (*,1) 'SIGMA(2)=', SX(2,2)
+     SX(2,2) = S(2)
+     SX(2,2) = SCALE(SX(2,2), -INFO)
+     WRITE (*,1,ADVANCE='NO') 'SIGMA(2)=', SX(2,2)
+     IF (.NOT. (SX(2,2) .LE. HUGE(S(2)))) WRITE(*,'(A)',ADVANCE='NO') ' !'
+     WRITE (*,*)
      UX = MATMUL(MATMUL(UX, SX), VX) - GX
      SX(2,1) = CR_HYPOT(CR_HYPOT(CR_HYPOT(REAL(UX(1,1)),AIMAG(UX(1,1))), CR_HYPOT(REAL(UX(2,1)),AIMAG(UX(2,1)))),&
           CR_HYPOT(CR_HYPOT(REAL(UX(1,2)),AIMAG(UX(1,2))), CR_HYPOT(REAL(UX(2,2)),AIMAG(UX(2,2)))))

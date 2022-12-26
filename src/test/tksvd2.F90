@@ -77,10 +77,17 @@
      GX(2,1) = G(2,1)
      GX(1,2) = G(1,2)
      GX(2,2) = G(2,2)
-     SX(1,1) = SCALE(S(1), -INFO)
-     WRITE (*,1) 'SIGMA(1)=', SX(1,1)
-     SX(2,2) = SCALE(S(2), -INFO)
-     WRITE (*,1) 'SIGMA(2)=', SX(2,2)
+     ! avoid a possible overflow due to the backscaling
+     SX(1,1) = S(1)
+     SX(1,1) = SCALE(SX(1,1), -INFO)
+     WRITE (*,1,ADVANCE='NO') 'SIGMA(1)=', SX(1,1)
+     IF (.NOT. (SX(1,1) .LE. HUGE(S(1)))) WRITE(*,'(A)',ADVANCE='NO') ' !'
+     WRITE (*,*)
+     SX(2,2) = S(2)
+     SX(2,2) = SCALE(SX(2,2), -INFO)
+     WRITE (*,1,ADVANCE='NO') 'SIGMA(2)=', SX(2,2)
+     IF (.NOT. (SX(2,2) .LE. HUGE(S(2)))) WRITE(*,'(A)',ADVANCE='NO') ' !'
+     WRITE (*,*)
      UX = MATMUL(MATMUL(UX, SX), TRANSPOSE(VX)) - GX
      SX(2,1) = CR_HYPOT(CR_HYPOT(UX(1,1), UX(2,1)), CR_HYPOT(UX(1,2), UX(2,2)))
      SX(1,2) = CR_HYPOT(CR_HYPOT(GX(1,1), GX(2,1)), CR_HYPOT(GX(1,2), GX(2,2)))
