@@ -232,22 +232,40 @@
   ! update U
   X =  TANF
   Y = -TANF
-  Z = U(1,1)
-  U(1,1) = IEEE_FMA(X, U(2,1), U(1,1)) / SECF
-  U(2,1) = IEEE_FMA(Y,      Z, U(2,1)) / SECF
-  Z = U(1,2)
-  U(1,2) = IEEE_FMA(X, U(2,2), U(1,2)) / SECF
-  U(2,2) = IEEE_FMA(Y,      Z, U(2,2)) / SECF
+  IF (SECF .NE. ONE) THEN
+     Z = U(1,1)
+     U(1,1) = IEEE_FMA(X, U(2,1), U(1,1)) / SECF
+     U(2,1) = IEEE_FMA(Y,      Z, U(2,1)) / SECF
+     Z = U(1,2)
+     U(1,2) = IEEE_FMA(X, U(2,2), U(1,2)) / SECF
+     U(2,2) = IEEE_FMA(Y,      Z, U(2,2)) / SECF
+  ELSE ! SECF = 1
+     Z = U(1,1)
+     U(1,1) = IEEE_FMA(X, U(2,1), U(1,1))
+     U(2,1) = IEEE_FMA(Y,      Z, U(2,1))
+     Z = U(1,2)
+     U(1,2) = IEEE_FMA(X, U(2,2), U(1,2))
+     U(2,2) = IEEE_FMA(Y,      Z, U(2,2))
+  END IF
 
   ! update V
   X =  TANP
   Y = -TANP
-  Z = V(1,1)
-  V(1,1) = IEEE_FMA(X, V(1,2), V(1,1)) / SECP
-  V(1,2) = IEEE_FMA(Y,      Z, V(1,2)) / SECP
-  Z = V(2,1)
-  V(2,1) = IEEE_FMA(X, V(2,2), V(2,1)) / SECP
-  V(2,2) = IEEE_FMA(Y,      Z, V(2,2)) / SECP
+  IF (SECP .NE. ONE) THEN
+     Z = V(1,1)
+     V(1,1) = IEEE_FMA(X, V(1,2), V(1,1)) / SECP
+     V(1,2) = IEEE_FMA(Y,      Z, V(1,2)) / SECP
+     Z = V(2,1)
+     V(2,1) = IEEE_FMA(X, V(2,2), V(2,1)) / SECP
+     V(2,2) = IEEE_FMA(Y,      Z, V(2,2)) / SECP
+  ELSE ! SECP = 1
+     Z = V(1,1)
+     V(1,1) = IEEE_FMA(X, V(1,2), V(1,1))
+     V(1,2) = IEEE_FMA(Y,      Z, V(1,2))
+     Z = V(2,1)
+     V(2,1) = IEEE_FMA(X, V(2,2), V(2,1))
+     V(2,2) = IEEE_FMA(Y,      Z, V(2,2))
+  END IF
 
   ! transpose U
 1 Z = U(2,1)

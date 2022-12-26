@@ -320,22 +320,40 @@
   ! update U
   X =  TANF
   Y = -TANF
-  Z = U(1,1)
-  U(1,1) = CMPLX(IEEE_FMA(X, REAL(U(2,1)), REAL(U(1,1))) / SECF, IEEE_FMA(X, AIMAG(U(2,1)), AIMAG(U(1,1))) / SECF, K)
-  U(2,1) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(U(2,1))) / SECF, IEEE_FMA(Y,      AIMAG(Z), AIMAG(U(2,1))) / SECF, K)
-  Z = U(1,2)
-  U(1,2) = CMPLX(IEEE_FMA(X, REAL(U(2,2)), REAL(U(1,2))) / SECF, IEEE_FMA(X, AIMAG(U(2,2)), AIMAG(U(1,2))) / SECF, K)
-  U(2,2) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(U(2,2))) / SECF, IEEE_FMA(Y,      AIMAG(Z), AIMAG(U(2,2))) / SECF, K)
+  IF (SECF .NE. ONE) THEN
+     Z = U(1,1)
+     U(1,1) = CMPLX(IEEE_FMA(X, REAL(U(2,1)), REAL(U(1,1))) / SECF, IEEE_FMA(X, AIMAG(U(2,1)), AIMAG(U(1,1))) / SECF, K)
+     U(2,1) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(U(2,1))) / SECF, IEEE_FMA(Y,      AIMAG(Z), AIMAG(U(2,1))) / SECF, K)
+     Z = U(1,2)
+     U(1,2) = CMPLX(IEEE_FMA(X, REAL(U(2,2)), REAL(U(1,2))) / SECF, IEEE_FMA(X, AIMAG(U(2,2)), AIMAG(U(1,2))) / SECF, K)
+     U(2,2) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(U(2,2))) / SECF, IEEE_FMA(Y,      AIMAG(Z), AIMAG(U(2,2))) / SECF, K)
+  ELSE ! SECF = 1
+     Z = U(1,1)
+     U(1,1) = CMPLX(IEEE_FMA(X, REAL(U(2,1)), REAL(U(1,1))), IEEE_FMA(X, AIMAG(U(2,1)), AIMAG(U(1,1))), K)
+     U(2,1) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(U(2,1))), IEEE_FMA(Y,      AIMAG(Z), AIMAG(U(2,1))), K)
+     Z = U(1,2)
+     U(1,2) = CMPLX(IEEE_FMA(X, REAL(U(2,2)), REAL(U(1,2))), IEEE_FMA(X, AIMAG(U(2,2)), AIMAG(U(1,2))), K)
+     U(2,2) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(U(2,2))), IEEE_FMA(Y,      AIMAG(Z), AIMAG(U(2,2))), K)
+  END IF
 
   ! update V
   X =  TANP
   Y = -TANP
-  Z = V(1,1)
-  V(1,1) = CMPLX(IEEE_FMA(X, REAL(V(1,2)), REAL(V(1,1))) / SECP, IEEE_FMA(X, AIMAG(V(1,2)), AIMAG(V(1,1))) / SECP, K)
-  V(1,2) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(V(1,2))) / SECP, IEEE_FMA(Y,      AIMAG(Z), AIMAG(V(1,2))) / SECP, K)
-  Z = V(2,1)
-  V(2,1) = CMPLX(IEEE_FMA(X, REAL(V(2,2)), REAL(V(2,1))) / SECP, IEEE_FMA(X, AIMAG(V(2,2)), AIMAG(V(2,1))) / SECP, K)
-  V(2,2) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(V(2,2))) / SECP, IEEE_FMA(Y,      AIMAG(Z), AIMAG(V(2,2))) / SECP, K)
+  IF (SECP .NE. ONE) THEN
+     Z = V(1,1)
+     V(1,1) = CMPLX(IEEE_FMA(X, REAL(V(1,2)), REAL(V(1,1))) / SECP, IEEE_FMA(X, AIMAG(V(1,2)), AIMAG(V(1,1))) / SECP, K)
+     V(1,2) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(V(1,2))) / SECP, IEEE_FMA(Y,      AIMAG(Z), AIMAG(V(1,2))) / SECP, K)
+     Z = V(2,1)
+     V(2,1) = CMPLX(IEEE_FMA(X, REAL(V(2,2)), REAL(V(2,1))) / SECP, IEEE_FMA(X, AIMAG(V(2,2)), AIMAG(V(2,1))) / SECP, K)
+     V(2,2) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(V(2,2))) / SECP, IEEE_FMA(Y,      AIMAG(Z), AIMAG(V(2,2))) / SECP, K)
+  ELSE ! SECP = 1
+     Z = V(1,1)
+     V(1,1) = CMPLX(IEEE_FMA(X, REAL(V(1,2)), REAL(V(1,1))), IEEE_FMA(X, AIMAG(V(1,2)), AIMAG(V(1,1))), K)
+     V(1,2) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(V(1,2))), IEEE_FMA(Y,      AIMAG(Z), AIMAG(V(1,2))), K)
+     Z = V(2,1)
+     V(2,1) = CMPLX(IEEE_FMA(X, REAL(V(2,2)), REAL(V(2,1))), IEEE_FMA(X, AIMAG(V(2,2)), AIMAG(V(2,1))), K)
+     V(2,2) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(V(2,2))), IEEE_FMA(Y,      AIMAG(Z), AIMAG(V(2,2))), K)
+  END IF
 
   ! conjugate-transpose U
 1 U(1,1) = CONJG(U(1,1))

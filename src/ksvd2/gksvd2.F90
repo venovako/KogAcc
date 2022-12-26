@@ -228,20 +228,38 @@
   S(2) = (SECF / SECP) * B(2,2)
 
   ! update U
-  Z = U(1,1)
-  U(1,1) = (U(1,1) + TANF * U(2,1)) / SECF
-  U(2,1) = (U(2,1) - TANF *      Z) / SECF
-  Z = U(1,2)
-  U(1,2) = (U(1,2) + TANF * U(2,2)) / SECF
-  U(2,2) = (U(2,2) - TANF *      Z) / SECF
+  IF (SECF .NE. ONE) THEN
+     Z = U(1,1)
+     U(1,1) = (U(1,1) + TANF * U(2,1)) / SECF
+     U(2,1) = (U(2,1) - TANF *      Z) / SECF
+     Z = U(1,2)
+     U(1,2) = (U(1,2) + TANF * U(2,2)) / SECF
+     U(2,2) = (U(2,2) - TANF *      Z) / SECF
+  ELSE ! SECF = 1
+     Z = U(1,1)
+     U(1,1) = U(1,1) + TANF * U(2,1)
+     U(2,1) = U(2,1) - TANF *      Z
+     Z = U(1,2)
+     U(1,2) = U(1,2) + TANF * U(2,2)
+     U(2,2) = U(2,2) - TANF *      Z
+  END IF
 
   ! update V
-  Z = V(1,1)
-  V(1,1) = (V(1,1) + TANP * V(1,2)) / SECP
-  V(1,2) = (V(1,2) - TANP *      Z) / SECP
-  Z = V(2,1)
-  V(2,1) = (V(2,1) + TANP * V(2,2)) / SECP
-  V(2,2) = (V(2,2) - TANP *      Z) / SECP
+  IF (SECP .NE. ONE) THEN
+     Z = V(1,1)
+     V(1,1) = (V(1,1) + TANP * V(1,2)) / SECP
+     V(1,2) = (V(1,2) - TANP *      Z) / SECP
+     Z = V(2,1)
+     V(2,1) = (V(2,1) + TANP * V(2,2)) / SECP
+     V(2,2) = (V(2,2) - TANP *      Z) / SECP
+  ELSE ! SECP = 1
+     Z = V(1,1)
+     V(1,1) = V(1,1) + TANP * V(1,2)
+     V(1,2) = V(1,2) - TANP *      Z
+     Z = V(2,1)
+     V(2,1) = V(2,1) + TANP * V(2,2)
+     V(2,2) = V(2,2) - TANP *      Z
+  END IF
 
   ! transpose U
 1 Z = U(2,1)
