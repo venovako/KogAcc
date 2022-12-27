@@ -74,7 +74,7 @@
   END DO
   I = 1
   INFO = 0
-  DO WHILE ((INFO .LT. L) .AND. (W(I) .GE. ZERO))
+  DO WHILE (INFO .LT. L)
      J = M_2 + I
      IF ((W(M+O(I)) .EQ. MONE) .AND. (W(M+O(J)) .EQ. MONE)) THEN
         INFO = INFO + 1
