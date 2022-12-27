@@ -11,3 +11,4 @@ FCFLAGS += -qinit=f90ptr -qsclk=micro -qpic -qsaveopt -qarch=auto -qsimd=auto -q
 ifndef NDEBUG
 FCFLAGS += -qcheck -qdbg
 endif # !NDEBUG
+FCFLAGS += -Wl,-E # --export-dynamic

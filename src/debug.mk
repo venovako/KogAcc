@@ -1,6 +1,6 @@
 ifdef NDEBUG
 DEBUG=
-FCFLAGS += -DNDEBUG
+FCFLAGS += -DNDEBUG=$(NDEBUG)
 else # !NDEBUG
 DEBUG=g
 endif # ?NDEBUG

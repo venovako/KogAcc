@@ -20,8 +20,8 @@ ifeq ($(COMPILER_SUFFIX),-13)
 FCFLAGS += -DUSE_IEEE_INTRINSIC
 endif # gfortran-13
 endif # CR_MATH
-ifeq ($(OS),Darwin)
-ifeq ($(ARCH),x86_64)
-FCFLAGS += -Wa,-q
-endif # x86_64
-endif # Darwin
+# ifeq ($(OS),Darwin)
+# ifeq ($(ARCH),x86_64)
+# FCFLAGS += -Wa,-q
+# endif # x86_64
+# endif # Darwin
