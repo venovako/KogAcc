@@ -1,12 +1,19 @@
 !>@brief \b DMK1PQ builds at most \f$K\f$ pivot index pairs for the next transformation of \f$G\f$.
+#ifdef NDEBUG
 PURE SUBROUTINE DMK1PQ(K, N, G, LDG, W, O, INFO)
+#else
+SUBROUTINE DMK1PQ(K, N, G, LDG, W, O, INFO)
+#endif
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
   IMPLICIT NONE
 
 #ifdef CR_MATH
   INTERFACE
-     ! TODO: cr_hypot might change errno but a copy can be made that does not
+#ifdef NDEBUG
      PURE FUNCTION CR_HYPOT(X, Y) BIND(C,NAME='cr_hypot')
+#else
+     FUNCTION CR_HYPOT(X, Y) BIND(C,NAME='cr_hypot')
+#endif
        USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_double
        REAL(KIND=c_double), INTENT(IN), VALUE :: X, Y
        REAL(KIND=c_double) :: CR_HYPOT
@@ -26,7 +33,11 @@ PURE SUBROUTINE DMK1PQ(K, N, G, LDG, W, O, INFO)
      END SUBROUTINE DABSG
   END INTERFACE
   INTERFACE
+#ifdef NDEBUG
      PURE SUBROUTINE DMKWPQ(N, G, LDG, W, O, INFO)
+#else
+     SUBROUTINE DMKWPQ(N, G, LDG, W, O, INFO)
+#endif
        USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
        IMPLICIT NONE
        INTEGER, INTENT(IN) :: N, LDG

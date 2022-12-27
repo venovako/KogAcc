@@ -20,8 +20,11 @@ SUBROUTINE ZKSVD2(G, U, V, S, INFO)
 
 #ifdef CR_MATH
   INTERFACE
-     ! TODO: cr_hypot might change errno but a copy can be made that does not
+#ifdef NDEBUG
      PURE FUNCTION CR_HYPOT(X, Y) BIND(C,NAME='cr_hypot')
+#else
+     FUNCTION CR_HYPOT(X, Y) BIND(C,NAME='cr_hypot')
+#endif
        USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_double
        REAL(KIND=c_double), INTENT(IN), VALUE :: X, Y
        REAL(KIND=c_double) :: CR_HYPOT

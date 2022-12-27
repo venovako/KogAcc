@@ -1,12 +1,19 @@
 !>@brief \b CMK1PQ builds at most \f$K\f$ pivot index pairs for the next transformation of \f$G\f$.
+#ifdef NDEBUG
 PURE SUBROUTINE CMK1PQ(K, N, G, LDG, W, O, INFO)
+#else
+SUBROUTINE CMK1PQ(K, N, G, LDG, W, O, INFO)
+#endif
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
   IMPLICIT NONE
 
 #ifdef CR_MATH
   INTERFACE
-     ! TODO: cr_hypotf might change errno but a copy can be made that does not
+#ifdef NDEBUG
      PURE FUNCTION CR_HYPOT(X, Y) BIND(C,NAME='cr_hypotf')
+#else
+     FUNCTION CR_HYPOT(X, Y) BIND(C,NAME='cr_hypotf')
+#endif
        USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_float
        REAL(KIND=c_float), INTENT(IN), VALUE :: X, Y
        REAL(KIND=c_float) :: CR_HYPOT
@@ -16,7 +23,11 @@ PURE SUBROUTINE CMK1PQ(K, N, G, LDG, W, O, INFO)
 #define CR_HYPOT HYPOT
 #endif
   INTERFACE
+#ifdef NDEBUG
      PURE SUBROUTINE CABSG(M, N, G, LDG, W, LDW, INFO)
+#else
+     SUBROUTINE CABSG(M, N, G, LDG, W, LDW, INFO)
+#endif
        USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
        IMPLICIT NONE
        INTEGER, INTENT(IN) :: M, N, LDG, LDW
@@ -26,7 +37,11 @@ PURE SUBROUTINE CMK1PQ(K, N, G, LDG, W, O, INFO)
      END SUBROUTINE CABSG
   END INTERFACE
   INTERFACE
+#ifdef NDEBUG
      PURE SUBROUTINE CMKWPQ(N, G, LDG, W, O, INFO)
+#else
+     SUBROUTINE CMKWPQ(N, G, LDG, W, O, INFO)
+#endif
        USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
        IMPLICIT NONE
        INTEGER, INTENT(IN) :: N, LDG

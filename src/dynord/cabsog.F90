@@ -5,8 +5,11 @@ SUBROUTINE CABSOG(M, N, G, LDG, W, LDW, INFO)
 
 #ifdef CR_MATH
   INTERFACE
-     ! TODO: cr_hypotf might change errno but a copy can be made that does not
+#ifdef NDEBUG
      PURE FUNCTION CR_HYPOT(X, Y) BIND(C,NAME='cr_hypotf')
+#else
+     FUNCTION CR_HYPOT(X, Y) BIND(C,NAME='cr_hypotf')
+#endif
        USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_float
        REAL(KIND=c_float), INTENT(IN), VALUE :: X, Y
        REAL(KIND=c_float) :: CR_HYPOT
