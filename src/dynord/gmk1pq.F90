@@ -59,6 +59,10 @@
      W(J) = CR_HYPOT(W(J), W(I))
      I = I - 1
   END DO
+  IF (.NOT. (W(J) .LE. HUGE(W(J)))) THEN
+     INFO = -7
+     RETURN
+  END IF
 
 #ifndef NDEBUG
   DO I = J+1, M
