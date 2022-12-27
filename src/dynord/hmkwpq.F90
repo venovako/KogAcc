@@ -20,9 +20,9 @@
            INFO = -4 - M
            RETURN
         END IF
-        IF ((H .EQ. ZERO) .AND. &
-             (AIMAG(G(I,I)) .EQ. ZERO) .AND. (SIGN(ONE,AIMAG(G(I,I))) .EQ. ONE) .AND. (SIGN(ONE,REAL(G(I,I))) .EQ. ONE) .AND. &
-             (AIMAG(G(J,J)) .EQ. ZERO) .AND. (SIGN(ONE,AIMAG(G(J,J))) .EQ. ONE) .AND. (SIGN(ONE,REAL(G(J,J))) .EQ. ONE) .AND. &
+        IF ((H .EQ. ZERO) .AND. & ! TODO: ignore the signs of imaginary zeros for now, as in the following two lines
+             (AIMAG(G(I,I)) .EQ. ZERO) .AND. (SIGN(ONE,REAL(G(I,I))) .EQ. ONE) .AND. & ! SIGN(ONE,AIMAG(G(I,I))) .EQ. ONE
+             (AIMAG(G(J,J)) .EQ. ZERO) .AND. (SIGN(ONE,REAL(G(J,J))) .EQ. ONE) .AND. & ! SIGN(ONE,AIMAG(G(J,J))) .EQ. ONE
              (REAL(G(I,I)) .GE. REAL(G(J,J)))) THEN
            W(K,L) = -ONE
         ELSE ! transformation required
