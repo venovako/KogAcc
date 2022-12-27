@@ -17,14 +17,14 @@
      DO J = I+1, N
         H = CR_HYPOT(W(J,I), W(I,J))
         IF (.NOT. (H .LE. HUGE(H))) THEN
-           INFO = -4 - M
+           INFO = -6 - M
            RETURN
         END IF
-        IF ((H .EQ. ZERO) .AND. & ! TODO: ignore the signs of imaginary zeros for now, as in the following two lines
-             (AIMAG(G(I,I)) .EQ. ZERO) .AND. (SIGN(ONE,REAL(G(I,I))) .EQ. ONE) .AND. & ! SIGN(ONE,AIMAG(G(I,I))) .EQ. ONE
-             (AIMAG(G(J,J)) .EQ. ZERO) .AND. (SIGN(ONE,REAL(G(J,J))) .EQ. ONE) .AND. & ! SIGN(ONE,AIMAG(G(J,J))) .EQ. ONE
+        IF ((H .EQ. ZERO) .AND. &
+             (AIMAG(G(I,I)) .EQ. ZERO) .AND. (SIGN(ONE,REAL(G(I,I))) .EQ. ONE) .AND. &
+             (AIMAG(G(J,J)) .EQ. ZERO) .AND. (SIGN(ONE,REAL(G(J,J))) .EQ. ONE) .AND. &
              (REAL(G(I,I)) .GE. REAL(G(J,J)))) THEN
-           W(K,L) = -ONE
+           CYCLE
         ELSE ! transformation required
            W(K,L) = H
            INFO = INFO + 1

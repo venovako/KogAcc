@@ -17,11 +17,11 @@
      DO J = I+1, N
         H = CR_HYPOT(W(J,I), W(I,J))
         IF (.NOT. (H .LE. HUGE(H))) THEN
-           INFO = -4 - M
+           INFO = -6 - M
            RETURN
         END IF
         IF ((H .EQ. ZERO) .AND. (SIGN(ONE,G(I,I)) .EQ. ONE) .AND. (SIGN(ONE,G(J,J)) .EQ. ONE) .AND. (G(I,I) .GE. G(J,J))) THEN
-           W(K,L) = -ONE
+           CYCLE
         ELSE ! transformation required
            W(K,L) = H
            INFO = INFO + 1

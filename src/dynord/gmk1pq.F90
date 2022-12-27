@@ -2,7 +2,7 @@
   IF (LDG .LT. N) INFO = -4
   IF (N .LT. 0) INFO = -2
   IF (K .LT. 0) INFO = -1
-  L = N / 2 ! TODO
+  L = N / 2
   IF (K .GT. L) INFO = -1
   IF (INFO .NE. 0) RETURN
   IF (N .EQ. 0) RETURN
@@ -37,15 +37,19 @@
   I = O(J)
   L = MIN(L, I)
   ! sort (W,P,Q)
-  CALL PQSRT(PQCMP, M_2, W, O, O(M_2+1), W(M_2+1), O(M+1), O(M+M_2+1), INFO)
-  O(J) = INFO
+  CALL PQSRT(PQCMP, I, W, O, O(M_2+1), W(M_2+1), O(M+1), O(M+M_2+1), INFO)
   IF (INFO .LT. 0) THEN
+     O(J) = INFO
      INFO = -6
      RETURN
   END IF
+  O(J) = I
 
   ! W(J) = || off(G) ||_F
   J = M_2 + 1
+#ifdef NDEBUG
+  W(J) = MONE
+#else
   W(J) = ZERO
   DO WHILE (I .GE. 1)
      IF (W(I) .GT. ZERO) THEN
@@ -63,21 +67,11 @@
      INFO = -7
      RETURN
   END IF
-
-#ifndef NDEBUG
-  DO I = J+1, M
-     W(I) = ZERO
-  END DO
 #endif
+
   DO I = M+1, N*N
      W(I) = MONE
   END DO
-#ifndef NDEBUG
-  DO I = M+1, 2*M-1
-     O(I) = 0
-  END DO
-#endif
-
   I = 1
   INFO = 0
   DO WHILE ((INFO .LT. L) .AND. (W(I) .GE. ZERO))
@@ -89,5 +83,5 @@
         O(M+INFO) = I
      END IF
      I = I + 1
-     IF (I .GT. M_2) EXIT
+     IF (I .GT. O(2*M)) EXIT
   END DO
