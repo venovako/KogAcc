@@ -15,16 +15,16 @@ PLAT=$(COMPILER)/$(OS)-$(ARCH)-$(ABI)$(DEBUG)
 endif # !PLAT
 include o.mk
 
-.PHONY: all clean dirs doc help purge
+.PHONY: all clean dirs doc help
 
 all: dirs $(LIBS) $(EXES)
 	@echo $(PLAT)
 
 help:
-	@echo $(MAKE) "[COMPILER=gfortran|ifort|ifx|xlf] [COMPILER_PREFIX=...] [COMPILER_SUFFIX=...] [ABI=ilp64|lp64] [NDEBUG=optimization_level] [CR_MATH=dir] [all|clean|dirs|doc|help|purge]"
+	@echo $(MAKE) "[COMPILER=gfortran|ifort|ifx|xlf] [COMPILER_PREFIX=...] [COMPILER_SUFFIX=...] [ABI=ilp64|lp64] [NDEBUG=optimization_level] [CR_MATH=dir] [all|clean|dirs|doc|help]"
 
 dirs:
-	@$(MKD) ../bin/$(PLAT) ../lib/$(PLAT) ../obj/$(PLAT)
+	@$(MKD) ../bin/$(PLAT) ../lib/$(PLAT) ../obj/$(PLAT) ../doc
 
 doc: ../Doxyfile
 	cd .. && doxygen && cd src
@@ -37,7 +37,4 @@ include faux/GNUmakefile
 include test/GNUmakefile
 
 clean:
-	-$(DEL) $(EXES) $(LIBS) $(OBJS)
-
-purge:
-	-$(DEL) ../bin ../lib ../obj ../doc
+	-$(DEL) ../bin/$(PLAT) ../lib/$(PLAT) ../obj/$(PLAT) ../doc
