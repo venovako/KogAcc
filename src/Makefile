@@ -7,7 +7,7 @@ FORT=ifort
 !ENDIF # !FORT
 FC=$(FORT).exe
 !IFNDEF ABI
-ABI=ilp64
+ABI=lp64
 !ENDIF # !ABI
 FCFLAGS=/nologo
 !IF "$(ABI)"=="ilp64"
@@ -58,7 +58,7 @@ all: dirs $(LIBS) $(EXES)
 	@echo $(PLAT)
 
 help:
-	@echo "nmake.exe [FORT=ifort|ifx] [ABI=ilp64|lp64] [NDEBUG=optimization_level] [INTRIN=i] [all|clean|dirs|doc|help]"
+	@echo "nmake.exe [FORT=ifort|ifx] [ABI=lp64|ilp64] [NDEBUG=optimization_level] [INTRIN=i] [all|clean|dirs|doc|help]"
 
 dirs:
 	-md ..\bin\$(PLAT)
