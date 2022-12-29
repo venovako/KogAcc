@@ -37,9 +37,16 @@ FCFLAGS=$(FCFLAGS) /dbglibs /debug:full /debug:inline-debug-info /debug-paramete
 LDFLAGS=/link /DEBUG
 !ENDIF # ?NDEBUG
 !IFDEF CR_MATH
-FCFLAGS=$(FCFLAGS) /DUSE_IEEE_INTRINSIC $(CR_MATH)
+# presently not really useful
+FCFLAGS=$(FCFLAGS) /DCR_MATH=$(CR_MATH)
+# makes no sense to use CR_MATH without enforcing the FMAs in the rest of the code
+!IFNDEF INTRIN
 INTRIN=i
+!ENDIF # !INTRIN
 !ENDIF # CR_MATH
+!IFDEF INTRIN
+FCFLAGS=$(FCFLAGS) /DUSE_IEEE_INTRINSIC=$(INTRIN)
+!ENDIF # INTRIN
 !IFNDEF PLAT
 PLAT=$(FORT)\$(OS)-$(ARCH)-$(ABI)$(DEBUG)
 !ENDIF # !PLAT
@@ -51,7 +58,7 @@ all: dirs $(LIBS) $(EXES)
 	@echo $(PLAT)
 
 help:
-	@echo "nmake.exe [FORT=ifort|ifx] [ABI=ilp64|lp64] [NDEBUG=optimization_level] [all|clean|dirs|doc|help]"
+	@echo "nmake.exe [FORT=ifort|ifx] [ABI=ilp64|lp64] [NDEBUG=optimization_level] [INTRIN=i] [all|clean|dirs|doc|help]"
 
 dirs:
 	-md ..\bin\$(PLAT)

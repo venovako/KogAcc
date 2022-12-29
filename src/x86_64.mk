@@ -2,7 +2,7 @@ ifeq ($(COMPILER),gfortran)
 FCFLAGS += -march=native
 endif # gfortran
 ifdef CR_MATH
-FCFLAGS += -DCR_MATH
+FCFLAGS += -DCR_MATH=$(CR_MATH)
 ifdef NDEBUG
 # modified routines that do not reference errno
 OBJS_CRF_MATH=$(CR_MATH)/src/binary32/hypot/hypotf_noerrno.o

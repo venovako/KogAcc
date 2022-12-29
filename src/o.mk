@@ -196,9 +196,6 @@ EXES_KSVD2 += \
 ../bin/$(PLAT)/wksvd2.exe
 endif # x86
 endif # gfortran
-ifeq ($(findstring DUSE_IEEE_INTRINSIC,$(FCFLAGS)),DUSE_IEEE_INTRINSIC)
-INTRIN=i
-endif # DUSE_IEEE_INTRINSIC
 
 OBJS=$(OBJS_ARRBIO) $(OBJS_BLKSVD) $(OBJS_DYNORD) $(OBJS_KSVD2) $(OBJS_FAUX)
 
