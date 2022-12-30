@@ -208,7 +208,7 @@
      SECF = ONE
   ELSE ! Z > 0
      Z = Z / ((X - Y) * (X + Y) + ONE)
-     ! TODO: mathematically, Z >= 0, but...
+     ! mathematically, Z >= 0, but...
      Z = SIGN(MIN(ABS(Z), ROOTH), Z)
 #ifdef CR_MATH
      TANF = CR_HYPOT(Z, ONE)
