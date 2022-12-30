@@ -24,10 +24,10 @@ help:
 	@echo $(MAKE) "[COMPILER=gfortran|ifort|ifx|xlf] [COMPILER_PREFIX=...] [COMPILER_SUFFIX=...] [ABI=lp64|ilp64] [NDEBUG=optimization_level] [CR_MATH=dir] [INTRIN=i] [all|clean|dirs|doc|help]"
 
 dirs:
-	@$(MKD) ../bin/$(PLAT) ../lib/$(PLAT) ../obj/$(PLAT) ../doc
+	@$(MKD) ../bin/$(PLAT) ../lib/$(PLAT) ../obj/$(PLAT)
 
 doc: ../Doxyfile
-	cd .. && doxygen && cd src
+	pushd .. && $(DEL) doc && doxygen && popd
 
 include arrbio/GNUmakefile
 include blksvd/GNUmakefile
@@ -37,4 +37,4 @@ include faux/GNUmakefile
 include test/GNUmakefile
 
 clean:
-	-$(DEL) ../bin/$(PLAT) ../lib/$(PLAT) ../obj/$(PLAT) ../doc
+	-$(DEL) ../bin/$(PLAT) ../lib/$(PLAT) ../obj/$(PLAT)

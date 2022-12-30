@@ -64,10 +64,9 @@ dirs:
 	-md ..\bin\$(PLAT)
 	-md ..\lib\$(PLAT)
 	-md ..\obj\$(PLAT)
-	-md ..\doc
 
 doc: ..\Doxyfile
-	cd .. && doxygen && cd src
+	pushd .. && rd doc /s /q && doxygen && popd
 
 !INCLUDE arrbio\Makefile
 !INCLUDE blksvd\Makefile
@@ -80,4 +79,3 @@ clean:
 	-rd ..\bin\$(PLAT) /s /q
 	-rd ..\lib\$(PLAT) /s /q
 	-rd ..\obj\$(PLAT) /s /q
-	-rd ..\doc /s /q
