@@ -127,7 +127,8 @@ OBJS_FAUX=\
 ..\obj\$(PLAT)\drotr.obj\
 ..\obj\$(PLAT)\zrotr.obj\
 ..\obj\$(PLAT)\qrotr.obj\
-..\obj\$(PLAT)\yrotr.obj
+..\obj\$(PLAT)\yrotr.obj\
+..\obj\$(PLAT)\jsweep.obj
 
 EXES_DYNORD=\
 ..\bin\$(PLAT)\spqsort.exe\
