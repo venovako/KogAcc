@@ -43,6 +43,8 @@ SUBROUTINE JSWEEP(J, N, S, P, O, INFO)
   INTEGER :: K, L
 
   INFO = 0
+  S = 0
+  P = 0
   IF (N .LT. 0) INFO = -2
   IF (J .LT. 0) INFO = -1
   IF (INFO .NE. 0) RETURN

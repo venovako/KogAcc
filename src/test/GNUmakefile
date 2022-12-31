@@ -45,3 +45,6 @@
 
 ../bin/$(PLAT)/sthalt.exe: test/sthaltx.f90 ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
 	pushd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o sthalt.exe ../../../src/test/sthaltx.f90 -L../../../lib/$(PLAT) -lfaux && popd
+
+../bin/$(PLAT)/jsweep.exe: test/jsweepx.f90 ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
+	pushd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o jsweep.exe ../../../src/test/jsweepx.f90 -L../../../lib/$(PLAT) -lfaux -L../../../../JACSD -ljstrat$(DEBUG) && popd

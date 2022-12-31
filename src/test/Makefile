@@ -36,3 +36,6 @@
 
 ..\bin\$(PLAT)\sthalt.exe: test\sthaltx.f90 ..\lib\$(PLAT)\faux.lib $(MKFS) test\Makefile
 	pushd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) ..\..\..\src\test\sthaltx.f90 /Festhalt.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\faux.lib && popd
+
+..\bin\$(PLAT)\jsweep.exe: test\jsweepx.f90 ..\lib\$(PLAT)\faux.lib $(MKFS) test\Makefile
+	pushd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) ..\..\..\src\test\jsweepx.f90 /Fejsweep.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\faux.lib ..\..\..\..\JACSD\$(PLAT)\jstrat$(DEBUG).lib && popd
