@@ -1,8 +1,8 @@
-!>@brief \b DMK1PQ builds at most \f$K\f$ pivot index pairs for the next transformation of \f$G\f$.
+!>@brief \b DMK3PQ builds at most \f$K\f$ pivot index pairs for the next transformation of \f$G\f$.
 #ifdef NDEBUG
-PURE SUBROUTINE DMK1PQ(K, N, G, LDG, W, O, INFO)
+PURE SUBROUTINE DMK3PQ(K, N, G, LDG, W, O, INFO)
 #else
-SUBROUTINE DMK1PQ(K, N, G, LDG, W, O, INFO)
+SUBROUTINE DMK3PQ(K, N, G, LDG, W, O, INFO)
 #endif
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
   IMPLICIT NONE
@@ -87,5 +87,5 @@ SUBROUTINE DMK1PQ(K, N, G, LDG, W, O, INFO)
 #define MKWPQ DMKWPQ
 #define PQCMP DPQCMP
 #define PQSRT DPQSRT
-#include "gmk1pq.F90"
-END SUBROUTINE DMK1PQ
+#include "gmk3pq.F90"
+END SUBROUTINE DMK3PQ

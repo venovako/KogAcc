@@ -1,5 +1,5 @@
-!>@brief \b QMK1PQ builds at most \f$K\f$ pivot index pairs for the next transformation of \f$G\f$.
-PURE SUBROUTINE QMK1PQ(K, N, G, LDG, W, O, INFO)
+!>@brief \b QMK3PQ builds at most \f$K\f$ pivot index pairs for the next transformation of \f$G\f$.
+PURE SUBROUTINE QMK3PQ(K, N, G, LDG, W, O, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL128
   IMPLICIT NONE
 
@@ -65,5 +65,5 @@ PURE SUBROUTINE QMK1PQ(K, N, G, LDG, W, O, INFO)
 #define MKWPQ QMKWPQ
 #define PQCMP QPQCMP
 #define PQSRT QPQSRT
-#include "gmk1pq.F90"
-END SUBROUTINE QMK1PQ
+#include "gmk3pq.F90"
+END SUBROUTINE QMK3PQ
