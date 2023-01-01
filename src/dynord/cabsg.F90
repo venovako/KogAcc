@@ -1,9 +1,5 @@
-!>@brief \b CABSG sequentially computes \f$W=|G|\f$.
-#ifdef NDEBUG
-PURE SUBROUTINE CABSG(M, N, G, LDG, W, LDW, INFO)
-#else
+!>@brief \b CABSG computes \f$W=|G|\f$.
 SUBROUTINE CABSG(M, N, G, LDG, W, LDW, INFO)
-#endif
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
   IMPLICIT NONE
 
@@ -26,7 +22,7 @@ SUBROUTINE CABSG(M, N, G, LDG, W, LDW, INFO)
   INTEGER, INTENT(IN) :: M, N, LDG, LDW
   COMPLEX(KIND=REAL32), INTENT(IN) :: G(LDG,N)
   REAL(KIND=REAL32), INTENT(OUT) :: W(LDW,N)
-  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(INOUT) :: INFO
   REAL(KIND=REAL32) :: H
   INTEGER :: I, J
 #include "habsg.F90"

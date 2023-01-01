@@ -40,12 +40,6 @@ OBJS_BLKSVD=\
 ..\obj\$(PLAT)\zbrdg.obj\
 ..\obj\$(PLAT)\qbrdg.obj\
 ..\obj\$(PLAT)\ybrdg.obj\
-..\obj\$(PLAT)\sbordg.obj\
-..\obj\$(PLAT)\cbordg.obj\
-..\obj\$(PLAT)\dbordg.obj\
-..\obj\$(PLAT)\zbordg.obj\
-..\obj\$(PLAT)\qbordg.obj\
-..\obj\$(PLAT)\ybordg.obj\
 ..\obj\$(PLAT)\nb2m.obj
 
 OBJS_DYNORD=\
@@ -55,12 +49,6 @@ OBJS_DYNORD=\
 ..\obj\$(PLAT)\zabsg.obj\
 ..\obj\$(PLAT)\qabsg.obj\
 ..\obj\$(PLAT)\yabsg.obj\
-..\obj\$(PLAT)\sabsog.obj\
-..\obj\$(PLAT)\cabsog.obj\
-..\obj\$(PLAT)\dabsog.obj\
-..\obj\$(PLAT)\zabsog.obj\
-..\obj\$(PLAT)\qabsog.obj\
-..\obj\$(PLAT)\yabsog.obj\
 ..\obj\$(PLAT)\smkwpq.obj\
 ..\obj\$(PLAT)\cmkwpq.obj\
 ..\obj\$(PLAT)\dmkwpq.obj\
@@ -73,12 +61,6 @@ OBJS_DYNORD=\
 ..\obj\$(PLAT)\zmk3pq.obj\
 ..\obj\$(PLAT)\qmk3pq.obj\
 ..\obj\$(PLAT)\ymk3pq.obj\
-..\obj\$(PLAT)\smkopq.obj\
-..\obj\$(PLAT)\cmkopq.obj\
-..\obj\$(PLAT)\dmkopq.obj\
-..\obj\$(PLAT)\zmkopq.obj\
-..\obj\$(PLAT)\qmkopq.obj\
-..\obj\$(PLAT)\ymkopq.obj\
 ..\obj\$(PLAT)\spqcmp.obj\
 ..\obj\$(PLAT)\dpqcmp.obj\
 ..\obj\$(PLAT)\qpqcmp.obj\
@@ -87,10 +69,7 @@ OBJS_DYNORD=\
 ..\obj\$(PLAT)\qpqmrg.obj\
 ..\obj\$(PLAT)\spqsrt.obj\
 ..\obj\$(PLAT)\dpqsrt.obj\
-..\obj\$(PLAT)\qpqsrt.obj\
-..\obj\$(PLAT)\spqsort.obj\
-..\obj\$(PLAT)\dpqsort.obj\
-..\obj\$(PLAT)\qpqsort.obj
+..\obj\$(PLAT)\qpqsrt.obj
 
 OBJS_KSVD2=\
 ..\obj\$(PLAT)\sksvd2.obj\

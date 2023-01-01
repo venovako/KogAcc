@@ -1,11 +1,12 @@
-!>@brief \b DPQSORTX tests the DPQSORT subroutine if \f$N>0\f$ or the DPQSRT subroutine if \f$N<0\f$.
+!>@brief \b DPQSORTX tests the DPQSRT subroutine with parallel execution if \f$N>0\f$ or sequentially if \f$N<0\f$.
 PROGRAM DPQSORTX
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64, OUTPUT_UNIT
+  !$ USE OMP_LIB
   IMPLICIT NONE
   REAL(KIND=REAL64), ALLOCATABLE :: W(:)
   INTEGER, ALLOCATABLE :: P(:), Q(:)
   INTEGER :: I, M, N, INFO
-  EXTERNAL :: DPQCMP, DPQSORT, DPQSRT
+  EXTERNAL :: DPQCMP, DPQSRT
   WRITE (OUTPUT_UNIT,'(A)',ADVANCE='NO') 'N = '
   READ (*,*) N
   IF (N .EQ. 0) STOP 'N = 0'
@@ -18,11 +19,12 @@ PROGRAM DPQSORTX
      WRITE (OUTPUT_UNIT,'(A,I2,A)',ADVANCE='NO') '[W,P,Q](', M, ') = '
      READ (*,*) W(I), P(I), Q(I)
   END DO
+  INFO = 0
   IF (N .GT. 0) THEN
-     CALL DPQSORT(DPQCMP, N, W, P, Q, W(N+1), P(N+1), Q(N+1), INFO)
-  ELSE ! N .LT. 0
-     CALL DPQSRT(DPQCMP, M, W, P, Q, W(M+1), P(M+1), Q(M+1), INFO)
+     !$ INFO = OMP_GET_NUM_THREADS()
+     CONTINUE
   END IF
+  CALL DPQSRT(DPQCMP, M, W, P, Q, W(M+1), P(M+1), Q(M+1), INFO)
   WRITE (OUTPUT_UNIT,'(A,I11)') 'INFO = ', INFO
   IF (INFO .GE. 0) THEN
      DO I = 1, M

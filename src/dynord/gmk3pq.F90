@@ -1,3 +1,4 @@
+  I = INFO
   INFO = 0
   IF (LDG .LT. N) INFO = -4
   IF (N .LT. 0) INFO = -2
@@ -18,12 +19,14 @@
   J = 2 * M
 
   ! W = | G |
+  O(J) = I
   CALL ABSG(N, N, G, LDG, W, N, O(J))
   IF (O(J) .NE. 0) THEN
      INFO = -3
      RETURN
   END IF
   ! (W,P,Q) = (W(1:M_2),O(1:M_2),O(M_2+1:M))
+  O(J) = I
   CALL MKWPQ(N, G, LDG, W, O, O(J))
   IF (O(J) .EQ. 0) THEN
      INFO = 0
@@ -34,6 +37,7 @@
      INFO = -5
      RETURN
   END IF
+  INFO = I
   I = O(J)
   L = MIN(L, I)
   ! sort (W,P,Q)

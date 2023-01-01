@@ -1,9 +1,5 @@
-!>@brief \b ZABSG sequentially computes \f$W=|G|\f$.
-#ifdef NDEBUG
-PURE SUBROUTINE ZABSG(M, N, G, LDG, W, LDW, INFO)
-#else
+!>@brief \b ZABSG computes \f$W=|G|\f$.
 SUBROUTINE ZABSG(M, N, G, LDG, W, LDW, INFO)
-#endif
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
   IMPLICIT NONE
 
@@ -26,7 +22,7 @@ SUBROUTINE ZABSG(M, N, G, LDG, W, LDW, INFO)
   INTEGER, INTENT(IN) :: M, N, LDG, LDW
   COMPLEX(KIND=REAL64), INTENT(IN) :: G(LDG,N)
   REAL(KIND=REAL64), INTENT(OUT) :: W(LDW,N)
-  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(INOUT) :: INFO
   REAL(KIND=REAL64) :: H
   INTEGER :: I, J
 #include "habsg.F90"

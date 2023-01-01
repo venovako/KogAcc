@@ -1,5 +1,5 @@
-!>@brief \b XPQSRT sorts the arrays \f$AW,AP,AQ\f$ by the sequential merge sort algorithm, using the workspace arrays \f$BW,BP,BQ\f$ of the same length \f$N\f$, according to the ordering \f$\prec\f$ defined by the WPQCMP subroutine, and returns a non-negative value in INFO if successful, or a negative value on failure.
-PURE SUBROUTINE XPQSRT(WPQCMP, N, AW, AP, AQ, BW, BP, BQ, INFO)
+!>@brief \b XPQSRT sorts the arrays \f$AW,AP,AQ\f$ by the merge sort algorithm, using the workspace arrays \f$BW,BP,BQ\f$ of the same length \f$N\f$, according to the ordering \f$\prec\f$ defined by the WPQCMP subroutine, and returns a non-negative value in INFO if successful, or a negative value on failure.
+SUBROUTINE XPQSRT(WPQCMP, N, AW, AP, AQ, BW, BP, BQ, INFO)
   IMPLICIT NONE
 
   ABSTRACT INTERFACE
@@ -33,9 +33,10 @@ PURE SUBROUTINE XPQSRT(WPQCMP, N, AW, AP, AQ, BW, BP, BQ, INFO)
   REAL(KIND=10), INTENT(INOUT) :: AW(N)
   INTEGER, INTENT(INOUT) :: AP(N), AQ(N)
   REAL(KIND=10), INTENT(OUT) :: BW(N)
-  INTEGER, INTENT(OUT) :: BP(N), BQ(N), INFO
+  INTEGER, INTENT(OUT) :: BP(N), BQ(N)
+  INTEGER, INTENT(INOUT) :: INFO
   PROCEDURE(PQCMP) :: WPQCMP
-  INTEGER :: I, J, K, L, X, Y
+  INTEGER :: I, J, K, L, M, X, Y
   LOGICAL :: FLIP
 #define WPQMRG XPQMRG
 #include "gpqsrt.F90"

@@ -19,24 +19,6 @@
 ..\obj\$(PLAT)\yabsg.obj: dynord\yabsg.F90 dynord\habsg.F90 $(MKFS) dynord\Makefile
 	pushd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\dynord\yabsg.F90 && popd
 
-..\obj\$(PLAT)\sabsog.obj: dynord\sabsog.F90 dynord\gabsog.F90 $(MKFS) dynord\Makefile
-	pushd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\dynord\sabsog.F90 && popd
-
-..\obj\$(PLAT)\cabsog.obj: dynord\cabsog.F90 dynord\habsog.F90 $(MKFS) dynord\Makefile
-	pushd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\dynord\cabsog.F90 && popd
-
-..\obj\$(PLAT)\dabsog.obj: dynord\dabsog.F90 dynord\gabsog.F90 $(MKFS) dynord\Makefile
-	pushd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\dynord\dabsog.F90 && popd
-
-..\obj\$(PLAT)\zabsog.obj: dynord\zabsog.F90 dynord\habsog.F90 $(MKFS) dynord\Makefile
-	pushd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\dynord\zabsog.F90 && popd
-
-..\obj\$(PLAT)\qabsog.obj: dynord\qabsog.F90 dynord\gabsog.F90 $(MKFS) dynord\Makefile
-	pushd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\dynord\qabsog.F90 && popd
-
-..\obj\$(PLAT)\yabsog.obj: dynord\yabsog.F90 dynord\habsog.F90 $(MKFS) dynord\Makefile
-	pushd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\dynord\yabsog.F90 && popd
-
 ..\obj\$(PLAT)\smkwpq.obj: dynord\smkwpq.F90 dynord\gmkwpq.F90 $(MKFS) dynord\Makefile
 	pushd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\dynord\smkwpq.F90 && popd
 
@@ -73,24 +55,6 @@
 ..\obj\$(PLAT)\ymk3pq.obj: dynord\ymk3pq.F90 dynord\gmk3pq.F90 $(MKFS) dynord\Makefile
 	pushd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\dynord\ymk3pq.F90 && popd
 
-..\obj\$(PLAT)\smkopq.obj: dynord\smkopq.F90 dynord\gmkopq.F90 $(MKFS) dynord\Makefile
-	pushd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\dynord\smkopq.F90 && popd
-
-..\obj\$(PLAT)\cmkopq.obj: dynord\cmkopq.F90 dynord\gmkopq.F90 $(MKFS) dynord\Makefile
-	pushd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\dynord\cmkopq.F90 && popd
-
-..\obj\$(PLAT)\dmkopq.obj: dynord\dmkopq.F90 dynord\gmkopq.F90 $(MKFS) dynord\Makefile
-	pushd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\dynord\dmkopq.F90 && popd
-
-..\obj\$(PLAT)\zmkopq.obj: dynord\zmkopq.F90 dynord\gmkopq.F90 $(MKFS) dynord\Makefile
-	pushd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\dynord\zmkopq.F90 && popd
-
-..\obj\$(PLAT)\qmkopq.obj: dynord\qmkopq.F90 dynord\gmkopq.F90 $(MKFS) dynord\Makefile
-	pushd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\dynord\qmkopq.F90 && popd
-
-..\obj\$(PLAT)\ymkopq.obj: dynord\ymkopq.F90 dynord\gmkopq.F90 $(MKFS) dynord\Makefile
-	pushd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\dynord\ymkopq.F90 && popd
-
 ..\obj\$(PLAT)\spqcmp.obj: dynord\spqcmp.f90 dynord\gpqcmp.f90 $(MKFS) dynord\Makefile
 	pushd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\dynord\spqcmp.f90 && popd
 
@@ -117,12 +81,3 @@
 
 ..\obj\$(PLAT)\qpqsrt.obj: dynord\qpqsrt.F90 dynord\gpqsrt.F90 $(MKFS) dynord\Makefile
 	pushd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\dynord\qpqsrt.F90 && popd
-
-..\obj\$(PLAT)\spqsort.obj: dynord\spqsort.F90 dynord\gpqsort.F90 $(MKFS) dynord\Makefile
-	pushd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\dynord\spqsort.F90 && popd
-
-..\obj\$(PLAT)\dpqsort.obj: dynord\dpqsort.F90 dynord\gpqsort.F90 $(MKFS) dynord\Makefile
-	pushd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\dynord\dpqsort.F90 && popd
-
-..\obj\$(PLAT)\qpqsort.obj: dynord\qpqsort.F90 dynord\gpqsort.F90 $(MKFS) dynord\Makefile
-	pushd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\dynord\qpqsort.F90 && popd

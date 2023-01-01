@@ -1,5 +1,5 @@
-!>@brief \b WABSG sequentially computes \f$W=|G|\f$.
-PURE SUBROUTINE WABSG(M, N, G, LDG, W, LDW, INFO)
+!>@brief \b WABSG computes \f$W=|G|\f$.
+SUBROUTINE WABSG(M, N, G, LDG, W, LDW, INFO)
   IMPLICIT NONE
 
 #define CR_HYPOT HYPOT
@@ -7,7 +7,7 @@ PURE SUBROUTINE WABSG(M, N, G, LDG, W, LDW, INFO)
   INTEGER, INTENT(IN) :: M, N, LDG, LDW
   COMPLEX(KIND=10), INTENT(IN) :: G(LDG,N)
   REAL(KIND=10), INTENT(OUT) :: W(LDW,N)
-  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(INOUT) :: INFO
   REAL(KIND=10) :: H
   INTEGER :: I, J
 #include "habsg.F90"

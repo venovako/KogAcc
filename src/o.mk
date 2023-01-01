@@ -40,12 +40,6 @@ OBJS_BLKSVD=\
 ../obj/$(PLAT)/zbrdg.o\
 ../obj/$(PLAT)/qbrdg.o\
 ../obj/$(PLAT)/ybrdg.o\
-../obj/$(PLAT)/sbordg.o\
-../obj/$(PLAT)/cbordg.o\
-../obj/$(PLAT)/dbordg.o\
-../obj/$(PLAT)/zbordg.o\
-../obj/$(PLAT)/qbordg.o\
-../obj/$(PLAT)/ybordg.o\
 ../obj/$(PLAT)/nb2m.o
 
 OBJS_DYNORD=\
@@ -55,12 +49,6 @@ OBJS_DYNORD=\
 ../obj/$(PLAT)/zabsg.o\
 ../obj/$(PLAT)/qabsg.o\
 ../obj/$(PLAT)/yabsg.o\
-../obj/$(PLAT)/sabsog.o\
-../obj/$(PLAT)/cabsog.o\
-../obj/$(PLAT)/dabsog.o\
-../obj/$(PLAT)/zabsog.o\
-../obj/$(PLAT)/qabsog.o\
-../obj/$(PLAT)/yabsog.o\
 ../obj/$(PLAT)/smkwpq.o\
 ../obj/$(PLAT)/cmkwpq.o\
 ../obj/$(PLAT)/dmkwpq.o\
@@ -73,12 +61,6 @@ OBJS_DYNORD=\
 ../obj/$(PLAT)/zmk3pq.o\
 ../obj/$(PLAT)/qmk3pq.o\
 ../obj/$(PLAT)/ymk3pq.o\
-../obj/$(PLAT)/smkopq.o\
-../obj/$(PLAT)/cmkopq.o\
-../obj/$(PLAT)/dmkopq.o\
-../obj/$(PLAT)/zmkopq.o\
-../obj/$(PLAT)/qmkopq.o\
-../obj/$(PLAT)/ymkopq.o\
 ../obj/$(PLAT)/spqcmp.o\
 ../obj/$(PLAT)/dpqcmp.o\
 ../obj/$(PLAT)/qpqcmp.o\
@@ -87,10 +69,7 @@ OBJS_DYNORD=\
 ../obj/$(PLAT)/qpqmrg.o\
 ../obj/$(PLAT)/spqsrt.o\
 ../obj/$(PLAT)/dpqsrt.o\
-../obj/$(PLAT)/qpqsrt.o\
-../obj/$(PLAT)/spqsort.o\
-../obj/$(PLAT)/dpqsort.o\
-../obj/$(PLAT)/qpqsort.o
+../obj/$(PLAT)/qpqsrt.o
 
 OBJS_KSVD2=\
 ../obj/$(PLAT)/sksvd2.o\
@@ -165,24 +144,17 @@ OBJS_ARRBIO += \
 ../obj/$(PLAT)/wbwr2.o
 OBJS_BLKSVD += \
 ../obj/$(PLAT)/xbrdg.o\
-../obj/$(PLAT)/wbrdg.o\
-../obj/$(PLAT)/xbordg.o\
-../obj/$(PLAT)/wbordg.o
+../obj/$(PLAT)/wbrdg.o
 OBJS_DYNORD += \
 ../obj/$(PLAT)/xabsg.o\
 ../obj/$(PLAT)/wabsg.o\
-../obj/$(PLAT)/xabsog.o\
-../obj/$(PLAT)/wabsog.o\
 ../obj/$(PLAT)/xmkwpq.o\
 ../obj/$(PLAT)/wmkwpq.o\
 ../obj/$(PLAT)/xmk3pq.o\
 ../obj/$(PLAT)/wmk3pq.o\
-../obj/$(PLAT)/xmkopq.o\
-../obj/$(PLAT)/wmkopq.o\
 ../obj/$(PLAT)/xpqcmp.o\
 ../obj/$(PLAT)/xpqmrg.o\
-../obj/$(PLAT)/xpqsrt.o\
-../obj/$(PLAT)/xpqsort.o
+../obj/$(PLAT)/xpqsrt.o
 OBJS_KSVD2 += \
 ../obj/$(PLAT)/xksvd2.o\
 ../obj/$(PLAT)/wksvd2.o\

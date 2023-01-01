@@ -1,10 +1,10 @@
-!>@brief \b XABSG sequentially computes \f$W=|G|\f$.
-PURE SUBROUTINE XABSG(M, N, G, LDG, W, LDW, INFO)
+!>@brief \b XABSG computes \f$W=|G|\f$.
+SUBROUTINE XABSG(M, N, G, LDG, W, LDW, INFO)
   IMPLICIT NONE
   INTEGER, INTENT(IN) :: M, N, LDG, LDW
   REAL(KIND=10), INTENT(IN) :: G(LDG,N)
   REAL(KIND=10), INTENT(OUT) :: W(LDW,N)
-  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(INOUT) :: INFO
   REAL(KIND=10) :: H
   INTEGER :: I, J
 #include "gabsg.F90"
