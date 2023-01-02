@@ -208,9 +208,8 @@
   IF (Z .EQ. ZERO) THEN
      TANF = ZERO
      SECF = ONE
-  ELSE ! Z > 0
+  ELSE ! mathematically, Z > 0, but...
      Z = Z / IEEE_FMA(X - Y, X + Y, ONE)
-     ! mathematically, Z >= 0, but...
      Z = SIGN(MIN(ABS(Z), ROOTH), Z)
 #ifdef CR_MATH
      TANF = CR_HYPOT(Z, ONE)
@@ -241,14 +240,11 @@
   WRITE (ERROR_UNIT,2) 'TANP=', TANP, ', SECP=', SECP
 #endif
 
-  ! the scaled singular values
-  S(1) = (SECP / SECF) * B(1,1)
-  S(2) = (SECF / SECP) * B(2,2)
-
   ! update U
   X =  TANF
   Y = -TANF
   IF (SECF .NE. ONE) THEN
+     S(1) = (SECP / SECF) * B(1,1) ! the first scaled singular value
      Z = U(1,1)
      U(1,1) = IEEE_FMA(X, U(2,1), U(1,1)) / SECF
      U(2,1) = IEEE_FMA(Y,      Z, U(2,1)) / SECF
@@ -256,6 +252,7 @@
      U(1,2) = IEEE_FMA(X, U(2,2), U(1,2)) / SECF
      U(2,2) = IEEE_FMA(Y,      Z, U(2,2)) / SECF
   ELSE ! SECF = 1
+     S(1) = SECP * B(1,1) ! the first scaled singular value
      Z = U(1,1)
      U(1,1) = IEEE_FMA(X, U(2,1), U(1,1))
      U(2,1) = IEEE_FMA(Y,      Z, U(2,1))
@@ -268,6 +265,7 @@
   X =  TANP
   Y = -TANP
   IF (SECP .NE. ONE) THEN
+     S(2) = (SECF / SECP) * B(2,2) ! the second scaled singular value
      Z = V(1,1)
      V(1,1) = IEEE_FMA(X, V(1,2), V(1,1)) / SECP
      V(1,2) = IEEE_FMA(Y,      Z, V(1,2)) / SECP
@@ -275,6 +273,7 @@
      V(2,1) = IEEE_FMA(X, V(2,2), V(2,1)) / SECP
      V(2,2) = IEEE_FMA(Y,      Z, V(2,2)) / SECP
   ELSE ! SECP = 1
+     S(2) = SECF * B(2,2) ! the second scaled singular value
      Z = V(1,1)
      V(1,1) = IEEE_FMA(X, V(1,2), V(1,1))
      V(1,2) = IEEE_FMA(Y,      Z, V(1,2))

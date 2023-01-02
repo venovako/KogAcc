@@ -296,9 +296,8 @@
   IF (T .EQ. ZERO) THEN
      TANF = ZERO
      SECF = ONE
-  ELSE ! T > 0
+  ELSE ! mathematically, T > 0, but...
      T = T / IEEE_FMA(X - Y, X + Y, ONE)
-     ! mathematically, T >= 0, but...
      T = SIGN(MIN(ABS(T), ROOTH), T)
 #ifdef CR_MATH
      TANF = CR_HYPOT(T, ONE)
@@ -329,14 +328,11 @@
   WRITE (ERROR_UNIT,2) 'TANP=', TANP, ', SECP=', SECP
 #endif
 
-  ! the scaled singular values
-  S(1) = (SECP / SECF) * A(1,1)
-  S(2) = (SECF / SECP) * A(2,2)
-
   ! update U
   X =  TANF
   Y = -TANF
   IF (SECF .NE. ONE) THEN
+     S(1) = (SECP / SECF) * A(1,1) ! the first scaled singular value
      Z = U(1,1)
      U(1,1) = CMPLX(IEEE_FMA(X, REAL(U(2,1)), REAL(U(1,1))) / SECF, IEEE_FMA(X, AIMAG(U(2,1)), AIMAG(U(1,1))) / SECF, K)
      U(2,1) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(U(2,1))) / SECF, IEEE_FMA(Y,      AIMAG(Z), AIMAG(U(2,1))) / SECF, K)
@@ -344,6 +340,7 @@
      U(1,2) = CMPLX(IEEE_FMA(X, REAL(U(2,2)), REAL(U(1,2))) / SECF, IEEE_FMA(X, AIMAG(U(2,2)), AIMAG(U(1,2))) / SECF, K)
      U(2,2) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(U(2,2))) / SECF, IEEE_FMA(Y,      AIMAG(Z), AIMAG(U(2,2))) / SECF, K)
   ELSE ! SECF = 1
+     S(1) = SECP * A(1,1) ! the first scaled singular value
      Z = U(1,1)
      U(1,1) = CMPLX(IEEE_FMA(X, REAL(U(2,1)), REAL(U(1,1))), IEEE_FMA(X, AIMAG(U(2,1)), AIMAG(U(1,1))), K)
      U(2,1) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(U(2,1))), IEEE_FMA(Y,      AIMAG(Z), AIMAG(U(2,1))), K)
@@ -356,6 +353,7 @@
   X =  TANP
   Y = -TANP
   IF (SECP .NE. ONE) THEN
+     S(2) = (SECF / SECP) * A(2,2) ! the second scaled singular value
      Z = V(1,1)
      V(1,1) = CMPLX(IEEE_FMA(X, REAL(V(1,2)), REAL(V(1,1))) / SECP, IEEE_FMA(X, AIMAG(V(1,2)), AIMAG(V(1,1))) / SECP, K)
      V(1,2) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(V(1,2))) / SECP, IEEE_FMA(Y,      AIMAG(Z), AIMAG(V(1,2))) / SECP, K)
@@ -363,6 +361,7 @@
      V(2,1) = CMPLX(IEEE_FMA(X, REAL(V(2,2)), REAL(V(2,1))) / SECP, IEEE_FMA(X, AIMAG(V(2,2)), AIMAG(V(2,1))) / SECP, K)
      V(2,2) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(V(2,2))) / SECP, IEEE_FMA(Y,      AIMAG(Z), AIMAG(V(2,2))) / SECP, K)
   ELSE ! SECP = 1
+     S(2) = SECF * A(2,2) ! the second scaled singular value
      Z = V(1,1)
      V(1,1) = CMPLX(IEEE_FMA(X, REAL(V(1,2)), REAL(V(1,1))), IEEE_FMA(X, AIMAG(V(1,2)), AIMAG(V(1,1))), K)
      V(1,2) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(V(1,2))), IEEE_FMA(Y,      AIMAG(Z), AIMAG(V(1,2))), K)
