@@ -173,6 +173,15 @@ EXES_KSVD2 += \
 endif # x86
 endif # gfortran
 
+ifeq ($(COMPILER),ifort)
+EXES_TEST += \
+../bin/$(PLAT)/s2g101.exe
+endif # ifort
+ifeq ($(COMPILER),ifx)
+EXES_TEST += \
+../bin/$(PLAT)/s2g101.exe
+endif # ifx
+
 OBJS=$(OBJS_ARRBIO) $(OBJS_BLKSVD) $(OBJS_DYNORD) $(OBJS_KSVD2) $(OBJS_FAUX)
 
 LIBS=\

@@ -39,3 +39,6 @@
 
 ..\bin\$(PLAT)\jsweep.exe: test\jsweepx.f90 ..\lib\$(PLAT)\faux.lib $(MKFS) test\Makefile
 	pushd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) ..\..\..\src\test\jsweepx.f90 /Fejsweep.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\faux.lib ..\..\..\..\JACSD\jstrat$(DEBUG).lib && popd
+
+..\bin\$(PLAT)\s2g101.exe: test\s2g101.F90 $(MKFS) test\Makefile
+	pushd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) ..\..\..\src\test\s2g101.F90 /Fes2g101.exe $(LDFLAGS) && popd

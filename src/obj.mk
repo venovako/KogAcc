@@ -129,7 +129,8 @@ EXES_FAUX=\
 ..\bin\$(PLAT)\jsweep.exe
 
 EXES_TEST=\
-..\bin\$(PLAT)\srnd.exe
+..\bin\$(PLAT)\srnd.exe\
+..\bin\$(PLAT)\s2g101.exe
 
 OBJS=$(OBJS_ARRBIO) $(OBJS_BLKSVD) $(OBJS_DYNORD) $(OBJS_KSVD2) $(OBJS_FAUX)
 
