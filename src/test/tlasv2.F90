@@ -31,7 +31,7 @@
   DO WHILE (.TRUE.)
      IF (.NOT. ONCE) THEN
         ! read G(2,1) for compatibility with tksvd2 but it has to be zero
-        READ (1,*,IOSTAT=INFO) G(1,1), G(2,1), G(1,2), G(2,2)
+        READ (1,*,IOSTAT=INFO) G(1,1), G(1,2), G(2,1), G(2,2)
         IF (INFO .NE. 0) EXIT
      END IF
      WRITE (*,1) 'G(1,1)=', G(1,1)
