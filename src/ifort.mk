@@ -22,5 +22,8 @@ ifdef INTRIN
 FCFLAGS += -DUSE_IEEE_INTRINSIC=$(INTRIN)
 endif # INTRIN
 ifeq ($(OS),Linux)
+ifndef NDEBUG
+FCFLAGS += -debug parallel
+endif # !NDEBUG
 FCFLAGS += -static-libgcc
 endif # Linux
