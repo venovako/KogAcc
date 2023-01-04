@@ -130,7 +130,8 @@ EXES_FAUX=\
 
 EXES_TEST=\
 ..\bin\$(PLAT)\srnd.exe\
-..\bin\$(PLAT)\s2g101.exe
+..\bin\$(PLAT)\s2g101.exe\
+..\bin\$(PLAT)\s2g110.exe
 
 OBJS=$(OBJS_ARRBIO) $(OBJS_BLKSVD) $(OBJS_DYNORD) $(OBJS_KSVD2) $(OBJS_FAUX)
 

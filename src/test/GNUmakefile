@@ -51,3 +51,6 @@
 
 ../bin/$(PLAT)/s2g101.exe: test/s2g101.F90 $(MKFS) test/GNUmakefile
 	pushd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o s2g101.exe ../../../src/test/s2g101.F90 $(OBJS_CRF_MATH) && popd
+
+../bin/$(PLAT)/s2g110.exe: test/s2g110.F90 $(MKFS) test/GNUmakefile
+	pushd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o s2g110.exe ../../../src/test/s2g110.F90 $(OBJS_CRF_MATH) && popd
