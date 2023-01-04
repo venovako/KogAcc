@@ -12,8 +12,13 @@
      READ (*,*) G(2,2)
   CASE (1)
      CALL GET_COMMAND_ARGUMENT(1, CLA, STATUS=INFO)
-     IF (INFO .NE. 0) ERROR STOP 'the input file name is invalid'
-     OPEN(UNIT=1, FILE=TRIM(CLA), ACTION='READ', STATUS='OLD', IOSTAT=INFO)
+     IF ((INFO .NE. 0) .OR. (LEN_TRIM(CLA) .LE. 0)) ERROR STOP 'the input file name is invalid'
+     IF ((LEN_TRIM(CLA) .EQ. 1) .AND. (CLA(1:1) .EQ. '-')) THEN
+        I = INPUT_UNIT
+     ELSE
+        I = 1
+     END IF
+     IF (I .NE. INPUT_UNIT) OPEN(UNIT=I, FILE=TRIM(CLA), ACTION='READ', STATUS='OLD', IOSTAT=INFO)
      IF (INFO .NE. 0) ERROR STOP 'cannot open the input file'
      ONCE = .FALSE.
   CASE (4)
@@ -34,7 +39,7 @@
   END SELECT
   DO WHILE (.TRUE.)
      IF (.NOT. ONCE) THEN
-        READ (1,*,IOSTAT=INFO) G(1,1), G(1,2), G(2,1), G(2,2)
+        READ (I,*,IOSTAT=INFO) G(1,1), G(1,2), G(2,1), G(2,2)
         IF (INFO .NE. 0) EXIT
      END IF
      WRITE (*,1) 'G(1,1)=', G(1,1)
@@ -100,6 +105,10 @@
      IF (ONCE) EXIT
   END DO
   IF (.NOT. ONCE) THEN
-     CLOSE(UNIT=1, IOSTAT=INFO)
+     IF (I .NE. INPUT_UNIT) THEN
+        CLOSE(UNIT=I, IOSTAT=INFO)
+     ELSE
+        INFO = 0
+     END IF
      IF (INFO .NE. 0) ERROR STOP 'cannot close the input file'
   END IF
