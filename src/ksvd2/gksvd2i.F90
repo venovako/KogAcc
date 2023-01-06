@@ -198,10 +198,12 @@
 #ifndef NDEBUG
   WRITE (ERROR_UNIT,2) '   X=', X, ',    Y=', Y
 #endif
+  IF (X .EQ. ZERO) GOTO 1
 
   ! the functions of \varphi
   IF (X .LE. Y) THEN
      Z = SCALE(X, 1) * Y
+     Z = Z / 
   ELSE ! X > Y
      Z = SCALE(Y, 1) * X
   END IF
