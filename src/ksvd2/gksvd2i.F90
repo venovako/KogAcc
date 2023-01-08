@@ -162,6 +162,8 @@
 #else
         SECG = SQRT(IEEE_FMA(TANG, TANG, ONE))
 #endif
+     ELSE ! TANG = 0
+        SECG = ONE
      END IF
   END IF
 #ifndef NDEBUG

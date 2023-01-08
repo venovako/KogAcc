@@ -162,6 +162,8 @@
 #else
         SECG = SQRT(TANG * TANG + ONE)
 #endif
+     ELSE ! TANG = 0
+        SECG = 1
      END IF
   END IF
 #ifndef NDEBUG

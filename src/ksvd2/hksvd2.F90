@@ -102,8 +102,9 @@
      S(2) = CR_HYPOT(A(1,2), A(2,2))
   END IF
 
-  ! swap the columns if necessary
-  IF (S(1) .LT. S(2)) THEN
+  ! swap the columns if necessary, avoiding the QR (especially with a small angle) if possible
+  IF ((S(1) .LT. S(2)) .OR. ((S(1) .EQ. S(2)) .AND. (A(1,1) .NE. ZERO) .AND. (A(2,1) .NE. ZERO) .AND. &
+       ((A(1,2) .EQ. ZERO) .OR. (A(2,2) .EQ. ZERO) .OR. ((A(1,1) + A(2,1)) .LT. (A(1,2) + A(2,2)))))) THEN
      Z = B(1,1)
      B(1,1) = B(1,2)
      B(1,2) = Z
@@ -133,36 +134,6 @@
      S(2) = Y
   END IF
 
-  ! make B(1,1) real and non-negative
-  IF (AIMAG(B(1,1)) .EQ. ZERO) THEN
-     IF (SIGN(ONE, REAL(B(1,1))) .NE. ONE) THEN
-        U(1,1) = -U(1,1)
-        U(1,2) = -U(1,2)
-        B(1,1) = -B(1,1)
-        B(1,2) = -B(1,2)
-     END IF
-  ELSE ! the general case
-     Z = CONJG(B(1,1)) / A(1,1)
-     U(1,1) = Z
-     B(1,1) = A(1,1)
-     B(1,2) = Z * B(1,2)
-  END IF
-
-  ! make B(2,1) real and non-negative
-  IF (AIMAG(B(2,1)) .EQ. ZERO) THEN
-     IF (SIGN(ONE, REAL(B(2,1))) .NE. ONE) THEN
-        U(2,1) = -U(2,1)
-        U(2,2) = -U(2,2)
-        B(2,1) = -B(2,1)
-        B(2,2) = -B(2,2)
-     END IF
-  ELSE ! the general case
-     Z = CONJG(B(2,1)) / A(2,1)
-     U(2,2) = Z
-     B(2,1) = A(2,1)
-     B(2,2) = Z * B(2,2)
-  END IF
-
   ! swap the rows if necessary
   IF (A(1,1) .LT. A(2,1)) THEN
      Z = U(1,1)
@@ -190,27 +161,82 @@
      A(2,2) = X
   END IF
 
+  ! make B(1,1) real and non-negative
+  IF (AIMAG(B(1,1)) .EQ. ZERO) THEN
+     IF (SIGN(ONE, REAL(B(1,1))) .NE. ONE) THEN
+        IF (U(1,1) .EQ. CZERO) THEN
+           U(1,1) = CZERO
+        ELSE ! change the sign
+           U(1,1) = -U(1,1)
+        END IF
+        IF (U(1,2) .EQ. CZERO) THEN
+           U(1,2) = CZERO
+        ELSE ! change the sign
+           U(1,2) = -U(1,2)
+        END IF
+        B(1,1) = CMPLX(-REAL(B(1,1)), ZERO, K)
+        IF (B(1,2) .EQ. CZERO) THEN
+           B(1,2) = CZERO
+        ELSE ! change the sign
+           B(1,2) = -B(1,2)
+        END IF
+     END IF
+  ELSE ! the general case
+     Z = CONJG(B(1,1)) / A(1,1)
+     U(1,1) = Z
+     B(1,1) = CMPLX(A(1,1), ZERO, K)
+     B(1,2) = Z * B(1,2)
+  END IF
+
+  ! make B(2,1) real and non-negative
+  IF (AIMAG(B(2,1)) .EQ. ZERO) THEN
+     IF (REAL(B(2,1)) .EQ. ZERO) THEN
+        B(2,1) = CZERO
+     ELSE IF (REAL(B(2,1)) .LT. ZERO) THEN
+        IF (U(2,1) .EQ. CZERO) THEN
+           U(2,1) = CZERO
+        ELSE ! change the sign
+           U(2,1) = -U(2,1)
+        END IF
+        IF (U(2,2) .EQ. CZERO) THEN
+           U(2,2) = CZERO
+        ELSE ! change the sign
+           U(2,2) = -U(2,2)
+        END IF
+        B(2,1) = CMPLX(-REAL(B(2,1)), ZERO, K)
+        B(2,2) = -B(2,2)
+     END IF
+  ELSE ! the general case
+     Z = CONJG(B(2,1)) / A(2,1)
+     U(2,2) = Z
+     B(2,1) = CMPLX(A(2,1), ZERO, K)
+     B(2,2) = Z * B(2,2)
+  END IF
+
   ! compute the Givens rotation
   IF (A(2,1) .EQ. ZERO) THEN
      TANG = ZERO
      SECG = ONE
   ELSE ! B not upper triangular
      TANG = A(2,1) / A(1,1)
+     IF (TANG .GT. ZERO) THEN
 #ifdef CR_MATH
-     SECG = CR_HYPOT(TANG, ONE)
+        SECG = CR_HYPOT(TANG, ONE)
 #else
-     SECG = SQRT(TANG * TANG + ONE)
+        SECG = SQRT(TANG * TANG + ONE)
 #endif
+     ELSE ! TANG = 0
+        SECG = 1
+     END IF
   END IF
-
 #ifndef NDEBUG
   WRITE (ERROR_UNIT,9) 'TANG=', TANG, ', SECG=', SECG
 #endif
 
   ! apply the Givens rotation
   B(1,1) = S(1)
-  IF (TANG .NE. ZERO) THEN
-     IF (SECG .NE. ONE) THEN
+  IF (TANG .GT. ZERO) THEN
+     IF (SECG .GT. ONE) THEN
         B(2,1) = U(1,1)
         U(1,1) = (U(1,1) + TANG * U(2,1)) / SECG
         U(2,1) = (U(2,1) - TANG * B(2,1)) / SECG
@@ -239,15 +265,25 @@
 
   ! make B(1,2) real and non-negative
   IF (AIMAG(B(1,2)) .EQ. ZERO) THEN
-     IF (SIGN(ONE, REAL(B(1,2))) .NE. ONE) THEN
-        B(1,2) = -B(1,2)
+     IF (REAL(B(1,2)) .EQ. ZERO) THEN
+        B(1,2) = CZERO
+     ELSE IF (REAL(B(1,2)) .LT. ZERO) THEN
+        B(1,2) = CMPLX(-REAL(B(1,2)), ZERO, K)
         B(2,2) = -B(2,2)
-        V(1,2) = -V(1,2)
-        V(2,2) = -V(2,2)
+        IF (V(1,2) .EQ. CZERO) THEN
+           V(1,2) = CZERO
+        ELSE ! change the sign
+           V(1,2) = -V(1,2)
+        END IF
+        IF (V(2,2) .EQ. CZERO) THEN
+           V(2,2) = CZERO
+        ELSE ! change the sign
+           V(2,2) = -V(2,2)
+        END IF
      END IF
   ELSE ! the general case
      Z = CONJG(B(1,2)) / A(1,2)
-     B(1,2) = A(1,2)
+     B(1,2) = CMPLX(A(1,2), ZERO, K)
      B(2,2) = B(2,2) * Z
      V(1,2) = V(1,2) * Z
      V(2,2) = V(2,2) * Z
@@ -256,15 +292,23 @@
   ! make B(2,2) real and non-negative
   IF (AIMAG(B(2,2)) .EQ. ZERO) THEN
      IF (SIGN(ONE, REAL(B(2,2))) .NE. ONE) THEN
-        U(2,1) = -U(2,1)
-        U(2,2) = -U(2,2)
-        B(2,2) = -B(2,2)
+        IF (U(2,1) .EQ. CZERO) THEN
+           U(2,1) = CZERO
+        ELSE ! change the sign
+           U(2,1) = -U(2,1)
+        END IF
+        IF (U(2,2) .EQ. CZERO) THEN
+           U(2,2) = CZERO
+        ELSE ! change the sign
+           U(2,2) = -U(2,2)
+        END IF
+        B(2,2) = CMPLX(-REAL(B(2,2)), ZERO, K)
      END IF
   ELSE ! the general case
      Z = CONJG(B(2,2)) / A(2,2)
      U(2,1) = Z * U(2,1)
      U(2,2) = Z * U(2,2)
-     B(2,2) = A(2,2)
+     B(2,2) = CMPLX(A(2,2), ZERO, K)
   END IF
 
   ! B is now real so copy it to A
@@ -276,9 +320,10 @@
   IF (A(1,2) .EQ. ZERO) GOTO 8
 
   ! divide by A(1,1)
+  ! [ 1 x ]
+  ! [ 0 y ]
   X = A(1,2) / A(1,1)
   Y = A(2,2) / A(1,1)
-
 #ifndef NDEBUG
   WRITE (ERROR_UNIT,9) '   X=', X, ',    Y=', Y
 #endif
@@ -299,6 +344,9 @@
      T = SCALE(Y, 1) * X
      T = T / ((X - Y) * (X + Y) + ONE)
   END IF
+#ifndef NDEBUG
+  WRITE (ERROR_UNIT,9) '   T=', T, ',ROOTH=', ROOTH
+#endif
 
   ! the functions of \varphi
   IF (T .EQ. ZERO) THEN
@@ -318,7 +366,6 @@
      SECF = SQRT(TANF * TANF + ONE)
 #endif
   END IF
-
 #ifndef NDEBUG
   WRITE (ERROR_UNIT,9) 'TANF=', TANF, ', SECF=', SECF
 #endif
@@ -330,7 +377,6 @@
 #else
   SECP = SQRT(TANP * TANP + ONE)
 #endif
-
 #ifndef NDEBUG
   WRITE (ERROR_UNIT,9) 'TANP=', TANP, ', SECP=', SECP
 #endif
@@ -393,8 +439,24 @@
   END IF
 
   ! conjugate-transpose U
-  U(1,1) = CONJG(U(1,1))
-  Z = CONJG(U(2,1))
-  U(2,1) = CONJG(U(1,2))
+  IF (AIMAG(U(1,1)) .EQ. ZERO) THEN
+     U(1,1) = CMPLX(REAL(U(1,1)), ZERO, K)
+  ELSE ! complex
+     U(1,1) = CONJG(U(1,1))
+  END IF
+  IF (AIMAG(U(2,1)) .EQ. ZERO) THEN
+     Z = CMPLX(REAL(U(2,1)), ZERO, K)
+  ELSE ! complex
+     Z = CONJG(U(2,1))
+  END IF
+  IF (AIMAG(U(1,2)) .EQ. ZERO) THEN
+     U(2,1) = CMPLX(REAL(U(1,2)), ZERO, K)
+  ELSE ! complex
+     U(2,1) = CONJG(U(1,2))
+  END IF
   U(1,2) = Z
-  U(2,2) = CONJG(U(2,2))
+  IF (AIMAG(U(2,2)) .EQ. ZERO) THEN
+     U(2,2) = CMPLX(REAL(U(2,2)), ZERO, K)
+  ELSE ! complex
+     U(2,2) = CONJG(U(2,2))
+  END IF
