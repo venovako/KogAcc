@@ -1,5 +1,6 @@
   ! This is the generic part of the complex KSVD2 tester routines.
   ONCE = .TRUE.
+  I = -1
   SELECT CASE (COMMAND_ARGUMENT_COUNT())
   CASE (0)
      WRITE (*,'(A)',ADVANCE='NO') 'G(1,1)='
@@ -15,7 +16,7 @@
      IF ((INFO .NE. 0) .OR. (LEN_TRIM(CLA) .LE. 0))  ERROR STOP 'the input file name is invalid'
      IF ((LEN_TRIM(CLA) .EQ. 1) .AND. (CLA(1:1) .EQ. '-')) THEN
         I = INPUT_UNIT
-     ELSE
+     ELSE ! assume (0,5,6) = (stderr,stdin,stdout)
         I = 1
      END IF
      IF (I .NE. INPUT_UNIT) OPEN(UNIT=I, FILE=TRIM(CLA), ACTION='READ', STATUS='OLD', IOSTAT=INFO)
