@@ -29,7 +29,6 @@ SUBROUTINE XKSVD2(G, U, V, S, INFO)
 
   REAL(KIND=K) :: B(2,2), X, Y, Z
   REAL(KIND=K) :: TANG, SECG, TANF, SECF, TANP, SECP
-  INTEGER :: I
 
 #ifdef USE_IEEE_INTRINSIC
 #include "gksvd2i.F90"

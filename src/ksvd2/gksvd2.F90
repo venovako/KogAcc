@@ -353,6 +353,10 @@
   END IF
 
   ! transpose U
+  IF (U(1,1) .EQ. ZERO) U(1,1) = ZERO
+  IF (U(2,1) .EQ. ZERO) U(2,1) = ZERO
+  IF (U(1,2) .EQ. ZERO) U(1,2) = ZERO
+  IF (U(2,2) .EQ. ZERO) U(2,2) = ZERO
   Z = U(2,1)
   U(2,1) = U(1,2)
   U(1,2) = Z

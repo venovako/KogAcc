@@ -15,7 +15,6 @@
   ! S = 0
   S(1) = ZERO
   S(2) = ZERO
-  INFO = 0
 
   ! check if G has a non-finite value
   Y = ABS(AIMAG(G(2,2)))
@@ -317,6 +316,7 @@
 
   ! B is now real so copy it to A
   A(1,1) = REAL(B(1,1))
+  A(2,1) = REAL(B(2,1))
   A(1,2) = REAL(B(1,2))
   A(2,2) = REAL(B(2,2))
 
@@ -447,24 +447,36 @@
   END IF
 
   ! conjugate-transpose U
-  IF (AIMAG(U(1,1)) .EQ. ZERO) THEN
-     U(1,1) = CMPLX(REAL(U(1,1)), ZERO, K)
+  X = REAL(U(1,1))
+  IF (X .EQ. ZERO) X = ZERO
+  Y = AIMAG(U(1,1))
+  IF (Y .EQ. ZERO) THEN
+     U(1,1) = CMPLX(X, ZERO, K)
   ELSE ! complex
-     U(1,1) = CONJG(U(1,1))
+     U(1,1) = CMPLX(X, -Y, K)
   END IF
-  IF (AIMAG(U(2,1)) .EQ. ZERO) THEN
-     Z = CMPLX(REAL(U(2,1)), ZERO, K)
+  X = REAL(U(2,1))
+  IF (X .EQ. ZERO) X = ZERO
+  Y = AIMAG(U(2,1))
+  IF (Y .EQ. ZERO) THEN
+     Z = CMPLX(X, ZERO, K)
   ELSE ! complex
-     Z = CONJG(U(2,1))
+     Z = CMPLX(X, -Y, K)
   END IF
-  IF (AIMAG(U(1,2)) .EQ. ZERO) THEN
-     U(2,1) = CMPLX(REAL(U(1,2)), ZERO, K)
+  X = REAL(U(1,2))
+  IF (X .EQ. ZERO) X = ZERO
+  Y = AIMAG(U(1,2))
+  IF (Y .EQ. ZERO) THEN
+     U(2,1) = CMPLX(X, ZERO, K)
   ELSE ! complex
-     U(2,1) = CONJG(U(1,2))
+     U(2,1) = CMPLX(X, -Y, K)
   END IF
   U(1,2) = Z
-  IF (AIMAG(U(2,2)) .EQ. ZERO) THEN
-     U(2,2) = CMPLX(REAL(U(2,2)), ZERO, K)
+  X = REAL(U(2,2))
+  IF (X .EQ. ZERO) X = ZERO
+  Y = AIMAG(U(2,2))
+  IF (Y .EQ. ZERO) THEN
+     U(2,2) = CMPLX(X, ZERO, K)
   ELSE ! complex
-     U(2,2) = CONJG(U(2,2))
+     U(2,2) = CMPLX(X, -Y, K)
   END IF
