@@ -1,5 +1,5 @@
   ! This is the generic part of the real Kogbetliantz routines.
-
+  ! TODO: consider a possibility of optionally allowing U and V to be given as inputs
   ! U = I
   U(1,1) = ONE
   U(2,1) = ZERO
@@ -265,14 +265,20 @@
 #endif
 
   ! the functions of \varphi
+  ! Negative Z can happen only if Y > 1 (impossible mathematically),
+  ! what in turn, with the correctly rounded hypot, can happen only
+  ! as a consequence of the QR factorization.
   IF (Z .EQ. ZERO) THEN
      TANF = ZERO
      SECF = ONE
-  ELSE ! Z <> 0
-     Z = SIGN(MIN(ABS(Z), ROOTH), Z)
+  ELSE IF (ABS(Z) .GT. HUGE(Z)) THEN
+     TANF = SIGN(ONE, Z)
+     SECF = SQRT(TWO)
+  ELSE ! finite non-zero Z
 #ifdef CR_MATH
      TANF = CR_HYPOT(Z, ONE)
 #else
+     Z = SIGN(MIN(ABS(Z), ROOTH), Z)
      TANF = SQRT(IEEE_FMA(Z, Z, ONE))
 #endif
      TANF = Z / (ONE + TANF)
