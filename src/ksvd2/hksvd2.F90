@@ -204,7 +204,7 @@
   END IF
 
 #ifndef NDEBUG
-  WRITE (ERROR_UNIT,2) 'TANG=', TANG, ', SECG=', SECG
+  WRITE (ERROR_UNIT,9) 'TANG=', TANG, ', SECG=', SECG
 #endif
 
   ! apply the Givens rotation
@@ -273,16 +273,16 @@
   A(2,2) = REAL(B(2,2))
 
   ! exit if A is diagonal
-  IF (A(1,2) .EQ. ZERO) GOTO 1
+  IF (A(1,2) .EQ. ZERO) GOTO 8
 
   ! divide by A(1,1)
   X = A(1,2) / A(1,1)
   Y = A(2,2) / A(1,1)
 
 #ifndef NDEBUG
-  WRITE (ERROR_UNIT,2) '   X=', X, ',    Y=', Y
+  WRITE (ERROR_UNIT,9) '   X=', X, ',    Y=', Y
 #endif
-  IF (X .EQ. ZERO) GOTO 1
+  IF (X .EQ. ZERO) GOTO 8
 
   ! a partial fix
   IF (Y .EQ. ONE) THEN
@@ -320,7 +320,7 @@
   END IF
 
 #ifndef NDEBUG
-  WRITE (ERROR_UNIT,2) 'TANF=', TANF, ', SECF=', SECF
+  WRITE (ERROR_UNIT,9) 'TANF=', TANF, ', SECF=', SECF
 #endif
 
   ! the functions of \psi
@@ -332,7 +332,7 @@
 #endif
 
 #ifndef NDEBUG
-  WRITE (ERROR_UNIT,2) 'TANP=', TANP, ', SECP=', SECP
+  WRITE (ERROR_UNIT,9) 'TANP=', TANP, ', SECP=', SECP
 #endif
 
   ! update U
@@ -374,7 +374,7 @@
   END IF
 
   ! symmetric permutation if S(1) < S(2)
-1 IF (S(1) .LT. S(2)) THEN
+8 IF (S(1) .LT. S(2)) THEN
      Z = U(1,1)
      U(1,1) = U(2,1)
      U(2,1) = Z
@@ -387,9 +387,9 @@
      Z = V(2,1)
      V(2,1) = V(2,2)
      V(2,2) = Z
-     T = S(1)
+     Y = S(1)
      S(1) = S(2)
-     S(2) = T
+     S(2) = Y
   END IF
 
   ! conjugate-transpose U

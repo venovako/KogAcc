@@ -52,6 +52,6 @@ SUBROUTINE SKSVD2(G, U, V, S, INFO)
 #include "gksvd2.F90"
 #endif
 #ifndef NDEBUG
-2 FORMAT(2(A,ES16.9E2))
+9 FORMAT(2(A,ES16.9E2))
 #endif
 END SUBROUTINE SKSVD2
