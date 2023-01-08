@@ -284,17 +284,27 @@
 #endif
   IF (X .EQ. ZERO) GOTO 1
 
-  ! the functions of \varphi
-  IF (X .LE. Y) THEN
+  ! a partial fix
+  IF (Y .EQ. ONE) THEN
+     T = TWO / X
+  ELSE IF (X .EQ. ONE) THEN
+     T = SCALE(Y, 1)
+     T = T / (TWO - Y * Y)
+  ELSE IF (X .EQ. Y) THEN
      T = SCALE(X, 1) * Y
+  ELSE IF (X .LT. Y) THEN
+     T = SCALE(X, 1) * Y
+     T = T / ((ONE - Y * Y) + X * X)
   ELSE ! X > Y
      T = SCALE(Y, 1) * X
+     T = T / ((X - Y) * (X + Y) + ONE)
   END IF
+
+  ! the functions of \varphi
   IF (T .EQ. ZERO) THEN
      TANF = ZERO
      SECF = ONE
-  ELSE ! mathematically, T > 0, but...
-     T = T / ((X - Y) * (X + Y) + ONE)
+  ELSE ! T <> 0
      T = SIGN(MIN(ABS(T), ROOTH), T)
 #ifdef CR_MATH
      TANF = CR_HYPOT(T, ONE)
@@ -363,8 +373,27 @@
      V(2,2) = V(2,2) - TANP *      Z
   END IF
 
+  ! symmetric permutation if S(1) < S(2)
+1 IF (S(1) .LT. S(2)) THEN
+     Z = U(1,1)
+     U(1,1) = U(2,1)
+     U(2,1) = Z
+     Z = U(1,2)
+     U(1,2) = U(2,2)
+     U(2,2) = Z
+     Z = V(1,1)
+     V(1,1) = V(1,2)
+     V(1,2) = Z
+     Z = V(2,1)
+     V(2,1) = V(2,2)
+     V(2,2) = Z
+     T = S(1)
+     S(1) = S(2)
+     S(2) = T
+  END IF
+
   ! conjugate-transpose U
-1 U(1,1) = CONJG(U(1,1))
+  U(1,1) = CONJG(U(1,1))
   Z = CONJG(U(2,1))
   U(2,1) = CONJG(U(1,2))
   U(1,2) = Z

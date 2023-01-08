@@ -198,17 +198,27 @@
 #endif
   IF (X .EQ. ZERO) GOTO 1
 
-  ! the functions of \varphi
-  IF (X .LE. Y) THEN
+  ! a partial fix
+  IF (Y .EQ. ONE) THEN
+     Z = TWO / X
+  ELSE IF (X .EQ. ONE) THEN
+     Z = SCALE(Y, 1)
+     Z = Z / (TWO - Y * Y)
+  ELSE IF (X .EQ. Y) THEN
      Z = SCALE(X, 1) * Y
+  ELSE IF (X .LT. Y) THEN
+     Z = SCALE(X, 1) * Y
+     Z = Z / ((ONE - Y * Y) + X * X)
   ELSE ! X > Y
      Z = SCALE(Y, 1) * X
+     Z = Z / ((X - Y) * (X + Y) + ONE)
   END IF
+
+  ! the functions of \varphi
   IF (Z .EQ. ZERO) THEN
      TANF = ZERO
      SECF = ONE
-  ELSE ! mathematically, Z > 0, but...
-     Z = Z / ((X - Y) * (X + Y) + ONE)
+  ELSE ! Z <> 0
      Z = SIGN(MIN(ABS(Z), ROOTH), Z)
 #ifdef CR_MATH
      TANF = CR_HYPOT(Z, ONE)
@@ -277,7 +287,26 @@
      V(2,2) = V(2,2) - TANP *      Z
   END IF
 
+  ! symmetric permutation if S(1) < S(2)
+1 IF (S(1) .LT. S(2)) THEN
+     Z = U(1,1)
+     U(1,1) = U(2,1)
+     U(2,1) = Z
+     Z = U(1,2)
+     U(1,2) = U(2,2)
+     U(2,2) = Z
+     Z = V(1,1)
+     V(1,1) = V(1,2)
+     V(1,2) = Z
+     Z = V(2,1)
+     V(2,1) = V(2,2)
+     V(2,2) = Z
+     Z = S(1)
+     S(1) = S(2)
+     S(2) = Z
+  END IF
+
   ! transpose U
-1 Z = U(2,1)
+  Z = U(2,1)
   U(2,1) = U(1,2)
   U(1,2) = Z
