@@ -107,6 +107,7 @@ OBJS_FAUX=\
 ../obj/$(PLAT)/zrotr.o\
 ../obj/$(PLAT)/qrotr.o\
 ../obj/$(PLAT)/yrotr.o\
+../obj/$(PLAT)/jstep.o\
 ../obj/$(PLAT)/jsweep.o
 
 EXES_DYNORD=\

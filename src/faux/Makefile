@@ -58,5 +58,8 @@
 ..\obj\$(PLAT)\yrotr.obj: faux\yrotr.f90 faux\grotr.f90 $(MKFS) faux\Makefile
 	pushd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\yrotr.f90 && popd
 
+..\obj\$(PLAT)\jstep.obj: faux\jstep.f90 $(MKFS) faux\Makefile
+	pushd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\jstep.f90 && popd
+
 ..\obj\$(PLAT)\jsweep.obj: faux\jsweep.f90 $(MKFS) faux\Makefile
 	pushd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\jsweep.f90 && popd

@@ -70,5 +70,8 @@
 ../obj/$(PLAT)/wrotr.o: faux/wrotr.f90 faux/grotr.f90 $(MKFS) faux/GNUmakefile
 	pushd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/wrotr.f90 && popd
 
+../obj/$(PLAT)/jstep.o: faux/jstep.f90 $(MKFS) faux/GNUmakefile
+	pushd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/jstep.f90 && popd
+
 ../obj/$(PLAT)/jsweep.o: faux/jsweep.f90 $(MKFS) faux/GNUmakefile
 	pushd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/jsweep.f90 && popd
