@@ -1,10 +1,10 @@
-!>@brief SRND generates a set of pseudorandom single precision real 2x2 matrices.
-PROGRAM SRND
-  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32, ERROR_UNIT
+!>@brief DRND generates a set of pseudorandom double precision real 2x2 matrices.
+PROGRAM DRND
+  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64, ERROR_UNIT
   IMPLICIT NONE
-  REAL(KIND=REAL32), PARAMETER :: ZERO = 0.0_REAL32
+  REAL(KIND=REAL64), PARAMETER :: ZERO = 0.0_REAL64
   INTEGER, ALLOCATABLE :: ISEED(:)
-  REAL(KIND=REAL32), ALLOCATABLE :: H(:)
+  REAL(KIND=REAL64), ALLOCATABLE :: H(:)
   CHARACTER(LEN=64) :: CLA
   INTEGER :: SSIZE, N, I
   LOGICAL :: UPPER
@@ -16,9 +16,9 @@ PROGRAM SRND
   IF (I .LT. 2) THEN
      IF (SSIZE .GT. 1) THEN
         WRITE (CLA,'(I1)') SSIZE
-        CLA = 'srnd.exe ((U|u)[pper]|(G|g)[eneral]) N [SEED1 ... SEED'//TRIM(CLA)//']'
+        CLA = 'drnd.exe ((U|u)[pper]|(G|g)[eneral]) N [SEED1 ... SEED'//TRIM(CLA)//']'
      ELSE ! SSIZE = 1
-        CLA = 'srnd.exe ((U|u)[pper]|(G|g)[eneral]) N [SEED1]'
+        CLA = 'drnd.exe ((U|u)[pper]|(G|g)[eneral]) N [SEED1]'
      END IF
      WRITE (ERROR_UNIT,*) TRIM(CLA)
      ERROR STOP 'All SEED arguments have to be given, or none of them.'
@@ -94,5 +94,5 @@ PROGRAM SRND
   END IF
   DEALLOCATE(H)
   DEALLOCATE(ISEED)
-1 FORMAT(A,ES16.9E2)
-END PROGRAM SRND
+1 FORMAT(A,ES25.17E3)
+END PROGRAM DRND

@@ -43,6 +43,9 @@
 ../bin/$(PLAT)/srnd.exe: test/srnd.f90 $(MKFS) test/GNUmakefile
 	pushd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o srnd.exe ../../../src/test/srnd.f90 && popd
 
+../bin/$(PLAT)/drnd.exe: test/drnd.f90 $(MKFS) test/GNUmakefile
+	pushd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o drnd.exe ../../../src/test/drnd.f90 && popd
+
 ../bin/$(PLAT)/sthalt.exe: test/sthaltx.f90 ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
 	pushd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o sthalt.exe ../../../src/test/sthaltx.f90 -L../../../lib/$(PLAT) -lfaux && popd
 

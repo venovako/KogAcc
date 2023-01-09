@@ -1,5 +1,5 @@
   ! This is the generic part of the real Kogbetliantz routines.
-  ! TODO: consider a possibility of optionally allowing U and V to be given as inputs
+
   ! U = I
   U(1,1) = ONE
   U(2,1) = ZERO

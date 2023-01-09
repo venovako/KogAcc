@@ -1,5 +1,5 @@
   ! This is the generic part of the complex Kogbetliantz routines.
-  ! TODO: consider a possibility of optionally allowing U and V to be given as inputs
+
 #define CMUL(A,B) CMPLX(IEEE_FMA(REAL(A),REAL(B),-AIMAG(A)*AIMAG(B)),IEEE_FMA(REAL(A),AIMAG(B),AIMAG(A)*REAL(B)),K)
 
   ! U = I

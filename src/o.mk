@@ -129,7 +129,8 @@ EXES_FAUX=\
 ../bin/$(PLAT)/jsweep.exe
 
 EXES_TEST=\
-../bin/$(PLAT)/srnd.exe
+../bin/$(PLAT)/srnd.exe\
+../bin/$(PLAT)/drnd.exe
 
 ifeq ($(COMPILER),gfortran)
 ifeq ($(findstring 86,$(ARCH)),86)
