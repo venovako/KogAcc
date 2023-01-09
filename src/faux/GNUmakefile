@@ -16,6 +16,18 @@
 ../obj/$(PLAT)/zlango.o: faux/zlango.f90 $(MKFS) faux/GNUmakefile
 	pushd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/zlango.f90 && popd
 
+../obj/$(PLAT)/qlango.o: faux/qlango.f90 $(MKFS) faux/GNUmakefile
+	pushd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/qlango.f90 && popd
+
+../obj/$(PLAT)/ylango.o: faux/ylango.f90 $(MKFS) faux/GNUmakefile
+	pushd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/ylango.f90 && popd
+
+../obj/$(PLAT)/xlango.o: faux/xlango.f90 $(MKFS) faux/GNUmakefile
+	pushd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/xlango.f90 && popd
+
+../obj/$(PLAT)/wlango.o: faux/wlango.f90 $(MKFS) faux/GNUmakefile
+	pushd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/wlango.f90 && popd
+
 ../obj/$(PLAT)/sosum4.o: faux/sosum4.F90 faux/gosum4.F90 $(MKFS) faux/GNUmakefile
 	pushd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/sosum4.F90 && popd
 

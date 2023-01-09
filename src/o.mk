@@ -93,6 +93,8 @@ OBJS_FAUX=\
 ../obj/$(PLAT)/clango.o\
 ../obj/$(PLAT)/dlango.o\
 ../obj/$(PLAT)/zlango.o\
+../obj/$(PLAT)/qlango.o\
+../obj/$(PLAT)/ylango.o\
 ../obj/$(PLAT)/sosum4.o\
 ../obj/$(PLAT)/dosum4.o\
 ../obj/$(PLAT)/srotc.o\
@@ -163,6 +165,8 @@ OBJS_KSVD2 += \
 ../obj/$(PLAT)/xcvgpp.o\
 ../obj/$(PLAT)/wcvgpp.o
 OBJS_FAUX += \
+../obj/$(PLAT)/xlango.o\
+../obj/$(PLAT)/wlango.o\
 ../obj/$(PLAT)/xrotc.o\
 ../obj/$(PLAT)/wrotc.o\
 ../obj/$(PLAT)/xrotr.o\

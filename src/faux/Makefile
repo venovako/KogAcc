@@ -16,6 +16,12 @@
 ..\obj\$(PLAT)\zlango.obj: faux\zlango.f90 $(MKFS) faux\Makefile
 	pushd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\zlango.f90 && popd
 
+..\obj\$(PLAT)\qlango.obj: faux\qlango.f90 $(MKFS) faux\Makefile
+	pushd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\qlango.f90 && popd
+
+..\obj\$(PLAT)\ylango.obj: faux\ylango.f90 $(MKFS) faux\Makefile
+	pushd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\ylango.f90 && popd
+
 ..\obj\$(PLAT)\sosum4.obj: faux\sosum4.F90 faux\gosum4.F90 $(MKFS) faux\Makefile
 	pushd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\faux\sosum4.F90 && popd
 

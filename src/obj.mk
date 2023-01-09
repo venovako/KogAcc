@@ -93,6 +93,8 @@ OBJS_FAUX=\
 ..\obj\$(PLAT)\clango.obj\
 ..\obj\$(PLAT)\dlango.obj\
 ..\obj\$(PLAT)\zlango.obj\
+..\obj\$(PLAT)\qlango.obj\
+..\obj\$(PLAT)\ylango.obj\
 ..\obj\$(PLAT)\sosum4.obj\
 ..\obj\$(PLAT)\dosum4.obj\
 ..\obj\$(PLAT)\srotc.obj\
