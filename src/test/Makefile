@@ -44,7 +44,7 @@
 	pushd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) ..\..\..\src\test\jsweepx.f90 /Fejsweep.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\faux.lib ..\..\..\..\JACSD\jstrat$(DEBUG).lib && popd
 
 ..\bin\$(PLAT)\s2g101.exe: test\s2g101.F90 $(MKFS) test\Makefile
-	pushd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) ..\..\..\src\test\s2g101.F90 /Fes2g101.exe $(LDFLAGS) && popd
+	pushd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp ..\..\..\src\test\s2g101.F90 /Fes2g101.exe $(LDFLAGS) && popd
 
 ..\bin\$(PLAT)\s2g110.exe: test\s2g110.F90 $(MKFS) test\Makefile
-	pushd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) ..\..\..\src\test\s2g110.F90 /Fes2g110.exe $(LDFLAGS) && popd
+	pushd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp ..\..\..\src\test\s2g110.F90 /Fes2g110.exe $(LDFLAGS) && popd
