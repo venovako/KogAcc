@@ -66,7 +66,7 @@ dirs:
 	-md ..\obj\$(PLAT)
 
 doc: ..\Doxyfile
-	pushd .. && rd doc /s /q && doxygen && popd
+	cd .. && rd doc /s /q && doxygen
 
 !INCLUDE arrbio\Makefile
 !INCLUDE blksvd\Makefile

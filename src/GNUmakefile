@@ -27,7 +27,7 @@ dirs:
 	@$(MKD) ../bin/$(PLAT) ../lib/$(PLAT) ../obj/$(PLAT)
 
 doc: ../Doxyfile
-	pushd .. && $(DEL) doc && doxygen && popd
+	cd .. && $(DEL) doc && doxygen
 
 include arrbio/GNUmakefile
 include blksvd/GNUmakefile
