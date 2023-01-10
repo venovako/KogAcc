@@ -1,5 +1,5 @@
 !>@brief \b DLANGO computes \f$S=\|G\|_F\f$ for \f$\mathrm{O}\in\{\mathrm{'A'},\mathrm{'a'}\}\f$ or \f$S=\|\mathop{\mathrm{off}}(G)\|_F\f$ for \f$\mathrm{O}\in\{\mathrm{'O'},\mathrm{'o'}\}\f$ or \f$S=\|G\|_{\max}\f$ for \f$\mathrm{O}\in\{\mathrm{'M'},\mathrm{'m'}\}\f$ of a square double precision real matrix \f$G\f$ of order \f$N\f$.
-PURE SUBROUTINE DLANGO(O, N, G, LDG, S, INFO)
+SUBROUTINE DLANGO(O, N, G, LDG, S, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
   IMPLICIT NONE
 
@@ -30,11 +30,12 @@ PURE SUBROUTINE DLANGO(O, N, G, LDG, S, INFO)
   INTEGER, INTENT(IN) :: N, LDG
   REAL(KIND=REAL64), INTENT(IN) :: G(N,LDG)
   REAL(KIND=REAL64), INTENT(OUT) :: S
-  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(INOUT) :: INFO
   REAL(KIND=REAL64) :: SC, SM
-  INTEGER :: J
+  INTEGER :: I, J
 
   S = ZERO
+  I = INFO
   INFO = 0
   IF (LDG .LT. N) INFO = -4
   IF (N .LT. 0) INFO = -2
@@ -42,8 +43,24 @@ PURE SUBROUTINE DLANGO(O, N, G, LDG, S, INFO)
   SELECT CASE (O)
   CASE ('A','a')
      S = DLANGE('F', N, N, G, LDG, SC)
-  CASE ('M','N','m','n')
+  CASE ('M','m')
      S = DLANGE('M', N, N, G, LDG, SC)
+  CASE ('N','n')
+     IF (I .EQ. 0) THEN
+        DO J = 1, N
+           DO I = 1, N
+              S = MAX(S, ABS(G(I,J)))
+           END DO
+        END DO
+     ELSE ! OpenMP
+        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J) SHARED(G,N) REDUCTION(MAX:S)
+        DO J = 1, N
+           DO I = 1, N
+              S = MAX(S, ABS(G(I,J)))
+           END DO
+        END DO
+        !$OMP END PARALLEL DO
+     END IF
   CASE ('O','o')
      IF (N .GE. 2) THEN
         SC = ZERO

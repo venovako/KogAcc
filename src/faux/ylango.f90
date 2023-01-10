@@ -1,5 +1,5 @@
 !>@brief \b YLANGO computes \f$S=\|G\|_F\f$ for \f$\mathrm{O}\in\{\mathrm{'A'},\mathrm{'a'}\}\f$ or \f$S=\|\mathop{\mathrm{off}}(G)\|_F\f$ for \f$\mathrm{O}\in\{\mathrm{'O'},\mathrm{'o'}\}\f$ or \f$S=\|G\|_{\max}\f$ for \f$\mathrm{O}\in\{\mathrm{'M'},\mathrm{'m'}\}\f$ of a square quadruple precision complex matrix \f$G\f$ of order \f$N\f$.
-PURE SUBROUTINE YLANGO(O, N, G, LDG, S, INFO)
+SUBROUTINE YLANGO(O, N, G, LDG, S, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL128
   IMPLICIT NONE
 
@@ -8,10 +8,11 @@ PURE SUBROUTINE YLANGO(O, N, G, LDG, S, INFO)
   INTEGER, INTENT(IN) :: N, LDG
   COMPLEX(KIND=REAL128), INTENT(IN) :: G(N,LDG)
   REAL(KIND=REAL128), INTENT(OUT) :: S
-  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(INOUT) :: INFO
   INTEGER :: I, J
 
   S = ZERO
+  I = INFO
   INFO = 0
   IF (LDG .LT. N) INFO = -4
   IF (N .LT. 0) INFO = -2
@@ -27,17 +28,37 @@ PURE SUBROUTINE YLANGO(O, N, G, LDG, S, INFO)
         END DO
      END DO
   CASE ('M','m')
-     DO J = 1, N
-        DO I = 1, N
-           S = MAX(S, HYPOT(REAL(G(I,J)), AIMAG(G(I,J))))
+     IF (I .EQ. 0) THEN
+        DO J = 1, N
+           DO I = 1, N
+              S = MAX(S, HYPOT(REAL(G(I,J)), AIMAG(G(I,J))))
+           END DO
         END DO
-     END DO
+     ELSE ! OpenMP
+        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J) SHARED(G,N) REDUCTION(MAX:S)
+        DO J = 1, N
+           DO I = 1, N
+              S = MAX(S, HYPOT(REAL(G(I,J)), AIMAG(G(I,J))))
+           END DO
+        END DO
+        !$OMP END PARALLEL DO
+     END IF
   CASE ('N','n')
-     DO J = 1, N
-        DO I = 1, N
-           S = MAX(S, ABS(REAL(G(I,J))), ABS(AIMAG(G(I,J))))
+     IF (I .EQ. 0) THEN
+        DO J = 1, N
+           DO I = 1, N
+              S = MAX(S, ABS(REAL(G(I,J))), ABS(AIMAG(G(I,J))))
+           END DO
         END DO
-     END DO
+     ELSE ! OpenMP
+        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J) SHARED(G,N) REDUCTION(MAX:S)
+        DO J = 1, N
+           DO I = 1, N
+              S = MAX(S, ABS(REAL(G(I,J))), ABS(AIMAG(G(I,J))))
+           END DO
+        END DO
+        !$OMP END PARALLEL DO
+     END IF
   CASE ('O','o')
      DO J = 1, N
         DO I = 1, J-1

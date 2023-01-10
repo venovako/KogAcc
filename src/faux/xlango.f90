@@ -1,5 +1,5 @@
 !>@brief \b XLANGO computes \f$S=\|G\|_F\f$ for \f$\mathrm{O}\in\{\mathrm{'A'},\mathrm{'a'}\}\f$ or \f$S=\|\mathop{\mathrm{off}}(G)\|_F\f$ for \f$\mathrm{O}\in\{\mathrm{'O'},\mathrm{'o'}\}\f$ or \f$S=\|G\|_{\max}\f$ for \f$\mathrm{O}\in\{\mathrm{'M'},\mathrm{'m'}\}\f$ of a square extended precision real matrix \f$G\f$ of order \f$N\f$.
-PURE SUBROUTINE XLANGO(O, N, G, LDG, S, INFO)
+SUBROUTINE XLANGO(O, N, G, LDG, S, INFO)
   IMPLICIT NONE
 
   REAL(KIND=10), PARAMETER :: ZERO = 0.0_10
@@ -7,10 +7,11 @@ PURE SUBROUTINE XLANGO(O, N, G, LDG, S, INFO)
   INTEGER, INTENT(IN) :: N, LDG
   REAL(KIND=10), INTENT(IN) :: G(N,LDG)
   REAL(KIND=10), INTENT(OUT) :: S
-  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(INOUT) :: INFO
   INTEGER :: I, J
 
   S = ZERO
+  I = INFO
   INFO = 0
   IF (LDG .LT. N) INFO = -4
   IF (N .LT. 0) INFO = -2
@@ -25,11 +26,21 @@ PURE SUBROUTINE XLANGO(O, N, G, LDG, S, INFO)
         END DO
      END DO
   CASE ('M','N','m','n')
-     DO J = 1, N
-        DO I = 1, N
-           S = MAX(S, ABS(G(I,J)))
+     IF (I .EQ. 0) THEN
+        DO J = 1, N
+           DO I = 1, N
+              S = MAX(S, ABS(G(I,J)))
+           END DO
         END DO
-     END DO
+     ELSE ! OpenMP
+        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J) SHARED(G,N) REDUCTION(MAX:S)
+        DO J = 1, N
+           DO I = 1, N
+              S = MAX(S, ABS(G(I,J)))
+           END DO
+        END DO
+        !$OMP END PARALLEL DO
+     END IF
   CASE ('O','o')
      DO J = 1, N
         DO I = 1, J-1
