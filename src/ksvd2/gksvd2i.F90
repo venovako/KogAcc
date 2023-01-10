@@ -114,16 +114,8 @@
 
   ! make B(1,1) non-negative
   IF (SIGN(ONE, B(1,1)) .NE. ONE) THEN
-     IF (U(1,1) .EQ. ZERO) THEN
-        U(1,1) = ZERO
-     ELSE ! change the sign
-        U(1,1) = -U(1,1)
-     END IF
-     IF (U(1,2) .EQ. ZERO) THEN
-        U(1,2) = ZERO
-     ELSE ! change the sign
-        U(1,2) = -U(1,2)
-     END IF
+     IF (U(1,1) .NE. ZERO) U(1,1) = -U(1,1)
+     IF (U(1,2) .NE. ZERO) U(1,2) = -U(1,2)
      B(1,1) = -B(1,1)
      IF (B(1,2) .EQ. ZERO) THEN
         B(1,2) = ZERO
@@ -136,16 +128,8 @@
   IF (B(2,1) .EQ. ZERO) THEN
      B(2,1) = ZERO
   ELSE IF (B(2,1) .LT. ZERO) THEN
-     IF (U(2,1) .EQ. ZERO) THEN
-        U(2,1) = ZERO
-     ELSE ! change the sign
-        U(2,1) = -U(2,1)
-     END IF
-     IF (U(2,2) .EQ. ZERO) THEN
-        U(2,2) = ZERO
-     ELSE ! change the sign
-        U(2,2) = -U(2,2)
-     END IF
+     IF (U(2,1) .NE. ZERO) U(2,1) = -U(2,1)
+     IF (U(2,2) .NE. ZERO) U(2,2) = -U(2,2)
      B(2,1) = -B(2,1)
      B(2,2) = -B(2,2)
   END IF
@@ -205,30 +189,14 @@
   ELSE IF (B(1,2) .LT. ZERO) THEN
      B(1,2) = -B(1,2)
      B(2,2) = -B(2,2)
-     IF (V(1,2) .EQ. ZERO) THEN
-        V(1,2) = ZERO
-     ELSE ! change the sign
-        V(1,2) = -V(1,2)
-     END IF
-     IF (V(2,2) .EQ. ZERO) THEN
-        V(2,2) = ZERO
-     ELSE ! change the sign
-        V(2,2) = -V(2,2)
-     END IF
+     IF (V(1,2) .NE. ZERO) V(1,2) = -V(1,2)
+     IF (V(2,2) .NE. ZERO) V(2,2) = -V(2,2)
   END IF
 
   ! make B(2,2) non-negative
   IF (SIGN(ONE, B(2,2)) .NE. ONE) THEN
-     IF (U(2,1) .EQ. ZERO) THEN
-        U(2,1) = ZERO
-     ELSE ! change the sign
-        U(2,1) = -U(2,1)
-     END IF
-     IF (U(2,2) .EQ. ZERO) THEN
-        U(2,2) = ZERO
-     ELSE ! change the sign
-        U(2,2) = -U(2,2)
-     END IF
+     IF (U(2,1) .NE. ZERO) U(2,1) = -U(2,1)
+     IF (U(2,2) .NE. ZERO) U(2,2) = -U(2,2)
      B(2,2) = -B(2,2)
   END IF
 
@@ -243,9 +211,10 @@
 #ifndef NDEBUG
   WRITE (ERROR_UNIT,9) '   X=', X, ',    Y=', Y
 #endif
+  ! underflow
   IF (X .EQ. ZERO) GOTO 8
 
-  ! a partial fix
+  ! a partial fix of the Y >= 1, X > 0 problem
   IF (Y .EQ. ONE) THEN
      Z = TWO / X
   ELSE IF (X .EQ. ONE) THEN
@@ -267,7 +236,7 @@
   ! the functions of \varphi
   ! Negative Z can happen only if Y > 1 (impossible mathematically),
   ! what in turn, with the correctly rounded hypot, can happen only
-  ! as a consequence of the QR factorization.
+  ! as a consequence of the pivoted QR factorization.
   IF (Z .EQ. ZERO) THEN
      TANF = ZERO
      SECF = ONE
@@ -345,8 +314,20 @@
      V(2,2) = IEEE_FMA(Y,      Z, V(2,2))
   END IF
 
+  ! clean up -0, if any
+8 IF (U(1,1) .EQ. ZERO) U(1,1) = ZERO
+  IF (U(2,1) .EQ. ZERO) U(2,1) = ZERO
+  IF (U(1,2) .EQ. ZERO) U(1,2) = ZERO
+  IF (U(2,2) .EQ. ZERO) U(2,2) = ZERO
+  IF (V(1,1) .EQ. ZERO) V(1,1) = ZERO
+  IF (V(2,1) .EQ. ZERO) V(2,1) = ZERO
+  IF (V(1,2) .EQ. ZERO) V(1,2) = ZERO
+  IF (V(2,2) .EQ. ZERO) V(2,2) = ZERO
+  IF (S(1) .EQ. ZERO) S(1) = ZERO
+  IF (S(2) .EQ. ZERO) S(2) = ZERO
+
   ! symmetric permutation if S(1) < S(2)
-8 IF (S(1) .LT. S(2)) THEN
+  IF (S(1) .LT. S(2)) THEN
      Z = U(1,1)
      U(1,1) = U(2,1)
      U(2,1) = Z
@@ -365,10 +346,6 @@
   END IF
 
   ! transpose U
-  IF (U(1,1) .EQ. ZERO) U(1,1) = ZERO
-  IF (U(2,1) .EQ. ZERO) U(2,1) = ZERO
-  IF (U(1,2) .EQ. ZERO) U(1,2) = ZERO
-  IF (U(2,2) .EQ. ZERO) U(2,2) = ZERO
   Z = U(2,1)
   U(2,1) = U(1,2)
   U(1,2) = Z

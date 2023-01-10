@@ -165,16 +165,8 @@
   ! make B(1,1) real and non-negative
   IF (AIMAG(B(1,1)) .EQ. ZERO) THEN
      IF (SIGN(ONE, REAL(B(1,1))) .NE. ONE) THEN
-        IF (U(1,1) .EQ. CZERO) THEN
-           U(1,1) = CZERO
-        ELSE ! change the sign
-           U(1,1) = -U(1,1)
-        END IF
-        IF (U(1,2) .EQ. CZERO) THEN
-           U(1,2) = CZERO
-        ELSE ! change the sign
-           U(1,2) = -U(1,2)
-        END IF
+        IF (U(1,1) .NE. CZERO) U(1,1) = -U(1,1)
+        IF (U(1,2) .NE. CZERO) U(1,2) = -U(1,2)
         B(1,1) = CMPLX(-REAL(B(1,1)), ZERO, K)
         IF (B(1,2) .EQ. CZERO) THEN
            B(1,2) = CZERO
@@ -194,16 +186,8 @@
      IF (REAL(B(2,1)) .EQ. ZERO) THEN
         B(2,1) = CZERO
      ELSE IF (REAL(B(2,1)) .LT. ZERO) THEN
-        IF (U(2,1) .EQ. CZERO) THEN
-           U(2,1) = CZERO
-        ELSE ! change the sign
-           U(2,1) = -U(2,1)
-        END IF
-        IF (U(2,2) .EQ. CZERO) THEN
-           U(2,2) = CZERO
-        ELSE ! change the sign
-           U(2,2) = -U(2,2)
-        END IF
+        IF (U(2,1) .NE. CZERO) U(2,1) = -U(2,1)
+        IF (U(2,2) .NE. CZERO) U(2,2) = -U(2,2)
         B(2,1) = CMPLX(-REAL(B(2,1)), ZERO, K)
         B(2,2) = -B(2,2)
      END IF
@@ -273,16 +257,8 @@
      ELSE IF (REAL(B(1,2)) .LT. ZERO) THEN
         B(1,2) = CMPLX(-REAL(B(1,2)), ZERO, K)
         B(2,2) = -B(2,2)
-        IF (V(1,2) .EQ. CZERO) THEN
-           V(1,2) = CZERO
-        ELSE ! change the sign
-           V(1,2) = -V(1,2)
-        END IF
-        IF (V(2,2) .EQ. CZERO) THEN
-           V(2,2) = CZERO
-        ELSE ! change the sign
-           V(2,2) = -V(2,2)
-        END IF
+        IF (V(1,2) .NE. CZERO) V(1,2) = -V(1,2)
+        IF (V(2,2) .NE. CZERO) V(2,2) = -V(2,2)
      END IF
   ELSE ! the general case
      Z = CONJG(B(1,2)) / A(1,2)
@@ -295,16 +271,8 @@
   ! make B(2,2) real and non-negative
   IF (AIMAG(B(2,2)) .EQ. ZERO) THEN
      IF (SIGN(ONE, REAL(B(2,2))) .NE. ONE) THEN
-        IF (U(2,1) .EQ. CZERO) THEN
-           U(2,1) = CZERO
-        ELSE ! change the sign
-           U(2,1) = -U(2,1)
-        END IF
-        IF (U(2,2) .EQ. CZERO) THEN
-           U(2,2) = CZERO
-        ELSE ! change the sign
-           U(2,2) = -U(2,2)
-        END IF
+        IF (U(2,1) .NE. CZERO) U(2,1) = -U(2,1)
+        IF (U(2,2) .NE. CZERO) U(2,2) = -U(2,2)
         B(2,2) = CMPLX(-REAL(B(2,2)), ZERO, K)
      END IF
   ELSE ! the general case
@@ -331,9 +299,10 @@
 #ifndef NDEBUG
   WRITE (ERROR_UNIT,9) '   X=', X, ',    Y=', Y
 #endif
+  ! underflow
   IF (X .EQ. ZERO) GOTO 8
 
-  ! a partial fix
+  ! a partial fix of the Y >= 1, X > 0 problem
   IF (Y .EQ. ONE) THEN
      T = TWO / X
   ELSE IF (X .EQ. ONE) THEN
@@ -355,7 +324,7 @@
   ! the functions of \varphi
   ! Negative T can happen only if Y > 1 (impossible mathematically),
   ! what in turn, with the correctly rounded hypot, can happen only
-  ! as a consequence of the QR factorization.
+  ! as a consequence of the pivoted QR factorization.
   IF (T .EQ. ZERO) THEN
      TANF = ZERO
      SECF = ONE
@@ -433,8 +402,20 @@
      V(2,2) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(V(2,2))), IEEE_FMA(Y,      AIMAG(Z), AIMAG(V(2,2))), K)
   END IF
 
+  ! clean up -0, if any
+8 IF (U(1,1) .EQ. CZERO) U(1,1) = CZERO
+  IF (U(2,1) .EQ. CZERO) U(2,1) = CZERO
+  IF (U(1,2) .EQ. CZERO) U(1,2) = CZERO
+  IF (U(2,2) .EQ. CZERO) U(2,2) = CZERO
+  IF (V(1,1) .EQ. CZERO) V(1,1) = CZERO
+  IF (V(2,1) .EQ. CZERO) V(2,1) = CZERO
+  IF (V(1,2) .EQ. CZERO) V(1,2) = CZERO
+  IF (V(2,2) .EQ. CZERO) V(2,2) = CZERO
+  IF (S(1) .EQ. ZERO) S(1) = ZERO
+  IF (S(2) .EQ. ZERO) S(2) = ZERO
+
   ! symmetric permutation if S(1) < S(2)
-8 IF (S(1) .LT. S(2)) THEN
+  IF (S(1) .LT. S(2)) THEN
      Z = U(1,1)
      U(1,1) = U(2,1)
      U(2,1) = Z
@@ -454,7 +435,6 @@
 
   ! conjugate-transpose U
   X = REAL(U(1,1))
-  IF (X .EQ. ZERO) X = ZERO
   Y = AIMAG(U(1,1))
   IF (Y .EQ. ZERO) THEN
      U(1,1) = CMPLX(X, ZERO, K)
@@ -462,7 +442,6 @@
      U(1,1) = CMPLX(X, -Y, K)
   END IF
   X = REAL(U(2,1))
-  IF (X .EQ. ZERO) X = ZERO
   Y = AIMAG(U(2,1))
   IF (Y .EQ. ZERO) THEN
      Z = CMPLX(X, ZERO, K)
@@ -470,7 +449,6 @@
      Z = CMPLX(X, -Y, K)
   END IF
   X = REAL(U(1,2))
-  IF (X .EQ. ZERO) X = ZERO
   Y = AIMAG(U(1,2))
   IF (Y .EQ. ZERO) THEN
      U(2,1) = CMPLX(X, ZERO, K)
@@ -479,7 +457,6 @@
   END IF
   U(1,2) = Z
   X = REAL(U(2,2))
-  IF (X .EQ. ZERO) X = ZERO
   Y = AIMAG(U(2,2))
   IF (Y .EQ. ZERO) THEN
      U(2,2) = CMPLX(X, ZERO, K)
