@@ -1,4 +1,4 @@
-!>@brief \b SLANGO computes \f$S=\|G\|_F\f$ for \f$\mathrm{O}\in\{\mathrm{'A'},\mathrm{'a'}\}\f$ or \f$S=\|\mathop{\mathrm{off}}(G)\|_F\f$ for \f$\mathrm{O}\in\{\mathrm{'O'},\mathrm{'o'}\}\f$ of a square single precision real matrix \f$G\f$ of order \f$N\f$.
+!>@brief \b SLANGO computes \f$S=\|G\|_F\f$ for \f$\mathrm{O}\in\{\mathrm{'A'},\mathrm{'a'}\}\f$ or \f$S=\|\mathop{\mathrm{off}}(G)\|_F\f$ for \f$\mathrm{O}\in\{\mathrm{'O'},\mathrm{'o'}\}\f$ or \f$S=\|G\|_{\max}\f$ for \f$\mathrm{O}\in\{\mathrm{'M'},\mathrm{'m'}\}\f$ of a square single precision real matrix \f$G\f$ of order \f$N\f$.
 PURE SUBROUTINE SLANGO(O, N, G, LDG, S, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
   IMPLICIT NONE
@@ -42,6 +42,8 @@ PURE SUBROUTINE SLANGO(O, N, G, LDG, S, INFO)
   SELECT CASE (O)
   CASE ('A','a')
      S = SLANGE('F', N, N, G, LDG, SC)
+  CASE ('M','N','m','n')
+     S = SLANGE('M', N, N, G, LDG, SC)
   CASE ('O','o')
      IF (N .GE. 2) THEN
         SC = ZERO

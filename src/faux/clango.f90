@@ -1,4 +1,4 @@
-!>@brief \b CLANGO computes \f$S=\|G\|_F\f$ for \f$\mathrm{O}\in\{\mathrm{'A'},\mathrm{'a'}\}\f$ or \f$S=\|\mathop{\mathrm{off}}(G)\|_F\f$ for \f$\mathrm{O}\in\{\mathrm{'O'},\mathrm{'o'}\}\f$ of a square single precision complex matrix \f$G\f$ of order \f$N\f$.
+!>@brief \b CLANGO computes \f$S=\|G\|_F\f$ for \f$\mathrm{O}\in\{\mathrm{'A'},\mathrm{'a'}\}\f$ or \f$S=\|\mathop{\mathrm{off}}(G)\|_F\f$ for \f$\mathrm{O}\in\{\mathrm{'O'},\mathrm{'o'}\}\f$ or \f$S=\|G\|_{\max}\f$ for \f$\mathrm{O}\in\{\mathrm{'M'},\mathrm{'m'}\}\f$ of a square single precision complex matrix \f$G\f$ of order \f$N\f$.
 PURE SUBROUTINE CLANGO(O, N, G, LDG, S, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
   IMPLICIT NONE
@@ -42,6 +42,14 @@ PURE SUBROUTINE CLANGO(O, N, G, LDG, S, INFO)
   SELECT CASE (O)
   CASE ('A','a')
      S = CLANGE('F', N, N, G, LDG, SC)
+  CASE ('M','m')
+     S = CLANGE('M', N, N, G, LDG, SC)
+  CASE ('N','n')
+     DO J = 1, N
+        DO I = 1, N
+           S = MAX(S, ABS(REAL(G(I,J))), ABS(AIMAG(G(I,J))))
+        END DO
+     END DO
   CASE ('O','o')
      IF (N .GE. 2) THEN
         SC = ZERO

@@ -1,4 +1,4 @@
-!>@brief \b WLANGO computes \f$S=\|G\|_F\f$ for \f$\mathrm{O}\in\{\mathrm{'A'},\mathrm{'a'}\}\f$ or \f$S=\|\mathop{\mathrm{off}}(G)\|_F\f$ for \f$\mathrm{O}\in\{\mathrm{'O'},\mathrm{'o'}\}\f$ of a square extended precision complex matrix \f$G\f$ of order \f$N\f$.
+!>@brief \b WLANGO computes \f$S=\|G\|_F\f$ for \f$\mathrm{O}\in\{\mathrm{'A'},\mathrm{'a'}\}\f$ or \f$S=\|\mathop{\mathrm{off}}(G)\|_F\f$ for \f$\mathrm{O}\in\{\mathrm{'O'},\mathrm{'o'}\}\f$ or \f$S=\|G\|_{\max}\f$ for \f$\mathrm{O}\in\{\mathrm{'M'},\mathrm{'m'}\}\f$ of a square extended precision complex matrix \f$G\f$ of order \f$N\f$.
 PURE SUBROUTINE WLANGO(O, N, G, LDG, S, INFO)
   IMPLICIT NONE
 
@@ -23,6 +23,18 @@ PURE SUBROUTINE WLANGO(O, N, G, LDG, S, INFO)
         DO I = 1, N
            S = HYPOT(S, REAL(G(I,J)))
            S = HYPOT(S, AIMAG(G(I,J)))
+        END DO
+     END DO
+  CASE ('M','m')
+     DO J = 1, N
+        DO I = 1, N
+           S = MAX(S, HYPOT(REAL(G(I,J)), AIMAG(G(I,J))))
+        END DO
+     END DO
+  CASE ('N','n')
+     DO J = 1, N
+        DO I = 1, N
+           S = MAX(S, ABS(REAL(G(I,J))), ABS(AIMAG(G(I,J))))
         END DO
      END DO
   CASE ('O','o')

@@ -1,4 +1,4 @@
-!>@brief \b XLANGO computes \f$S=\|G\|_F\f$ for \f$\mathrm{O}\in\{\mathrm{'A'},\mathrm{'a'}\}\f$ or \f$S=\|\mathop{\mathrm{off}}(G)\|_F\f$ for \f$\mathrm{O}\in\{\mathrm{'O'},\mathrm{'o'}\}\f$ of a square extended precision real matrix \f$G\f$ of order \f$N\f$.
+!>@brief \b XLANGO computes \f$S=\|G\|_F\f$ for \f$\mathrm{O}\in\{\mathrm{'A'},\mathrm{'a'}\}\f$ or \f$S=\|\mathop{\mathrm{off}}(G)\|_F\f$ for \f$\mathrm{O}\in\{\mathrm{'O'},\mathrm{'o'}\}\f$ or \f$S=\|G\|_{\max}\f$ for \f$\mathrm{O}\in\{\mathrm{'M'},\mathrm{'m'}\}\f$ of a square extended precision real matrix \f$G\f$ of order \f$N\f$.
 PURE SUBROUTINE XLANGO(O, N, G, LDG, S, INFO)
   IMPLICIT NONE
 
@@ -22,6 +22,12 @@ PURE SUBROUTINE XLANGO(O, N, G, LDG, S, INFO)
      DO J = 1, N
         DO I = 1, N
            S = HYPOT(S, G(I,J))
+        END DO
+     END DO
+  CASE ('M','N','m','n')
+     DO J = 1, N
+        DO I = 1, N
+           S = MAX(S, ABS(G(I,J)))
         END DO
      END DO
   CASE ('O','o')
