@@ -138,6 +138,7 @@ EXES_FAUX=\
 EXES_TEST=\
 ..\bin\$(PLAT)\srnd.exe\
 ..\bin\$(PLAT)\drnd.exe\
+..\bin\$(PLAT)\qrnd.exe\
 ..\bin\$(PLAT)\s2g101.exe\
 ..\bin\$(PLAT)\s2g110.exe
 

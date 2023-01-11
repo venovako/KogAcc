@@ -37,6 +37,9 @@
 ..\bin\$(PLAT)\drnd.exe: test\drnd.f90 $(MKFS) test\Makefile
 	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) ..\..\..\src\test\drnd.f90 /Fedrnd.exe $(LDFLAGS)
 
+..\bin\$(PLAT)\qrnd.exe: test\qrnd.f90 $(MKFS) test\Makefile
+	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) ..\..\..\src\test\qrnd.f90 /Feqrnd.exe $(LDFLAGS)
+
 ..\bin\$(PLAT)\sthalt.exe: test\sthaltx.f90 ..\lib\$(PLAT)\faux.lib $(MKFS) test\Makefile
 	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) ..\..\..\src\test\sthaltx.f90 /Festhalt.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\faux.lib
 
