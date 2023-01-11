@@ -28,12 +28,6 @@
 ../obj/$(PLAT)/wlango.o: faux/wlango.f90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/wlango.f90
 
-../obj/$(PLAT)/sosum4.o: faux/sosum4.F90 faux/gosum4.F90 $(MKFS) faux/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/sosum4.F90
-
-../obj/$(PLAT)/dosum4.o: faux/dosum4.F90 faux/gosum4.F90 $(MKFS) faux/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/dosum4.F90
-
 ../obj/$(PLAT)/srotc.o: faux/srotc.f90 faux/grotc.f90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/srotc.f90
 

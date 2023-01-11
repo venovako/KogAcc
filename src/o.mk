@@ -95,8 +95,6 @@ OBJS_FAUX=\
 ../obj/$(PLAT)/zlango.o\
 ../obj/$(PLAT)/qlango.o\
 ../obj/$(PLAT)/ylango.o\
-../obj/$(PLAT)/sosum4.o\
-../obj/$(PLAT)/dosum4.o\
 ../obj/$(PLAT)/srotc.o\
 ../obj/$(PLAT)/crotc.o\
 ../obj/$(PLAT)/drotc.o\

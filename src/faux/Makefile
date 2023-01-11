@@ -22,12 +22,6 @@
 ..\obj\$(PLAT)\ylango.obj: faux\ylango.f90 $(MKFS) faux\Makefile
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\ylango.f90
 
-..\obj\$(PLAT)\sosum4.obj: faux\sosum4.F90 faux\gosum4.F90 $(MKFS) faux\Makefile
-	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\faux\sosum4.F90
-
-..\obj\$(PLAT)\dosum4.obj: faux\dosum4.F90 faux\gosum4.F90 $(MKFS) faux\Makefile
-	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\faux\dosum4.F90
-
 ..\obj\$(PLAT)\srotc.obj: faux\srotc.f90 faux\grotc.f90 $(MKFS) faux\Makefile
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\srotc.f90
 
