@@ -58,6 +58,24 @@
 ..\obj\$(PLAT)\yrotr.obj: faux\yrotr.f90 faux\grotr.f90 $(MKFS) faux\Makefile
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\yrotr.f90
 
+..\obj\$(PLAT)\sscalg.obj: faux\sscalg.f90 faux\gscalg.f90 $(MKFS) faux\Makefile
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\sscalg.f90
+
+..\obj\$(PLAT)\cscalg.obj: faux\cscalg.f90 faux\hscalg.f90 $(MKFS) faux\Makefile
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\cscalg.f90
+
+..\obj\$(PLAT)\dscalg.obj: faux\dscalg.f90 faux\gscalg.f90 $(MKFS) faux\Makefile
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\dscalg.f90
+
+..\obj\$(PLAT)\zscalg.obj: faux\zscalg.f90 faux\hscalg.f90 $(MKFS) faux\Makefile
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\zscalg.f90
+
+..\obj\$(PLAT)\qscalg.obj: faux\qscalg.f90 faux\gscalg.f90 $(MKFS) faux\Makefile
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\qscalg.f90
+
+..\obj\$(PLAT)\yscalg.obj: faux\yscalg.f90 faux\hscalg.f90 $(MKFS) faux\Makefile
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\yscalg.f90
+
 ..\obj\$(PLAT)\jstep.obj: faux\jstep.f90 $(MKFS) faux\Makefile
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\jstep.f90
 

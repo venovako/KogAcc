@@ -76,6 +76,30 @@
 ../obj/$(PLAT)/wrotr.o: faux/wrotr.f90 faux/grotr.f90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/wrotr.f90
 
+../obj/$(PLAT)/sscalg.o: faux/sscalg.f90 faux/gscalg.f90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/sscalg.f90
+
+../obj/$(PLAT)/cscalg.o: faux/cscalg.f90 faux/hscalg.f90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/cscalg.f90
+
+../obj/$(PLAT)/dscalg.o: faux/dscalg.f90 faux/gscalg.f90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/dscalg.f90
+
+../obj/$(PLAT)/zscalg.o: faux/zscalg.f90 faux/hscalg.f90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/zscalg.f90
+
+../obj/$(PLAT)/qscalg.o: faux/qscalg.f90 faux/gscalg.f90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/qscalg.f90
+
+../obj/$(PLAT)/yscalg.o: faux/yscalg.f90 faux/hscalg.f90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/yscalg.f90
+
+../obj/$(PLAT)/xscalg.o: faux/xscalg.f90 faux/gscalg.f90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/xscalg.f90
+
+../obj/$(PLAT)/wscalg.o: faux/wscalg.f90 faux/hscalg.f90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/wscalg.f90
+
 ../obj/$(PLAT)/jstep.o: faux/jstep.f90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/jstep.f90
 

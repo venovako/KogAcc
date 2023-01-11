@@ -107,6 +107,12 @@ OBJS_FAUX=\
 ..\obj\$(PLAT)\zrotr.obj\
 ..\obj\$(PLAT)\qrotr.obj\
 ..\obj\$(PLAT)\yrotr.obj\
+..\obj\$(PLAT)\sscalg.obj\
+..\obj\$(PLAT)\cscalg.obj\
+..\obj\$(PLAT)\dscalg.obj\
+..\obj\$(PLAT)\zscalg.obj\
+..\obj\$(PLAT)\qscalg.obj\
+..\obj\$(PLAT)\yscalg.obj\
 ..\obj\$(PLAT)\jstep.obj\
 ..\obj\$(PLAT)\jsweep.obj
 

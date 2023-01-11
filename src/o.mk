@@ -107,6 +107,12 @@ OBJS_FAUX=\
 ../obj/$(PLAT)/zrotr.o\
 ../obj/$(PLAT)/qrotr.o\
 ../obj/$(PLAT)/yrotr.o\
+../obj/$(PLAT)/sscalg.o\
+../obj/$(PLAT)/cscalg.o\
+../obj/$(PLAT)/dscalg.o\
+../obj/$(PLAT)/zscalg.o\
+../obj/$(PLAT)/qscalg.o\
+../obj/$(PLAT)/yscalg.o\
 ../obj/$(PLAT)/jstep.o\
 ../obj/$(PLAT)/jsweep.o
 
@@ -168,7 +174,9 @@ OBJS_FAUX += \
 ../obj/$(PLAT)/xrotc.o\
 ../obj/$(PLAT)/wrotc.o\
 ../obj/$(PLAT)/xrotr.o\
-../obj/$(PLAT)/wrotr.o
+../obj/$(PLAT)/wrotr.o\
+../obj/$(PLAT)/xscalg.o\
+../obj/$(PLAT)/wscalg.o
 EXES_DYNORD += \
 ../bin/$(PLAT)/xpqsort.exe
 EXES_KSVD2 += \
