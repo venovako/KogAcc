@@ -10,9 +10,9 @@ FCFLAGS += -fopenmp -fPIC -fexceptions -fno-omit-frame-pointer -rdynamic -ffp-co
 ifdef NDEBUG
 FCFLAGS += -fgcse-las -fgcse-sm -fipa-pta -ftree-loop-distribution -ftree-loop-im -ftree-loop-ivcanon -fivopts -fvect-cost-model=unlimited -fvariable-expansion-in-unroller -fopt-info-optimized-vec
 else # !NDEBUG
-FCFLAGS += -fcheck=all -finit-local-zero -finit-real=snan -finit-derived -Wcharacter-truncation -Wimplicit-procedure -Wfunction-elimination -Wrealloc-lhs-all
+FCFLAGS += -fcheck=all,no-recursion -finit-local-zero -finit-real=snan -finit-derived -Wcharacter-truncation -Wimplicit-procedure -Wfunction-elimination -Wrealloc-lhs-all
 endif # ?NDEBUG
-FCFLAGS += -pedantic -Wall -Wextra -Wno-array-temporaries -Wno-compare-reals
+FCFLAGS += -pedantic -Wall -Wextra -Wno-array-temporaries -Wno-compare-reals -Wno-c-binding-type
 # makes no sense to use CR_MATH without enforcing the FMAs in the rest of the code, if possible
 ifdef CR_MATH
 # gfortran might support IEEE_FMA from the version 13 onwards
