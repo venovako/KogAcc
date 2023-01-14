@@ -34,11 +34,20 @@
 ..\bin\$(PLAT)\srnd.exe: test\srnd.f90 $(MKFS) test\Makefile
 	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) ..\..\..\src\test\srnd.f90 /Fesrnd.exe $(LDFLAGS)
 
+..\bin\$(PLAT)\crnd.exe: test\crnd.f90 $(MKFS) test\Makefile
+	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) ..\..\..\src\test\crnd.f90 /Fecrnd.exe $(LDFLAGS)
+
 ..\bin\$(PLAT)\drnd.exe: test\drnd.f90 $(MKFS) test\Makefile
 	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) ..\..\..\src\test\drnd.f90 /Fedrnd.exe $(LDFLAGS)
 
+..\bin\$(PLAT)\zrnd.exe: test\zrnd.f90 $(MKFS) test\Makefile
+	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) ..\..\..\src\test\zrnd.f90 /Fezrnd.exe $(LDFLAGS)
+
 ..\bin\$(PLAT)\qrnd.exe: test\qrnd.f90 $(MKFS) test\Makefile
 	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) ..\..\..\src\test\qrnd.f90 /Feqrnd.exe $(LDFLAGS)
+
+..\bin\$(PLAT)\yrnd.exe: test\yrnd.f90 $(MKFS) test\Makefile
+	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) ..\..\..\src\test\yrnd.f90 /Feyrnd.exe $(LDFLAGS)
 
 ..\bin\$(PLAT)\sthalt.exe: test\sthaltx.f90 ..\lib\$(PLAT)\faux.lib $(MKFS) test\Makefile
 	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) ..\..\..\src\test\sthaltx.f90 /Festhalt.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\faux.lib

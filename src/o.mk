@@ -137,8 +137,11 @@ EXES_FAUX=\
 
 EXES_TEST=\
 ../bin/$(PLAT)/srnd.exe\
+../bin/$(PLAT)/crnd.exe\
 ../bin/$(PLAT)/drnd.exe\
-../bin/$(PLAT)/qrnd.exe
+../bin/$(PLAT)/zrnd.exe\
+../bin/$(PLAT)/qrnd.exe\
+../bin/$(PLAT)/yrnd.exe
 
 ifeq ($(COMPILER),gfortran)
 ifeq ($(findstring 86,$(ARCH)),86)
@@ -184,7 +187,8 @@ EXES_KSVD2 += \
 ../bin/$(PLAT)/xksvd2.exe\
 ../bin/$(PLAT)/wksvd2.exe
 EXES_TEST += \
-../bin/$(PLAT)/xrnd.exe
+../bin/$(PLAT)/xrnd.exe\
+../bin/$(PLAT)/wrnd.exe
 endif # x86
 endif # gfortran
 
