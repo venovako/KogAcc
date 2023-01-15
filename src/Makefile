@@ -37,7 +37,7 @@ FCFLAGS=$(FCFLAGS) /dbglibs /debug:full /debug:inline-debug-info /debug-paramete
 LDFLAGS=/link /DEBUG
 !ENDIF # ?NDEBUG
 !IFNDEF INTRIN
-INTRIN=i
+INTRIN=IEEE_FMA
 !ENDIF # !INTRIN
 !IFDEF INTRIN
 FCFLAGS=$(FCFLAGS) /DUSE_IEEE_INTRINSIC=$(INTRIN)
