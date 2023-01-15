@@ -33,11 +33,7 @@ SUBROUTINE WKSVD2(G, U, V, S, INFO)
   REAL(KIND=K) :: A(2,2), X, Y, T
   REAL(KIND=K) :: TANG, SECG, TANF, SECF, TANP, SECP
 
-#ifdef USE_IEEE_INTRINSIC
-#include "hksvd2i.F90"
-#else
 #include "hksvd2.F90"
-#endif
 #ifndef NDEBUG
 9 FORMAT(2(A,ES30.21E4))
 #endif

@@ -1,5 +1,11 @@
   ! This is the generic part of the complex Kogbetliantz routines.
 
+#ifdef USE_IEEE_INTRINSIC
+#define CMUL(A,B) CMPLX(IEEE_FMA(REAL(A),REAL(B),-AIMAG(A)*AIMAG(B)),IEEE_FMA(REAL(A),AIMAG(B),AIMAG(A)*REAL(B)),K)
+#else
+#define CMUL(A,B) A * B
+#endif
+
   ! U = I
   U(1,1) = CONE
   U(2,1) = CZERO
@@ -176,7 +182,7 @@
      Z = CONJG(B(1,1)) / A(1,1)
      U(1,1) = Z
      B(1,1) = CMPLX(A(1,1), ZERO, K)
-     B(1,2) = Z * B(1,2)
+     B(1,2) = CMUL(Z, B(1,2))
   END IF
 
   ! make B(2,1) real and non-negative
@@ -193,7 +199,7 @@
      Z = CONJG(B(2,1)) / A(2,1)
      U(2,2) = Z
      B(2,1) = CMPLX(A(2,1), ZERO, K)
-     B(2,2) = Z * B(2,2)
+     B(2,2) = CMUL(Z, B(2,2))
   END IF
 
   ! compute the Givens rotation
@@ -206,7 +212,11 @@
 #ifdef CR_MATH
         SECG = CR_HYPOT(TANG, ONE)
 #else
+#ifdef USE_IEEE_INTRINSIC
+        SECG = SQRT(IEEE_FMA(TANG, TANG, ONE))
+#else
         SECG = SQRT(TANG * TANG + ONE)
+#endif
 #endif
      ELSE ! TANG = 0
         SECG = ONE
@@ -219,6 +229,31 @@
   ! apply the Givens rotation
   B(1,1) = S(1)
   IF (TANG .GT. ZERO) THEN
+#ifdef USE_IEEE_INTRINSIC
+     X =  TANG
+     Y = -TANG
+     IF (SECG .GT. ONE) THEN
+        B(2,1) = U(1,1)
+        U(1,1) = CMPLX(IEEE_FMA(X, REAL(U(2,1)), REAL(U(1,1))) / SECG, IEEE_FMA(X, AIMAG(U(2,1)), AIMAG(U(1,1))) / SECG, K)
+        U(2,1) = CMPLX(IEEE_FMA(Y, REAL(B(2,1)), REAL(U(2,1))) / SECG, IEEE_FMA(Y, AIMAG(B(2,1)), AIMAG(U(2,1))) / SECG, K)
+        B(2,1) = U(1,2)
+        U(1,2) = CMPLX(IEEE_FMA(X, REAL(U(2,2)), REAL(U(1,2))) / SECG, IEEE_FMA(X, AIMAG(U(2,2)), AIMAG(U(1,2))) / SECG, K)
+        U(2,2) = CMPLX(IEEE_FMA(Y, REAL(B(2,1)), REAL(U(2,2))) / SECG, IEEE_FMA(Y, AIMAG(B(2,1)), AIMAG(U(2,2))) / SECG, K)
+        B(2,1) = B(1,2)
+        B(1,2) = CMPLX(IEEE_FMA(X, REAL(B(2,2)), REAL(B(1,2))) / SECG, IEEE_FMA(X, AIMAG(B(2,2)), AIMAG(B(1,2))) / SECG, K)
+        B(2,2) = CMPLX(IEEE_FMA(Y, REAL(B(2,1)), REAL(B(2,2))) / SECG, IEEE_FMA(Y, AIMAG(B(2,1)), AIMAG(B(2,2))) / SECG, K)
+     ELSE ! SECG = 1
+        B(2,1) = U(1,1)
+        U(1,1) = CMPLX(IEEE_FMA(X, REAL(U(2,1)), REAL(U(1,1))), IEEE_FMA(X, AIMAG(U(2,1)), AIMAG(U(1,1))), K)
+        U(2,1) = CMPLX(IEEE_FMA(Y, REAL(B(2,1)), REAL(U(2,1))), IEEE_FMA(Y, AIMAG(B(2,1)), AIMAG(U(2,1))), K)
+        B(2,1) = U(1,2)
+        U(1,2) = CMPLX(IEEE_FMA(X, REAL(U(2,2)), REAL(U(1,2))), IEEE_FMA(X, AIMAG(U(2,2)), AIMAG(U(1,2))), K)
+        U(2,2) = CMPLX(IEEE_FMA(Y, REAL(B(2,1)), REAL(U(2,2))), IEEE_FMA(Y, AIMAG(B(2,1)), AIMAG(U(2,2))), K)
+        B(2,1) = B(1,2)
+        B(1,2) = CMPLX(IEEE_FMA(X, REAL(B(2,2)), REAL(B(1,2))), IEEE_FMA(X, AIMAG(B(2,2)), AIMAG(B(1,2))), K)
+        B(2,2) = CMPLX(IEEE_FMA(Y, REAL(B(2,1)), REAL(B(2,2))), IEEE_FMA(Y, AIMAG(B(2,1)), AIMAG(B(2,2))), K)
+     END IF
+#else
      IF (SECG .GT. ONE) THEN
         B(2,1) = U(1,1)
         U(1,1) = (U(1,1) + TANG * U(2,1)) / SECG
@@ -240,6 +275,7 @@
         B(1,2) = B(1,2) + TANG * B(2,2)
         B(2,2) = B(2,2) - TANG * B(2,1)
      END IF
+#endif
      ! recompute the magnitudes in the second column
      A(1,2) = CR_HYPOT(REAL(B(1,2)), AIMAG(B(1,2)))
      A(2,2) = CR_HYPOT(REAL(B(2,2)), AIMAG(B(2,2)))
@@ -259,9 +295,9 @@
   ELSE ! the general case
      Z = CONJG(B(1,2)) / A(1,2)
      B(1,2) = CMPLX(A(1,2), ZERO, K)
-     B(2,2) = B(2,2) * Z
-     V(1,2) = V(1,2) * Z
-     V(2,2) = V(2,2) * Z
+     B(2,2) = CMUL(B(2,2), Z)
+     V(1,2) = CMUL(V(1,2), Z)
+     V(2,2) = CMUL(V(2,2), Z)
   END IF
 
   ! make B(2,2) real and non-negative
@@ -273,8 +309,8 @@
      END IF
   ELSE ! the general case
      Z = CONJG(B(2,2)) / A(2,2)
-     U(2,1) = Z * U(2,1)
-     U(2,2) = Z * U(2,2)
+     U(2,1) = CMUL(Z, U(2,1))
+     U(2,2) = CMUL(Z, U(2,2))
      B(2,2) = CMPLX(A(2,2), ZERO, K)
   END IF
 
@@ -303,15 +339,27 @@
      T = TWO / X
   ELSE IF (X .EQ. ONE) THEN
      T = SCALE(Y, 1)
+#ifdef USE_IEEE_INTRINSIC
+     T = T / IEEE_FMA(-Y, Y, TWO)
+#else
      T = T / (TWO - Y * Y)
+#endif
   ELSE IF (X .EQ. Y) THEN
      T = SCALE(X, 1) * Y
   ELSE IF (X .LT. Y) THEN
      T = SCALE(X, 1) * Y
+#ifdef USE_IEEE_INTRINSIC
+     T = T / IEEE_FMA(X, X, IEEE_FMA(-Y, Y, ONE))
+#else
      T = T / ((ONE - Y * Y) + X * X)
+#endif
   ELSE ! X > Y
      T = SCALE(Y, 1) * X
+#ifdef USE_IEEE_INTRINSIC
+     T = T / IEEE_FMA(X - Y, X + Y, ONE)
+#else
      T = T / ((X - Y) * (X + Y) + ONE)
+#endif
   END IF
 #ifndef NDEBUG
   WRITE (ERROR_UNIT,9) '   T=', T, ',ROOTH=', ROOTH
@@ -332,13 +380,21 @@
      TANF = CR_HYPOT(T, ONE)
 #else
      T = SIGN(MIN(ABS(T), ROOTH), T)
+#ifdef USE_IEEE_INTRINSIC
+     TANF = SQRT(IEEE_FMA(T, T, ONE))
+#else
      TANF = SQRT(T * T + ONE)
+#endif
 #endif
      TANF = T / (ONE + TANF)
 #ifdef CR_MATH
      SECF = CR_HYPOT(TANF, ONE)
 #else
+#ifdef USE_IEEE_INTRINSIC
+     SECF = SQRT(IEEE_FMA(TANF, TANF, ONE))
+#else
      SECF = SQRT(TANF * TANF + ONE)
+#endif
 #endif
   END IF
 #ifndef NDEBUG
@@ -346,17 +402,63 @@
 #endif
 
   ! the functions of \psi
-  TANP = Y * TANF + X
+  TANP = IEEE_FMA(Y, TANF, X)
 #ifdef CR_MATH
   SECP = CR_HYPOT(TANP, ONE)
 #else
+#ifdef USE_IEEE_INTRINSIC
+  SECP = SQRT(IEEE_FMA(TANP, TANP, ONE))
+#else
   SECP = SQRT(TANP * TANP + ONE)
+#endif
 #endif
 #ifndef NDEBUG
   WRITE (ERROR_UNIT,9) 'TANP=', TANP, ', SECP=', SECP
 #endif
 
-  ! update U
+#ifdef USE_IEEE_INTRINSIC
+  ! update U, S
+  X =  TANF
+  Y = -TANF
+  IF (SECF .NE. ONE) THEN
+     S(1) = (SECP / SECF) * A(1,1) ! the first scaled singular value
+     Z = U(1,1)
+     U(1,1) = CMPLX(IEEE_FMA(X, REAL(U(2,1)), REAL(U(1,1))) / SECF, IEEE_FMA(X, AIMAG(U(2,1)), AIMAG(U(1,1))) / SECF, K)
+     U(2,1) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(U(2,1))) / SECF, IEEE_FMA(Y,      AIMAG(Z), AIMAG(U(2,1))) / SECF, K)
+     Z = U(1,2)
+     U(1,2) = CMPLX(IEEE_FMA(X, REAL(U(2,2)), REAL(U(1,2))) / SECF, IEEE_FMA(X, AIMAG(U(2,2)), AIMAG(U(1,2))) / SECF, K)
+     U(2,2) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(U(2,2))) / SECF, IEEE_FMA(Y,      AIMAG(Z), AIMAG(U(2,2))) / SECF, K)
+  ELSE ! SECF = 1
+     S(1) = SECP * A(1,1) ! the first scaled singular value
+     Z = U(1,1)
+     U(1,1) = CMPLX(IEEE_FMA(X, REAL(U(2,1)), REAL(U(1,1))), IEEE_FMA(X, AIMAG(U(2,1)), AIMAG(U(1,1))), K)
+     U(2,1) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(U(2,1))), IEEE_FMA(Y,      AIMAG(Z), AIMAG(U(2,1))), K)
+     Z = U(1,2)
+     U(1,2) = CMPLX(IEEE_FMA(X, REAL(U(2,2)), REAL(U(1,2))), IEEE_FMA(X, AIMAG(U(2,2)), AIMAG(U(1,2))), K)
+     U(2,2) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(U(2,2))), IEEE_FMA(Y,      AIMAG(Z), AIMAG(U(2,2))), K)
+  END IF
+  ! update V
+  X =  TANP
+  Y = -TANP
+  IF (SECP .NE. ONE) THEN
+     S(2) = (SECF / SECP) * A(2,2) ! the second scaled singular value
+     Z = V(1,1)
+     V(1,1) = CMPLX(IEEE_FMA(X, REAL(V(1,2)), REAL(V(1,1))) / SECP, IEEE_FMA(X, AIMAG(V(1,2)), AIMAG(V(1,1))) / SECP, K)
+     V(1,2) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(V(1,2))) / SECP, IEEE_FMA(Y,      AIMAG(Z), AIMAG(V(1,2))) / SECP, K)
+     Z = V(2,1)
+     V(2,1) = CMPLX(IEEE_FMA(X, REAL(V(2,2)), REAL(V(2,1))) / SECP, IEEE_FMA(X, AIMAG(V(2,2)), AIMAG(V(2,1))) / SECP, K)
+     V(2,2) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(V(2,2))) / SECP, IEEE_FMA(Y,      AIMAG(Z), AIMAG(V(2,2))) / SECP, K)
+  ELSE ! SECP = 1
+     S(2) = SECF * A(2,2) ! the second scaled singular value
+     Z = V(1,1)
+     V(1,1) = CMPLX(IEEE_FMA(X, REAL(V(1,2)), REAL(V(1,1))), IEEE_FMA(X, AIMAG(V(1,2)), AIMAG(V(1,1))), K)
+     V(1,2) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(V(1,2))), IEEE_FMA(Y,      AIMAG(Z), AIMAG(V(1,2))), K)
+     Z = V(2,1)
+     V(2,1) = CMPLX(IEEE_FMA(X, REAL(V(2,2)), REAL(V(2,1))), IEEE_FMA(X, AIMAG(V(2,2)), AIMAG(V(2,1))), K)
+     V(2,2) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(V(2,2))), IEEE_FMA(Y,      AIMAG(Z), AIMAG(V(2,2))), K)
+  END IF
+#else
+  ! update U, S
   IF (SECF .NE. ONE) THEN
      S(1) = (SECP / SECF) * A(1,1) ! the first scaled singular value
      Z = U(1,1)
@@ -374,7 +476,6 @@
      U(1,2) = U(1,2) + TANF * U(2,2)
      U(2,2) = U(2,2) - TANF *      Z
   END IF
-
   ! update V
   IF (SECP .NE. ONE) THEN
      S(2) = (SECF / SECP) * A(2,2) ! the second scaled singular value
@@ -393,6 +494,7 @@
      V(2,1) = V(2,1) + TANP * V(2,2)
      V(2,2) = V(2,2) - TANP *      Z
   END IF
+#endif
 
   ! clean up -0, if any
 8 IF (U(1,1) .EQ. CZERO) U(1,1) = CZERO

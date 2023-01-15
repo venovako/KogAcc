@@ -1,14 +1,14 @@
 ../bin/$(PLAT)/sksvd2.exe: test/sksvd2x.F90 test/tksvd2.F90 ../lib/$(PLAT)/libksvd2.a $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o sksvd2.exe ../../../src/test/sksvd2x.F90 $(OBJS_CRF_MATH) -L../../../lib/$(PLAT) -lksvd2
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o sksvd2.exe ../../../src/test/sksvd2x.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux
 
 ../bin/$(PLAT)/cksvd2.exe: test/cksvd2x.F90 test/uksvd2.F90 ../lib/$(PLAT)/libksvd2.a $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o cksvd2.exe ../../../src/test/cksvd2x.F90 $(OBJS_CRF_MATH) -L../../../lib/$(PLAT) -lksvd2
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o cksvd2.exe ../../../src/test/cksvd2x.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux
 
 ../bin/$(PLAT)/dksvd2.exe: test/dksvd2x.F90 test/tksvd2.F90 ../lib/$(PLAT)/libksvd2.a $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o dksvd2.exe ../../../src/test/dksvd2x.F90 $(OBJS_CRD_MATH) -L../../../lib/$(PLAT) -lksvd2
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o dksvd2.exe ../../../src/test/dksvd2x.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux
 
 ../bin/$(PLAT)/zksvd2.exe: test/zksvd2x.F90 test/uksvd2.F90 ../lib/$(PLAT)/libksvd2.a $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o zksvd2.exe ../../../src/test/zksvd2x.F90 $(OBJS_CRD_MATH) -L../../../lib/$(PLAT) -lksvd2
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o zksvd2.exe ../../../src/test/zksvd2x.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux
 
 ../bin/$(PLAT)/qksvd2.exe: test/qksvd2x.F90 test/tksvd2.F90 ../lib/$(PLAT)/libksvd2.a $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o qksvd2.exe ../../../src/test/qksvd2x.F90 -L../../../lib/$(PLAT) -lksvd2
@@ -71,7 +71,7 @@
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o jsweep.exe ../../../src/test/jsweepx.f90 -L../../../lib/$(PLAT) -lfaux -L../../../../JACSD -ljstrat$(DEBUG)
 
 ../bin/$(PLAT)/s2g101.exe: test/s2g101.F90 $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o s2g101.exe ../../../src/test/s2g101.F90 $(OBJS_CRF_MATH)
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o s2g101.exe ../../../src/test/s2g101.F90 -L../../../lib/$(PLAT) -lfaux
 
 ../bin/$(PLAT)/s2g110.exe: test/s2g110.F90 $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o s2g110.exe ../../../src/test/s2g110.F90 $(OBJS_CRF_MATH)
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o s2g110.exe ../../../src/test/s2g110.F90 -L../../../lib/$(PLAT) -lfaux

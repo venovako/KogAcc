@@ -144,7 +144,11 @@
 #ifdef CR_MATH
         SECG = CR_HYPOT(TANG, ONE)
 #else
+#ifdef USE_IEEE_INTRINSIC
+        SECG = SQRT(IEEE_FMA(TANG, TANG, ONE))
+#else
         SECG = SQRT(TANG * TANG + ONE)
+#endif
 #endif
      ELSE ! TANG = 0
         SECG = ONE
@@ -157,6 +161,31 @@
   ! apply the Givens rotation
   B(1,1) = S(1)
   IF (TANG .GT. ZERO) THEN
+#ifdef USE_IEEE_INTRINSIC
+     X =  TANG
+     Y = -TANG
+     IF (SECG .GT. ONE) THEN
+        B(2,1) = U(1,1)
+        U(1,1) = IEEE_FMA(X, U(2,1), U(1,1)) / SECG
+        U(2,1) = IEEE_FMA(Y, B(2,1), U(2,1)) / SECG
+        B(2,1) = U(1,2)
+        U(1,2) = IEEE_FMA(X, U(2,2), U(1,2)) / SECG
+        U(2,2) = IEEE_FMA(Y, B(2,1), U(2,2)) / SECG
+        B(2,1) = B(1,2)
+        B(1,2) = IEEE_FMA(X, B(2,2), B(1,2)) / SECG
+        B(2,2) = IEEE_FMA(Y, B(2,1), B(2,2)) / SECG
+     ELSE ! SECG = 1
+        B(2,1) = U(1,1)
+        U(1,1) = IEEE_FMA(X, U(2,1), U(1,1))
+        U(2,1) = IEEE_FMA(Y, B(2,1), U(2,1))
+        B(2,1) = U(1,2)
+        U(1,2) = IEEE_FMA(X, U(2,2), U(1,2))
+        U(2,2) = IEEE_FMA(Y, B(2,1), U(2,2))
+        B(2,1) = B(1,2)
+        B(1,2) = IEEE_FMA(X, B(2,2), B(1,2))
+        B(2,2) = IEEE_FMA(Y, B(2,1), B(2,2))
+     END IF
+#else
      IF (SECG .GT. ONE) THEN
         B(2,1) = U(1,1)
         U(1,1) = (U(1,1) + TANG * U(2,1)) / SECG
@@ -178,6 +207,7 @@
         B(1,2) = B(1,2) + TANG * B(2,2)
         B(2,2) = B(2,2) - TANG * B(2,1)
      END IF
+#endif
   END IF
   B(2,1) = ZERO
 
@@ -217,15 +247,27 @@
      Z = TWO / X
   ELSE IF (X .EQ. ONE) THEN
      Z = SCALE(Y, 1)
+#ifdef USE_IEEE_INTRINSIC
+     Z = Z / IEEE_FMA(-Y, Y, TWO)
+#else
      Z = Z / (TWO - Y * Y)
+#endif
   ELSE IF (X .EQ. Y) THEN
      Z = SCALE(X, 1) * Y
   ELSE IF (X .LT. Y) THEN
      Z = SCALE(X, 1) * Y
+#ifdef USE_IEEE_INTRINSIC
+     Z = Z / IEEE_FMA(X, X, IEEE_FMA(-Y, Y, ONE))
+#else
      Z = Z / ((ONE - Y * Y) + X * X)
+#endif
   ELSE ! X > Y
      Z = SCALE(Y, 1) * X
+#ifdef USE_IEEE_INTRINSIC
+     Z = Z / IEEE_FMA(X - Y, X + Y, ONE)
+#else
      Z = Z / ((X - Y) * (X + Y) + ONE)
+#endif
   END IF
 #ifndef NDEBUG
   WRITE (ERROR_UNIT,9) '   Z=', Z, ',ROOTH=', ROOTH
@@ -246,13 +288,21 @@
      TANF = CR_HYPOT(Z, ONE)
 #else
      Z = SIGN(MIN(ABS(Z), ROOTH), Z)
+#ifdef USE_IEEE_INTRINSIC
+     TANF = SQRT(IEEE_FMA(Z, Z, ONE))
+#else
      TANF = SQRT(Z * Z + ONE)
+#endif
 #endif
      TANF = Z / (ONE + TANF)
 #ifdef CR_MATH
      SECF = CR_HYPOT(TANF, ONE)
 #else
+#ifdef USE_IEEE_INTRINSIC
+     SECF = SQRT(IEEE_FMA(TANF, TANF, ONE))
+#else
      SECF = SQRT(TANF * TANF + ONE)
+#endif
 #endif
   END IF
 #ifndef NDEBUG
@@ -260,17 +310,63 @@
 #endif
 
   ! the functions of \psi
-  TANP = Y * TANF + X
+  TANP = IEEE_FMA(Y, TANF, X)
 #ifdef CR_MATH
   SECP = CR_HYPOT(TANP, ONE)
 #else
+#ifdef USE_IEEE_INTRINSIC
+  SECP = SQRT(IEEE_FMA(TANP, TANP, ONE))
+#else
   SECP = SQRT(TANP * TANP + ONE)
+#endif
 #endif
 #ifndef NDEBUG
   WRITE (ERROR_UNIT,9) 'TANP=', TANP, ', SECP=', SECP
 #endif
 
-  ! update U
+#ifdef USE_IEEE_INTRINSIC
+  ! update U, S
+  X =  TANF
+  Y = -TANF
+  IF (SECF .NE. ONE) THEN
+     S(1) = (SECP / SECF) * B(1,1) ! the first scaled singular value
+     Z = U(1,1)
+     U(1,1) = IEEE_FMA(X, U(2,1), U(1,1)) / SECF
+     U(2,1) = IEEE_FMA(Y,      Z, U(2,1)) / SECF
+     Z = U(1,2)
+     U(1,2) = IEEE_FMA(X, U(2,2), U(1,2)) / SECF
+     U(2,2) = IEEE_FMA(Y,      Z, U(2,2)) / SECF
+  ELSE ! SECF = 1
+     S(1) = SECP * B(1,1) ! the first scaled singular value
+     Z = U(1,1)
+     U(1,1) = IEEE_FMA(X, U(2,1), U(1,1))
+     U(2,1) = IEEE_FMA(Y,      Z, U(2,1))
+     Z = U(1,2)
+     U(1,2) = IEEE_FMA(X, U(2,2), U(1,2))
+     U(2,2) = IEEE_FMA(Y,      Z, U(2,2))
+  END IF
+  ! update V
+  X =  TANP
+  Y = -TANP
+  IF (SECP .NE. ONE) THEN
+     S(2) = (SECF / SECP) * B(2,2) ! the second scaled singular value
+     Z = V(1,1)
+     V(1,1) = IEEE_FMA(X, V(1,2), V(1,1)) / SECP
+     V(1,2) = IEEE_FMA(Y,      Z, V(1,2)) / SECP
+     Z = V(2,1)
+     V(2,1) = IEEE_FMA(X, V(2,2), V(2,1)) / SECP
+     V(2,2) = IEEE_FMA(Y,      Z, V(2,2)) / SECP
+  ELSE ! SECP = 1
+     S(2) = SECF * B(2,2) ! the second scaled singular value
+     Z = V(1,1)
+     V(1,1) = IEEE_FMA(X, V(1,2), V(1,1))
+     V(1,2) = IEEE_FMA(Y,      Z, V(1,2))
+     Z = V(2,1)
+     V(2,1) = IEEE_FMA(X, V(2,2), V(2,1))
+     V(2,2) = IEEE_FMA(Y,      Z, V(2,2))
+  END IF
+#else
+  ! update U, S
   IF (SECF .NE. ONE) THEN
      S(1) = (SECP / SECF) * B(1,1) ! the first scaled singular value
      Z = U(1,1)
@@ -288,7 +384,6 @@
      U(1,2) = U(1,2) + TANF * U(2,2)
      U(2,2) = U(2,2) - TANF *      Z
   END IF
-
   ! update V
   IF (SECP .NE. ONE) THEN
      S(2) = (SECF / SECP) * B(2,2) ! the second scaled singular value
@@ -307,6 +402,7 @@
      V(2,1) = V(2,1) + TANP * V(2,2)
      V(2,2) = V(2,2) - TANP *      Z
   END IF
+#endif
 
   ! clean up -0, if any
 8 IF (U(1,1) .EQ. ZERO) U(1,1) = ZERO

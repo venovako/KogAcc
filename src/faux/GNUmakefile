@@ -1,5 +1,5 @@
-../lib/$(PLAT)/libfaux.a: $(OBJS_FAUX) $(MKFS) faux/GNUmakefile
-	$(AR) $(ARFLAGS) $@ $(OBJS_FAUX)
+../lib/$(PLAT)/libfaux.a: $(OBJS_FAUX) $(OBJS_CRF_MATH) $(OBJS_CRD_MATH) $(MKFS) faux/GNUmakefile
+	$(AR) $(ARFLAGS) $@ $(OBJS_FAUX) $(OBJS_CRF_MATH) $(OBJS_CRD_MATH)
 
 ../obj/$(PLAT)/sthalt.o: faux/sthalt.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/sthalt.F90
