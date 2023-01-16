@@ -437,7 +437,7 @@
      U(1,2) = CMPLX(IEEE_FMA(X, REAL(U(2,2)), REAL(U(1,2))), IEEE_FMA(X, AIMAG(U(2,2)), AIMAG(U(1,2))), K)
      U(2,2) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(U(2,2))), IEEE_FMA(Y,      AIMAG(Z), AIMAG(U(2,2))), K)
   END IF
-  ! update V
+  ! update V, S
   X =  TANP
   Y = -TANP
   IF (SECP .NE. ONE) THEN
@@ -476,7 +476,7 @@
      U(1,2) = U(1,2) + TANF * U(2,2)
      U(2,2) = U(2,2) - TANF *      Z
   END IF
-  ! update V
+  ! update V, S
   IF (SECP .NE. ONE) THEN
      S(2) = (SECF / SECP) * A(2,2) ! the second scaled singular value
      Z = V(1,1)

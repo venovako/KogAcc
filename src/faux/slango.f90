@@ -40,6 +40,7 @@ SUBROUTINE SLANGO(O, N, G, LDG, S, INFO)
   IF (LDG .LT. N) INFO = -4
   IF (N .LT. 0) INFO = -2
   IF (INFO .NE. 0) RETURN
+
   SELECT CASE (O)
   CASE ('A','a')
      S = SLANGE('F', N, N, G, LDG, SC)

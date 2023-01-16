@@ -345,7 +345,7 @@
      U(1,2) = IEEE_FMA(X, U(2,2), U(1,2))
      U(2,2) = IEEE_FMA(Y,      Z, U(2,2))
   END IF
-  ! update V
+  ! update V, S
   X =  TANP
   Y = -TANP
   IF (SECP .NE. ONE) THEN
@@ -384,7 +384,7 @@
      U(1,2) = U(1,2) + TANF * U(2,2)
      U(2,2) = U(2,2) - TANF *      Z
   END IF
-  ! update V
+  ! update V, S
   IF (SECP .NE. ONE) THEN
      S(2) = (SECF / SECP) * B(2,2) ! the second scaled singular value
      Z = V(1,1)

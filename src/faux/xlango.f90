@@ -17,7 +17,6 @@ SUBROUTINE XLANGO(O, N, G, LDG, S, INFO)
   IF (N .LT. 0) INFO = -2
   IF (INFO .EQ. 0) RETURN
 
-  ! this is to be used for debugging and illustration purposes only
   SELECT CASE (O)
   CASE ('A','a')
      DO J = 1, N
