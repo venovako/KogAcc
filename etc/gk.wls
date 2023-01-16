@@ -1,0 +1,21 @@
+#!/usr/bin/env wolframscript -print all
+If[Length[$ScriptCommandLine]!=5,Quit[]];
+g11=FullSimplify[ToExpression[$ScriptCommandLine[[2]]]];
+g21=FullSimplify[ToExpression[$ScriptCommandLine[[3]]]];
+g12=FullSimplify[ToExpression[$ScriptCommandLine[[4]]]];
+g22=FullSimplify[ToExpression[$ScriptCommandLine[[5]]]];
+n2[g11_,g21_,g12_,g22_]:=2*(g11*g21+g12*g22);
+n2f=FullSimplify[n2[g11,g21,g12,g22]];
+d2[g11_,g21_,g12_,g22_]:=g21*g21+g22*g22-g11*g11-g12*g12;
+d2f=FullSimplify[d2[g11,g21,g12,g22]];
+t2f=FullSimplify[If[d2f!=0,n2f/d2f,If[n2f!=0,Infinity*Sign[n2f],0]]];
+"Tan[2\[Phi]]=\[NewLine]"<>ToString[{t2f,N[t2f]}]
+t[t2_]:=If[Abs[t2]!=Infinity,t2/(1+Sqrt[1+t2*t2]),Sign[t2]];
+tf=FullSimplify[t[t2f]];
+"Tan[\[Phi]]=\[NewLine]"<>ToString[{tf,N[tf]}]
+n[g12_,g22_,tf_]:=g12+g22*tf;
+d[g11_,g21_,tf_]:=g11+g21*tf;
+np=FullSimplify[n[g12,g22,tf]];
+dp=FullSimplify[d[g11,g21,tf]];
+tp=FullSimplify[If[dp!=0,np/dp,If[np!=0,Infinity*Sign[np],0]]];
+"Tan[\[Psi]]=\[NewLine]"<>ToString[{tp,N[tp]}]
