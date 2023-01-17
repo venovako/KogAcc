@@ -310,7 +310,11 @@
 #endif
 
   ! the functions of \psi
+#ifdef USE_IEEE_INTRINSIC
   TANP = IEEE_FMA(Y, TANF, X)
+#else
+  TANP = Y * TANF + X
+#endif
 #ifdef CR_MATH
   SECP = CR_HYPOT(TANP, ONE)
 #else
