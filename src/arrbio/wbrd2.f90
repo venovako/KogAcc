@@ -8,11 +8,21 @@
 !!@param INFO [OUT]; zero on success, \f$-i\f$ if the \f$i\f$th argument had an illegal value, or a positive I/O error code.
 SUBROUTINE WBRD2(U, M, N, G, LDG, INFO)
   IMPLICIT NONE
+
+  INTERFACE
+     SUBROUTINE WBRD1(U, M, G, INFO)
+       IMPLICIT NONE
+       INTEGER, INTENT(IN) :: U, M
+       COMPLEX(KIND=10), INTENT(OUT) :: G(M)
+       INTEGER, INTENT(OUT) :: INFO
+     END SUBROUTINE WBRD1
+  END INTERFACE
+
   INTEGER, INTENT(IN) :: U, M, N, LDG
   COMPLEX(KIND=10), INTENT(OUT) :: G(LDG,N)
   INTEGER, INTENT(OUT) :: INFO
   INTEGER :: J
-  EXTERNAL :: WBRD1
+
   INFO = 0
   IF (LDG .LT. M) INFO = -5
   IF (N .LT. 0) INFO = -3

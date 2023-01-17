@@ -123,3 +123,27 @@
 
 ../obj/$(PLAT)/wbwr2.o: arrbio/wbwr2.f90 $(MKFS) arrbio/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/arrbio/wbwr2.f90
+
+../obj/$(PLAT)/swrout.o: arrbio/swrout.f90 $(MKFS) arrbio/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/arrbio/swrout.f90
+
+../obj/$(PLAT)/cwrout.o: arrbio/cwrout.f90 $(MKFS) arrbio/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/arrbio/cwrout.f90
+
+../obj/$(PLAT)/dwrout.o: arrbio/dwrout.f90 $(MKFS) arrbio/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/arrbio/dwrout.f90
+
+../obj/$(PLAT)/zwrout.o: arrbio/zwrout.f90 $(MKFS) arrbio/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/arrbio/zwrout.f90
+
+../obj/$(PLAT)/qwrout.o: arrbio/qwrout.f90 $(MKFS) arrbio/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/arrbio/qwrout.f90
+
+../obj/$(PLAT)/ywrout.o: arrbio/ywrout.f90 $(MKFS) arrbio/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/arrbio/ywrout.f90
+
+../obj/$(PLAT)/xwrout.o: arrbio/xwrout.f90 $(MKFS) arrbio/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/arrbio/xwrout.f90
+
+../obj/$(PLAT)/wwrout.o: arrbio/wwrout.f90 $(MKFS) arrbio/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/arrbio/wwrout.f90

@@ -99,3 +99,21 @@
 
 ..\obj\$(PLAT)\ybwr2.obj: arrbio\ybwr2.f90 $(MKFS) arrbio\Makefile
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\arrbio\ybwr2.f90
+
+..\obj\$(PLAT)\swrout.obj: arrbio\swrout.f90 $(MKFS) arrbio\Makefile
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\arrbio\swrout.f90
+
+..\obj\$(PLAT)\cwrout.obj: arrbio\cwrout.f90 $(MKFS) arrbio\Makefile
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\arrbio\cwrout.f90
+
+..\obj\$(PLAT)\dwrout.obj: arrbio\dwrout.f90 $(MKFS) arrbio\Makefile
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\arrbio\dwrout.f90
+
+..\obj\$(PLAT)\zwrout.obj: arrbio\zwrout.f90 $(MKFS) arrbio\Makefile
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\arrbio\zwrout.f90
+
+..\obj\$(PLAT)\qwrout.obj: arrbio\qwrout.f90 $(MKFS) arrbio\Makefile
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\arrbio\qwrout.f90
+
+..\obj\$(PLAT)\ywrout.obj: arrbio\ywrout.f90 $(MKFS) arrbio\Makefile
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\arrbio\ywrout.f90

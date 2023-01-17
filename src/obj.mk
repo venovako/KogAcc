@@ -31,7 +31,14 @@ OBJS_ARRBIO=\
 ..\obj\$(PLAT)\dbwr2.obj\
 ..\obj\$(PLAT)\zbwr2.obj\
 ..\obj\$(PLAT)\qbwr2.obj\
-..\obj\$(PLAT)\ybwr2.obj
+..\obj\$(PLAT)\ybwr2.obj\
+..\obj\$(PLAT)\swrout.obj\
+..\obj\$(PLAT)\cwrout.obj\
+..\obj\$(PLAT)\dwrout.obj\
+..\obj\$(PLAT)\zwrout.obj\
+..\obj\$(PLAT)\qwrout.obj\
+..\obj\$(PLAT)\ywrout.obj
+
 
 OBJS_BLKSVD=\
 ..\obj\$(PLAT)\sbrdg.obj\

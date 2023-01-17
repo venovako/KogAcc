@@ -1,4 +1,5 @@
 #!/usr/bin/env wolframscript -print all
+(* Computes directly the exact and approximate rotations' parameters for a general real 2x2 matrix. *)
 If[Length[$ScriptCommandLine]!=5,Quit[]];
 g11=FullSimplify[ToExpression[$ScriptCommandLine[[2]]]];
 g21=FullSimplify[ToExpression[$ScriptCommandLine[[3]]]];
