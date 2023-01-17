@@ -1,4 +1,4 @@
-!>@brief \b DPQSORTX tests the DPQSRT subroutine with parallel execution if \f$N>0\f$ or sequentially if \f$N<0\f$.
+!>@brief \b DPQSORTX tests the DPQSRT subroutine with parallel execution if N>0 or sequentially if N<0.
 PROGRAM DPQSORTX
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64, OUTPUT_UNIT
   !$ USE OMP_LIB

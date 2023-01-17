@@ -1,4 +1,4 @@
-!>@brief \b QLANGO computes \f$S=\|G\|_F\f$ for \f$\mathrm{O}\in\{\mathrm{'A'},\mathrm{'a'}\}\f$ or \f$S=\|\mathop{\mathrm{off}}(G)\|_F\f$ for \f$\mathrm{O}\in\{\mathrm{'O'},\mathrm{'o'}\}\f$ or \f$S=\|G\|_{\max}\f$ for \f$\mathrm{O}\in\{\mathrm{'M'},\mathrm{'m'}\}\f$ of a square quadruple precision real matrix \f$G\f$ of order \f$N\f$.
+!>@brief \b QLANGO computes approximations of the various norms of G or off(G).
 SUBROUTINE QLANGO(O, N, G, LDG, S, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL128
   IMPLICIT NONE
@@ -19,7 +19,7 @@ SUBROUTINE QLANGO(O, N, G, LDG, S, INFO)
   IF (INFO .EQ. 0) RETURN
 
   SELECT CASE (O)
-  CASE ('A','a')
+  CASE ('F','f')
      DO J = 1, N
         DO I = 1, N
            S = HYPOT(S, G(I,J))

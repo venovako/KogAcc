@@ -1,10 +1,10 @@
-!>@brief \b DLWSV2 computes the SVD of an upper triangular double precision \f$2\times 2\f$ matrix \f$G\f$ as \f$G=U\Sigma V^T\f$ by calling the LAPACK's DLASV2 routine.
+!>@brief \b DLWSV2 computes the SVD of an upper triangular double precision 2x2 matrix G as G = U S V^T by calling the LAPACK's DLASV2 routine.
 !!
-!!@param G [IN]; \f$G\f$ is an upper triangular \f$2\times 2\f$ double precision matrix.
-!!@param U [OUT]; \f$U\f$ is an orthogonal double precision matrix of order two.
-!!@param V [OUT]; \f$V\f$ is an orthogonal double precision matrix of order two.
-!!@param S [OUT]; \f$\Sigma\f$ is a double precision array with two elements, \f$\sigma_{11}\f$ and \f$\sigma_{22}\f$.
-!!@param INFO [OUT]; On success, \f$0\f$; else, if \f$G\f$ is not upper triangular, \f$-\mathop{\mathtt{HUGE}}(0)\f$ (and \f$U=V=I\f$, \f$\sigma_{11}=\sigma_{22}=0\f$).
+!!@param G [IN]; G is an upper triangular 2x2 double precision matrix.
+!!@param U [OUT]; U is an orthogonal double precision matrix of order two.
+!!@param V [OUT]; V is an orthogonal double precision matrix of order two.
+!!@param S [OUT]; S is a double precision array with two elements, s_{11} and s_{22}.
+!!@param INFO [OUT]; On success, 0; else, if G is not upper triangular, -HUGE(INFO) (and U=V=I, s_{11}=s_{22}=0).
 PURE SUBROUTINE DLWSV2(G, U, V, S, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
   IMPLICIT NONE

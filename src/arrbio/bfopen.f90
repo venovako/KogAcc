@@ -3,7 +3,7 @@
 !!@param FN [IN]; a file name.
 !!@param ACT [IN]; one of RO, RW (or WR), or WO case-insensitive strings for Read-Only, Read-Write, or Write-Only access mode, respectively.
 !!@param U [OUT]; the file's newly assigned unit number.
-!!@param INFO [OUT]; zero on success, \f$-i\f$ if the \f$i\f$th argument had an illegal value, or a positive I/O error code.
+!!@param INFO [OUT]; zero on success, -i if the i-th argument had an illegal value, or a positive I/O error code.
 SUBROUTINE BFOPEN(FN, ACT, U, INFO)
   IMPLICIT NONE
   CHARACTER(LEN=*), INTENT(IN) :: FN

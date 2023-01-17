@@ -1,11 +1,11 @@
-!>@brief \b XKSVD2 computes the SVD of an extended precision \f$2\times 2\f$ matrix \f$G\f$ as \f$G=U\Sigma V^T\f$.
+!>@brief \b XKSVD2 computes the SVD of an extended precision 2x2 matrix G as G = U S V^T.
 !!
-!!@param G [IN]; \f$G\f$ is a general \f$2\times 2\f$ extended precision matrix with finite elements.
-!!@param U [OUT]; \f$U\f$ is an orthogonal extended precision matrix of order two.
-!!@param V [OUT]; \f$V\f$ is an orthogonal extended precision matrix of order two.
-!!@param S [OUT]; \f$\Sigma'\f$ is a extended precision array with two elements, \f$\sigma_{11}'\f$ and \f$\sigma_{22}'\f$, both non-negative and finite.
-!!@param INFO [OUT]; the scaling parameter \f$s\f$ such that \f$2^{-s}\Sigma'=\Sigma\f$.
-!!If \f$G\f$ has a non-finite element, then \f$s=-\mathop{\mathtt{HUGE}}(0)\f$, \f$U=V=I\f$, and \f$\sigma_{11}'=\sigma_{22}'=0\f$.
+!!@param G [IN]; G is a general 2x2 extended precision matrix with finite elements.
+!!@param U [OUT]; U is an orthogonal extended precision matrix of order two.
+!!@param V [OUT]; V is an orthogonal extended precision matrix of order two.
+!!@param S [OUT]; S' is a extended precision array with two elements, s_{11}' and s_{22}', both non-negative and finite.
+!!@param INFO [OUT]; the scaling parameter s such that 2^{-s} S' = S.
+!!If G has a non-finite element, then s=-HUGE(s), U=V=I, and s_{11}'=s_{22}'=0.
 #ifdef NDEBUG
 PURE SUBROUTINE XKSVD2(G, U, V, S, INFO)
 #else

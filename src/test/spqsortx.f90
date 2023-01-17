@@ -1,4 +1,4 @@
-!>@brief \b SPQSORTX tests the SPQSRT subroutine with parallel execution if \f$N>0\f$ or sequentially if \f$N<0\f$.
+!>@brief \b SPQSORTX tests the SPQSRT subroutine with parallel execution if N>0 or sequentially if N<0.
 PROGRAM SPQSORTX
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32, OUTPUT_UNIT
   !$ USE OMP_LIB

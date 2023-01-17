@@ -1,4 +1,4 @@
-!>@brief \b ZROTR premultiplies the rows \f$(p,q)\f$ of \f$G\f$ by \f$W\f$.
+!>@brief \b ZROTR premultiplies the rows (p,q) of G by W.
 PURE SUBROUTINE ZROTR(M, N, G, LDG, P, Q, W, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
   IMPLICIT NONE

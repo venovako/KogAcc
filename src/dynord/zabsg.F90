@@ -1,4 +1,4 @@
-!>@brief \b ZABSG computes \f$W=|G|\f$.
+!>@brief \b ZABSG computes W=|G|.
 SUBROUTINE ZABSG(M, N, G, LDG, W, LDW, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
   IMPLICIT NONE

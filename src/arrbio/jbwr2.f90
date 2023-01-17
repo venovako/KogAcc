@@ -1,11 +1,11 @@
 !>@brief \b JBWR2 writes a two-dimensional INT64 array to a binary file.
 !!
 !!@param U [IN]; a connected unit.
-!!@param M [IN]; the number of rows of \f$G\f$.
-!!@param N [IN]; the number of columns of \f$G\f$.
+!!@param M [IN]; the number of rows of G.
+!!@param N [IN]; the number of columns of G.
 !!@param G [IN]; an INT64 array to be written.
-!!@param LDG [IN]; the leading dimension of \f$G\f$.
-!!@param INFO [OUT]; zero on success, \f$-i\f$ if the \f$i\f$th argument had an illegal value, or a positive I/O error code.
+!!@param LDG [IN]; the leading dimension of G.
+!!@param INFO [OUT]; zero on success, -i if the i-th argument had an illegal value, or a positive I/O error code.
 SUBROUTINE JBWR2(U, M, N, G, LDG, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: INT64
   IMPLICIT NONE

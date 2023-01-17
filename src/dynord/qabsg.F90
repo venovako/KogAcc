@@ -1,4 +1,4 @@
-!>@brief \b QABSG computes \f$W=|G|\f$.
+!>@brief \b QABSG computes W=|G|.
 SUBROUTINE QABSG(M, N, G, LDG, W, LDW, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL128
   IMPLICIT NONE

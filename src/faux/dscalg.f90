@@ -1,4 +1,4 @@
-!>@brief \b DSCALG scales \f$G\f$ by \f$2^S\f$.
+!>@brief \b DSCALG scales G by 2^S.
 SUBROUTINE DSCALG(M, N, G, LDG, S, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
   IMPLICIT NONE

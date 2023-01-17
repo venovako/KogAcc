@@ -1,9 +1,9 @@
 !>@brief \b SBRD1 reads a one-dimensional single precision real array from a binary file.
 !!
 !!@param U [IN]; a connected unit.
-!!@param M [IN]; the length of \f$G\f$.
+!!@param M [IN]; the length of G.
 !!@param G [OUT]; a single precision real array to be read.
-!!@param INFO [OUT]; zero on success, \f$-i\f$ if the \f$i\f$th argument had an illegal value, or a positive I/O error code.
+!!@param INFO [OUT]; zero on success, -i if the i-th argument had an illegal value, or a positive I/O error code.
 SUBROUTINE SBRD1(U, M, G, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
   IMPLICIT NONE

@@ -1,4 +1,4 @@
-!>@brief \b SMKWPQ builds the weights \f$W\f$ and the corresponding indexes \f$O\f$ from the \f$N\times N\f$ single precision matrix \f$W\f$.
+!>@brief \b SMKWPQ builds the weights W and the corresponding indexes O from the NxN single precision matrix W.
 #ifdef NDEBUG
 PURE SUBROUTINE SMKWPQ(N, G, LDG, W, O, INFO)
 #else

@@ -1,9 +1,9 @@
 !>@brief \b YBWR1 writes a one-dimensional quadruple precision complex array to a binary file.
 !!
 !!@param U [IN]; a connected unit.
-!!@param M [IN]; the length of \f$G\f$.
+!!@param M [IN]; the length of G.
 !!@param G [IN]; a quadruple precision complex array to be written.
-!!@param INFO [OUT]; zero on success, \f$-i\f$ if the \f$i\f$th argument had an illegal value, or a positive I/O error code.
+!!@param INFO [OUT]; zero on success, -i if the i-th argument had an illegal value, or a positive I/O error code.
 SUBROUTINE YBWR1(U, M, G, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL128
   IMPLICIT NONE

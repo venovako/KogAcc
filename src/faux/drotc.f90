@@ -1,4 +1,4 @@
-!>@brief \b DROTC postmultiplies the columns \f$(p,q)\f$ of \f$G\f$ by \f$W\f$.
+!>@brief \b DROTC postmultiplies the columns (p,q) of G by W.
 PURE SUBROUTINE DROTC(M, N, G, LDG, P, Q, W, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
   IMPLICIT NONE

@@ -1,4 +1,4 @@
-!>@brief \b ZROTC postmultiplies the columns \f$(p,q)\f$ of \f$G\f$ by \f$W\f$.
+!>@brief \b ZROTC postmultiplies the columns (p,q) of G by W.
 PURE SUBROUTINE ZROTC(M, N, G, LDG, P, Q, W, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
   IMPLICIT NONE

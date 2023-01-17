@@ -1,4 +1,4 @@
-!>@brief \b WLANGO computes \f$S=\|G\|_F\f$ for \f$\mathrm{O}\in\{\mathrm{'A'},\mathrm{'a'}\}\f$ or \f$S=\|\mathop{\mathrm{off}}(G)\|_F\f$ for \f$\mathrm{O}\in\{\mathrm{'O'},\mathrm{'o'}\}\f$ or \f$S=\|G\|_{\max}\f$ for \f$\mathrm{O}\in\{\mathrm{'M'},\mathrm{'m'}\}\f$ of a square extended precision complex matrix \f$G\f$ of order \f$N\f$.
+!>@brief \b WLANGO computes approximations of the various norms of G or off(G).
 SUBROUTINE WLANGO(O, N, G, LDG, S, INFO)
   IMPLICIT NONE
 
@@ -18,7 +18,7 @@ SUBROUTINE WLANGO(O, N, G, LDG, S, INFO)
   IF (INFO .NE. 0) RETURN
 
   SELECT CASE (O)
-  CASE ('A','a')
+  CASE ('F','f')
      DO J = 1, N
         DO I = 1, N
            S = HYPOT(S, REAL(G(I,J)))

@@ -1,4 +1,4 @@
-!>@brief \b XABSG computes \f$W=|G|\f$.
+!>@brief \b XABSG computes W=|G|.
 SUBROUTINE XABSG(M, N, G, LDG, W, LDW, INFO)
   IMPLICIT NONE
   INTEGER, INTENT(IN) :: M, N, LDG, LDW

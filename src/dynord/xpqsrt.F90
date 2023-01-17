@@ -1,4 +1,4 @@
-!>@brief \b XPQSRT sorts the arrays \f$AW,AP,AQ\f$ by the merge sort algorithm, using the workspace arrays \f$BW,BP,BQ\f$ of the same length \f$N\f$, according to the ordering \f$\prec\f$ defined by the WPQCMP subroutine, and returns a non-negative value in INFO if successful, or a negative value on failure.
+!>@brief \b XPQSRT sorts the arrays AW,AP,AQ by the merge sort algorithm, using the workspace arrays BW,BP,BQ of the same length N, according to the ordering defined by the WPQCMP subroutine, and returns a non-negative value in INFO if successful, or a negative value on failure.
 SUBROUTINE XPQSRT(WPQCMP, N, AW, AP, AQ, BW, BP, BQ, INFO)
   IMPLICIT NONE
 

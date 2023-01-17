@@ -1,4 +1,4 @@
-!>@brief \b QPQMRG merges the arrays \f$AW,AP,AQ\f$ (of length \f$M\f$) and \f$BW,BP,BQ\f$ (of length \f$N\f$) into the arrays \f$XW,XP,XQ\f$ (of length \f$M+N\f$), respectively, according to the ordering \f$\prec\f$ defined by the WPQCMP subroutine, and returns in INFO the number of cases where \f$(bw,bp,bq)\prec(aw,ap,aq)\f$, or \f$-i\f$ if the \f$i\f$th parameter had an illegal value.
+!>@brief \b QPQMRG merges the arrays AW,AP,AQ (of length M) and BW,BP,BQ (of length N) into the arrays XW,XP,XQ (of length M+N), respectively, according to the ordering < defined by the WPQCMP subroutine, and returns in INFO the number of cases where (bw,bp,bq)<(aw,ap,aq), or -i if the i-th parameter had an illegal value.
 PURE SUBROUTINE QPQMRG(WPQCMP, M, N, AW, AP, AQ, BW, BP, BQ, XW, XP, XQ, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL128
   IMPLICIT NONE

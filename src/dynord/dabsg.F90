@@ -1,4 +1,4 @@
-!>@brief \b DABSG computes \f$W=|G|\f$.
+!>@brief \b DABSG computes W=|G|.
 SUBROUTINE DABSG(M, N, G, LDG, W, LDW, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
   IMPLICIT NONE

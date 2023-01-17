@@ -1,4 +1,4 @@
-!>@brief \b YSCALG scales \f$G\f$ by \f$2^S\f$.
+!>@brief \b YSCALG scales G by 2^S.
 SUBROUTINE YSCALG(M, N, G, LDG, S, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL128
   IMPLICIT NONE

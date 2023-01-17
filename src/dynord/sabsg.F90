@@ -1,4 +1,4 @@
-!>@brief \b SABSG computes \f$W=|G|\f$.
+!>@brief \b SABSG computes W=|G|.
 SUBROUTINE SABSG(M, N, G, LDG, W, LDW, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
   IMPLICIT NONE

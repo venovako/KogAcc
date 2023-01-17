@@ -1,4 +1,4 @@
-!>@brief \b QMKWPQ builds the weights \f$W\f$ and the corresponding indexes \f$O\f$ from the \f$N\times N\f$ quadruple precision matrix \f$W\f$.
+!>@brief \b QMKWPQ builds the weights W and the corresponding indexes O from the NxN quadruple precision matrix W.
 PURE SUBROUTINE QMKWPQ(N, G, LDG, W, O, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL128
   IMPLICIT NONE

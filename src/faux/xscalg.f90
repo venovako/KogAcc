@@ -1,4 +1,4 @@
-!>@brief \b XSCALG scales \f$G\f$ by \f$2^S\f$.
+!>@brief \b XSCALG scales G by 2^S.
 SUBROUTINE XSCALG(M, N, G, LDG, S, INFO)
   IMPLICIT NONE
   INTEGER, INTENT(IN) :: M, N, LDG, S

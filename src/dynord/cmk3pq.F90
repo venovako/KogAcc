@@ -1,4 +1,4 @@
-!>@brief \b CMK3PQ builds at most \f$K\f$ pivot index pairs for the next transformation of \f$G\f$.
+!>@brief \b CMK3PQ builds at most K pivot index pairs for the next transformation of G.
 SUBROUTINE CMK3PQ(K, N, G, LDG, W, O, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
   IMPLICIT NONE

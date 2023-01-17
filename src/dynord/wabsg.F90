@@ -1,4 +1,4 @@
-!>@brief \b WABSG computes \f$W=|G|\f$.
+!>@brief \b WABSG computes W=|G|.
 SUBROUTINE WABSG(M, N, G, LDG, W, LDW, INFO)
   IMPLICIT NONE
 

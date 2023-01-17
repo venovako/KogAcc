@@ -1,4 +1,4 @@
-!>@brief \b QSCALG scales \f$G\f$ by \f$2^S\f$.
+!>@brief \b QSCALG scales G by 2^S.
 SUBROUTINE QSCALG(M, N, G, LDG, S, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL128
   IMPLICIT NONE

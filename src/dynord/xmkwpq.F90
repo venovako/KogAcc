@@ -1,4 +1,4 @@
-!>@brief \b XMKWPQ builds the weights \f$W\f$ and the corresponding indexes \f$O\f$ from the \f$N\times N\f$ extended precision matrix \f$W\f$.
+!>@brief \b XMKWPQ builds the weights W and the corresponding indexes O from the NxN extended precision matrix W.
 PURE SUBROUTINE XMKWPQ(N, G, LDG, W, O, INFO)
   IMPLICIT NONE
 

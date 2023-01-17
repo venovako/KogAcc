@@ -1,4 +1,4 @@
-!>@brief \b XROTR premultiplies the rows \f$(p,q)\f$ of \f$G\f$ by \f$W\f$.
+!>@brief \b XROTR premultiplies the rows (p,q) of G by W.
 PURE SUBROUTINE XROTR(M, N, G, LDG, P, Q, W, INFO)
   IMPLICIT NONE
   INTEGER, INTENT(IN) :: M, N, LDG, P, Q

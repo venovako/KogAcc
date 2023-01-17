@@ -1,4 +1,4 @@
-!>@brief \b CSCALG scales \f$G\f$ by \f$2^S\f$.
+!>@brief \b CSCALG scales G by 2^S.
 SUBROUTINE CSCALG(M, N, G, LDG, S, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
   IMPLICIT NONE

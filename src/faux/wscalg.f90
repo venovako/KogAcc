@@ -1,4 +1,4 @@
-!>@brief \b WSCALG scales \f$G\f$ by \f$2^S\f$.
+!>@brief \b WSCALG scales G by 2^S.
 SUBROUTINE WSCALG(M, N, G, LDG, S, INFO)
   IMPLICIT NONE
   INTEGER, PARAMETER :: K = 10

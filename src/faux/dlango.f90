@@ -1,4 +1,4 @@
-!>@brief \b DLANGO computes \f$S=\|G\|_F\f$ for \f$\mathrm{O}\in\{\mathrm{'A'},\mathrm{'a'}\}\f$ or \f$S=\|\mathop{\mathrm{off}}(G)\|_F\f$ for \f$\mathrm{O}\in\{\mathrm{'O'},\mathrm{'o'}\}\f$ or \f$S=\|G\|_{\max}\f$ for \f$\mathrm{O}\in\{\mathrm{'M'},\mathrm{'m'}\}\f$ of a square double precision real matrix \f$G\f$ of order \f$N\f$.
+!>@brief \b DLANGO computes approximations of the various norms of G or off(G).
 SUBROUTINE DLANGO(O, N, G, LDG, S, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
   IMPLICIT NONE
@@ -42,7 +42,7 @@ SUBROUTINE DLANGO(O, N, G, LDG, S, INFO)
   IF (INFO .NE. 0) RETURN
 
   SELECT CASE (O)
-  CASE ('A','a')
+  CASE ('F','f')
      S = DLANGE('F', N, N, G, LDG, SC)
   CASE ('M','m')
      S = DLANGE('M', N, N, G, LDG, SC)

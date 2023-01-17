@@ -1,4 +1,4 @@
-!>@brief \b DMKWPQ builds the weights \f$W\f$ and the corresponding indexes \f$O\f$ from the \f$N\times N\f$ double precision matrix \f$W\f$.
+!>@brief \b DMKWPQ builds the weights W and the corresponding indexes O from the NxN double precision matrix W.
 #ifdef NDEBUG
 PURE SUBROUTINE DMKWPQ(N, G, LDG, W, O, INFO)
 #else

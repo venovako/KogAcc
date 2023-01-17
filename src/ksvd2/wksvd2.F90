@@ -1,11 +1,11 @@
-!>@brief \b WKSVD2 computes the SVD of an extended precision complex \f$2\times 2\f$ matrix \f$G\f$ as \f$G=U\Sigma V^H\f$.
+!>@brief \b WKSVD2 computes the SVD of an extended precision complex 2x2 matrix G as G = U S V^H.
 !!
-!!@param G [IN]; \f$G\f$ is a general \f$2\times 2\f$ extended precision complex matrix with all components of its elements finite.
-!!@param U [OUT]; \f$U\f$ is a unitary extended precision complex matrix of order two.
-!!@param V [OUT]; \f$V\f$ is a unitary extended precision complex matrix of order two.
-!!@param S [OUT]; \f$\Sigma'\f$ is a extended precision real array with two elements, \f$\sigma_{11}'\f$ and \f$\sigma_{22}'\f$, both non-negative and finite.
-!!@param INFO [OUT]; the scaling parameter \f$s\f$ such that \f$2^{-s}\Sigma'=\Sigma\f$.
-!!If \f$G\f$ has a non-finite component, then \f$s=-\mathop{\mathtt{HUGE}}(0)\f$, \f$U=V=I\f$, and \f$\sigma_{11}'=\sigma_{22}'=0\f$.
+!!@param G [IN]; G is a general 2x2 extended precision complex matrix with all components of its elements finite.
+!!@param U [OUT]; U is a unitary extended precision complex matrix of order two.
+!!@param V [OUT]; V is a unitary extended precision complex matrix of order two.
+!!@param S [OUT]; S' is a extended precision real array with two elements, s_{11}' and s_{22}', both non-negative and finite.
+!!@param INFO [OUT]; the scaling parameter s such that 2^{-s} S' = S.
+!!If G has a non-finite component, then s=-HUGE(s), U=V=I, and s_{11}'=s_{22}'=0.
 #ifdef NDEBUG
 PURE SUBROUTINE WKSVD2(G, U, V, S, INFO)
 #else

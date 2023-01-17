@@ -1,4 +1,4 @@
-!>@brief \b YABSG computes \f$W=|G|\f$.
+!>@brief \b YABSG computes W=|G|.
 SUBROUTINE YABSG(M, N, G, LDG, W, LDW, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL128
   IMPLICIT NONE

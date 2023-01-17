@@ -1,3 +1,4 @@
+!>@brief \b S2G101 generates a sequence of test cases with the unit diagonal and a non-zero upper off-diagonal.
 PROGRAM S2G101
   USE, INTRINSIC :: IEEE_ARITHMETIC, ONLY: IEEE_NEXT_UP
   IMPLICIT NONE

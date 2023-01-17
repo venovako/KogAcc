@@ -1,3 +1,4 @@
+!>@brief \b S2G110 generates a sequence of test cases with a non-zero (2,2) element and the unit (1,1) and (1,2) elements.
 PROGRAM S2G110
   USE, INTRINSIC :: IEEE_ARITHMETIC, ONLY: IEEE_NEXT_UP
   IMPLICIT NONE

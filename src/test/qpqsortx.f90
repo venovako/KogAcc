@@ -1,4 +1,4 @@
-!>@brief \b QPQSORTX tests the QPQSRT subroutine with parallel execution if \f$N>0\f$ or sequentially if \f$N<0\f$.
+!>@brief \b QPQSORTX tests the QPQSRT subroutine with parallel execution if N>0 or sequentially if N<0.
 PROGRAM QPQSORTX
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL128, OUTPUT_UNIT
   !$ USE OMP_LIB

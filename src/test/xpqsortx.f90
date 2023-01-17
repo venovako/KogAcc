@@ -1,4 +1,4 @@
-!>@brief \b XPQSORTX tests the XPQSRT subroutine with parallel execution if \f$N>0\f$ or sequentially \f$N<0\f$.
+!>@brief \b XPQSORTX tests the XPQSRT subroutine with parallel execution if N>0 or sequentially N<0.
 PROGRAM XPQSORTX
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: OUTPUT_UNIT
   !$ USE OMP_LIB

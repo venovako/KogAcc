@@ -1,4 +1,4 @@
-!>@brief \b XROTC postmultiplies the columns \f$(p,q)\f$ of \f$G\f$ by \f$W\f$.
+!>@brief \b XROTC postmultiplies the columns (p,q) of G by W.
 PURE SUBROUTINE XROTC(M, N, G, LDG, P, Q, W, INFO)
   IMPLICIT NONE
   INTEGER, INTENT(IN) :: M, N, LDG, P, Q
