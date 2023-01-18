@@ -323,52 +323,110 @@
   ! exit if A is diagonal
   IF (A(1,2) .EQ. ZERO) GOTO 8
 
-  ! divide by A(1,1)
-  ! [ 1 x ]
-  ! [ 0 y ]
-  X = A(1,2) / A(1,1)
-  Y = A(2,2) / A(1,1)
+  ! A(1,1) = 2**M * T
+  M = EXPONENT(A(1,1))
+  T = FRACTION(A(1,1))
+  ! A(1,2)/A(1,1) = 2**I * X
+  X = FRACTION(A(1,2)) / T
+  I = EXPONENT(A(1,2)) - M + EXPONENT(X)
+  X = FRACTION(X)
+  ! A(2,2)/A(1,1) = 2**J * Y
+  Y = FRACTION(A(2,2)) / T
+  J = EXPONENT(A(2,2)) - M + EXPONENT(Y)
+  Y = FRACTION(Y)
+  ! avoid underflows
+  M = EXPONENT(TINY(ZERO))
+  ! MIN(I,J) has to be >= M
+  L = MAX(M - I, M - J, 0)
+  I = I + L
+  J = J + L
+  ! I+J has to be >= M
+  M = MAX(M - (I + J), 0)
+  IF (MOD(M, 2) .NE. 0) M = M + 1
+  M = M / 2
+  I = I + M
+  J = J + M
+  L = L + M
+  M = L + L ! exponent of T**2 = 2*L
+
+  ! scaled division by A(1,1)
+  ! [ T X ]
+  ! [ 0 Y ]
+  X = SCALE(X, I)
+  Y = SCALE(Y, J)
+  T = SCALE(ONE, L)
 #ifndef NDEBUG
   WRITE (ERROR_UNIT,9) '   X=', X, ',    Y=', Y
 #endif
-  ! underflow
+  ! underflow should not happen here, but...
   IF (X .EQ. ZERO) GOTO 8
 
-  ! a partial fix of the Y >= 1, X > 0 problem
-  IF (Y .EQ. ONE) THEN
-     T = TWO / X
-  ELSE IF (X .EQ. ONE) THEN
-     T = SCALE(Y, 1)
+  IF (T .EQ. ONE) THEN
+     ! a partial fix of the Y >= 1, X > 0 problem
+     IF (Y .EQ. ONE) THEN
+        T = TWO / X
+     ELSE IF (X .EQ. ONE) THEN
+        T = SCALE(Y, 1)
 #ifdef USE_IEEE_INTRINSIC
-     T = T / IEEE_FMA(-Y, Y, TWO)
+        T = T / IEEE_FMA(-Y, Y, TWO)
 #else
-     T = T / (TWO - Y * Y)
+        T = T / (TWO - Y * Y)
 #endif
-  ELSE IF (X .EQ. Y) THEN
-     T = SCALE(X, 1) * Y
-  ELSE IF (X .LT. Y) THEN
-     T = SCALE(X, 1) * Y
+     ELSE IF (X .EQ. Y) THEN
+        T = SCALE(X * X, 1)
+     ELSE IF (X .LT. Y) THEN
+        T = SCALE(X, 1) * Y
 #ifdef USE_IEEE_INTRINSIC
-     T = T / IEEE_FMA(X, X, IEEE_FMA(-Y, Y, ONE))
+        T = T / IEEE_FMA(X, X, IEEE_FMA(-Y, Y, ONE))
 #else
-     T = T / ((ONE - Y * Y) + X * X)
+        T = T / ((ONE - Y * Y) + X * X)
 #endif
-  ELSE ! X > Y
-     T = SCALE(Y, 1) * X
+     ELSE ! X > Y
+        T = SCALE(Y, 1) * X
 #ifdef USE_IEEE_INTRINSIC
-     T = T / IEEE_FMA(X - Y, X + Y, ONE)
+        T = T / IEEE_FMA(X - Y, X + Y, ONE)
 #else
-     T = T / ((X - Y) * (X + Y) + ONE)
+        T = T / ((X - Y) * (X + Y) + ONE)
 #endif
+     END IF
+  ELSE ! T > 1
+     ! a partial fix of the Y >= T, X > 0 problem
+     IF (Y .EQ. T) THEN
+        T = SCALE(ONE / X, L + 1)
+     ELSE IF (X .EQ. T) THEN
+        T = SCALE(Y, L + 1)
+#ifdef USE_IEEE_INTRINSIC
+        T = T / IEEE_FMA(-Y, Y, SCALE(ONE, M + 1))
+#else
+        T = T / (SCALE(ONE, M + 1) - Y * Y)
+#endif
+     ELSE IF (X .EQ. Y) THEN
+        T = SCALE(X * X, 1 - M)
+     ELSE IF (X .LT. Y) THEN
+        T = SCALE(X, 1) * Y
+#ifdef USE_IEEE_INTRINSIC
+        T = T / IEEE_FMA(X, X, IEEE_FMA(-Y, Y, SCALE(ONE, M)))
+#else
+        T = T / ((ONE - Y * Y) + X * X)
+#endif
+     ELSE ! X > Y
+        T = SCALE(Y, 1) * X
+        ! a possible underflow of X-Y is safe so it does not have to be avoided above
+#ifdef USE_IEEE_INTRINSIC
+        T = T / IEEE_FMA(X - Y, X + Y, SCALE(ONE, M))
+#else
+        T = T / ((X - Y) * (X + Y) + SCALE(ONE, M))
+#endif
+     END IF
   END IF
 #ifndef NDEBUG
   WRITE (ERROR_UNIT,9) '   T=', T, ',ROOTH=', ROOTH
 #endif
 
   ! the functions of \varphi
-  ! Negative T can happen only if Y > 1 (impossible mathematically),
-  ! what in turn, with the correctly rounded hypot, can happen only
-  ! as a consequence of the pivoted QR factorization.
+  ! Negative tan(2\varphi) can happen only if Y is the largest element by magnitude
+  ! (impossible mathematically), what in turn, with the correctly rounded hypot,
+  ! can happen only as a consequence of the pivoted QR factorization.
   IF (T .EQ. ZERO) THEN
      TANF = ZERO
      SECF = ONE
@@ -403,9 +461,9 @@
 
   ! the functions of \psi
 #ifdef USE_IEEE_INTRINSIC
-  TANP = IEEE_FMA(Y, TANF, X)
+  TANP = SCALE(IEEE_FMA(Y, TANF, X), -L)
 #else
-  TANP = Y * TANF + X
+  TANP = SCALE(Y * TANF + X, -L)
 #endif
 #ifdef CR_MATH
   SECP = CR_HYPOT(TANP, ONE)

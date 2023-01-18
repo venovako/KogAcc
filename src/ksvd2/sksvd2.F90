@@ -1,4 +1,4 @@
-!>@brief \b SKSVD2 computes the SVD of a single precision 2x2 matrix G as G = U S V^T.
+!>@brief \b SKSVD2 computes the SVD of a single precision 2x2 matrix G as G = U S V^T, assuming rounding to nearest.
 !!
 !!@param G [IN]; G is a general 2x2 single precision matrix with finite elements.
 !!@param U [OUT]; U is an orthogonal single precision matrix of order two.
@@ -44,6 +44,7 @@ SUBROUTINE SKSVD2(G, U, V, S, INFO)
 
   REAL(KIND=K) :: B(2,2), X, Y, Z
   REAL(KIND=K) :: TANG, SECG, TANF, SECF, TANP, SECP
+  INTEGER :: I, J, L, M
 
 #include "gksvd2.F90"
 #ifndef NDEBUG

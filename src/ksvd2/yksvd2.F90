@@ -1,4 +1,4 @@
-!>@brief \b YKSVD2 computes the SVD of a quadruple precision complex 2x2 matrix G as G = U S V^H.
+!>@brief \b YKSVD2 computes the SVD of a quadruple precision complex 2x2 matrix G as G = U S V^H, assuming rounding to nearest.
 !!
 !!@param G [IN]; G is a general 2x2 quadruple precision complex matrix with all components of its elements finite.
 !!@param U [OUT]; U is a unitary quadruple complex precision matrix of order two.
@@ -33,6 +33,7 @@ SUBROUTINE YKSVD2(G, U, V, S, INFO)
   COMPLEX(KIND=K) :: B(2,2), Z
   REAL(KIND=K) :: A(2,2), X, Y, T
   REAL(KIND=K) :: TANG, SECG, TANF, SECF, TANP, SECP
+  INTEGER :: I, J, L, M
 
 #include "hksvd2.F90"
 #ifndef NDEBUG
