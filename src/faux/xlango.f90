@@ -8,6 +8,7 @@ SUBROUTINE XLANGO(O, N, G, LDG, S, INFO)
   REAL(KIND=10), INTENT(IN) :: G(N,LDG)
   REAL(KIND=10), INTENT(OUT) :: S
   INTEGER, INTENT(INOUT) :: INFO
+  REAL(KIND=10) :: SC
   INTEGER :: I, J
 
   S = ZERO
@@ -24,18 +25,31 @@ SUBROUTINE XLANGO(O, N, G, LDG, S, INFO)
            S = HYPOT(S, G(I,J))
         END DO
      END DO
+     IF (.NOT. (S .LE. HUGE(S))) INFO = 1
   CASE ('M','N','m','n')
      IF (I .EQ. 0) THEN
         DO J = 1, N
            DO I = 1, N
-              S = MAX(S, ABS(G(I,J)))
+              SC = ABS(G(I,J))
+              IF (.NOT. (SC .LE. HUGE(SC))) THEN
+                 S = SC
+                 INFO = (J - 1) * N + I
+                 RETURN
+              END IF
+              S = MAX(S, SC)
            END DO
         END DO
      ELSE ! OpenMP
-        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J) SHARED(G,N) REDUCTION(MAX:S)
+        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J,SC) SHARED(G,N) REDUCTION(MAX:S,INFO)
         DO J = 1, N
            DO I = 1, N
-              S = MAX(S, ABS(G(I,J)))
+              SC = ABS(G(I,J))
+              IF (.NOT. (SC .LE. HUGE(SC))) THEN
+                 INFO = MAX(INFO, (J - 1) * N + I)
+              ELSE ! SC finite
+                 INFO = MAX(INFO, 0)
+              END IF
+              S = MAX(S, SC)
            END DO
         END DO
         !$OMP END PARALLEL DO
@@ -49,6 +63,7 @@ SUBROUTINE XLANGO(O, N, G, LDG, S, INFO)
            S = HYPOT(S, G(I,J))
         END DO
      END DO
+     IF (.NOT. (S .LE. HUGE(S))) INFO = 1
   CASE DEFAULT
      INFO = -1
   END SELECT

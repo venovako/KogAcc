@@ -44,20 +44,41 @@ SUBROUTINE ZLANGO(O, N, G, LDG, S, INFO)
   SELECT CASE (O)
   CASE ('F','f')
      S = ZLANGE('F', N, N, G, LDG, SC)
+     IF (.NOT. (S .LE. HUGE(S))) INFO = 1
   CASE ('M','m')
      S = ZLANGE('M', N, N, G, LDG, SC)
+     IF (.NOT. (S .LE. HUGE(S))) INFO = 1
   CASE ('N','n')
      IF (I .EQ. 0) THEN
         DO J = 1, N
            DO I = 1, N
-              S = MAX(S, ABS(REAL(G(I,J))), ABS(AIMAG(G(I,J))))
+              SC = ABS(REAL(G(I,J)))
+              IF (.NOT. (SC .LE. HUGE(SC))) THEN
+                 S = SC
+                 INFO = (J - 1) * N + I
+                 RETURN
+              END IF
+              SM = ABS(AIMAG(G(I,J)))
+              IF (.NOT. (SM .LE. HUGE(SM))) THEN
+                 S = SM
+                 INFO = (J - 1) * N + I
+                 RETURN
+              END IF
+              S = MAX(S, SC, SM)
            END DO
         END DO
      ELSE ! OpenMP
-        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J) SHARED(G,N) REDUCTION(MAX:S)
+        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J) SHARED(G,N,SC,SM) REDUCTION(MAX:S,INFO)
         DO J = 1, N
            DO I = 1, N
-              S = MAX(S, ABS(REAL(G(I,J))), ABS(AIMAG(G(I,J))))
+              SC = ABS(REAL(G(I,J)))
+              SM = ABS(AIMAG(G(I,J)))
+              IF ((.NOT. (SC .LE. HUGE(SC))) .OR. (.NOT. (SM .LE. HUGE(SM)))) THEN
+                 INFO = MAX(INFO, (J - 1) * N + I)
+              ELSE ! SC and SM finite
+                 INFO = MAX(INFO, 0)
+              END IF
+              S = MAX(S, SC, SM)
            END DO
         END DO
         !$OMP END PARALLEL DO
@@ -73,6 +94,7 @@ SUBROUTINE ZLANGO(O, N, G, LDG, S, INFO)
         END DO
         CALL ZLASSQ(N-1, G(1,N), 1, SC, SM)
         S = SC * SQRT(SM)
+        IF (.NOT. (S .LE. HUGE(S))) INFO = 1
      END IF
   CASE DEFAULT
      INFO = -1

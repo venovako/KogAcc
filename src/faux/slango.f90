@@ -44,20 +44,34 @@ SUBROUTINE SLANGO(O, N, G, LDG, S, INFO)
   SELECT CASE (O)
   CASE ('F','f')
      S = SLANGE('F', N, N, G, LDG, SC)
+     IF (.NOT. (S .LE. HUGE(S))) INFO = 1
   CASE ('M','m')
      S = SLANGE('M', N, N, G, LDG, SC)
+     IF (.NOT. (S .LE. HUGE(S))) INFO = 1
   CASE ('N','n')
      IF (I .EQ. 0) THEN
         DO J = 1, N
            DO I = 1, N
-              S = MAX(S, ABS(G(I,J)))
+              SC = ABS(G(I,J))
+              IF (.NOT. (SC .LE. HUGE(SC))) THEN
+                 S = SC
+                 INFO = (J - 1) * N + I
+                 RETURN
+              END IF
+              S = MAX(S, SC)
            END DO
         END DO
      ELSE ! OpenMP
-        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J) SHARED(G,N) REDUCTION(MAX:S)
+        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J,SC) SHARED(G,N) REDUCTION(MAX:S,INFO)
         DO J = 1, N
            DO I = 1, N
-              S = MAX(S, ABS(G(I,J)))
+              SC = ABS(G(I,J))
+              IF (.NOT. (SC .LE. HUGE(SC))) THEN
+                 INFO = MAX(INFO, (J - 1) * N + I)
+              ELSE ! SC finite
+                 INFO = MAX(INFO, 0)
+              END IF
+              S = MAX(S, SC)
            END DO
         END DO
         !$OMP END PARALLEL DO
@@ -73,6 +87,7 @@ SUBROUTINE SLANGO(O, N, G, LDG, S, INFO)
         END DO
         CALL SLASSQ(N-1, G(1,N), 1, SC, SM)
         S = SC * SQRT(SM)
+        IF (.NOT. (S .LE. HUGE(S))) INFO = 1
      END IF
   CASE DEFAULT
      INFO = -1
