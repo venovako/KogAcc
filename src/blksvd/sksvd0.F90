@@ -39,6 +39,29 @@ SUBROUTINE SKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
        INTEGER, INTENT(OUT) :: O(2*N*(N-1))
        INTEGER, INTENT(INOUT) :: INFO
      END SUBROUTINE SMK3PQ
+  END INTERFACE
+  INTERFACE
+#ifdef NDEBUG
+     PURE SUBROUTINE SKSVD2(G, U, V, S, INFO)
+#else
+     SUBROUTINE SKSVD2(G, U, V, S, INFO)
+#endif
+       USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
+       IMPLICIT NONE
+       REAL(KIND=REAL32), INTENT(IN) :: G(2,2)
+       REAL(KIND=REAL32), INTENT(OUT) :: U(2,2), V(2,2), S(2)
+       INTEGER, INTENT(OUT) :: INFO
+     END SUBROUTINE SKSVD2
+  END INTERFACE
+  INTERFACE
+     PURE SUBROUTINE SCVGPP(G, U, V, S, INFO)
+       USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
+       IMPLICIT NONE
+       REAL(KIND=REAL32), INTENT(IN) :: G(2,2), U(2,2), V(2,2)
+       REAL(KIND=REAL32), INTENT(INOUT) :: S(2)
+       INTEGER, INTENT(INOUT) :: INFO
+     END SUBROUTINE SCVGPP
+  END INTERFACE
   INTERFACE
      PURE SUBROUTINE JSTEP(J, N, S, T, P, O, R, INFO)
        IMPLICIT NONE
@@ -52,17 +75,20 @@ SUBROUTINE SKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
   INTEGER, INTENT(IN) :: JOB, N, LDG, LDU, LDV
   REAL(KIND=K), INTENT(INOUT) :: G(LDG,N), U(LDU,N), V(LDV,N)
   REAL(KIND=REAL128), INTENT(OUT), TARGET :: SV(N)
-  REAL(KIND=K), INTENT(OUT) :: W(N*N)
+  REAL(KIND=K), INTENT(OUT) :: W(MAX(N,3)*N)
   INTEGER, INTENT(INOUT) :: O(2*N*(N-1)), INFO
 
   INTEGER, POINTER, CONTIGUOUS :: R(:,:)
+  REAL(KIND=K) :: G2(2,2), U2(2,2)
   REAL(KIND=K) :: GN, UN, VN
-  INTEGER :: MRQSTP, I, J, M, M_2, NP, NS, P, Q, T, JS, GS, US, VS, STP
+  INTEGER :: MRQSTP, I, J, M, M_2, NP, NS, P, Q, T, JS, GS, US, VS, WV, WS, STP
   LOGICAL :: LOMP, LUSID, LUACC, LVSID, LVACC
 
 #define LANGO SLANGO
 #define SCALG SSCALG
 #define MK3PQ SMK3PQ
+#define KSVD2 SKSVD2
+#define CVGPP SCVGPP
 
   MRQSTP = INFO
   INFO = 0
@@ -125,7 +151,9 @@ SUBROUTINE SKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
         IF (LVSID) V(1,1) = ONE
         G(1,1) = GN
         SV(1) = REAL(GN, REAL128)
-        W(1) = ZERO
+        W(1) = GN
+        W(2) = ONE
+        W(3) = ONE
      END IF
      RETURN
   END IF
@@ -184,7 +212,7 @@ SUBROUTINE SKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
   END IF
 
   ! associate R with SV
-  CALL C_F_POINTER(C_LOC(SV), R, [2,NP])
+  CALL C_F_POINTER(C_LOC(SV), R, [2,2*NP])
 
   DO STP = 0, MRQSTP-1
      T = STP + 1
@@ -298,12 +326,14 @@ SUBROUTINE SKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
      ELSE ! tabular O
         I = NP
      END IF
-     !$ INFO = OMP_GET_NUM_THREADS()
-     IF (.NOT. LOMP) INFO = 0
-     CALL JSTEP(JS, N, NS, T, I, O, R, INFO)
-     IF (INFO .NE. 0) THEN
-        INFO = -11
-        RETURN
+     IF (I .GT. 0) THEN
+        !$ INFO = OMP_GET_NUM_THREADS()
+        IF (.NOT. LOMP) INFO = 0
+        CALL JSTEP(JS, N, NS, T, I, O, R, INFO)
+        IF (INFO .NE. 0) THEN
+           INFO = -11
+           RETURN
+        END IF
      END IF
 #ifndef NDEBUG
      WRITE (OUTPUT_UNIT,'(A,I4)',ADVANCE='NO') ',', I
@@ -314,8 +344,119 @@ SUBROUTINE SKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
      END IF
      FLUSH(OUTPUT_UNIT)
 #endif
+     IF (I .EQ. 0) THEN
+#ifndef NDEBUG
+        WRITE (OUTPUT_UNIT,'(A,I4)') ',', 0
+#endif
+        EXIT
+     END IF
 
-     ! TODO
+     ! compute and apply the transformations
+     M = 0
+     IF (LOMP) THEN
+        !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,U,W,R,N,LDG,LDU,I) PRIVATE(G2,U2,P,Q,WV,WS,T) REDUCTION(+:M)
+        DO J = 1, I
+           P = R(1,J)
+           Q = R(2,J)
+           IF ((P .LE. 0) .OR. (Q .LE. P) .OR. (P .GE. N) .OR. (Q .GT. N)) THEN
+              M = M + 1
+              CYCLE
+           END IF
+           G2(1,1) = G(P,P)
+           G2(2,1) = G(Q,P)
+           G2(1,2) = G(P,Q)
+           G2(2,2) = G(Q,Q)
+           WV = (J - 1) * 6 + 1
+           WS = WV + 4
+           T = 0
+           CALL KSVD2(G2, U2, W(WV), W(WS), T)
+           R(2,I+J) = T
+           CALL CVGPP(G2, U2, W(WV), W(WS), T)
+           R(1,I+J) = T
+           IF (T .LT. 0) THEN
+              M = M + 1
+              CYCLE
+           END IF
+           ! transform U from the right, transpose U2, and transform G from the left
+           IF (IAND(T, 2) .NE. 0) THEN
+              CONTINUE ! TODO
+              G2(1,1) = U2(1,1)
+              G2(2,1) = U2(1,2)
+              G2(1,2) = U2(2,1)
+              G2(2,2) = U2(2,2)
+           END IF
+        END DO
+        !$OMP END PARALLEL DO
+        IF (M .NE. 0) THEN
+           INFO = -12
+           RETURN
+        END IF
+        !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,V,W,R,N,LDG,LDV,I) PRIVATE(P,Q,WV,WS,T) REDUCTION(+:M)
+        DO J = 1, I
+           P = R(1,J)
+           Q = R(2,J)
+           WV = (J - 1) * 6 + 1
+           WS = WV + 4
+           T = R(1,I+J)
+           ! transform V and G from the right
+           IF (IAND(T, 4) .NE. 0) THEN
+              CONTINUE ! TODO
+           END IF
+           ! set the new values
+           G(P,P) = W(WS)
+           G(Q,P) = ZERO
+           G(P,Q) = ZERO
+           G(Q,Q) = W(WS+1)
+           IF (IAND(T, 8) .NE. 0) M = M + 1
+        END DO
+        !$OMP END PARALLEL DO
+     ELSE ! sequentially
+        DO J = 1, I
+           P = R(1,J)
+           Q = R(2,J)
+           IF ((P .LE. 0) .OR. (Q .LE. P) .OR. (P .GE. N) .OR. (Q .GT. N)) THEN
+              INFO = -12
+              RETURN
+           END IF
+           G2(1,1) = G(P,P)
+           G2(2,1) = G(Q,P)
+           G2(1,2) = G(P,Q)
+           G2(2,2) = G(Q,Q)
+           WV = (J - 1) * 6 + 1
+           WS = WV + 4
+           T = 0
+           CALL KSVD2(G2, U2, W(WV), W(WS), T)
+           R(2,I+J) = T
+           CALL CVGPP(G2, U2, W(WV), W(WS), T)
+           R(1,I+J) = T
+           IF (T .LT. 0) THEN
+              INFO = -12
+              RETURN
+           END IF
+           ! transform U from the right, transpose U2, and transform G from the left
+           IF (IAND(T, 2) .NE. 0) THEN
+              CONTINUE ! TODO
+              G2(1,1) = U2(1,1)
+              G2(2,1) = U2(1,2)
+              G2(1,2) = U2(2,1)
+              G2(2,2) = U2(2,2)
+           END IF
+           ! transform V and G from the right
+           IF (IAND(T, 4) .NE. 0) THEN
+              CONTINUE ! TODO
+           END IF
+           ! set the new values
+           G(P,P) = W(WS)
+           G(Q,P) = ZERO
+           G(P,Q) = ZERO
+           G(Q,Q) = W(WS+1)
+           IF (IAND(T, 8) .NE. 0) M = M + 1
+        END DO
+     END IF
+#ifndef NDEBUG
+     WRITE (OUTPUT_UNIT,'(A,I4)') ',', M
+#endif
+     IF (M .EQ. 0) EXIT
   END DO
 
   R => NULL()
@@ -328,7 +469,6 @@ SUBROUTINE SKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
      !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,SV,N,GS) REDUCTION(MAX:I)
      DO J = 1, N
         SV(J) = SCALE(REAL(G(J,J), REAL128), -GS)
-        ! should never happen
         IF (.NOT. (SV(J) .LE. HUGE(SV(J)))) THEN
            I = MAX(I, J)
         ELSE ! SV(J) finite
@@ -343,7 +483,6 @@ SUBROUTINE SKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
   ELSE ! sequentially
      DO J = 1, N
         SV(J) = SCALE(REAL(G(J,J), REAL128), -GS)
-        ! should never happen
         IF (.NOT. (SV(J) .LE. HUGE(SV(J)))) THEN
            INFO = -9
            RETURN
@@ -383,8 +522,12 @@ SUBROUTINE SKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
      VN = SCALE(VN, -VS)
   END IF
   W(1) = GN
-  W(2) = W(M_2 + 1)
-  W(3) = UN
-  W(4) = VN
+  W(2) = UN
+  W(3) = VN
+  W(4) = REAL(GS, K)
+  W(5) = REAL(US, K)
+  W(6) = REAL(VS, K)
+#ifndef NDEBUG
 9 FORMAT(A,ES16.9E2)
+#endif
 END SUBROUTINE SKSVD0
