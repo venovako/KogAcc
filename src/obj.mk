@@ -39,15 +39,17 @@ OBJS_ARRBIO=\
 ..\obj\$(PLAT)\qwrout.obj\
 ..\obj\$(PLAT)\ywrout.obj
 
-
 OBJS_BLKSVD=\
+..\obj\$(PLAT)\nb2m.obj\
 ..\obj\$(PLAT)\sbrdg.obj\
 ..\obj\$(PLAT)\cbrdg.obj\
 ..\obj\$(PLAT)\dbrdg.obj\
 ..\obj\$(PLAT)\zbrdg.obj\
 ..\obj\$(PLAT)\qbrdg.obj\
 ..\obj\$(PLAT)\ybrdg.obj\
-..\obj\$(PLAT)\nb2m.obj
+..\obj\$(PLAT)\sksvd0.obj\
+..\obj\$(PLAT)\dksvd0.obj\
+..\obj\$(PLAT)\qksvd0.obj
 
 OBJS_DYNORD=\
 ..\obj\$(PLAT)\sabsg.obj\
