@@ -2,9 +2,9 @@
 SUBROUTINE SKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
   USE, INTRINSIC :: ISO_C_BINDING
 #ifdef NDEBUG
-  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32, REAL128
+  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: INT64, REAL32, REAL128
 #else
-  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32, REAL128, OUTPUT_UNIT
+  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: INT64, REAL32, REAL128, ERROR_UNIT, OUTPUT_UNIT
 #endif
   !$ USE OMP_LIB
   IMPLICIT NONE
@@ -101,7 +101,8 @@ SUBROUTINE SKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
   INTEGER, POINTER, CONTIGUOUS :: R(:,:)
   REAL(KIND=K) :: G2(2,2), U2(2,2)
   REAL(KIND=K) :: GN, UN, VN
-  INTEGER :: MRQSTP, I, J, M, M_2, NP, NS, P, Q, T, JS, GS, US, VS, WV, WS, STP
+  INTEGER(KIND=INT64) :: TT, TM, SM
+  INTEGER :: MRQSTP, I, J, L, M, M_2, NP, NS, P, Q, T, JS, GS, US, VS, WV, WS, STP
   LOGICAL :: LOMP, LUSID, LUACC, LVSID, LVACC
 
 #define LANGO SLANGO
@@ -241,6 +242,9 @@ SUBROUTINE SKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
      RETURN
   END IF
 
+  TT = 0_INT64
+  TM = 0_INT64
+  SM = 0_INT64
   DO STP = 0, MRQSTP-1
      T = STP + 1
 #ifndef NDEBUG
@@ -377,12 +381,14 @@ SUBROUTINE SKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
         FLUSH(OUTPUT_UNIT)
 #endif
         EXIT
+     ELSE ! I > 0
+        TT = TT + I
      END IF
 
      ! compute and apply the transformations
      M = 0
      IF (LOMP) THEN
-        !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,U,W,R,N,LDG,LDU,I,LUACC) PRIVATE(G2,U2,P,Q,WV,WS,T) REDUCTION(+:M)
+        !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,U,W,R,N,LDG,LDU,I,LUACC) PRIVATE(G2,U2,P,Q,WV,WS,T,L) REDUCTION(+:M)
         DO J = 1, I
            P = R(1,J)
            Q = R(2,J)
@@ -408,9 +414,9 @@ SUBROUTINE SKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
            ! transform U from the right, transpose U2, and transform G from the left
            IF (IAND(T, 2) .NE. 0) THEN
               IF (LUACC) THEN
-                 !$ T = OMP_GET_NUM_THREADS()
-                 CALL ROTC(N, N, U, LDU, P, Q, U2, T)
-                 IF (T .NE. 0) THEN
+                 !$ L = OMP_GET_NUM_THREADS()
+                 CALL ROTC(N, N, U, LDU, P, Q, U2, L)
+                 IF (L .NE. 0) THEN
                     M = M + 1
                     CYCLE
                  END IF
@@ -419,9 +425,9 @@ SUBROUTINE SKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
               G2(2,1) = U2(1,2)
               G2(1,2) = U2(2,1)
               G2(2,2) = U2(2,2)
-              !$ T = OMP_GET_NUM_THREADS()
-              CALL ROTR(N, N, G, LDG, P, Q, G2, T)
-              IF (T .NE. 0) THEN
+              !$ L = OMP_GET_NUM_THREADS()
+              CALL ROTR(N, N, G, LDG, P, Q, G2, L)
+              IF (L .NE. 0) THEN
                  M = M + 1
                  CYCLE
               END IF
@@ -432,7 +438,7 @@ SUBROUTINE SKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
            INFO = -12
            RETURN
         END IF
-        !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,V,W,R,N,LDG,LDV,I,LVACC) PRIVATE(P,Q,WV,WS,T) REDUCTION(+:M)
+        !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,V,W,R,N,LDG,LDV,I,LVACC) PRIVATE(P,Q,WV,WS,T,L) REDUCTION(+:M)
         DO J = 1, I
            P = R(1,J)
            Q = R(2,J)
@@ -442,16 +448,16 @@ SUBROUTINE SKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
            ! transform V and G from the right
            IF (IAND(T, 4) .NE. 0) THEN
               IF (LVACC) THEN
-                 !$ T = OMP_GET_NUM_THREADS()
-                 CALL ROTC(N, N, V, LDV, P, Q, W(WV), T)
-                 IF (T .NE. 0) THEN
+                 !$ L = OMP_GET_NUM_THREADS()
+                 CALL ROTC(N, N, V, LDV, P, Q, W(WV), L)
+                 IF (L .NE. 0) THEN
                     M = M + (I + 1)
                     CYCLE
                  END IF
               END IF
-              !$ T = OMP_GET_NUM_THREADS()
-              CALL ROTC(N, N, G, LDG, P, Q, W(WV), T)
-              IF (T .NE. 0) THEN
+              !$ L = OMP_GET_NUM_THREADS()
+              CALL ROTC(N, N, G, LDG, P, Q, W(WV), L)
+              IF (L .NE. 0) THEN
                  M = M + (I + 1)
                  CYCLE
               END IF
@@ -494,9 +500,9 @@ SUBROUTINE SKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
            ! transform U from the right, transpose U2, and transform G from the left
            IF (IAND(T, 2) .NE. 0) THEN
               IF (LUACC) THEN
-                 T = 0
-                 CALL ROTC(N, N, U, LDU, P, Q, U2, T)
-                 IF (T .NE. 0) THEN
+                 L = 0
+                 CALL ROTC(N, N, U, LDU, P, Q, U2, L)
+                 IF (L .NE. 0) THEN
                     INFO = -12
                     RETURN
                  END IF
@@ -505,9 +511,9 @@ SUBROUTINE SKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
               G2(2,1) = U2(1,2)
               G2(1,2) = U2(2,1)
               G2(2,2) = U2(2,2)
-              T = 0
-              CALL ROTR(N, N, G, LDG, P, Q, G2, T)
-              IF (T .NE. 0) THEN
+              L = 0
+              CALL ROTR(N, N, G, LDG, P, Q, G2, L)
+              IF (L .NE. 0) THEN
                  INFO = -12
                  RETURN
               END IF
@@ -515,16 +521,16 @@ SUBROUTINE SKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
            ! transform V and G from the right
            IF (IAND(T, 4) .NE. 0) THEN
               IF (LVACC) THEN
-                 T = 0
-                 CALL ROTC(N, N, V, LDV, P, Q, W(WV), T)
-                 IF (T .NE. 0) THEN
+                 L = 0
+                 CALL ROTC(N, N, V, LDV, P, Q, W(WV), L)
+                 IF (L .NE. 0) THEN
                     INFO = -12
                     RETURN
                  END IF
               END IF
-              T = 0
-              CALL ROTC(N, N, G, LDG, P, Q, W(WV), T)
-              IF (T .NE. 0) THEN
+              L = 0
+              CALL ROTC(N, N, G, LDG, P, Q, W(WV), L)
+              IF (L .NE. 0) THEN
                  INFO = -12
                  RETURN
               END IF
@@ -541,8 +547,26 @@ SUBROUTINE SKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
      WRITE (OUTPUT_UNIT,'(A,I4)') ',', M
      FLUSH(OUTPUT_UNIT)
 #endif
-     IF (M .EQ. 0) EXIT
+     TM = TM + M
+     IF (JS .NE. 3) THEN
+        T = STP + 1
+        SM = SM + M
+        IF (MOD(T, NS) .EQ. 0) THEN
+           ! sweep completed
+           L = T / NS
+#ifndef NDEBUG
+           WRITE (ERROR_UNIT,*) 'sweep', L, ' completed with:', SM, ' big transformations'
+           FLUSH(ERROR_UNIT)
+#endif
+           IF (SM .EQ. 0_INT64) EXIT
+           SM = 0_INT64
+        END IF
+     END IF
   END DO
+#ifndef NDEBUG
+  WRITE (ERROR_UNIT,*) 'exited after:', TT, ' transformations, of which big:', TM
+  FLUSH(ERROR_UNIT)
+#endif
 
   R => NULL()
   ! no convergence if INFO = MRQSTP
