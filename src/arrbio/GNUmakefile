@@ -147,3 +147,27 @@
 
 ../obj/$(PLAT)/wwrout.o: arrbio/wwrout.f90 $(MKFS) arrbio/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/arrbio/wwrout.f90
+
+../obj/$(PLAT)/srdinp.o: arrbio/srdinp.f90 $(MKFS) arrbio/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/arrbio/srdinp.f90
+
+../obj/$(PLAT)/crdinp.o: arrbio/crdinp.f90 $(MKFS) arrbio/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/arrbio/crdinp.f90
+
+../obj/$(PLAT)/drdinp.o: arrbio/drdinp.f90 $(MKFS) arrbio/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/arrbio/drdinp.f90
+
+../obj/$(PLAT)/zrdinp.o: arrbio/zrdinp.f90 $(MKFS) arrbio/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/arrbio/zrdinp.f90
+
+../obj/$(PLAT)/qrdinp.o: arrbio/qrdinp.f90 $(MKFS) arrbio/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/arrbio/qrdinp.f90
+
+../obj/$(PLAT)/yrdinp.o: arrbio/yrdinp.f90 $(MKFS) arrbio/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/arrbio/yrdinp.f90
+
+../obj/$(PLAT)/xrdinp.o: arrbio/xrdinp.f90 $(MKFS) arrbio/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/arrbio/xrdinp.f90
+
+../obj/$(PLAT)/wrdinp.o: arrbio/wrdinp.f90 $(MKFS) arrbio/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/arrbio/wrdinp.f90

@@ -117,3 +117,21 @@
 
 ..\obj\$(PLAT)\ywrout.obj: arrbio\ywrout.f90 $(MKFS) arrbio\Makefile
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\arrbio\ywrout.f90
+
+..\obj\$(PLAT)\srdinp.obj: arrbio\srdinp.f90 $(MKFS) arrbio\Makefile
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\arrbio\srdinp.f90
+
+..\obj\$(PLAT)\crdinp.obj: arrbio\crdinp.f90 $(MKFS) arrbio\Makefile
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\arrbio\crdinp.f90
+
+..\obj\$(PLAT)\drdinp.obj: arrbio\drdinp.f90 $(MKFS) arrbio\Makefile
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\arrbio\drdinp.f90
+
+..\obj\$(PLAT)\zrdinp.obj: arrbio\zrdinp.f90 $(MKFS) arrbio\Makefile
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\arrbio\zrdinp.f90
+
+..\obj\$(PLAT)\qrdinp.obj: arrbio\qrdinp.f90 $(MKFS) arrbio\Makefile
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\arrbio\qrdinp.f90
+
+..\obj\$(PLAT)\yrdinp.obj: arrbio\yrdinp.f90 $(MKFS) arrbio\Makefile
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\arrbio\yrdinp.f90

@@ -37,8 +37,13 @@ OBJS_ARRBIO=\
 ../obj/$(PLAT)/dwrout.o\
 ../obj/$(PLAT)/zwrout.o\
 ../obj/$(PLAT)/qwrout.o\
-../obj/$(PLAT)/ywrout.o
-
+../obj/$(PLAT)/ywrout.o\
+../obj/$(PLAT)/srdinp.o\
+../obj/$(PLAT)/crdinp.o\
+../obj/$(PLAT)/drdinp.o\
+../obj/$(PLAT)/zrdinp.o\
+../obj/$(PLAT)/qrdinp.o\
+../obj/$(PLAT)/yrdinp.o
 
 OBJS_BLKSVD=\
 ../obj/$(PLAT)/nb2m.o\
@@ -165,7 +170,9 @@ OBJS_ARRBIO += \
 ../obj/$(PLAT)/xbwr2.o\
 ../obj/$(PLAT)/wbwr2.o\
 ../obj/$(PLAT)/xwrout.o\
-../obj/$(PLAT)/wwrout.o
+../obj/$(PLAT)/wwrout.o\
+../obj/$(PLAT)/xrdinp.o\
+../obj/$(PLAT)/wrdinp.o
 OBJS_BLKSVD += \
 ../obj/$(PLAT)/xbrdg.o\
 ../obj/$(PLAT)/wbrdg.o\
