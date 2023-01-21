@@ -329,41 +329,12 @@
   ! exit if A is diagonal
   IF (A(1,2) .EQ. ZERO) GOTO 8
 
-  L = 0
-  ! ! A(1,1) = 2**M * T
-  ! M = EXPONENT(A(1,1))
-  ! T = FRACTION(A(1,1))
-  ! ! A(1,2)/A(1,1) = 2**I * X
-  ! X = FRACTION(A(1,2)) / T
-  ! I = EXPONENT(A(1,2)) - M + EXPONENT(X)
-  ! X = FRACTION(X)
-  ! ! A(2,2)/A(1,1) = 2**J * Y
-  ! Y = FRACTION(A(2,2)) / T
-  ! J = EXPONENT(A(2,2)) - M + EXPONENT(Y)
-  ! Y = FRACTION(Y)
-  ! ! avoid underflows
-  ! M = EXPONENT(TINY(ZERO))
-  ! ! MIN(I,J) has to be >= M
-  ! L = MAX(M - I, M - J, 0)
-  ! I = I + L
-  ! J = J + L
-  ! ! TODO: ideally, I+J should be >= M, but overflows should be avoided
-  ! ! M = MAX(M - (I + J), 0)
-  ! ! IF (MOD(M, 2) .NE. 0) M = M + 1
-  ! ! M = M / 2
-  ! ! I = I + M
-  ! ! J = J + M
-  ! ! L = L + M
-  ! M = L + L ! exponent of T**2 = 2*L
-
-  ! ! scaled division by A(1,1)
-  ! ! [ T X ]
-  ! ! [ 0 Y ]
-  ! X = SCALE(X, I)
-  ! Y = SCALE(Y, J)
+  ! division by A(1,1)
+  ! [ 1 X ]
+  ! [ 0 Y ]
   X = A(1,2) / A(1,1)
   Y = A(2,2) / A(1,1)
-  T = SCALE(ONE, L)
+  T = ONE
 #ifndef NDEBUG
 #ifdef _OPENMP
   IF (OMP_GET_NUM_THREADS() .LE. 1) THEN
@@ -375,63 +346,32 @@
 #endif
   IF (X .EQ. ZERO) GOTO 8
 
-  IF (T .EQ. ONE) THEN
-     ! a partial fix of the Y >= 1, X > 0 problem
-     IF (Y .EQ. ONE) THEN
-        T = TWO / X
-     ELSE IF (X .EQ. ONE) THEN
-        T = SCALE(Y, 1)
+  ! a partial fix of the Y >= 1, X > 0 problem
+  IF (Y .EQ. ONE) THEN
+     T = TWO / X
+  ELSE IF (X .EQ. ONE) THEN
+     T = SCALE(Y, 1)
 #ifdef USE_IEEE_INTRINSIC
-        T = T / IEEE_FMA(-Y, Y, TWO)
+     T = T / IEEE_FMA(-Y, Y, TWO)
 #else
-        T = T / (TWO - Y * Y)
+     T = T / (TWO - Y * Y)
 #endif
-     ELSE IF (X .EQ. Y) THEN
-        T = SCALE(X * X, 1)
-     ELSE IF (X .LT. Y) THEN
-        T = SCALE(X, 1) * Y
+  ELSE IF (X .EQ. Y) THEN
+     T = SCALE(X * X, 1)
+  ELSE IF (X .LT. Y) THEN
+     T = SCALE(X, 1) * Y
 #ifdef USE_IEEE_INTRINSIC
-        T = T / IEEE_FMA(X, X, IEEE_FMA(-Y, Y, ONE))
+     T = T / IEEE_FMA(X, X, IEEE_FMA(-Y, Y, ONE))
 #else
-        T = T / ((ONE - Y * Y) + X * X)
+     T = T / ((ONE - Y * Y) + X * X)
 #endif
-     ELSE ! X > Y
-        T = SCALE(Y, 1) * X
+  ELSE ! X > Y
+     T = SCALE(Y, 1) * X
 #ifdef USE_IEEE_INTRINSIC
-        T = T / IEEE_FMA(X - Y, X + Y, ONE)
+     T = T / IEEE_FMA(X - Y, X + Y, ONE)
 #else
-        T = T / ((X - Y) * (X + Y) + ONE)
+     T = T / ((X - Y) * (X + Y) + ONE)
 #endif
-     END IF
-  ELSE ! T > 1
-     ! a partial fix of the Y >= T, X > 0 problem
-     IF (Y .EQ. T) THEN
-        T = SCALE(ONE / X, L + 1)
-     ELSE IF (X .EQ. T) THEN
-        T = SCALE(Y, L + 1)
-#ifdef USE_IEEE_INTRINSIC
-        T = T / IEEE_FMA(-Y, Y, SCALE(ONE, M + 1))
-#else
-        T = T / (SCALE(ONE, M + 1) - Y * Y)
-#endif
-     ELSE IF (X .EQ. Y) THEN
-        T = SCALE(X * X, 1 - M)
-     ELSE IF (X .LT. Y) THEN
-        T = SCALE(X, 1) * Y
-#ifdef USE_IEEE_INTRINSIC
-        T = T / IEEE_FMA(X, X, IEEE_FMA(-Y, Y, SCALE(ONE, M)))
-#else
-        T = T / ((SCALE(ONE, M) - Y * Y) + X * X)
-#endif
-     ELSE ! X > Y
-        T = SCALE(Y, 1) * X
-        ! a possible underflow of X-Y is safe so it does not have to be avoided above
-#ifdef USE_IEEE_INTRINSIC
-        T = T / IEEE_FMA(X - Y, X + Y, SCALE(ONE, M))
-#else
-        T = T / ((X - Y) * (X + Y) + SCALE(ONE, M))
-#endif
-     END IF
   END IF
 #ifndef NDEBUG
 #ifdef _OPENMP
@@ -487,9 +427,9 @@
 
   ! the functions of \psi
 #ifdef USE_IEEE_INTRINSIC
-  TANP = SCALE(IEEE_FMA(Y, TANF, X), -L)
+  TANP = IEEE_FMA(Y, TANF, X)
 #else
-  TANP = SCALE(Y * TANF + X, -L)
+  TANP = Y * TANF + X
 #endif
 #ifdef CR_MATH
   SECP = CR_HYPOT(TANP, ONE)

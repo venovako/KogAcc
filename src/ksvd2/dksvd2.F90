@@ -45,7 +45,6 @@ SUBROUTINE DKSVD2(G, U, V, S, INFO)
 
   REAL(KIND=K) :: B(2,2), X, Y, Z
   REAL(KIND=K) :: TANG, SECG, TANF, SECF, TANP, SECP
-  INTEGER :: I, J, L, M
 
 #include "gksvd2.F90"
 #ifndef NDEBUG

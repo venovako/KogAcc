@@ -247,7 +247,7 @@
         END IF
      END IF
 #ifndef NDEBUG
-     WRITE (OUTPUT_UNIT,'(A,I4)',ADVANCE='NO') ',', I
+     WRITE (OUTPUT_UNIT,'(A,I5)',ADVANCE='NO') ',', I
      IF (JS .EQ. 3) THEN
         WRITE (OUTPUT_UNIT,9,ADVANCE='NO') ',', W(M_2 + 1)
      ELSE ! tabular O
@@ -258,7 +258,7 @@
      IF (I .EQ. 0) THEN
         ! convergence
 #ifndef NDEBUG
-        WRITE (OUTPUT_UNIT,'(A,I4)') ',', 0
+        WRITE (OUTPUT_UNIT,'(A,I5)') ',', 0
         FLUSH(OUTPUT_UNIT)
 #endif
         EXIT
@@ -428,7 +428,7 @@
         END DO
      END IF
 #ifndef NDEBUG
-     WRITE (OUTPUT_UNIT,'(A,I4)') ',', M
+     WRITE (OUTPUT_UNIT,'(A,I5)') ',', M
      FLUSH(OUTPUT_UNIT)
 #endif
 

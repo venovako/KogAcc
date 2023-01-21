@@ -88,7 +88,7 @@
   CALL SYSTEM_CLOCK(C1, CR)
   T = REAL(CR, REAL128)
   T = REAL(C1 - C0, REAL128) / T
-  WRITE (OUTPUT_UNIT,'(A,F15.9,A,I11,A)',ADVANCE='NO') 'KSVD0 took ', T, ' s with ', INFO, ' steps and W=('
+  WRITE (OUTPUT_UNIT,'(A,F15.6,A,I11,A)',ADVANCE='NO') 'KSVD0 took ', T, ' s with ', INFO, ' steps and W=('
   WRITE (OUTPUT_UNIT,9) W(1), ',', W(2), ',', W(3), ')'
   FLUSH(OUTPUT_UNIT)
   IF (INFO .LT. 0) THEN
