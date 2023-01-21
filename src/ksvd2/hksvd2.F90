@@ -346,13 +346,13 @@
   L = MAX(M - I, M - J, 0)
   I = I + L
   J = J + L
-  ! I+J has to be >= M
-  M = MAX(M - (I + J), 0)
-  IF (MOD(M, 2) .NE. 0) M = M + 1
-  M = M / 2
-  I = I + M
-  J = J + M
-  L = L + M
+  ! TODO: ideally, I+J should be >= M, but overflows should be avoided
+  ! M = MAX(M - (I + J), 0)
+  ! IF (MOD(M, 2) .NE. 0) M = M + 1
+  ! M = M / 2
+  ! I = I + M
+  ! J = J + M
+  ! L = L + M
   M = L + L ! exponent of T**2 = 2*L
 
   ! scaled division by A(1,1)
@@ -419,7 +419,7 @@
 #ifdef USE_IEEE_INTRINSIC
         T = T / IEEE_FMA(X, X, IEEE_FMA(-Y, Y, SCALE(ONE, M)))
 #else
-        T = T / ((ONE - Y * Y) + X * X)
+        T = T / ((SCALE(ONE, M) - Y * Y) + X * X)
 #endif
      ELSE ! X > Y
         T = SCALE(Y, 1) * X

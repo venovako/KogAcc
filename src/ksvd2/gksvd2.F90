@@ -254,13 +254,13 @@
   L = MAX(M - I, M - J, 0)
   I = I + L
   J = J + L
-  ! I+J has to be >= M
-  M = MAX(M - (I + J), 0)
-  IF (MOD(M, 2) .NE. 0) M = M + 1
-  M = M / 2
-  I = I + M
-  J = J + M
-  L = L + M
+  ! TODO: ideally, I+J should be >= M, but overflows should be avoided
+  ! M = MAX(M - (I + J), 0)
+  ! IF (MOD(M, 2) .NE. 0) M = M + 1
+  ! M = M / 2
+  ! I = I + M
+  ! J = J + M
+  ! L = L + M
   M = L + L ! exponent of Z**2 = 2*L
 
   ! scaled division by B(1,1)
@@ -328,7 +328,7 @@
 #ifdef USE_IEEE_INTRINSIC
         Z = Z / IEEE_FMA(X, X, IEEE_FMA(-Y, Y, SCALE(ONE, M)))
 #else
-        Z = Z / ((ONE - Y * Y) + X * X)
+        Z = Z / ((SCALE(ONE, M) - Y * Y) + X * X)
 #endif
      ELSE ! X > Y
         Z = SCALE(Y, 1) * X
