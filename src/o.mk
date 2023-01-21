@@ -184,7 +184,8 @@ OBJS_ARRBIO += \
 OBJS_BLKSVD += \
 ../obj/$(PLAT)/xbrdg.o\
 ../obj/$(PLAT)/wbrdg.o\
-../obj/$(PLAT)/xksvd0.o
+../obj/$(PLAT)/xksvd0.o\
+../obj/$(PLAT)/wksvd0.o
 OBJS_DYNORD += \
 ../obj/$(PLAT)/xabsg.o\
 ../obj/$(PLAT)/wabsg.o\
