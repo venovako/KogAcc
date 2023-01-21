@@ -132,7 +132,9 @@ OBJS_FAUX=\
 ../obj/$(PLAT)/jsweep.o
 
 EXES_BLKSVD=\
-../bin/$(PLAT)/sksvd0.exe
+../bin/$(PLAT)/sksvd0.exe\
+../bin/$(PLAT)/dksvd0.exe\
+../bin/$(PLAT)/qksvd0.exe
 
 EXES_DYNORD=\
 ../bin/$(PLAT)/spqsort.exe\
@@ -204,6 +206,8 @@ OBJS_FAUX += \
 ../obj/$(PLAT)/wrotr.o\
 ../obj/$(PLAT)/xscalg.o\
 ../obj/$(PLAT)/wscalg.o
+EXES_BLKSVD += \
+../bin/$(PLAT)/xksvd0.exe
 EXES_DYNORD += \
 ../bin/$(PLAT)/xpqsort.exe
 EXES_KSVD2 += \

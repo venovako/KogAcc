@@ -132,7 +132,9 @@ OBJS_FAUX=\
 ..\obj\$(PLAT)\jsweep.obj
 
 EXES_BLKSVD=\
-..\bin\$(PLAT)\sksvd0.exe
+..\bin\$(PLAT)\sksvd0.exe\
+..\bin\$(PLAT)\dksvd0.exe\
+..\bin\$(PLAT)\qksvd0.exe
 
 EXES_DYNORD=\
 ..\bin\$(PLAT)\spqsort.exe\

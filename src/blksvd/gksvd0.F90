@@ -235,6 +235,11 @@
         END IF
         I = L
      ELSE ! tabular O
+#ifdef NDEBUG
+        W(M_2 + 1) = -ONE
+#else
+        CALL LANGO('O', N, G, LDG, W(M_2 + 1), L)
+#endif
         I = NP
      END IF
      IF (I .GT. 0) THEN
@@ -248,11 +253,7 @@
      END IF
 #ifndef NDEBUG
      WRITE (OUTPUT_UNIT,'(A,I5)',ADVANCE='NO') ',', I
-     IF (JS .EQ. 3) THEN
-        WRITE (OUTPUT_UNIT,9,ADVANCE='NO') ',', W(M_2 + 1)
-     ELSE ! tabular O
-        WRITE (OUTPUT_UNIT,9,ADVANCE='NO') ',', -ONE
-     END IF
+     WRITE (OUTPUT_UNIT,9,ADVANCE='NO') ',', W(M_2 + 1)
      FLUSH(OUTPUT_UNIT)
 #endif
      IF (I .EQ. 0) THEN

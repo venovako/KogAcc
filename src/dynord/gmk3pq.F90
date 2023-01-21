@@ -67,7 +67,7 @@
      W(J) = CR_HYPOT(W(J), W(I))
      I = I - 1
   END DO
-  ! TODO: with the scaling of G this might be expected to overflow, so ignore it for now...
+  ! with the scaling of G this might be expected to overflow
   ! IF (.NOT. (W(J) .LE. HUGE(W(J)))) THEN
   !    INFO = -7
   !    RETURN
