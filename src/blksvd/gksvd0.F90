@@ -443,16 +443,17 @@
            INFO = -3
            RETURN
         END IF
-        GS = EXPONENT(HUGE(GN)) - EXPONENT(GN) - 2
-        IF (GS .LT. 0) THEN
+        T = EXPONENT(HUGE(GN)) - EXPONENT(GN) - 2
+        IF (T .LT. 0) THEN
            !$ L = OMP_GET_NUM_THREADS()
            IF (.NOT. LOMP) L = 0
-           CALL SCALG(N, N, G, LDG, GS, L)
+           CALL SCALG(N, N, G, LDG, T, L)
            IF (L .NE. 0) THEN
               INFO = -3
               RETURN
            END IF
-           GN = SCALE(GN, GS)
+           GN = SCALE(GN, T)
+           GS = GS + T
         END IF
 
         ! optionally scale U
@@ -464,16 +465,17 @@
               INFO = -5
               RETURN
            END IF
-           US = EXPONENT(HUGE(UN)) - EXPONENT(UN) - 2
-           IF (US .LT. 0) THEN
+           T = EXPONENT(HUGE(UN)) - EXPONENT(UN) - 2
+           IF (T .LT. 0) THEN
               !$ L = OMP_GET_NUM_THREADS()
               IF (.NOT. LOMP) L = 0
-              CALL SCALG(N, N, U, LDU, US, L)
+              CALL SCALG(N, N, U, LDU, T, L)
               IF (L .NE. 0) THEN
                  INFO = -5
                  RETURN
               END IF
-              UN = SCALE(UN, US)
+              UN = SCALE(UN, T)
+              US = US + T
            END IF
         END IF
 
@@ -486,16 +488,17 @@
               INFO = -7
               RETURN
            END IF
-           VS = EXPONENT(HUGE(VN)) - EXPONENT(VN) - 2
-           IF (VS .LT. 0) THEN
+           T = EXPONENT(HUGE(VN)) - EXPONENT(VN) - 2
+           IF (T .LT. 0) THEN
               !$ L = OMP_GET_NUM_THREADS()
               IF (.NOT. LOMP) L = 0
-              CALL SCALG(N, N, V, LDV, VS, L)
+              CALL SCALG(N, N, V, LDV, T, L)
               IF (L .NE. 0) THEN
                  INFO = -7
                  RETURN
               END IF
-              VN = SCALE(VN, VS)
+              VN = SCALE(VN, T)
+              VS = VS + T
            END IF
         END IF
      END IF
