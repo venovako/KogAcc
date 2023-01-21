@@ -131,6 +131,9 @@ OBJS_FAUX=\
 ../obj/$(PLAT)/jstep.o\
 ../obj/$(PLAT)/jsweep.o
 
+EXES_BLKSVD=\
+../bin/$(PLAT)/sksvd0.exe
+
 EXES_DYNORD=\
 ../bin/$(PLAT)/spqsort.exe\
 ../bin/$(PLAT)/dpqsort.exe\
@@ -227,4 +230,4 @@ LIBS=\
 ../lib/$(PLAT)/libksvd2.a\
 ../lib/$(PLAT)/libfaux.a
 
-EXES=$(EXES_DYNORD) $(EXES_KSVD2) $(EXES_FAUX) $(EXES_TEST)
+EXES=$(EXES_BLKSVD) $(EXES_DYNORD) $(EXES_KSVD2) $(EXES_FAUX) $(EXES_TEST)

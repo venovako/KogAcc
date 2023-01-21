@@ -507,8 +507,8 @@
         IF (MOD(T, NS) .EQ. 0) THEN
            L = T / NS
 #ifndef NDEBUG
-           WRITE (ERROR_UNIT,*) 'sweep', L, ' completed with:', SM, ' big transformations'
-           FLUSH(ERROR_UNIT)
+           WRITE (OUTPUT_UNIT,*) 'sweep', L, ' completed with:', SM, ' big transformations'
+           FLUSH(OUTPUT_UNIT)
 #endif
            IF (SM .EQ. 0_INT64) EXIT
            SM = 0_INT64
@@ -519,8 +519,8 @@
   ! no convergence if INFO = MRQSTP
   INFO = STP
 #ifndef NDEBUG
-  WRITE (ERROR_UNIT,*) 'exited after:', TT, ' transformations, of which big:', TM
-  FLUSH(ERROR_UNIT)
+  WRITE (OUTPUT_UNIT,*) 'exited after:', TT, ' transformations, of which big:', TM
+  FLUSH(OUTPUT_UNIT)
 #endif
 
   ! extract SV from G with a safe backscaling

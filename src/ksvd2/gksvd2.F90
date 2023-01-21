@@ -155,7 +155,13 @@
      END IF
   END IF
 #ifndef NDEBUG
-  WRITE (ERROR_UNIT,9) 'TANG=', TANG, ', SECG=', SECG
+#ifdef _OPENMP
+  IF (OMP_GET_NUM_THREADS() .LE. 1) THEN
+#endif
+     WRITE (ERROR_UNIT,9) 'TANG=', TANG, ', SECG=', SECG
+#ifdef _OPENMP
+  END IF
+#endif
 #endif
 
   ! apply the Givens rotation
@@ -264,7 +270,13 @@
   Y = SCALE(Y, J)
   Z = SCALE(ONE, L)
 #ifndef NDEBUG
-  WRITE (ERROR_UNIT,9) '   X=', X, ',    Y=', Y
+#ifdef _OPENMP
+  IF (OMP_GET_NUM_THREADS() .LE. 1) THEN
+#endif
+     WRITE (ERROR_UNIT,9) '   X=', X, ',    Y=', Y
+#ifdef _OPENMP
+  END IF
+#endif
 #endif
   ! underflow should not happen here, but...
   IF (X .EQ. ZERO) GOTO 8
@@ -329,7 +341,13 @@
      END IF
   END IF
 #ifndef NDEBUG
-  WRITE (ERROR_UNIT,9) '   Z=', Z, ',ROOTH=', ROOTH
+#ifdef _OPENMP
+  IF (OMP_GET_NUM_THREADS() .LE. 1) THEN
+#endif
+     WRITE (ERROR_UNIT,9) '   Z=', Z, ',ROOTH=', ROOTH
+#ifdef _OPENMP
+  END IF
+#endif
 #endif
 
   ! the functions of \varphi
@@ -365,7 +383,13 @@
 #endif
   END IF
 #ifndef NDEBUG
-  WRITE (ERROR_UNIT,9) 'TANF=', TANF, ', SECF=', SECF
+#ifdef _OPENMP
+  IF (OMP_GET_NUM_THREADS() .LE. 1) THEN
+#endif
+     WRITE (ERROR_UNIT,9) 'TANF=', TANF, ', SECF=', SECF
+#ifdef _OPENMP
+  END IF
+#endif
 #endif
 
   ! the functions of \psi
@@ -384,7 +408,13 @@
 #endif
 #endif
 #ifndef NDEBUG
-  WRITE (ERROR_UNIT,9) 'TANP=', TANP, ', SECP=', SECP
+#ifdef _OPENMP
+  IF (OMP_GET_NUM_THREADS() .LE. 1) THEN
+#endif
+     WRITE (ERROR_UNIT,9) 'TANP=', TANP, ', SECP=', SECP
+#ifdef _OPENMP
+  END IF
+#endif
 #endif
 
 #ifdef USE_IEEE_INTRINSIC

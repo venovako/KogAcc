@@ -60,3 +60,6 @@
 
 ..\bin\$(PLAT)\s2g110.exe: test\s2g110.F90 $(MKFS) test\Makefile
 	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp ..\..\..\src\test\s2g110.F90 /Fes2g110.exe $(LDFLAGS)
+
+..\bin\$(PLAT)\sksvd0.exe: test\sksvd0x.F90 test\gksvd0x.F90 ..\lib\$(PLAT)\blksvd.lib ..\lib\$(PLAT)\dynord.lib ..\lib\$(PLAT)\ksvd2.lib ..\lib\$(PLAT)\arrbio.lib ..\lib\$(PLAT)\faux.lib $(MKFS) test/GNUmakefile
+	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp ..\..\..\src\test\sksvd0x.F90 /Fesksvd0.exe ..\..\..\lib\$(PLAT)\blksvd.lib ..\..\..\lib\$(PLAT)\dynord.lib ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\arrbio.lib ..\..\..\lib\$(PLAT)\faux.lib ..\..\..\..\JACSD\jstrat$(DEBUG).lib $(LAPACK)
