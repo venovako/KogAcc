@@ -24,6 +24,7 @@ PURE SUBROUTINE JSTEP(J, N, S, T, P, O, R, INFO)
         RETURN
      END IF
      I = 2 * (M - 1) + 1
+     K = 1
      R(1,K) = O(I)
      I = I + 1
      R(2,K) = O(I)
