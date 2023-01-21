@@ -56,6 +56,7 @@ OBJS_BLKSVD=\
 ..\obj\$(PLAT)\sksvd0.obj\
 ..\obj\$(PLAT)\cksvd0.obj\
 ..\obj\$(PLAT)\dksvd0.obj\
+..\obj\$(PLAT)\zksvd0.obj\
 ..\obj\$(PLAT)\qksvd0.obj
 
 OBJS_DYNORD=\

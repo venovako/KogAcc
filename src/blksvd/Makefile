@@ -31,5 +31,8 @@
 ..\obj\$(PLAT)\dksvd0.obj: blksvd\dksvd0.F90 blksvd\gksvd0.F90 $(MKFS) blksvd\Makefile
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\blksvd\dksvd0.F90
 
+..\obj\$(PLAT)\zksvd0.obj: blksvd\zksvd0.F90 blksvd\hksvd0.F90 $(MKFS) blksvd\Makefile
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\blksvd\zksvd0.F90
+
 ..\obj\$(PLAT)\qksvd0.obj: blksvd\qksvd0.F90 blksvd\gksvd0.F90 $(MKFS) blksvd\Makefile
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\blksvd\qksvd0.F90

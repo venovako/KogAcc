@@ -8,9 +8,12 @@
   IF (M .EQ. 0) RETURN
   IF (N .EQ. 0) RETURN
 
+  !DIR$ VECTOR ALWAYS
   DO I = 1, M
      X = G(I,P)
      Y = G(I,Q)
+     !DIR$ FMA
      G(I,P) = X * W(1,1) + Y * W(2,1)
+     !DIR$ FMA
      G(I,Q) = X * W(1,2) + Y * W(2,2)
   END DO
