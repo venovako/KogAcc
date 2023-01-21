@@ -329,37 +329,40 @@
   ! exit if A is diagonal
   IF (A(1,2) .EQ. ZERO) GOTO 8
 
-  ! A(1,1) = 2**M * T
-  M = EXPONENT(A(1,1))
-  T = FRACTION(A(1,1))
-  ! A(1,2)/A(1,1) = 2**I * X
-  X = FRACTION(A(1,2)) / T
-  I = EXPONENT(A(1,2)) - M + EXPONENT(X)
-  X = FRACTION(X)
-  ! A(2,2)/A(1,1) = 2**J * Y
-  Y = FRACTION(A(2,2)) / T
-  J = EXPONENT(A(2,2)) - M + EXPONENT(Y)
-  Y = FRACTION(Y)
-  ! avoid underflows
-  M = EXPONENT(TINY(ZERO))
-  ! MIN(I,J) has to be >= M
-  L = MAX(M - I, M - J, 0)
-  I = I + L
-  J = J + L
-  ! TODO: ideally, I+J should be >= M, but overflows should be avoided
-  ! M = MAX(M - (I + J), 0)
-  ! IF (MOD(M, 2) .NE. 0) M = M + 1
-  ! M = M / 2
-  ! I = I + M
-  ! J = J + M
-  ! L = L + M
-  M = L + L ! exponent of T**2 = 2*L
+  L = 0
+  ! ! A(1,1) = 2**M * T
+  ! M = EXPONENT(A(1,1))
+  ! T = FRACTION(A(1,1))
+  ! ! A(1,2)/A(1,1) = 2**I * X
+  ! X = FRACTION(A(1,2)) / T
+  ! I = EXPONENT(A(1,2)) - M + EXPONENT(X)
+  ! X = FRACTION(X)
+  ! ! A(2,2)/A(1,1) = 2**J * Y
+  ! Y = FRACTION(A(2,2)) / T
+  ! J = EXPONENT(A(2,2)) - M + EXPONENT(Y)
+  ! Y = FRACTION(Y)
+  ! ! avoid underflows
+  ! M = EXPONENT(TINY(ZERO))
+  ! ! MIN(I,J) has to be >= M
+  ! L = MAX(M - I, M - J, 0)
+  ! I = I + L
+  ! J = J + L
+  ! ! TODO: ideally, I+J should be >= M, but overflows should be avoided
+  ! ! M = MAX(M - (I + J), 0)
+  ! ! IF (MOD(M, 2) .NE. 0) M = M + 1
+  ! ! M = M / 2
+  ! ! I = I + M
+  ! ! J = J + M
+  ! ! L = L + M
+  ! M = L + L ! exponent of T**2 = 2*L
 
-  ! scaled division by A(1,1)
-  ! [ T X ]
-  ! [ 0 Y ]
-  X = SCALE(X, I)
-  Y = SCALE(Y, J)
+  ! ! scaled division by A(1,1)
+  ! ! [ T X ]
+  ! ! [ 0 Y ]
+  ! X = SCALE(X, I)
+  ! Y = SCALE(Y, J)
+  X = A(1,2) / A(1,1)
+  Y = A(2,2) / A(1,1)
   T = SCALE(ONE, L)
 #ifndef NDEBUG
 #ifdef _OPENMP
@@ -370,7 +373,6 @@
   END IF
 #endif
 #endif
-  ! underflow should not happen here, but...
   IF (X .EQ. ZERO) GOTO 8
 
   IF (T .EQ. ONE) THEN
