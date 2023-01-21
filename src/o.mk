@@ -57,7 +57,8 @@ OBJS_BLKSVD=\
 ../obj/$(PLAT)/cksvd0.o\
 ../obj/$(PLAT)/dksvd0.o\
 ../obj/$(PLAT)/zksvd0.o\
-../obj/$(PLAT)/qksvd0.o
+../obj/$(PLAT)/qksvd0.o\
+../obj/$(PLAT)/yksvd0.o
 
 OBJS_DYNORD=\
 ../obj/$(PLAT)/sabsg.o\
