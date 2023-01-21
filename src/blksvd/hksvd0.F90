@@ -51,16 +51,24 @@
   LVACC = (IAND(JOB, VACC) .NE. 0)
 
   IF (N .EQ. 1) THEN
-     GN = ABS(G(1,1))
+     W(2) = ABS(REAL(G(1,1)))
+     W(3) = ABS(AIMAG(G(1,1)))
+     GN = CR_HYPOT(W(2), W(3))
      IF (.NOT. (GN .LE. HUGE(GN))) THEN
         INFO = -3
      ELSE ! finite G
-        IF (LUSID) U(1,1) = SIGN(ONE, G(1,1))
-        IF (LVSID) V(1,1) = ONE
+        IF (LUSID) THEN
+           IF (GN .NE. ZERO) THEN
+              U(1,1) = CONJG(G(1,1)) / GN
+           ELSE ! GN = 0
+              U(1,1) = CONE
+           END IF
+        END IF
+        IF (LVSID) V(1,1) = CONE
         G(1,1) = GN
         SV(1) = REAL(GN, REAL128)
-        W(1) = GN
-        W(2) = ONE
+        W(1) = MAX(W(2), W(3))
+        W(2) = MAX(ABS(REAL(U(1,1))), ABS(AIMAG(U(1,1))))
         W(3) = ONE
      END IF
      RETURN
@@ -72,11 +80,11 @@
         !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J) SHARED(U,N)
         DO J = 1, N
            DO I = 1, J-1
-              U(I,J) = ZERO
+              U(I,J) = CZERO
            END DO
-           U(J,J) = ONE
+           U(J,J) = CONE
            DO I = J+1, N
-              U(I,J) = ZERO
+              U(I,J) = CZERO
            END DO
         END DO
         !$OMP END PARALLEL DO
@@ -85,11 +93,11 @@
         !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J) SHARED(V,N)
         DO J = 1, N
            DO I = 1, J-1
-              V(I,J) = ZERO
+              V(I,J) = CZERO
            END DO
-           V(J,J) = ONE
+           V(J,J) = CONE
            DO I = J+1, N
-              V(I,J) = ZERO
+              V(I,J) = CZERO
            END DO
         END DO
         !$OMP END PARALLEL DO
@@ -98,22 +106,22 @@
      IF (LUSID) THEN
         DO J = 1, N
            DO I = 1, J-1
-              U(I,J) = ZERO
+              U(I,J) = CZERO
            END DO
-           U(J,J) = ONE
+           U(J,J) = CONE
            DO I = J+1, N
-              U(I,J) = ZERO
+              U(I,J) = CZERO
            END DO
         END DO
      END IF
      IF (LVSID) THEN
         DO J = 1, N
            DO I = 1, J-1
-              V(I,J) = ZERO
+              V(I,J) = CZERO
            END DO
-           V(J,J) = ONE
+           V(J,J) = CONE
            DO I = J+1, N
-              V(I,J) = ZERO
+              V(I,J) = CZERO
            END DO
         END DO
      END IF
@@ -127,7 +135,7 @@
      INFO = -3
      RETURN
   END IF
-  GS = EXPONENT(HUGE(GN)) - EXPONENT(GN) - 3
+  GS = EXPONENT(HUGE(GN)) - EXPONENT(GN) - 9
   IF (GS .NE. 0) THEN
      !$ L = OMP_GET_NUM_THREADS()
      IF (.NOT. LOMP) L = 0
@@ -152,7 +160,7 @@
            INFO = -5
            RETURN
         END IF
-        US = EXPONENT(HUGE(UN)) - EXPONENT(UN) - 2
+        US = EXPONENT(HUGE(UN)) - EXPONENT(UN) - 4
      END IF
      IF (US .NE. 0) THEN
         !$ L = OMP_GET_NUM_THREADS()
@@ -182,7 +190,7 @@
            INFO = -7
            RETURN
         END IF
-        VS = EXPONENT(HUGE(VN)) - EXPONENT(VN) - 2
+        VS = EXPONENT(HUGE(VN)) - EXPONENT(VN) - 4
      END IF
      IF (VS .NE. 0) THEN
         !$ L = OMP_GET_NUM_THREADS()
@@ -273,7 +281,7 @@
      ! compute and apply the transformations
      M = 0
      IF (LOMP .AND. (I .GT. 1)) THEN
-        !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,U,W,R,N,LDG,LDU,I,LUACC) PRIVATE(G2,U2,P,Q,WV,WS,T,L) REDUCTION(+:M)
+        !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,U,W,R,N,LDG,LDU,I,LUACC) PRIVATE(G2,U2,V2,P,Q,WV,WS,T,L) REDUCTION(+:M)
         DO J = 1, I
            P = R(1,J)
            Q = R(2,J)
@@ -285,13 +293,21 @@
            G2(2,1) = G(Q,P)
            G2(1,2) = G(P,Q)
            G2(2,2) = G(Q,Q)
-           WV = (J - 1) * 6 + 1
-           WS = WV + 4
+           WV = (J - 1) * 10 + 1
+           WS = WV + 8
            !$ T = OMP_GET_NUM_THREADS()
-           CALL KSVD2(G2, U2, W(WV), W(WS), T)
+           CALL KSVD2(G2, U2, V2, W(WS), T)
            R(2,I+J) = T
-           CALL CVGPP(G2, U2, W(WV), W(WS), T)
+           CALL CVGPP(G2, U2, V2, W(WS), T)
            R(1,I+J) = T
+           W(WV) = REAL(V2(1,1))
+           W(WV+1) = AIMAG(V2(1,1))
+           W(WV+2) = REAL(V2(2,1))
+           W(WV+3) = AIMAG(V2(2,1))
+           W(WV+4) = REAL(V2(1,2))
+           W(WV+5) = AIMAG(V2(1,2))
+           W(WV+6) = REAL(V2(2,2))
+           W(WV+7) = AIMAG(V2(2,2))
            IF (T .LT. 0) THEN
               M = M + 1
               CYCLE
@@ -323,35 +339,39 @@
            INFO = -19
            RETURN
         END IF
-        !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,V,W,R,N,LDG,LDV,I,LVACC) PRIVATE(P,Q,WV,WS,T,L) REDUCTION(+:M)
+        !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,V,W,R,N,LDG,LDV,I,LVACC) PRIVATE(V2,P,Q,WV,WS,T,L) REDUCTION(+:M)
         DO J = 1, I
            P = R(1,J)
            Q = R(2,J)
-           WV = (J - 1) * 6 + 1
-           WS = WV + 4
+           WV = (J - 1) * 10 + 1
+           WS = WV + 8
            T = R(1,I+J)
            ! transform V and G from the right
            IF (IAND(T, 4) .NE. 0) THEN
+              V2(1,1) = CMPLX(W(WV), W(WV+1), K)
+              V2(2,1) = CMPLX(W(WV+2), W(WV+3), K)
+              V2(1,2) = CMPLX(W(WV+4), W(WV+5), K)
+              V2(2,2) = CMPLX(W(WV+6), W(WV+7), K)
               IF (LVACC) THEN
                  !$ L = OMP_GET_NUM_THREADS()
-                 CALL ROTC(N, N, V, LDV, P, Q, W(WV), L)
+                 CALL ROTC(N, N, V, LDV, P, Q, V2, L)
                  IF (L .NE. 0) THEN
                     M = M + (I + 1)
                     CYCLE
                  END IF
               END IF
               !$ L = OMP_GET_NUM_THREADS()
-              CALL ROTC(N, N, G, LDG, P, Q, W(WV), L)
+              CALL ROTC(N, N, G, LDG, P, Q, V2, L)
               IF (L .NE. 0) THEN
                  M = M + (I + 1)
                  CYCLE
               END IF
            END IF
            ! set the new values
-           G(P,P) = W(WS)
-           G(Q,P) = ZERO
-           G(P,Q) = ZERO
-           G(Q,Q) = W(WS+1)
+           G(P,P) = CMPLX(W(WS), ZERO, K)
+           G(Q,P) = CZERO
+           G(P,Q) = CZERO
+           G(Q,Q) = CMPLX(W(WS+1), ZERO, K)
            IF (IAND(T, 8) .NE. 0) M = M + 1
         END DO
         !$OMP END PARALLEL DO
@@ -371,12 +391,12 @@
            G2(2,1) = G(Q,P)
            G2(1,2) = G(P,Q)
            G2(2,2) = G(Q,Q)
-           WV = (J - 1) * 6 + 1
-           WS = WV + 4
+           WV = (J - 1) * 10 + 1
+           WS = WV + 8
            T = 0
-           CALL KSVD2(G2, U2, W(WV), W(WS), T)
+           CALL KSVD2(G2, U2, V2, W(WS), T)
            R(2,I+J) = T
-           CALL CVGPP(G2, U2, W(WV), W(WS), T)
+           CALL CVGPP(G2, U2, V2, W(WS), T)
            R(1,I+J) = T
            IF (T .LT. 0) THEN
               INFO = -14
@@ -407,24 +427,24 @@
            IF (IAND(T, 4) .NE. 0) THEN
               IF (LVACC) THEN
                  L = 0
-                 CALL ROTC(N, N, V, LDV, P, Q, W(WV), L)
+                 CALL ROTC(N, N, V, LDV, P, Q, V2, L)
                  IF (L .NE. 0) THEN
                     INFO = -17
                     RETURN
                  END IF
               END IF
               L = 0
-              CALL ROTC(N, N, G, LDG, P, Q, W(WV), L)
+              CALL ROTC(N, N, G, LDG, P, Q, V2, L)
               IF (L .NE. 0) THEN
                  INFO = -18
                  RETURN
               END IF
            END IF
            ! set the new values
-           G(P,P) = W(WS)
+           G(P,P) = CMPLX(W(WS), ZERO, K)
            G(Q,P) = ZERO
            G(P,Q) = ZERO
-           G(Q,Q) = W(WS+1)
+           G(Q,Q) = CMPLX(W(WS+1), ZERO, K)
            IF (IAND(T, 8) .NE. 0) M = M + 1
         END DO
      END IF
@@ -432,75 +452,72 @@
      WRITE (OUTPUT_UNIT,'(A,I5)') ',', M
      FLUSH(OUTPUT_UNIT)
 #endif
+     TM = TM + M
 
-     IF (M .GT. 0) THEN
-        TM = TM + M
-
-        ! optionally scale G
+     ! optionally scale G
+     !$ L = OMP_GET_NUM_THREADS()
+     IF (.NOT. LOMP) L = 0
+     CALL LANGO('N', N, G, LDG, GN, L)
+     IF (L .NE. 0) THEN
+        INFO = -3
+        RETURN
+     END IF
+     T = EXPONENT(HUGE(GN)) - EXPONENT(GN) - 9
+     IF (T .LT. 0) THEN
         !$ L = OMP_GET_NUM_THREADS()
         IF (.NOT. LOMP) L = 0
-        CALL LANGO('N', N, G, LDG, GN, L)
+        CALL SCALG(N, N, G, LDG, T, L)
         IF (L .NE. 0) THEN
            INFO = -3
            RETURN
         END IF
-        T = EXPONENT(HUGE(GN)) - EXPONENT(GN) - 3
+        GN = SCALE(GN, T)
+        GS = GS + T
+     END IF
+
+     ! optionally scale U
+     IF (LUACC .AND. .NOT. LUSID) THEN
+        !$ L = OMP_GET_NUM_THREADS()
+        IF (.NOT. LOMP) L = 0
+        CALL LANGO('N', N, U, LDU, UN, L)
+        IF (L .NE. 0) THEN
+           INFO = -5
+           RETURN
+        END IF
+        T = EXPONENT(HUGE(UN)) - EXPONENT(UN) - 4
         IF (T .LT. 0) THEN
            !$ L = OMP_GET_NUM_THREADS()
            IF (.NOT. LOMP) L = 0
-           CALL SCALG(N, N, G, LDG, T, L)
-           IF (L .NE. 0) THEN
-              INFO = -3
-              RETURN
-           END IF
-           GN = SCALE(GN, T)
-           GS = GS + T
-        END IF
-
-        ! optionally scale U
-        IF (LUACC .AND. .NOT. LUSID) THEN
-           !$ L = OMP_GET_NUM_THREADS()
-           IF (.NOT. LOMP) L = 0
-           CALL LANGO('N', N, U, LDU, UN, L)
+           CALL SCALG(N, N, U, LDU, T, L)
            IF (L .NE. 0) THEN
               INFO = -5
               RETURN
            END IF
-           T = EXPONENT(HUGE(UN)) - EXPONENT(UN) - 2
-           IF (T .LT. 0) THEN
-              !$ L = OMP_GET_NUM_THREADS()
-              IF (.NOT. LOMP) L = 0
-              CALL SCALG(N, N, U, LDU, T, L)
-              IF (L .NE. 0) THEN
-                 INFO = -5
-                 RETURN
-              END IF
-              UN = SCALE(UN, T)
-              US = US + T
-           END IF
+           UN = SCALE(UN, T)
+           US = US + T
         END IF
+     END IF
 
-        ! optionally scale V
-        IF (LVACC .AND. .NOT. LVSID) THEN
+     ! optionally scale V
+     IF (LVACC .AND. .NOT. LVSID) THEN
+        !$ L = OMP_GET_NUM_THREADS()
+        IF (.NOT. LOMP) L = 0
+        CALL LANGO('N', N, V, LDV, VN, L)
+        IF (L .NE. 0) THEN
+           INFO = -7
+           RETURN
+        END IF
+        T = EXPONENT(HUGE(VN)) - EXPONENT(VN) - 4
+        IF (T .LT. 0) THEN
            !$ L = OMP_GET_NUM_THREADS()
            IF (.NOT. LOMP) L = 0
-           CALL LANGO('N', N, V, LDV, VN, L)
+           CALL SCALG(N, N, V, LDV, T, L)
            IF (L .NE. 0) THEN
               INFO = -7
               RETURN
            END IF
-           T = EXPONENT(HUGE(VN)) - EXPONENT(VN) - 2
-           IF (T .LT. 0) THEN
-              !$ L = OMP_GET_NUM_THREADS()
-              IF (.NOT. LOMP) L = 0
-              CALL SCALG(N, N, V, LDV, T, L)
-              IF (L .NE. 0) THEN
-                 INFO = -7
-                 RETURN
-              END IF
-              VN = SCALE(VN, T)
-              VS = VS + T
-           END IF
+           VN = SCALE(VN, T)
+           VS = VS + T
         END IF
      END IF
 

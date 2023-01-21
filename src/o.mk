@@ -54,6 +54,7 @@ OBJS_BLKSVD=\
 ../obj/$(PLAT)/qbrdg.o\
 ../obj/$(PLAT)/ybrdg.o\
 ../obj/$(PLAT)/sksvd0.o\
+../obj/$(PLAT)/cksvd0.o\
 ../obj/$(PLAT)/dksvd0.o\
 ../obj/$(PLAT)/qksvd0.o
 

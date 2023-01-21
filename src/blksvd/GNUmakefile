@@ -31,6 +31,9 @@
 ../obj/$(PLAT)/sksvd0.o: blksvd/sksvd0.F90 blksvd/gksvd0.F90 $(MKFS) blksvd/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/blksvd/sksvd0.F90
 
+../obj/$(PLAT)/cksvd0.o: blksvd/cksvd0.F90 blksvd/hksvd0.F90 $(MKFS) blksvd/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/blksvd/cksvd0.F90
+
 ../obj/$(PLAT)/dksvd0.o: blksvd/dksvd0.F90 blksvd/gksvd0.F90 $(MKFS) blksvd/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/blksvd/dksvd0.F90
 
