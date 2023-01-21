@@ -319,7 +319,7 @@
         END DO
         !$OMP END PARALLEL DO
         IF (M .NE. 0) THEN
-           INFO = -12
+           INFO = -19
            RETURN
         END IF
         !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,V,W,R,N,LDG,LDV,I,LVACC) PRIVATE(P,Q,WV,WS,T,L) REDUCTION(+:M)
@@ -355,7 +355,7 @@
         END DO
         !$OMP END PARALLEL DO
         IF ((M .LT. 0) .OR. (M .GT. I)) THEN
-           INFO = -12
+           INFO = -20
            RETURN
         END IF
      ELSE ! sequentially
@@ -363,7 +363,7 @@
            P = R(1,J)
            Q = R(2,J)
            IF ((P .LE. 0) .OR. (Q .LE. P) .OR. (P .GE. N) .OR. (Q .GT. N)) THEN
-              INFO = -12
+              INFO = -13
               RETURN
            END IF
            G2(1,1) = G(P,P)
@@ -378,7 +378,7 @@
            CALL CVGPP(G2, U2, W(WV), W(WS), T)
            R(1,I+J) = T
            IF (T .LT. 0) THEN
-              INFO = -12
+              INFO = -14
               RETURN
            END IF
            ! transform U from the right, transpose U2, and transform G from the left
@@ -387,7 +387,7 @@
                  L = 0
                  CALL ROTC(N, N, U, LDU, P, Q, U2, L)
                  IF (L .NE. 0) THEN
-                    INFO = -12
+                    INFO = -15
                     RETURN
                  END IF
               END IF
@@ -398,7 +398,7 @@
               L = 0
               CALL ROTR(N, N, G, LDG, P, Q, G2, L)
               IF (L .NE. 0) THEN
-                 INFO = -12
+                 INFO = -16
                  RETURN
               END IF
            END IF
@@ -408,14 +408,14 @@
                  L = 0
                  CALL ROTC(N, N, V, LDV, P, Q, W(WV), L)
                  IF (L .NE. 0) THEN
-                    INFO = -12
+                    INFO = -17
                     RETURN
                  END IF
               END IF
               L = 0
               CALL ROTC(N, N, G, LDG, P, Q, W(WV), L)
               IF (L .NE. 0) THEN
-                 INFO = -12
+                 INFO = -18
                  RETURN
               END IF
            END IF
