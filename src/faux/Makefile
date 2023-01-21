@@ -4,23 +4,23 @@
 ..\obj\$(PLAT)\sthalt.obj: faux\sthalt.F90 $(MKFS) faux\Makefile
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\faux\sthalt.F90
 
-..\obj\$(PLAT)\slango.obj: faux\slango.f90 $(MKFS) faux\Makefile
-	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\slango.f90
+..\obj\$(PLAT)\slango.obj: faux\slango.F90 $(MKFS) faux\Makefile
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\faux\slango.F90
 
-..\obj\$(PLAT)\clango.obj: faux\clango.f90 $(MKFS) faux\Makefile
-	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\clango.f90
+..\obj\$(PLAT)\clango.obj: faux\clango.F90 $(MKFS) faux\Makefile
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\faux\clango.F90
 
-..\obj\$(PLAT)\dlango.obj: faux\dlango.f90 $(MKFS) faux\Makefile
-	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\dlango.f90
+..\obj\$(PLAT)\dlango.obj: faux\dlango.F90 $(MKFS) faux\Makefile
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\faux\dlango.F90
 
-..\obj\$(PLAT)\zlango.obj: faux\zlango.f90 $(MKFS) faux\Makefile
-	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\zlango.f90
+..\obj\$(PLAT)\zlango.obj: faux\zlango.F90 $(MKFS) faux\Makefile
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\faux\zlango.F90
 
-..\obj\$(PLAT)\qlango.obj: faux\qlango.f90 $(MKFS) faux\Makefile
-	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\qlango.f90
+..\obj\$(PLAT)\qlango.obj: faux\qlango.F90 $(MKFS) faux\Makefile
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\faux\qlango.F90
 
-..\obj\$(PLAT)\ylango.obj: faux\ylango.f90 $(MKFS) faux\Makefile
-	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\ylango.f90
+..\obj\$(PLAT)\ylango.obj: faux\ylango.F90 $(MKFS) faux\Makefile
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\faux\ylango.F90
 
 ..\obj\$(PLAT)\srotc.obj: faux\srotc.f90 faux\grotc.f90 $(MKFS) faux\Makefile
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\srotc.f90

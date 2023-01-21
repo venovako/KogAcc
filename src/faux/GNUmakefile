@@ -4,29 +4,29 @@
 ../obj/$(PLAT)/sthalt.o: faux/sthalt.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/sthalt.F90
 
-../obj/$(PLAT)/slango.o: faux/slango.f90 $(MKFS) faux/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/slango.f90
+../obj/$(PLAT)/slango.o: faux/slango.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/slango.F90
 
-../obj/$(PLAT)/clango.o: faux/clango.f90 $(MKFS) faux/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/clango.f90
+../obj/$(PLAT)/clango.o: faux/clango.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/clango.F90
 
-../obj/$(PLAT)/dlango.o: faux/dlango.f90 $(MKFS) faux/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/dlango.f90
+../obj/$(PLAT)/dlango.o: faux/dlango.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/dlango.F90
 
-../obj/$(PLAT)/zlango.o: faux/zlango.f90 $(MKFS) faux/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/zlango.f90
+../obj/$(PLAT)/zlango.o: faux/zlango.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/zlango.F90
 
-../obj/$(PLAT)/qlango.o: faux/qlango.f90 $(MKFS) faux/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/qlango.f90
+../obj/$(PLAT)/qlango.o: faux/qlango.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/qlango.F90
 
-../obj/$(PLAT)/ylango.o: faux/ylango.f90 $(MKFS) faux/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/ylango.f90
+../obj/$(PLAT)/ylango.o: faux/ylango.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/ylango.F90
 
-../obj/$(PLAT)/xlango.o: faux/xlango.f90 $(MKFS) faux/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/xlango.f90
+../obj/$(PLAT)/xlango.o: faux/xlango.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/xlango.F90
 
-../obj/$(PLAT)/wlango.o: faux/wlango.f90 $(MKFS) faux/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/wlango.f90
+../obj/$(PLAT)/wlango.o: faux/wlango.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/wlango.F90
 
 ../obj/$(PLAT)/srotc.o: faux/srotc.f90 faux/grotc.f90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/srotc.f90

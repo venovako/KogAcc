@@ -53,22 +53,37 @@ SUBROUTINE CLANGO(O, N, G, LDG, S, INFO)
         DO J = 1, N
            DO I = 1, N
               SC = ABS(REAL(G(I,J)))
+#ifndef NDEBUG
               IF (.NOT. (SC .LE. HUGE(SC))) THEN
                  S = SC
                  INFO = (J - 1) * N + I
                  RETURN
               END IF
+#endif
               SM = ABS(AIMAG(G(I,J)))
+#ifndef NDEBUG
               IF (.NOT. (SM .LE. HUGE(SM))) THEN
                  S = SM
                  INFO = (J - 1) * N + I
                  RETURN
               END IF
+#endif
               S = MAX(S, SC, SM)
            END DO
         END DO
      ELSE ! OpenMP
-        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J) SHARED(G,N,SC,SM) REDUCTION(MAX:S,INFO)
+#ifdef NDEBUG
+        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J,SC,SM) SHARED(G,N) REDUCTION(MAX:S)
+        DO J = 1, N
+           DO I = 1, N
+              SC = ABS(REAL(G(I,J)))
+              SM = ABS(AIMAG(G(I,J)))
+              S = MAX(S, SC, SM)
+           END DO
+        END DO
+        !$OMP END PARALLEL DO
+#else
+        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J,SC,SM) SHARED(G,N) REDUCTION(MAX:S,INFO)
         DO J = 1, N
            DO I = 1, N
               SC = ABS(REAL(G(I,J)))
@@ -82,6 +97,7 @@ SUBROUTINE CLANGO(O, N, G, LDG, S, INFO)
            END DO
         END DO
         !$OMP END PARALLEL DO
+#endif
      END IF
   CASE ('O','o')
      IF (N .GE. 2) THEN

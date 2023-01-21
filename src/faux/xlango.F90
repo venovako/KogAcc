@@ -31,15 +31,27 @@ SUBROUTINE XLANGO(O, N, G, LDG, S, INFO)
         DO J = 1, N
            DO I = 1, N
               SC = ABS(G(I,J))
+#ifndef NDEBUG
               IF (.NOT. (SC .LE. HUGE(SC))) THEN
                  S = SC
                  INFO = (J - 1) * N + I
                  RETURN
               END IF
+#endif
               S = MAX(S, SC)
            END DO
         END DO
      ELSE ! OpenMP
+#ifdef NDEBUG
+        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J,SC) SHARED(G,N) REDUCTION(MAX:S)
+        DO J = 1, N
+           DO I = 1, N
+              SC = ABS(G(I,J))
+              S = MAX(S, SC)
+           END DO
+        END DO
+        !$OMP END PARALLEL DO
+#else
         !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J,SC) SHARED(G,N) REDUCTION(MAX:S,INFO)
         DO J = 1, N
            DO I = 1, N
@@ -53,6 +65,7 @@ SUBROUTINE XLANGO(O, N, G, LDG, S, INFO)
            END DO
         END DO
         !$OMP END PARALLEL DO
+#endif
      END IF
   CASE ('O','o')
      DO J = 1, N

@@ -1,15 +1,14 @@
-!>@brief \b YLANGO computes approximations of the various norms of G or off(G).
-SUBROUTINE YLANGO(O, N, G, LDG, S, INFO)
-  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL128
+!>@brief \b WLANGO computes approximations of the various norms of G or off(G).
+SUBROUTINE WLANGO(O, N, G, LDG, S, INFO)
   IMPLICIT NONE
 
-  REAL(KIND=REAL128), PARAMETER :: ZERO = 0.0_REAL128
+  REAL(KIND=10), PARAMETER :: ZERO = 0.0_10
   CHARACTER, INTENT(IN) :: O
   INTEGER, INTENT(IN) :: N, LDG
-  COMPLEX(KIND=REAL128), INTENT(IN) :: G(N,LDG)
-  REAL(KIND=REAL128), INTENT(OUT) :: S
+  COMPLEX(KIND=10), INTENT(IN) :: G(N,LDG)
+  REAL(KIND=10), INTENT(OUT) :: S
   INTEGER, INTENT(INOUT) :: INFO
-  REAL(KIND=REAL128) :: SC, SM
+  REAL(KIND=10) :: SC, SM
   INTEGER :: I, J
 
   S = ZERO
@@ -33,16 +32,28 @@ SUBROUTINE YLANGO(O, N, G, LDG, S, INFO)
         DO J = 1, N
            DO I = 1, N
               SC = HYPOT(REAL(G(I,J)), AIMAG(G(I,J)))
+#ifndef NDEBUG
               IF (.NOT. (SC .LE. HUGE(SC))) THEN
                  S = SC
                  INFO = (J - 1) * N + I
                  RETURN
               END IF
+#endif
               S = MAX(S, SC)
            END DO
         END DO
      ELSE ! OpenMP
-        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J) SHARED(G,N,SC) REDUCTION(MAX:S,INFO)
+#ifdef NDEBUG
+        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J,SC) SHARED(G,N) REDUCTION(MAX:S)
+        DO J = 1, N
+           DO I = 1, N
+              SC = HYPOT(REAL(G(I,J)), AIMAG(G(I,J)))
+              S = MAX(S, SC)
+           END DO
+        END DO
+        !$OMP END PARALLEL DO
+#else
+        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J,SC) SHARED(G,N) REDUCTION(MAX:S,INFO)
         DO J = 1, N
            DO I = 1, N
               SC = HYPOT(REAL(G(I,J)), AIMAG(G(I,J)))
@@ -55,28 +66,44 @@ SUBROUTINE YLANGO(O, N, G, LDG, S, INFO)
            END DO
         END DO
         !$OMP END PARALLEL DO
+#endif
      END IF
   CASE ('N','n')
      IF (I .EQ. 0) THEN
         DO J = 1, N
            DO I = 1, N
               SC = ABS(REAL(G(I,J)))
+#ifndef NDEBUG
               IF (.NOT. (SC .LE. HUGE(SC))) THEN
                  S = SC
                  INFO = (J - 1) * N + I
                  RETURN
               END IF
+#endif
               SM = ABS(AIMAG(G(I,J)))
+#ifndef NDEBUG
               IF (.NOT. (SM .LE. HUGE(SM))) THEN
                  S = SM
                  INFO = (J - 1) * N + I
                  RETURN
               END IF
+#endif
               S = MAX(S, SC, SM)
            END DO
         END DO
      ELSE ! OpenMP
-        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J) SHARED(G,N,SC,SM) REDUCTION(MAX:S,INFO)
+#ifdef NDEBUG
+        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J,SC,SM) SHARED(G,N) REDUCTION(MAX:S)
+        DO J = 1, N
+           DO I = 1, N
+              SC = ABS(REAL(G(I,J)))
+              SM = ABS(AIMAG(G(I,J)))
+              S = MAX(S, SC, SM)
+           END DO
+        END DO
+        !$OMP END PARALLEL DO
+#else
+        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J,SC,SM) SHARED(G,N) REDUCTION(MAX:S,INFO)
         DO J = 1, N
            DO I = 1, N
               SC = ABS(REAL(G(I,J)))
@@ -90,6 +117,7 @@ SUBROUTINE YLANGO(O, N, G, LDG, S, INFO)
            END DO
         END DO
         !$OMP END PARALLEL DO
+#endif
      END IF
   CASE ('O','o')
      DO J = 1, N
@@ -106,4 +134,4 @@ SUBROUTINE YLANGO(O, N, G, LDG, S, INFO)
   CASE DEFAULT
      INFO = -1
   END SELECT
-END SUBROUTINE YLANGO
+END SUBROUTINE WLANGO
