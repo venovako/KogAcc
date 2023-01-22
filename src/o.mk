@@ -214,7 +214,8 @@ OBJS_FAUX += \
 ../obj/$(PLAT)/xscalg.o\
 ../obj/$(PLAT)/wscalg.o
 EXES_BLKSVD += \
-../bin/$(PLAT)/xksvd0.exe
+../bin/$(PLAT)/xksvd0.exe\
+../bin/$(PLAT)/wksvd0.exe
 EXES_DYNORD += \
 ../bin/$(PLAT)/xpqsort.exe
 EXES_KSVD2 += \
