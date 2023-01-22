@@ -299,7 +299,7 @@
   IF (Z .EQ. ZERO) THEN
      TANF = ZERO
      SECF = ONE
-  ELSE IF (ABS(Z) .GT. HUGE(Z)) THEN
+  ELSE IF (ABS(Z) .GT. H) THEN
      TANF = SIGN(ONE, Z)
      SECF = SQRT(TWO)
   ELSE ! finite non-zero Z
