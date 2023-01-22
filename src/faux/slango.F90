@@ -63,6 +63,7 @@ SUBROUTINE SLANGO(O, N, G, LDG, S, INFO)
               S = MAX(S, SC)
            END DO
         END DO
+        IF (.NOT. (S .LE. HUGE(S))) INFO = 1
      ELSE ! OpenMP
 #ifdef NDEBUG
         !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J,SC) SHARED(G,N) REDUCTION(MAX:S)
@@ -73,6 +74,7 @@ SUBROUTINE SLANGO(O, N, G, LDG, S, INFO)
            END DO
         END DO
         !$OMP END PARALLEL DO
+        IF (.NOT. (S .LE. HUGE(S))) INFO = 1
 #else
         !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J,SC) SHARED(G,N) REDUCTION(MAX:S,INFO)
         DO J = 1, N
