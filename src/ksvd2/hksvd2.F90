@@ -343,11 +343,11 @@
   IF (A(1,2) .EQ. ZERO) GOTO 8
 
   ! division by A(1,1)
-  ! [ 1 X ]
+  ! [ T X ]
   ! [ 0 Y ]
   X = A(1,2) / A(1,1)
   Y = A(2,2) / A(1,1)
-  ! T = ONE
+  T = ONE
 #ifndef NDEBUG
 #ifdef _OPENMP
   IF (OMP_GET_NUM_THREADS() .LE. 1) THEN

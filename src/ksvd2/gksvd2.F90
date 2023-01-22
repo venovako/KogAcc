@@ -239,11 +239,11 @@
   IF (B(1,2) .EQ. ZERO) GOTO 8
 
   ! division by B(1,1)
-  ! [ 1 X ]
+  ! [ Z X ]
   ! [ 0 Y ]
   X = B(1,2) / B(1,1)
   Y = B(2,2) / B(1,1)
-  ! Z = ONE
+  Z = ONE
 #ifndef NDEBUG
 #ifdef _OPENMP
   IF (OMP_GET_NUM_THREADS() .LE. 1) THEN

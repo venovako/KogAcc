@@ -62,8 +62,12 @@
 
   ALLOCATE(SV(M))
   ALLOCATE(W(MAX(M,3)*M))
-  ALLOCATE(O(2*M*(M-1)))
+  ! TODO: if, e.g., ||G||_F is finite and reasonably below HUGE, the dynamic scaling can be turned off
+  W(1) = 0.0_K
+  W(2) = 0.0_K
+  W(3) = 0.0_K
 
+  ALLOCATE(O(2*M*(M-1)))
   IF ((J .GE. 0) .AND. (J .NE. 3)) THEN
      INFO = L
      CALL JSWEEP(J, M, S, P, O, INFO)
