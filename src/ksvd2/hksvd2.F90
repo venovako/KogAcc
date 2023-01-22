@@ -170,8 +170,11 @@
   ! make B(1,1) real and non-negative
   IF (AIMAG(B(1,1)) .EQ. ZERO) THEN
      IF (SIGN(ONE, REAL(B(1,1))) .NE. ONE) THEN
-        IF (U(1,1) .NE. CZERO) U(1,1) = -U(1,1)
-        IF (U(1,2) .NE. CZERO) U(1,2) = -U(1,2)
+        IF (REAL(U(1,1)) .EQ. ONE) THEN
+           U(1,1) = CMPLX(-ONE, ZERO, K)
+        ELSE ! U(1,2) has to be one
+           U(1,2) = CMPLX(-ONE, ZERO, K)
+        END IF
         B(1,1) = CMPLX(-REAL(B(1,1)), ZERO, K)
         IF (B(1,2) .EQ. CZERO) THEN
            B(1,2) = CZERO
@@ -181,7 +184,11 @@
      END IF
   ELSE ! the general case
      Z = CONJG(B(1,1)) / A(1,1)
-     U(1,1) = Z
+     IF (REAL(U(1,1)) .EQ. ONE) THEN
+        U(1,1) = Z
+     ELSE ! U(1,2) has to be one
+        U(1,2) = Z
+     END IF
      B(1,1) = CMPLX(A(1,1), ZERO, K)
      B(1,2) = CMUL(Z, B(1,2))
   END IF
@@ -190,15 +197,22 @@
   IF (AIMAG(B(2,1)) .EQ. ZERO) THEN
      IF (REAL(B(2,1)) .EQ. ZERO) THEN
         B(2,1) = CZERO
-     ELSE IF (REAL(B(2,1)) .LT. ZERO) THEN
-        IF (U(2,1) .NE. CZERO) U(2,1) = -U(2,1)
-        IF (U(2,2) .NE. CZERO) U(2,2) = -U(2,2)
+     ELSE ! B(2,1) non-zero
+        IF (REAL(U(2,1)) .EQ. ONE) THEN
+           U(2,1) = CMPLX(-ONE, ZERO, K)
+        ELSE ! U(2,2) has to be one
+           U(2,2) = CMPLX(-ONE, ZERO, K)
+        END IF
         B(2,1) = CMPLX(-REAL(B(2,1)), ZERO, K)
         B(2,2) = -B(2,2)
      END IF
   ELSE ! the general case
      Z = CONJG(B(2,1)) / A(2,1)
-     U(2,2) = Z
+     IF (REAL(U(2,2)) .EQ. ONE) THEN
+        U(2,2) = Z
+     ELSE ! U(2,1) has to be one
+        U(2,1) = Z
+     END IF
      B(2,1) = CMPLX(A(2,1), ZERO, K)
      B(2,2) = CMUL(Z, B(2,2))
   END IF
@@ -293,18 +307,24 @@
   IF (AIMAG(B(1,2)) .EQ. ZERO) THEN
      IF (REAL(B(1,2)) .EQ. ZERO) THEN
         B(1,2) = CZERO
-     ELSE IF (REAL(B(1,2)) .LT. ZERO) THEN
+     ELSE ! B(1,2) non-zero
         B(1,2) = CMPLX(-REAL(B(1,2)), ZERO, K)
         B(2,2) = -B(2,2)
-        IF (V(1,2) .NE. CZERO) V(1,2) = -V(1,2)
-        IF (V(2,2) .NE. CZERO) V(2,2) = -V(2,2)
+        IF (REAL(V(1,2)) .EQ. ONE) THEN
+           V(1,2) = CMPLX(-ONE, ZERO, K)
+        ELSE ! V(2,2) has to be one
+           V(2,2) = CMPLX(-ONE, ZERO, K)
+        END IF
      END IF
   ELSE ! the general case
      Z = CONJG(B(1,2)) / A(1,2)
      B(1,2) = CMPLX(A(1,2), ZERO, K)
      B(2,2) = CMUL(B(2,2), Z)
-     V(1,2) = CMUL(V(1,2), Z)
-     V(2,2) = CMUL(V(2,2), Z)
+     IF (REAL(V(1,2)) .EQ. ONE) THEN
+        V(1,2) = Z
+     ELSE ! V(2,2) has to be one
+        V(2,2) = Z
+     END IF
   END IF
 
   ! make B(2,2) real and non-negative
