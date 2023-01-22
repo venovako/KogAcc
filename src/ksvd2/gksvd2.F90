@@ -114,22 +114,22 @@
 
   ! make B(1,1) non-negative
   IF (SIGN(ONE, B(1,1)) .NE. ONE) THEN
-     IF (U(1,1) .NE. ZERO) U(1,1) = -U(1,1)
-     IF (U(1,2) .NE. ZERO) U(1,2) = -U(1,2)
-     B(1,1) = -B(1,1)
-     IF (B(1,2) .EQ. ZERO) THEN
-        B(1,2) = ZERO
-     ELSE ! change the sign
-        B(1,2) = -B(1,2)
+     IF (U(1,1) .EQ. ONE) THEN
+        U(1,1) = -U(1,1)
+     ELSE ! U(1,2) has to be one
+        U(1,2) = -U(1,2)
      END IF
+     B(1,1) = -B(1,1)
+     B(1,2) = -B(1,2)
   END IF
 
   ! make B(2,1) non-negative
-  IF (B(2,1) .EQ. ZERO) THEN
-     B(2,1) = ZERO
-  ELSE IF (B(2,1) .LT. ZERO) THEN
-     IF (U(2,1) .NE. ZERO) U(2,1) = -U(2,1)
-     IF (U(2,2) .NE. ZERO) U(2,2) = -U(2,2)
+  IF (SIGN(ONE, B(2,1)) .NE. ONE) THEN
+     IF (U(2,1) .EQ. ONE) THEN
+        U(2,1) = -U(2,1)
+     ELSE ! U(2,2) has to be one
+        U(2,2) = -U(2,2)
+     END IF
      B(2,1) = -B(2,1)
      B(2,2) = -B(2,2)
   END IF
