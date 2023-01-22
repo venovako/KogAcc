@@ -138,6 +138,7 @@ EXES_BLKSVD=\
 ..\bin\$(PLAT)\sksvd0.exe\
 ..\bin\$(PLAT)\cksvd0.exe\
 ..\bin\$(PLAT)\dksvd0.exe\
+..\bin\$(PLAT)\zksvd0.exe\
 ..\bin\$(PLAT)\qksvd0.exe
 
 EXES_DYNORD=\
