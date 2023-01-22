@@ -64,6 +64,9 @@
 ..\bin\$(PLAT)\sksvd0.exe: test\sksvd0x.F90 test\gksvd0x.F90 ..\lib\$(PLAT)\blksvd.lib ..\lib\$(PLAT)\dynord.lib ..\lib\$(PLAT)\ksvd2.lib ..\lib\$(PLAT)\arrbio.lib ..\lib\$(PLAT)\faux.lib $(MKFS) test/GNUmakefile
 	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp ..\..\..\src\test\sksvd0x.F90 /Fesksvd0.exe ..\..\..\lib\$(PLAT)\blksvd.lib ..\..\..\lib\$(PLAT)\dynord.lib ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\arrbio.lib ..\..\..\lib\$(PLAT)\faux.lib ..\..\..\..\JACSD\jstrat$(DEBUG).lib $(LAPACK)
 
+..\bin\$(PLAT)\cksvd0.exe: test\cksvd0x.F90 test\hksvd0x.F90 ..\lib\$(PLAT)\blksvd.lib ..\lib\$(PLAT)\dynord.lib ..\lib\$(PLAT)\ksvd2.lib ..\lib\$(PLAT)\arrbio.lib ..\lib\$(PLAT)\faux.lib $(MKFS) test/GNUmakefile
+	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp ..\..\..\src\test\cksvd0x.F90 /Fecksvd0.exe ..\..\..\lib\$(PLAT)\blksvd.lib ..\..\..\lib\$(PLAT)\dynord.lib ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\arrbio.lib ..\..\..\lib\$(PLAT)\faux.lib ..\..\..\..\JACSD\jstrat$(DEBUG).lib $(LAPACK)
+
 ..\bin\$(PLAT)\dksvd0.exe: test\dksvd0x.F90 test\gksvd0x.F90 ..\lib\$(PLAT)\blksvd.lib ..\lib\$(PLAT)\dynord.lib ..\lib\$(PLAT)\ksvd2.lib ..\lib\$(PLAT)\arrbio.lib ..\lib\$(PLAT)\faux.lib $(MKFS) test/GNUmakefile
 	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp ..\..\..\src\test\dksvd0x.F90 /Fedksvd0.exe ..\..\..\lib\$(PLAT)\blksvd.lib ..\..\..\lib\$(PLAT)\dynord.lib ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\arrbio.lib ..\..\..\lib\$(PLAT)\faux.lib ..\..\..\..\JACSD\jstrat$(DEBUG).lib $(LAPACK)
 

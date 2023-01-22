@@ -136,6 +136,7 @@ OBJS_FAUX=\
 
 EXES_BLKSVD=\
 ..\bin\$(PLAT)\sksvd0.exe\
+..\bin\$(PLAT)\cksvd0.exe\
 ..\bin\$(PLAT)\dksvd0.exe\
 ..\bin\$(PLAT)\qksvd0.exe
 
