@@ -13,8 +13,8 @@
   ! S = 0
   S(1) = ZERO
   S(2) = ZERO
-  INFO = 0
 
+  INFO = 0
   ! check if G has a non-finite value
   B(2,2) = ABS(G(2,2))
   IF (.NOT. (B(2,2) .LE. H)) INFO = IERR

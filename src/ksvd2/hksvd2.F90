@@ -20,6 +20,7 @@
   S(1) = ZERO
   S(2) = ZERO
 
+  INFO = 0
   ! check if G has a non-finite value
   Y = ABS(AIMAG(G(2,2)))
   IF (.NOT. (Y .LE. H)) INFO = IERR
@@ -390,7 +391,7 @@
   IF (T .EQ. ZERO) THEN
      TANF = ZERO
      SECF = ONE
-  ELSE IF (ABS(T) .GT. HUGE(T)) THEN
+  ELSE IF (ABS(T) .GT. H) THEN
      TANF = SIGN(ONE, T)
      SECF = SQRT(TWO)
   ELSE ! finite non-zero T

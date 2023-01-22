@@ -442,8 +442,8 @@
            END IF
            ! set the new values
            G(P,P) = CMPLX(W(WS), ZERO, K)
-           G(Q,P) = ZERO
-           G(P,Q) = ZERO
+           G(Q,P) = CZERO
+           G(P,Q) = CZERO
            G(Q,Q) = CMPLX(W(WS+1), ZERO, K)
            IF (IAND(T, 8) .NE. 0) M = M + 1
         END DO
