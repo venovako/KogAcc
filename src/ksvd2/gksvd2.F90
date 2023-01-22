@@ -218,13 +218,14 @@
   B(2,1) = ZERO
 
   ! make B(1,2) non-negative
-  IF (B(1,2) .EQ. ZERO) THEN
-     B(1,2) = ZERO
-  ELSE IF (B(1,2) .LT. ZERO) THEN
+  IF (SIGN(ONE, B(1,2)) .NE. ONE) THEN
      B(1,2) = -B(1,2)
      B(2,2) = -B(2,2)
-     IF (V(1,2) .NE. ZERO) V(1,2) = -V(1,2)
-     IF (V(2,2) .NE. ZERO) V(2,2) = -V(2,2)
+     IF (V(1,2) .EQ. ONE) THEN
+        V(1,2) = -V(1,2)
+     ELSE ! V(2,2) has to be one
+        V(2,2) = -V(2,2)
+     END IF
   END IF
 
   ! make B(2,2) non-negative
@@ -439,20 +440,8 @@
   END IF
 #endif
 
-  ! clean up -0, if any
-8 IF (U(1,1) .EQ. ZERO) U(1,1) = ZERO
-  IF (U(2,1) .EQ. ZERO) U(2,1) = ZERO
-  IF (U(1,2) .EQ. ZERO) U(1,2) = ZERO
-  IF (U(2,2) .EQ. ZERO) U(2,2) = ZERO
-  IF (V(1,1) .EQ. ZERO) V(1,1) = ZERO
-  IF (V(2,1) .EQ. ZERO) V(2,1) = ZERO
-  IF (V(1,2) .EQ. ZERO) V(1,2) = ZERO
-  IF (V(2,2) .EQ. ZERO) V(2,2) = ZERO
-  IF (S(1) .EQ. ZERO) S(1) = ZERO
-  IF (S(2) .EQ. ZERO) S(2) = ZERO
-
   ! symmetric permutation if S(1) < S(2)
-  IF (S(1) .LT. S(2)) THEN
+8 IF (S(1) .LT. S(2)) THEN
      Z = U(1,1)
      U(1,1) = U(2,1)
      U(2,1) = Z

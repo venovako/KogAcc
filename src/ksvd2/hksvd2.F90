@@ -176,11 +176,7 @@
            U(1,2) = CMPLX(-ONE, ZERO, K)
         END IF
         B(1,1) = CMPLX(-REAL(B(1,1)), ZERO, K)
-        IF (B(1,2) .EQ. CZERO) THEN
-           B(1,2) = CZERO
-        ELSE ! change the sign
-           B(1,2) = -B(1,2)
-        END IF
+        B(1,2) = -B(1,2)
      END IF
   ELSE ! the general case
      Z = CONJG(B(1,1)) / A(1,1)
@@ -195,9 +191,7 @@
 
   ! make B(2,1) real and non-negative
   IF (AIMAG(B(2,1)) .EQ. ZERO) THEN
-     IF (REAL(B(2,1)) .EQ. ZERO) THEN
-        B(2,1) = CZERO
-     ELSE ! B(2,1) non-zero
+     IF (SIGN(ONE, REAL(B(2,1))) .NE. ONE) THEN
         IF (REAL(U(2,1)) .EQ. ONE) THEN
            U(2,1) = CMPLX(-ONE, ZERO, K)
         ELSE ! U(2,2) has to be one
@@ -305,9 +299,7 @@
 
   ! make B(1,2) real and non-negative
   IF (AIMAG(B(1,2)) .EQ. ZERO) THEN
-     IF (REAL(B(1,2)) .EQ. ZERO) THEN
-        B(1,2) = CZERO
-     ELSE ! B(1,2) non-zero
+     IF (SIGN(ONE, REAL(B(1,2))) .NE. ONE) THEN
         B(1,2) = CMPLX(-REAL(B(1,2)), ZERO, K)
         B(2,2) = -B(2,2)
         IF (REAL(V(1,2)) .EQ. ONE) THEN
@@ -551,20 +543,8 @@
   END IF
 #endif
 
-  ! clean up -0, if any
-8 IF (U(1,1) .EQ. CZERO) U(1,1) = CZERO
-  IF (U(2,1) .EQ. CZERO) U(2,1) = CZERO
-  IF (U(1,2) .EQ. CZERO) U(1,2) = CZERO
-  IF (U(2,2) .EQ. CZERO) U(2,2) = CZERO
-  IF (V(1,1) .EQ. CZERO) V(1,1) = CZERO
-  IF (V(2,1) .EQ. CZERO) V(2,1) = CZERO
-  IF (V(1,2) .EQ. CZERO) V(1,2) = CZERO
-  IF (V(2,2) .EQ. CZERO) V(2,2) = CZERO
-  IF (S(1) .EQ. ZERO) S(1) = ZERO
-  IF (S(2) .EQ. ZERO) S(2) = ZERO
-
   ! symmetric permutation if S(1) < S(2)
-  IF (S(1) .LT. S(2)) THEN
+8 IF (S(1) .LT. S(2)) THEN
      Z = U(1,1)
      U(1,1) = U(2,1)
      U(2,1) = Z
