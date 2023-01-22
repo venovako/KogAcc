@@ -347,7 +347,7 @@
   ! [ 0 Y ]
   X = A(1,2) / A(1,1)
   Y = A(2,2) / A(1,1)
-  T = ONE
+  ! T = ONE
 #ifndef NDEBUG
 #ifdef _OPENMP
   IF (OMP_GET_NUM_THREADS() .LE. 1) THEN
@@ -380,6 +380,7 @@
 #endif
   ELSE ! X > Y
      T = SCALE(Y, 1) * X
+     ! a possible underflow of X-Y is safe so it does not have to be avoided
 #ifdef USE_IEEE_INTRINSIC
      T = T / IEEE_FMA(X - Y, X + Y, ONE)
 #else
@@ -543,7 +544,7 @@
   END IF
 #endif
 
-  ! symmetric permutation if S(1) < S(2)
+  ! symmetric permutation if S(1) < S(2) exceptionally
 8 IF (S(1) .LT. S(2)) THEN
      Z = U(1,1)
      U(1,1) = U(2,1)
@@ -563,32 +564,8 @@
   END IF
 
   ! conjugate-transpose U
-  X = REAL(U(1,1))
-  Y = AIMAG(U(1,1))
-  IF (Y .EQ. ZERO) THEN
-     U(1,1) = CMPLX(X, ZERO, K)
-  ELSE ! complex
-     U(1,1) = CMPLX(X, -Y, K)
-  END IF
-  X = REAL(U(2,1))
-  Y = AIMAG(U(2,1))
-  IF (Y .EQ. ZERO) THEN
-     Z = CMPLX(X, ZERO, K)
-  ELSE ! complex
-     Z = CMPLX(X, -Y, K)
-  END IF
-  X = REAL(U(1,2))
-  Y = AIMAG(U(1,2))
-  IF (Y .EQ. ZERO) THEN
-     U(2,1) = CMPLX(X, ZERO, K)
-  ELSE ! complex
-     U(2,1) = CMPLX(X, -Y, K)
-  END IF
+  U(1,1) = CONJG(U(1,1))
+  Z = CONJG(U(2,1))
+  U(2,1) = CONJG(U(1,2))
   U(1,2) = Z
-  X = REAL(U(2,2))
-  Y = AIMAG(U(2,2))
-  IF (Y .EQ. ZERO) THEN
-     U(2,2) = CMPLX(X, ZERO, K)
-  ELSE ! complex
-     U(2,2) = CMPLX(X, -Y, K)
-  END IF
+  U(2,2) = CONJG(U(2,2))

@@ -243,7 +243,7 @@
   ! [ 0 Y ]
   X = B(1,2) / B(1,1)
   Y = B(2,2) / B(1,1)
-  Z = ONE
+  ! Z = ONE
 #ifndef NDEBUG
 #ifdef _OPENMP
   IF (OMP_GET_NUM_THREADS() .LE. 1) THEN
@@ -276,7 +276,7 @@
 #endif
   ELSE ! X > Y
      Z = SCALE(Y, 1) * X
-     ! a possible underflow of X-Y is safe so it does not have to be avoided above
+     ! a possible underflow of X-Y is safe so it does not have to be avoided
 #ifdef USE_IEEE_INTRINSIC
      Z = Z / IEEE_FMA(X - Y, X + Y, ONE)
 #else
@@ -440,7 +440,7 @@
   END IF
 #endif
 
-  ! symmetric permutation if S(1) < S(2)
+  ! symmetric permutation if S(1) < S(2) exceptionally
 8 IF (S(1) .LT. S(2)) THEN
      Z = U(1,1)
      U(1,1) = U(2,1)
