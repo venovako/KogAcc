@@ -1,5 +1,3 @@
-  ! TODO: needs fixing...
-
   MRQSTP = INFO
   INFO = 0
   LOMP = .FALSE.
@@ -314,7 +312,7 @@
               M = M + 1
               CYCLE
            END IF
-           ! transform U from the right, transpose U2, and transform G from the left
+           ! transform U from the right, conjugate-transpose U2, and transform G from the left
            IF (IAND(T, 2) .NE. 0) THEN
               IF (LUACC) THEN
                  !$ L = OMP_GET_NUM_THREADS()
@@ -324,10 +322,10 @@
                     CYCLE
                  END IF
               END IF
-              G2(1,1) = U2(1,1)
-              G2(2,1) = U2(1,2)
-              G2(1,2) = U2(2,1)
-              G2(2,2) = U2(2,2)
+              G2(1,1) = CONJG(U2(1,1))
+              G2(2,1) = CONJG(U2(1,2))
+              G2(1,2) = CONJG(U2(2,1))
+              G2(2,2) = CONJG(U2(2,2))
               !$ L = OMP_GET_NUM_THREADS()
               CALL ROTR(N, N, G, LDG, P, Q, G2, L)
               IF (L .NE. 0) THEN
@@ -404,7 +402,7 @@
               INFO = -14
               RETURN
            END IF
-           ! transform U from the right, transpose U2, and transform G from the left
+           ! transform U from the right, conjugate-transpose U2, and transform G from the left
            IF (IAND(T, 2) .NE. 0) THEN
               IF (LUACC) THEN
                  L = 0
@@ -414,10 +412,10 @@
                     RETURN
                  END IF
               END IF
-              G2(1,1) = U2(1,1)
-              G2(2,1) = U2(1,2)
-              G2(1,2) = U2(2,1)
-              G2(2,2) = U2(2,2)
+              G2(1,1) = CONJG(U2(1,1))
+              G2(2,1) = CONJG(U2(1,2))
+              G2(1,2) = CONJG(U2(2,1))
+              G2(2,2) = CONJG(U2(2,2))
               L = 0
               CALL ROTR(N, N, G, LDG, P, Q, G2, L)
               IF (L .NE. 0) THEN
@@ -551,7 +549,7 @@
      I = 0
      !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,SV,N,GS) REDUCTION(MAX:I)
      DO J = 1, N
-        SV(J) = SCALE(REAL(G(J,J), REAL128), -GS)
+        SV(J) = SCALE(REAL(REAL(G(J,J)), REAL128), -GS)
         IF (.NOT. (SV(J) .LE. HUGE(SV(J)))) THEN
            I = MAX(I, J)
         ELSE ! SV(J) finite
@@ -565,7 +563,7 @@
      END IF
   ELSE ! sequentially
      DO J = 1, N
-        SV(J) = SCALE(REAL(G(J,J), REAL128), -GS)
+        SV(J) = SCALE(REAL(REAL(G(J,J)), REAL128), -GS)
         IF (.NOT. (SV(J) .LE. HUGE(SV(J)))) THEN
            INFO = -9
            RETURN
