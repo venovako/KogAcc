@@ -139,7 +139,8 @@ EXES_BLKSVD=\
 ../bin/$(PLAT)/cksvd0.exe\
 ../bin/$(PLAT)/dksvd0.exe\
 ../bin/$(PLAT)/zksvd0.exe\
-../bin/$(PLAT)/qksvd0.exe
+../bin/$(PLAT)/qksvd0.exe\
+../bin/$(PLAT)/yksvd0.exe
 
 EXES_DYNORD=\
 ../bin/$(PLAT)/spqsort.exe\
