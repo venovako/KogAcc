@@ -23,7 +23,14 @@
      ERROR STOP 'J'
   END IF
 
-  IF (N .LE. 0) ERROR STOP 'N'
+  IF (N .EQ. 0) ERROR STOP 'N'
+  IF (N .LT. 0) THEN
+     N = -N
+     I = -1
+  ELSE ! the default mode is "slow"
+     I = 0
+  END IF
+
   IF ((J .EQ. 2) .OR. (J .EQ. 4)) THEN
      INFO = L
      CALL NB2M(N, 2, M, INFO)
@@ -62,8 +69,9 @@
 
   ALLOCATE(SV(M))
   ALLOCATE(W(MAX(M,3)*M))
-  ! TODO: if, e.g., ||G||_F is finite and reasonably below HUGE, the dynamic scaling can be turned off
-  W(1) = 0.0_K
+  ! if, e.g., ||G||_F is known to be numerically finite and reasonably below HUGE,
+  ! the dynamic scaling can be turned off for speed
+  W(1) = REAL(I, K)
   W(2) = 0.0_K
   W(3) = 0.0_K
 
