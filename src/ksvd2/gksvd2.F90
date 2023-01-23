@@ -240,11 +240,13 @@
   ! exit if B is diagonal
   IF (B(1,2) .EQ. ZERO) GOTO 8
 
+#ifndef NDEBUG
   ! internal consistency check
   IF ((.NOT. (B(1,1) .LE. H)) .OR. (B(1,1) .LE. ZERO)) THEN
      INFO = IERR - 1
      RETURN
   END IF
+#endif
   ! division by B(1,1)
   ! [ 1 X ]
   ! [ 0 Y ]

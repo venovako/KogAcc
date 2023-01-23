@@ -337,18 +337,21 @@
 
   ! B is now real so copy it to A
   A(1,1) = REAL(B(1,1))
+#ifndef NDEBUG
   A(2,1) = REAL(B(2,1))
+#endif
   A(1,2) = REAL(B(1,2))
   A(2,2) = REAL(B(2,2))
-
   ! exit if A is diagonal
   IF (A(1,2) .EQ. ZERO) GOTO 8
 
+#ifndef NDEBUG
   ! internal consistency check
   IF ((.NOT. (A(1,1) .LE. H)) .OR. (A(1,1) .LE. ZERO)) THEN
      INFO = IERR - 1
      RETURN
   END IF
+#endif
   ! division by A(1,1)
   ! [ 1 X ]
   ! [ 0 Y ]
