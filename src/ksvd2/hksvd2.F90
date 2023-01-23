@@ -344,12 +344,16 @@
   ! exit if A is diagonal
   IF (A(1,2) .EQ. ZERO) GOTO 8
 
+  ! internal consistency check
+  IF ((.NOT. (A(1,1) .LE. H)) .OR. (A(1,1) .LE. ZERO)) THEN
+     INFO = IERR - 1
+     RETURN
+  END IF
   ! division by A(1,1)
-  ! [ T X ]
+  ! [ 1 X ]
   ! [ 0 Y ]
   X = A(1,2) / A(1,1)
   Y = A(2,2) / A(1,1)
-  T = ONE
 #ifndef NDEBUG
 #ifdef _OPENMP
   IF (OMP_GET_NUM_THREADS() .LE. 1) THEN

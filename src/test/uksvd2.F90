@@ -60,7 +60,7 @@
      WRITE (*,1) 'S(1)=', S(1)
      WRITE (*,1) 'S(2)=', S(2)
      IF (INFO .LE. IERR) THEN
-        WRITE (*,'(A)') 'INFO=ERROR'
+        WRITE (*,'(A,I1)') 'INFO=ERROR', (IERR - INFO)
      ELSE ! all OK
         WRITE (*,3) 'INFO=', INFO
      END IF

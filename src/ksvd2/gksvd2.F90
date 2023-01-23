@@ -240,12 +240,16 @@
   ! exit if B is diagonal
   IF (B(1,2) .EQ. ZERO) GOTO 8
 
+  ! internal consistency check
+  IF ((.NOT. (B(1,1) .LE. H)) .OR. (B(1,1) .LE. ZERO)) THEN
+     INFO = IERR - 1
+     RETURN
+  END IF
   ! division by B(1,1)
-  ! [ Z X ]
+  ! [ 1 X ]
   ! [ 0 Y ]
   X = B(1,2) / B(1,1)
   Y = B(2,2) / B(1,1)
-  Z = ONE
 #ifndef NDEBUG
 #ifdef _OPENMP
   IF (OMP_GET_NUM_THREADS() .LE. 1) THEN
