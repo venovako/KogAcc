@@ -47,6 +47,7 @@
      WRITE (*,2) 'G(2,1)=', G(2,1)
      WRITE (*,2) 'G(1,2)=', G(1,2)
      WRITE (*,2) 'G(2,2)=', G(2,2)
+     INFO = 0
      CALL KSVD2(G, U, V, S, INFO)
      WRITE (*,2) 'U(1,1)=', U(1,1)
      WRITE (*,2) 'U(2,1)=', U(2,1)

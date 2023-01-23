@@ -143,7 +143,13 @@
      INFO = -3
      RETURN
   END IF
-  GS = EXPONENT(HUGE(GN)) - EXPONENT(GN) - 9 - XSG
+  IF (XSG .EQ. 0) THEN
+     GS = EXPONENT(HUGE(GN)) - EXPONENT(GN) - 9
+  ELSE IF (XSG .GT. 0) THEN
+     GS = XSG
+  ELSE ! XSG < 0
+     GS = XSG + 1
+  END IF
   IF (GS .NE. 0) THEN
      !$ L = OMP_GET_NUM_THREADS()
      IF (.NOT. LOMP) L = 0
@@ -176,7 +182,13 @@
            INFO = -5
            RETURN
         END IF
-        US = EXPONENT(HUGE(UN)) - EXPONENT(UN) - 4 - XSU
+        IF (XSU .EQ. 0) THEN
+           US = EXPONENT(HUGE(UN)) - EXPONENT(UN) - 4
+        ELSE IF (XSU .GT. 0) THEN
+           US = XSU
+        ELSE ! XSU < 0
+           US = XSU + 1
+        END IF
      END IF
      IF (US .NE. 0) THEN
         !$ L = OMP_GET_NUM_THREADS()
@@ -214,7 +226,13 @@
            INFO = -7
            RETURN
         END IF
-        VS = EXPONENT(HUGE(VN)) - EXPONENT(VN) - 4 - XSV
+        IF (XSV .EQ. 0) THEN
+           VS = EXPONENT(HUGE(VN)) - EXPONENT(VN) - 4
+        ELSE IF (XSV .GT. 0) THEN
+           VS = XSV
+        ELSE ! XSV < 0
+           VS = XSV + 1
+        END IF
      END IF
      IF (VS .NE. 0) THEN
         !$ L = OMP_GET_NUM_THREADS()
@@ -305,7 +323,7 @@
      ! compute and apply the transformations
      M = 0
      IF (LOMP .AND. (I .GT. 1)) THEN
-        !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,U,W,R,N,LDG,LDU,I,LUACC) PRIVATE(G2,U2,V2,P,Q,WV,WS,T,L) REDUCTION(+:M)
+        !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,U,W,R,N,LDG,LDU,I,XSG,LUACC) PRIVATE(G2,U2,V2,P,Q,WV,WS,T,L) REDUCTION(+:M)
         DO J = 1, I
            P = R(1,J)
            Q = R(2,J)
@@ -319,7 +337,11 @@
            G2(2,2) = G(Q,Q)
            WV = (J - 1) * 10 + 1
            WS = WV + 8
-           !$ T = OMP_GET_NUM_THREADS()
+           IF (XSG .EQ. 0) THEN
+              T = 0
+           ELSE ! no inner scaling
+              T = -1
+           END IF
            CALL KSVD2(G2, U2, V2, W(WS), T)
            R(2,I+J) = T
            CALL CVGPP(G2, U2, V2, W(WS), T)
@@ -417,7 +439,11 @@
            G2(2,2) = G(Q,Q)
            WV = (J - 1) * 10 + 1
            WS = WV + 8
-           T = 0
+           IF (XSG .EQ. 0) THEN
+              T = 0
+           ELSE ! no inner scaling
+              T = -1
+           END IF
            CALL KSVD2(G2, U2, V2, W(WS), T)
            R(2,I+J) = T
            CALL CVGPP(G2, U2, V2, W(WS), T)

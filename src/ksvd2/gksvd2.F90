@@ -14,28 +14,30 @@
   S(1) = ZERO
   S(2) = ZERO
 
-  INFO = 0
-  ! check if G has a non-finite value
-  B(2,2) = ABS(G(2,2))
-  IF (.NOT. (B(2,2) .LE. H)) INFO = IERR
-  B(1,2) = ABS(G(1,2))
-  IF (.NOT. (B(1,2) .LE. H)) INFO = IERR
-  B(2,1) = ABS(G(2,1))
-  IF (.NOT. (B(2,1) .LE. H)) INFO = IERR
-  B(1,1) = ABS(G(1,1))
-  IF (.NOT. (B(1,1) .LE. H)) INFO = IERR
-  IF (INFO .NE. 0) RETURN
-
-  ! determine the scaling factor s
-  INFO = IERR
-  IF (B(1,1) .NE. ZERO) INFO = MAX(INFO, EXPONENT(B(1,1)))
-  IF (B(2,1) .NE. ZERO) INFO = MAX(INFO, EXPONENT(B(2,1)))
-  IF (B(1,2) .NE. ZERO) INFO = MAX(INFO, EXPONENT(B(1,2)))
-  IF (B(2,2) .NE. ZERO) INFO = MAX(INFO, EXPONENT(B(2,2)))
-  IF (INFO .EQ. IERR) THEN
-     INFO = 0
-  ELSE ! non-zero B
-     INFO = EXPONENT(H) - INFO - 2
+  IF (INFO .EQ. 0) THEN
+     ! check if G has a non-finite value
+     B(2,2) = ABS(G(2,2))
+     IF (.NOT. (B(2,2) .LE. H)) INFO = IERR
+     B(1,2) = ABS(G(1,2))
+     IF (.NOT. (B(1,2) .LE. H)) INFO = IERR
+     B(2,1) = ABS(G(2,1))
+     IF (.NOT. (B(2,1) .LE. H)) INFO = IERR
+     B(1,1) = ABS(G(1,1))
+     IF (.NOT. (B(1,1) .LE. H)) INFO = IERR
+     IF (INFO .NE. 0) RETURN
+     ! determine the scaling factor s
+     INFO = IERR
+     IF (B(1,1) .NE. ZERO) INFO = MAX(INFO, EXPONENT(B(1,1)))
+     IF (B(2,1) .NE. ZERO) INFO = MAX(INFO, EXPONENT(B(2,1)))
+     IF (B(1,2) .NE. ZERO) INFO = MAX(INFO, EXPONENT(B(1,2)))
+     IF (B(2,2) .NE. ZERO) INFO = MAX(INFO, EXPONENT(B(2,2)))
+     IF (INFO .EQ. IERR) THEN
+        INFO = 0
+     ELSE ! non-zero B
+        INFO = EXPONENT(H) - INFO - 2
+     END IF
+  ELSE IF (INFO .LT. 0) THEN
+     INFO = INFO + 1
   END IF
 
   ! scale G

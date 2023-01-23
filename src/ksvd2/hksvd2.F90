@@ -20,55 +20,57 @@
   S(1) = ZERO
   S(2) = ZERO
 
-  INFO = 0
-  ! check if G has a non-finite value
-  Y = ABS(AIMAG(G(2,2)))
-  IF (.NOT. (Y .LE. H)) INFO = IERR
-  X = ABS(REAL(G(2,2)))
-  IF (.NOT. (X .LE. H)) INFO = IERR
-  B(2,2) = CMPLX(X, Y, K)
-  Y = ABS(AIMAG(G(1,2)))
-  IF (.NOT. (Y .LE. H)) INFO = IERR
-  X = ABS(REAL(G(1,2)))
-  IF (.NOT. (X .LE. H)) INFO = IERR
-  B(1,2) = CMPLX(X, Y, K)
-  Y = ABS(AIMAG(G(2,1)))
-  IF (.NOT. (Y .LE. H)) INFO = IERR
-  X = ABS(REAL(G(2,1)))
-  IF (.NOT. (X .LE. H)) INFO = IERR
-  B(2,1) = CMPLX(X, Y, K)
-  Y = ABS(AIMAG(G(1,1)))
-  IF (.NOT. (Y .LE. H)) INFO = IERR
-  X = ABS(REAL(G(1,1)))
-  IF (.NOT. (X .LE. H)) INFO = IERR
-  B(1,1) = CMPLX(X, Y, K)
-  IF (INFO .NE. 0) RETURN
-
-  ! determine the scaling factor s
-  INFO = IERR
-  ! ... real parts ...
-  X = REAL(B(1,1))
-  IF (X .NE. ZERO) INFO = MAX(INFO, EXPONENT(X))
-  X = REAL(B(2,1))
-  IF (X .NE. ZERO) INFO = MAX(INFO, EXPONENT(X))
-  X = REAL(B(1,2))
-  IF (X .NE. ZERO) INFO = MAX(INFO, EXPONENT(X))
-  X = REAL(B(2,2))
-  IF (X .NE. ZERO) INFO = MAX(INFO, EXPONENT(X))
-  ! ... imaginary parts ...
-  Y = AIMAG(B(1,1))
-  IF (Y .NE. ZERO) INFO = MAX(INFO, EXPONENT(Y))
-  Y = AIMAG(B(2,1))
-  IF (Y .NE. ZERO) INFO = MAX(INFO, EXPONENT(Y))
-  Y = AIMAG(B(1,2))
-  IF (Y .NE. ZERO) INFO = MAX(INFO, EXPONENT(Y))
-  Y = AIMAG(B(2,2))
-  IF (Y .NE. ZERO) INFO = MAX(INFO, EXPONENT(Y))
-  ! compute s
-  IF (INFO .EQ. IERR) THEN
-     INFO = 0
-  ELSE ! non-zero G
-     INFO = EXPONENT(H) - INFO - 2
+  IF (INFO .EQ. 0) THEN
+     ! check if G has a non-finite value
+     Y = ABS(AIMAG(G(2,2)))
+     IF (.NOT. (Y .LE. H)) INFO = IERR
+     X = ABS(REAL(G(2,2)))
+     IF (.NOT. (X .LE. H)) INFO = IERR
+     B(2,2) = CMPLX(X, Y, K)
+     Y = ABS(AIMAG(G(1,2)))
+     IF (.NOT. (Y .LE. H)) INFO = IERR
+     X = ABS(REAL(G(1,2)))
+     IF (.NOT. (X .LE. H)) INFO = IERR
+     B(1,2) = CMPLX(X, Y, K)
+     Y = ABS(AIMAG(G(2,1)))
+     IF (.NOT. (Y .LE. H)) INFO = IERR
+     X = ABS(REAL(G(2,1)))
+     IF (.NOT. (X .LE. H)) INFO = IERR
+     B(2,1) = CMPLX(X, Y, K)
+     Y = ABS(AIMAG(G(1,1)))
+     IF (.NOT. (Y .LE. H)) INFO = IERR
+     X = ABS(REAL(G(1,1)))
+     IF (.NOT. (X .LE. H)) INFO = IERR
+     B(1,1) = CMPLX(X, Y, K)
+     IF (INFO .NE. 0) RETURN
+     ! determine the scaling factor s
+     INFO = IERR
+     ! ... real parts ...
+     X = REAL(B(1,1))
+     IF (X .NE. ZERO) INFO = MAX(INFO, EXPONENT(X))
+     X = REAL(B(2,1))
+     IF (X .NE. ZERO) INFO = MAX(INFO, EXPONENT(X))
+     X = REAL(B(1,2))
+     IF (X .NE. ZERO) INFO = MAX(INFO, EXPONENT(X))
+     X = REAL(B(2,2))
+     IF (X .NE. ZERO) INFO = MAX(INFO, EXPONENT(X))
+     ! ... imaginary parts ...
+     Y = AIMAG(B(1,1))
+     IF (Y .NE. ZERO) INFO = MAX(INFO, EXPONENT(Y))
+     Y = AIMAG(B(2,1))
+     IF (Y .NE. ZERO) INFO = MAX(INFO, EXPONENT(Y))
+     Y = AIMAG(B(1,2))
+     IF (Y .NE. ZERO) INFO = MAX(INFO, EXPONENT(Y))
+     Y = AIMAG(B(2,2))
+     IF (Y .NE. ZERO) INFO = MAX(INFO, EXPONENT(Y))
+     ! compute s
+     IF (INFO .EQ. IERR) THEN
+        INFO = 0
+     ELSE ! non-zero G
+        INFO = EXPONENT(H) - INFO - 2
+     END IF
+  ELSE IF (INFO .LT. 0) THEN
+     INFO = INFO + 1
   END IF
 
   ! scale G

@@ -4,7 +4,7 @@
 !!@param U [OUT]; U is a unitary extended precision complex matrix of order two.
 !!@param V [OUT]; V is a unitary extended precision complex matrix of order two.
 !!@param S [OUT]; S' is a extended precision real array with two elements, s_{11}' and s_{22}', both non-negative and finite.
-!!@param INFO [OUT]; the scaling parameter s such that 2^{-s} S' = S.
+!!@param INFO [INOUT]; do not set to anything but zero on input unless the effects are understood; on output, the scaling parameter s such that 2^{-s} S' = S.
 !!If G has a non-finite component, then s=-HUGE(s), U=V=I, and s_{11}'=s_{22}'=0.
 #ifdef NDEBUG
 PURE SUBROUTINE WKSVD2(G, U, V, S, INFO)
@@ -28,7 +28,7 @@ SUBROUTINE WKSVD2(G, U, V, S, INFO)
   COMPLEX(KIND=K), INTENT(IN) :: G(2,2)
   COMPLEX(KIND=K), INTENT(OUT) :: U(2,2), V(2,2)
   REAL(KIND=K), INTENT(OUT) :: S(2)
-  INTEGER, INTENT(OUT) :: INFO
+  INTEGER, INTENT(INOUT) :: INFO
 
   COMPLEX(KIND=K) :: B(2,2), Z
   REAL(KIND=K) :: A(2,2), X, Y, T
