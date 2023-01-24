@@ -559,6 +559,15 @@
      V(2,2) = V(2,2) - TANP *      Z
   END IF
 #endif
+#ifndef NDEBUG
+#ifdef _OPENMP
+  IF (OMP_GET_NUM_THREADS() .LE. 1) THEN
+#endif
+     WRITE (ERROR_UNIT,9) 'S(1)=', S(1), ', S(2)=', S(2)
+#ifdef _OPENMP
+  END IF
+#endif
+#endif
 
   ! symmetric permutation if S(1) < S(2) exceptionally
 8 IF (S(1) .LT. S(2)) THEN
