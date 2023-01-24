@@ -13,11 +13,12 @@ PURE SUBROUTINE SROTC(M, N, G, LDG, P, Q, W, INFO)
      END SUBROUTINE SROTM
   END INTERFACE
 
+  INTEGER, PARAMETER :: K = REAL32
   INTEGER, INTENT(IN) :: M, N, LDG, P, Q
-  REAL(KIND=REAL32), INTENT(INOUT) :: G(LDG,N)
-  REAL(KIND=REAL32), INTENT(IN) :: W(2,2)
+  REAL(KIND=K), INTENT(INOUT) :: G(LDG,N)
+  REAL(KIND=K), INTENT(IN) :: W(2,2)
   INTEGER, INTENT(OUT) :: INFO
-  REAL(KIND=REAL32) :: PARAM(5)
+  REAL(KIND=K) :: PARAM(5)
 
   INFO = 0
   IF ((Q .LE. P) .OR. (Q .GT. N)) INFO = -6
@@ -29,11 +30,22 @@ PURE SUBROUTINE SROTC(M, N, G, LDG, P, Q, W, INFO)
   IF (M .EQ. 0) RETURN
   IF (N .EQ. 0) RETURN
 
-  PARAM(1) = -1.0_REAL32
   PARAM(2) = W(1,1)
   PARAM(3) = W(1,2)
   PARAM(4) = W(2,1)
   PARAM(5) = W(2,2)
+
+  IF ((PARAM(2) .EQ. 1.0_K) .AND. (PARAM(5) .EQ. 1.0_K)) THEN
+     IF ((PARAM(3) .EQ. 0.0_K) .AND. (PARAM(4) .EQ. 0.0_K)) THEN
+        PARAM(1) = -2.0_K
+     ELSE ! the non-identity case
+        PARAM(1) = 0.0_K
+     END IF
+  ELSE IF ((PARAM(3) .EQ. -1.0_K) .AND. (PARAM(4) .EQ. 1.0_K)) THEN
+     PARAM(1) = 1.0_K
+  ELSE ! the general case
+     PARAM(1) = -1.0_K
+  END IF
 
   CALL SROTM(M, G(1,P), 1, G(1,Q), 1, PARAM)
 END SUBROUTINE SROTC

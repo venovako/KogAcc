@@ -13,11 +13,12 @@ PURE SUBROUTINE DROTR(M, N, G, LDG, P, Q, W, INFO)
      END SUBROUTINE DROTM
   END INTERFACE
 
+  INTEGER, PARAMETER :: K = REAL64
   INTEGER, INTENT(IN) :: M, N, LDG, P, Q
-  REAL(KIND=REAL64), INTENT(INOUT) :: G(LDG,N)
-  REAL(KIND=REAL64), INTENT(IN) :: W(2,2)
+  REAL(KIND=K), INTENT(INOUT) :: G(LDG,N)
+  REAL(KIND=K), INTENT(IN) :: W(2,2)
   INTEGER, INTENT(OUT) :: INFO
-  REAL(KIND=REAL64) :: PARAM(5)
+  REAL(KIND=K) :: PARAM(5)
 
   INFO = 0
   IF ((Q .LE. P) .OR. (Q .GT. M)) INFO = -6
@@ -29,11 +30,22 @@ PURE SUBROUTINE DROTR(M, N, G, LDG, P, Q, W, INFO)
   IF (M .EQ. 0) RETURN
   IF (N .EQ. 0) RETURN
 
-  PARAM(1) = -1.0_REAL64
   PARAM(2) = W(1,1)
   PARAM(3) = W(2,1)
   PARAM(4) = W(1,2)
   PARAM(5) = W(2,2)
+
+  IF ((PARAM(2) .EQ. 1.0_K) .AND. (PARAM(5) .EQ. 1.0_K)) THEN
+     IF ((PARAM(3) .EQ. 0.0_K) .AND. (PARAM(4) .EQ. 0.0_K)) THEN
+        PARAM(1) = -2.0_K
+     ELSE ! the non-identity case
+        PARAM(1) = 0.0_K
+     END IF
+  ELSE IF ((PARAM(3) .EQ. -1.0_K) .AND. (PARAM(4) .EQ. 1.0_K)) THEN
+     PARAM(1) = 1.0_K
+  ELSE ! the general case
+     PARAM(1) = -1.0_K
+  END IF
 
   CALL DROTM(N, G(P,1), LDG, G(Q,1), LDG, PARAM)
 END SUBROUTINE DROTR
