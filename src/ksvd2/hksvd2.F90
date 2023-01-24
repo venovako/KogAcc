@@ -348,6 +348,13 @@
 #ifndef NDEBUG
   ! internal consistency check
   IF ((.NOT. (A(1,1) .LE. H)) .OR. (A(1,1) .LE. ZERO)) THEN
+#ifdef _OPENMP
+     IF (OMP_GET_NUM_THREADS() .LE. 1) THEN
+#endif
+        WRITE (ERROR_UNIT,9) 'B_11=', B(1,1), ',    H=', H
+#ifdef _OPENMP
+     END IF
+#endif
      INFO = IERR - 1
      RETURN
   END IF
