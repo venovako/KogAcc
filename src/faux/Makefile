@@ -22,13 +22,13 @@
 ..\obj\$(PLAT)\ylango.obj: faux\ylango.F90 $(MKFS) faux\Makefile
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\faux\ylango.F90
 
-..\obj\$(PLAT)\srotc.obj: faux\srotc.f90 $(MKFS) faux\Makefile #faux\grotc.f90
+..\obj\$(PLAT)\srotc.obj: faux\srotc.f90 $(MKFS) faux\grotc.f90 faux\Makefile
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\srotc.f90
 
 ..\obj\$(PLAT)\crotc.obj: faux\crotc.f90 faux\grotc.f90 $(MKFS) faux\Makefile
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\crotc.f90
 
-..\obj\$(PLAT)\drotc.obj: faux\drotc.f90 $(MKFS) faux\Makefile #faux\grotc.f90
+..\obj\$(PLAT)\drotc.obj: faux\drotc.f90 faux\grotc.f90 $(MKFS) faux\Makefile
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\drotc.f90
 
 ..\obj\$(PLAT)\zrotc.obj: faux\zrotc.f90 faux\grotc.f90 $(MKFS) faux\Makefile
@@ -40,13 +40,13 @@
 ..\obj\$(PLAT)\yrotc.obj: faux\yrotc.f90 faux\grotc.f90 $(MKFS) faux\Makefile
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\yrotc.f90
 
-..\obj\$(PLAT)\srotr.obj: faux\srotr.f90 $(MKFS) faux\Makefile #faux\grotr.f90
+..\obj\$(PLAT)\srotr.obj: faux\srotr.f90 faux\grotr.f90 $(MKFS) faux\Makefile
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\srotr.f90
 
 ..\obj\$(PLAT)\crotr.obj: faux\crotr.f90 faux\grotr.f90 $(MKFS) faux\Makefile
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\crotr.f90
 
-..\obj\$(PLAT)\drotr.obj: faux\drotr.f90 $(MKFS) faux\Makefile #faux\grotr.f90
+..\obj\$(PLAT)\drotr.obj: faux\drotr.f90 faux\grotr.f90 $(MKFS) faux\Makefile
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\drotr.f90
 
 ..\obj\$(PLAT)\zrotr.obj: faux\zrotr.f90 faux\grotr.f90 $(MKFS) faux\Makefile

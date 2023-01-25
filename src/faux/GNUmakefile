@@ -28,13 +28,13 @@
 ../obj/$(PLAT)/wlango.o: faux/wlango.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/wlango.F90
 
-../obj/$(PLAT)/srotc.o: faux/srotc.f90 $(MKFS) faux/GNUmakefile #faux/grotc.f90
+../obj/$(PLAT)/srotc.o: faux/srotc.f90 faux/grotc.f90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/srotc.f90
 
 ../obj/$(PLAT)/crotc.o: faux/crotc.f90 faux/grotc.f90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/crotc.f90
 
-../obj/$(PLAT)/drotc.o: faux/drotc.f90 $(MKFS) faux/GNUmakefile #faux/grotc.f90
+../obj/$(PLAT)/drotc.o: faux/drotc.f90 faux/grotc.f90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/drotc.f90
 
 ../obj/$(PLAT)/zrotc.o: faux/zrotc.f90 faux/grotc.f90 $(MKFS) faux/GNUmakefile
@@ -52,13 +52,13 @@
 ../obj/$(PLAT)/wrotc.o: faux/wrotc.f90 faux/grotc.f90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/wrotc.f90
 
-../obj/$(PLAT)/srotr.o: faux/srotr.f90 $(MKFS) faux/GNUmakefile #faux/grotr.f90
+../obj/$(PLAT)/srotr.o: faux/srotr.f90 faux/grotr.f90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/srotr.f90
 
 ../obj/$(PLAT)/crotr.o: faux/crotr.f90 faux/grotr.f90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/crotr.f90
 
-../obj/$(PLAT)/drotr.o: faux/drotr.f90 $(MKFS) faux/GNUmakefile #faux/grotr.f90
+../obj/$(PLAT)/drotr.o: faux/drotr.f90 faux/grotr.f90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) -c ../../../src/faux/drotr.f90
 
 ../obj/$(PLAT)/zrotr.o: faux/zrotr.f90 faux/grotr.f90 $(MKFS) faux/GNUmakefile
