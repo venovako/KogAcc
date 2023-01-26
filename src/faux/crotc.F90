@@ -1,5 +1,5 @@
-!>@brief \b CROTR premultiplies the rows (p,q) of G by W.
-PURE SUBROUTINE CROTR(M, N, G, LDG, P, Q, W, INFO)
+!>@brief \b CROTC postmultiplies the columns (p,q) of G by W.
+PURE SUBROUTINE CROTC(M, N, G, LDG, P, Q, W, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
   IMPLICIT NONE
   INTEGER, INTENT(IN) :: M, N, LDG, P, Q
@@ -7,6 +7,6 @@ PURE SUBROUTINE CROTR(M, N, G, LDG, P, Q, W, INFO)
   COMPLEX(KIND=REAL32), INTENT(IN) :: W(2,2)
   INTEGER, INTENT(INOUT) :: INFO
   COMPLEX(KIND=REAL32) :: X, Y
-  INTEGER :: J
-  INCLUDE 'grotr.f90'
-END SUBROUTINE CROTR
+  INTEGER :: I
+#include "hrotc.F90"
+END SUBROUTINE CROTC

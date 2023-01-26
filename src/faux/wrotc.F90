@@ -1,11 +1,11 @@
-!>@brief \b WROTR premultiplies the rows (p,q) of G by W.
-PURE SUBROUTINE WROTR(M, N, G, LDG, P, Q, W, INFO)
+!>@brief \b WROTC postmultiplies the columns (p,q) of G by W.
+PURE SUBROUTINE WROTC(M, N, G, LDG, P, Q, W, INFO)
   IMPLICIT NONE
   INTEGER, INTENT(IN) :: M, N, LDG, P, Q
   COMPLEX(KIND=10), INTENT(INOUT) :: G(LDG,N)
   COMPLEX(KIND=10), INTENT(IN) :: W(2,2)
   INTEGER, INTENT(INOUT) :: INFO
   COMPLEX(KIND=10) :: X, Y
-  INTEGER :: J
-  INCLUDE 'grotr.f90'
-END SUBROUTINE WROTR
+  INTEGER :: I
+#include "hrotc.F90"
+END SUBROUTINE WROTC

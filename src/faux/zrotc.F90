@@ -1,5 +1,5 @@
-!>@brief \b ZROTR premultiplies the rows (p,q) of G by W.
-PURE SUBROUTINE ZROTR(M, N, G, LDG, P, Q, W, INFO)
+!>@brief \b ZROTC postmultiplies the columns (p,q) of G by W.
+PURE SUBROUTINE ZROTC(M, N, G, LDG, P, Q, W, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
   IMPLICIT NONE
   INTEGER, INTENT(IN) :: M, N, LDG, P, Q
@@ -7,6 +7,6 @@ PURE SUBROUTINE ZROTR(M, N, G, LDG, P, Q, W, INFO)
   COMPLEX(KIND=REAL64), INTENT(IN) :: W(2,2)
   INTEGER, INTENT(INOUT) :: INFO
   COMPLEX(KIND=REAL64) :: X, Y
-  INTEGER :: J
-  INCLUDE 'grotr.f90'
-END SUBROUTINE ZROTR
+  INTEGER :: I
+#include "hrotc.F90"
+END SUBROUTINE ZROTC
