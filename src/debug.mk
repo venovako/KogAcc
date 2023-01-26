@@ -4,3 +4,9 @@ FCFLAGS += -DNDEBUG=$(NDEBUG)
 else # !NDEBUG
 DEBUG=g
 endif # ?NDEBUG
+ifdef ANIMATE
+FCFLAGS += -DANIMATE=$(ANIMATE)
+ANILIB = -lvn$(DEBUG)
+else # !ANIMATE
+ANILIB=
+endif # ?ANIMATE

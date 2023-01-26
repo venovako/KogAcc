@@ -5,7 +5,11 @@ ifndef ARCH
 ARCH=$(shell uname -m)
 endif # !ARCH
 ifndef ABI
+ifdef ANIMATE
+ABI=ilp64
+else # !ANIMATE
 ABI=lp64
+endif # ?ANIMATE
 endif # !ABI
 ifndef OS
 OS=$(shell uname)

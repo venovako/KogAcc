@@ -91,6 +91,14 @@
      IF (M .GT. 1) O(1) = 0
   END IF
 
+#ifdef ANIMATE
+  CTX = C_NULL_PTR
+  I = VN_MTXVIS_START(CTX, BN, 12, M, M, ANIMATE, ANIMATE, LEN_TRIM(BN))
+  CALL C_F_POINTER(C_LOC(SV), CP)
+  CP = CTX
+  CP => NULL()
+#endif
+
   JOB = J + 120
   INFO = -HUGE(INFO)
   INFO = INFO - 1
@@ -122,3 +130,8 @@
   DEALLOCATE(SV)
   DEALLOCATE(V)
   DEALLOCATE(U)
+
+#ifdef ANIMATE
+  IF (I .EQ. 0) I = VN_MTXVIS_STOP(CTX)
+  CTX = C_NULL_PTR
+#endif

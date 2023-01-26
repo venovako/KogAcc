@@ -83,10 +83,10 @@
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o cksvd0.exe ../../../src/test/cksvd0x.F90 -L../../../lib/$(PLAT) -lblksvd -ldynord -lksvd2 -larrbio -lfaux -L../../../../JACSD -ljstrat$(DEBUG) $(LAPACK)
 
 ../bin/$(PLAT)/dksvd0.exe: test/dksvd0x.F90 test/gksvd0x.F90 ../lib/$(PLAT)/libblksvd.a ../lib/$(PLAT)/libdynord.a ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libarrbio.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o dksvd0.exe ../../../src/test/dksvd0x.F90 -L../../../lib/$(PLAT) -lblksvd -ldynord -lksvd2 -larrbio -lfaux -L../../../../JACSD -ljstrat$(DEBUG) $(LAPACK)
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o dksvd0.exe ../../../src/test/dksvd0x.F90 -L../../../lib/$(PLAT) -lblksvd -ldynord -lksvd2 -larrbio -lfaux -L../../../../JACSD -ljstrat$(DEBUG) $(ANILIB) $(LAPACK)
 
 ../bin/$(PLAT)/zksvd0.exe: test/zksvd0x.F90 test/hksvd0x.F90 ../lib/$(PLAT)/libblksvd.a ../lib/$(PLAT)/libdynord.a ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libarrbio.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o zksvd0.exe ../../../src/test/zksvd0x.F90 -L../../../lib/$(PLAT) -lblksvd -ldynord -lksvd2 -larrbio -lfaux -L../../../../JACSD -ljstrat$(DEBUG) $(LAPACK)
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o zksvd0.exe ../../../src/test/zksvd0x.F90 -L../../../lib/$(PLAT) -lblksvd -ldynord -lksvd2 -larrbio -lfaux -L../../../../JACSD -ljstrat$(DEBUG) $(ANILIB) $(LAPACK)
 
 ../bin/$(PLAT)/qksvd0.exe: test/qksvd0x.F90 test/gksvd0x.F90 ../lib/$(PLAT)/libblksvd.a ../lib/$(PLAT)/libdynord.a ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libarrbio.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o qksvd0.exe ../../../src/test/qksvd0x.F90 -L../../../lib/$(PLAT) -lblksvd -ldynord -lksvd2 -larrbio -lfaux -L../../../../JACSD -ljstrat$(DEBUG)

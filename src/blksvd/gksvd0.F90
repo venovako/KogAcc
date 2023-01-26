@@ -50,6 +50,13 @@
   LVSID = (IAND(JOB, VSID) .NE. 0)
   LVACC = (IAND(JOB, VACC) .NE. 0)
 
+#ifdef ANIMATE
+  CALL C_F_POINTER(C_LOC(SV), CP)
+  CTX = CP
+  CP => NULL()
+  IF (C_ASSOCIATED(CTX)) L = VN_MTXVIS_FRAME(CTX, G, LDG)
+#endif
+
   IF (N .EQ. 1) THEN
      GN = ABS(G(1,1))
      IF (.NOT. (GN .LE. HUGE(GN))) THEN
@@ -63,6 +70,9 @@
         W(2) = ONE
         W(3) = ONE
      END IF
+#ifdef ANIMATE
+     IF (C_ASSOCIATED(CTX)) L = VN_MTXVIS_FRAME(CTX, G, LDG)
+#endif
      RETURN
   END IF
 
@@ -247,7 +257,7 @@
      INFO = -9
      RETURN
   END IF
-
+  ! initialize the counters
   TT = 0_INT64
   TM = 0_INT64
   SM = 0_INT64
@@ -264,6 +274,9 @@
      WRITE (OUTPUT_UNIT,9,ADVANCE='NO') ',', UN
      WRITE (OUTPUT_UNIT,9,ADVANCE='NO') ',', VN
      FLUSH(OUTPUT_UNIT)
+#endif
+#ifdef ANIMATE
+     IF (C_ASSOCIATED(CTX)) L = VN_MTXVIS_FRAME(CTX, G, LDG)
 #endif
 
      ! build the current step's pairs
@@ -574,9 +587,13 @@
 
   ! no convergence if INFO = MRQSTP
   INFO = STP
+  R => NULL()
 #ifndef NDEBUG
   WRITE (OUTPUT_UNIT,*) 'exited after:', TT, ' transformations, of which big:', TM
   FLUSH(OUTPUT_UNIT)
+#endif
+#ifdef ANIMATE
+  IF (C_ASSOCIATED(CTX)) L = VN_MTXVIS_FRAME(CTX, G, LDG)
 #endif
 
   ! extract SV from G with a safe backscaling
@@ -645,3 +662,6 @@
   W(4) = REAL(GS, K)
   W(5) = REAL(US, K)
   W(6) = REAL(VS, K)
+#ifdef ANIMATE
+  IF (C_ASSOCIATED(CTX)) L = VN_MTXVIS_FRAME(CTX, G, LDG)
+#endif
