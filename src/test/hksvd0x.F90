@@ -38,6 +38,12 @@
   ELSE ! all other strategies
      M = N
   END IF
+#ifdef __INTEL_COMPILER
+  LDV = 32
+  LDU = LDV / INT(SIZEOF(0.0_K))
+  LDG = MOD(M, LDU)
+  IF (LDG .NE. 0) M = M + (LDU - LDG)
+#endif
   LDG = M
   LDU = M
   LDV = M

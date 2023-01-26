@@ -8,12 +8,16 @@
   IF (M .EQ. 0) RETURN
   IF (N .EQ. 0) RETURN
 
-  !DIR$ VECTOR ALWAYS
-  DO I = 1, M
-     X = G(I,P)
-     Y = G(I,Q)
-     !DIR$ FMA
-     G(I,P) = X * W(1,1) + Y * W(2,1)
-     !DIR$ FMA
-     G(I,Q) = X * W(1,2) + Y * W(2,2)
+  !DIR$ ASSUME_ALIGNED G:64, X:64, Y:64
+  DO I = 1, M, VL
+     !DIR$ VECTOR ALIGNED ALWAYS
+     DO J = 1, VL
+        X(J) = G(I+J-1,P)
+        Y(J) = G(I+J-1,Q)
+     END DO
+     !DIR$ VECTOR ALIGNED ALWAYS
+     DO J = 1, VL
+        G(I+J-1,P) = X(J) * W(1,1) + Y(J) * W(2,1)
+        G(I+J-1,Q) = X(J) * W(1,2) + Y(J) * W(2,2)
+     END DO
   END DO
