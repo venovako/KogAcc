@@ -1,5 +1,5 @@
 # KogAcc
-A portable Kogbetliantz-type SVD for general matrices of order two.
+A portable Kogbetliantz-type SVD for general matrices.
 
 (... work in progress ...)
 
