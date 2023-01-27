@@ -13,6 +13,12 @@ else # !NDEBUG
 FCFLAGS += -fcheck=all,no-recursion -finit-local-zero -finit-real=snan -finit-derived -Wcharacter-truncation -Wimplicit-procedure -Wfunction-elimination -Wrealloc-lhs-all
 endif # ?NDEBUG
 FCFLAGS += -pedantic -Wall -Wextra -Wno-array-temporaries -Wno-compare-reals -Wno-c-binding-type
+ifndef INTRIN
+# gfortran might support IEEE_FMA from the version 13 onwards
+ifeq ($(shell if [ `$(FC) -dumpversion | cut -f1 -d.` -ge 13 ]; then echo i; fi),i)
+INTRIN=IEEE_FMA
+endif # GCC >= 13
+endif # !INTRIN
 ifdef INTRIN
 FCFLAGS += -DUSE_IEEE_INTRINSIC=$(INTRIN)
 endif # INTRIN
