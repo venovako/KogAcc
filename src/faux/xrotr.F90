@@ -9,6 +9,7 @@ PURE SUBROUTINE XROTR(M, N, G, LDG, P, Q, W, INFO)
 #define VL 1
   REAL(KIND=K) :: X(VL)
   REAL(KIND=K) :: Y(VL)
+  REAL(KIND=K) :: Z(2,2)
   INTEGER :: I, J
 #include "grotr.F90"
 END SUBROUTINE XROTR
