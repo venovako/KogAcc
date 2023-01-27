@@ -36,9 +36,6 @@ LDFLAGS=/link /RELEASE
 FCFLAGS=$(FCFLAGS) /dbglibs /debug:full /debug:inline-debug-info /debug-parameters:all /check:all /warn:all
 LDFLAGS=/link /DEBUG
 !ENDIF # ?NDEBUG
-!IFNDEF INTRIN
-INTRIN=IEEE_FMA
-!ENDIF # !INTRIN
 !IFDEF INTRIN
 FCFLAGS=$(FCFLAGS) /DUSE_IEEE_INTRINSIC=$(INTRIN)
 !ENDIF # INTRIN
@@ -53,7 +50,7 @@ all: dirs $(LIBS) $(EXES)
 	@echo $(PLAT)
 
 help:
-	@echo "nmake.exe [FORT=ifort|ifx] [ABI=lp64|ilp64] [NDEBUG=optimization_level] [all|clean|dirs|doc|help]"
+	@echo "nmake.exe [FORT=ifort|ifx] [ABI=lp64|ilp64] [NDEBUG=optimization_level] [INTRIN=...] [all|clean|dirs|doc|help]"
 
 dirs:
 	-md ..\bin\$(PLAT)

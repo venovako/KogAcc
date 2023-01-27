@@ -12,9 +12,6 @@ FCFLAGS += -inline-level=2 -vec-threshold0 -qopt-report=3
 else # !NDEBUG
 FCFLAGS += -debug emit_column -debug extended -debug inline-debug-info -debug pubnames -check all
 endif # ?NDEBUG
-ifndef INTRIN
-INTRIN=IEEE_FMA
-endif # !INTRIN
 ifdef INTRIN
 FCFLAGS += -DUSE_IEEE_INTRINSIC=$(INTRIN)
 endif # INTRIN
