@@ -15,13 +15,16 @@ PLAT=$(COMPILER)/$(OS)-$(ARCH)-$(ABI)$(DEBUG)
 endif # !PLAT
 include o.mk
 
-.PHONY: all clean dirs doc help
+.PHONY: all asm clean dirs doc help
 
 all: dirs $(LIBS) $(EXES)
-	@echo $(PLAT)
+	@echo $(CFLG) $(PLAT)
+
+asm: dirs $(OBJS)
+	@echo $(CFLG) $(PLAT)
 
 help:
-	@echo $(MAKE) "[COMPILER=gfortran|ifort|ifx|xlf] [COMPILER_PREFIX=...] [COMPILER_SUFFIX=...] [ABI=lp64|ilp64] [NDEBUG=optimization_level] [CR_MATH=dir] [ANIMATE=ppe] [all|clean|dirs|doc|help]"
+	@echo $(MAKE) "[COMPILER=gfortran|ifort|ifx|xlf] [COMPILER_PREFIX=...] [COMPILER_SUFFIX=...] [ABI=lp64|ilp64] [NDEBUG=optimization_level] [CR_MATH=dir] [ANIMATE=ppe] [all|asm|clean|dirs|doc|help]"
 
 dirs:
 	@$(MKD) ../bin/$(PLAT) ../lib/$(PLAT) ../obj/$(PLAT)

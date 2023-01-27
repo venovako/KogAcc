@@ -23,3 +23,10 @@ endif # !MKD
 ifndef MOV
 MOV=mv -fv
 endif # !MOV
+ifeq ($(filter asm,$(MAKECMDGOALS)),asm)
+CFLG=-S
+OXT=s
+else # normal compilation
+CFLG=-c
+OXT=o
+endif # ?asm
