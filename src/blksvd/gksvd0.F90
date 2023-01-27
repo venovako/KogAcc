@@ -360,7 +360,7 @@
               IF (LUACC) THEN
                  L = 0
                  CALL ROTC(N, N, U, LDU, P, Q, U2, L)
-                 IF (L .NE. 0) THEN
+                 IF (L .LT. 0) THEN
                     M = M + 1
                     CYCLE
                  END IF
@@ -371,7 +371,7 @@
               G2(2,2) = U2(2,2)
               L = 0
               CALL ROTR(N, N, G, LDG, P, Q, G2, L)
-              IF (L .NE. 0) THEN
+              IF (L .LT. 0) THEN
                  M = M + 1
                  CYCLE
               END IF
@@ -394,14 +394,14 @@
               IF (LVACC) THEN
                  L = 0
                  CALL ROTC(N, N, V, LDV, P, Q, W(WV), L)
-                 IF (L .NE. 0) THEN
+                 IF (L .LT. 0) THEN
                     M = M + (I + 1)
                     CYCLE
                  END IF
               END IF
               L = 0
               CALL ROTC(N, N, G, LDG, P, Q, W(WV), L)
-              IF (L .NE. 0) THEN
+              IF (L .LT. 0) THEN
                  M = M + (I + 1)
                  CYCLE
               END IF
@@ -450,7 +450,7 @@
               IF (LUACC) THEN
                  L = 0
                  CALL ROTC(N, N, U, LDU, P, Q, U2, L)
-                 IF (L .NE. 0) THEN
+                 IF (L .LT. 0) THEN
                     INFO = -15
                     RETURN
                  END IF
@@ -461,7 +461,7 @@
               G2(2,2) = U2(2,2)
               L = 0
               CALL ROTR(N, N, G, LDG, P, Q, G2, L)
-              IF (L .NE. 0) THEN
+              IF (L .LT. 0) THEN
                  INFO = -16
                  RETURN
               END IF
@@ -471,14 +471,14 @@
               IF (LVACC) THEN
                  L = 0
                  CALL ROTC(N, N, V, LDV, P, Q, W(WV), L)
-                 IF (L .NE. 0) THEN
+                 IF (L .LT. 0) THEN
                     INFO = -17
                     RETURN
                  END IF
               END IF
               L = 0
               CALL ROTC(N, N, G, LDG, P, Q, W(WV), L)
-              IF (L .NE. 0) THEN
+              IF (L .LT. 0) THEN
                  INFO = -18
                  RETURN
               END IF
