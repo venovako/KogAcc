@@ -11,7 +11,11 @@ MKFS += local.mk
 endif # local.mk
 MKFS += o.mk GNUmakefile arrbio/GNUmakefile blksvd/GNUmakefile dynord/GNUmakefile ksvd2/GNUmakefile faux/GNUmakefile test/GNUmakefile
 ifndef PLAT
+ifdef CR_MATH
+PLAT=$(COMPILER)/$(OS)_$(ARCH)_$(ABI)$(DEBUG)
+else # !CR_MATH
 PLAT=$(COMPILER)/$(OS)-$(ARCH)-$(ABI)$(DEBUG)
+endif # ?CR_MATH
 endif # !PLAT
 include o.mk
 
