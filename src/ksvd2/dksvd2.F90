@@ -15,10 +15,29 @@ SUBROUTINE DKSVD2(G, U, V, S, INFO)
   !$ USE OMP_LIB
 #endif
 #ifdef USE_IEEE_INTRINSIC
+#if ((USE_IEEE_INTRINSIC & 12) == 0)
+#undef USE_IEEE_INTRINSIC
+#elif ((USE_IEEE_INTRINSIC & 12) == 4)
   USE, INTRINSIC :: IEEE_ARITHMETIC, ONLY: IEEE_FMA
+#endif
 #endif
   IMPLICIT NONE
 
+#ifdef USE_IEEE_INTRINSIC
+#if ((USE_IEEE_INTRINSIC & 12) == 8)
+  INTERFACE
+#ifdef NDEBUG
+     PURE FUNCTION IEEE_FMA(X, Y, Z) BIND(C,NAME='fma')
+#else
+     FUNCTION IEEE_FMA(X, Y, Z) BIND(C,NAME='fma')
+#endif
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_double
+       REAL(KIND=c_double), INTENT(IN), VALUE :: X, Y, Z
+       REAL(KIND=c_double) :: IEEE_FMA
+     END FUNCTION IEEE_FMA
+  END INTERFACE
+#endif
+#endif
 #ifdef CR_MATH
   INTERFACE
 #ifdef NDEBUG

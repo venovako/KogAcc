@@ -13,7 +13,7 @@ else # !NDEBUG
 FCFLAGS += -debug emit_column -debug extended -debug inline-debug-info -debug pubnames -check all -fp-stack-check
 endif # ?NDEBUG
 ifndef INTRIN
-INTRIN=IEEE_FMA
+INTRIN=69
 endif # !INTRIN
 ifdef INTRIN
 FCFLAGS += -DUSE_IEEE_INTRINSIC=$(INTRIN)

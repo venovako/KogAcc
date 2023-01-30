@@ -15,10 +15,29 @@ SUBROUTINE YKSVD2(G, U, V, S, INFO)
   !$ USE OMP_LIB
 #endif
 #ifdef USE_IEEE_INTRINSIC
+#if ((USE_IEEE_INTRINSIC & 192) == 0)
+#undef USE_IEEE_INTRINSIC
+#elif ((USE_IEEE_INTRINSIC & 192) == 64)
   USE, INTRINSIC :: IEEE_ARITHMETIC, ONLY: IEEE_FMA
+#endif
 #endif
   IMPLICIT NONE
 
+#ifdef USE_IEEE_INTRINSIC
+#if ((USE_IEEE_INTRINSIC & 192) == 128)
+  INTERFACE
+#ifdef NDEBUG
+     PURE FUNCTION IEEE_FMA(X, Y, Z) BIND(C,NAME='fmal')
+#else
+     FUNCTION IEEE_FMA(X, Y, Z) BIND(C,NAME='fmal')
+#endif
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
+       REAL(KIND=c_long_double), INTENT(IN), VALUE :: X, Y, Z
+       REAL(KIND=c_long_double) :: IEEE_FMA
+     END FUNCTION IEEE_FMA
+  END INTERFACE
+#endif
+#endif
 #define CR_HYPOT HYPOT
 
   INTEGER, PARAMETER :: K = REAL128, IERR = -HUGE(0)

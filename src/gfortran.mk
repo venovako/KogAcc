@@ -16,8 +16,14 @@ FCFLAGS += -pedantic -Wall -Wextra -Wno-array-temporaries -Wno-compare-reals -Wn
 ifndef INTRIN
 # gfortran might support IEEE_FMA from the version 13 onwards
 ifeq ($(shell if [ `$(FC) -dumpversion | cut -f1 -d.` -ge 13 ]; then echo i; fi),i)
-INTRIN=IEEE_FMA
-endif # GCC >= 13
+INTRIN=85
+else # GCC < 13
+ifeq ($(findstring 86,$(ARCH)),86)
+INTRIN=42
+else # TODO: check if REAL128 == long double
+INTRIN=138
+endif # ?x86
+endif # ?GCC
 endif # !INTRIN
 ifdef INTRIN
 FCFLAGS += -DUSE_IEEE_INTRINSIC=$(INTRIN)
