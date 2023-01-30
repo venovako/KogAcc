@@ -20,7 +20,8 @@ INTRIN=85
 else # GCC < 13
 ifeq ($(findstring 86,$(ARCH)),86)
 INTRIN=42
-else # TODO: check if REAL128 == long double
+else # !x86
+# TODO: check if REAL128 == long double
 INTRIN=138
 endif # ?x86
 endif # ?GCC
