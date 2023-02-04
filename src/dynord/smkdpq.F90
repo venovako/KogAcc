@@ -51,6 +51,7 @@ SUBROUTINE SMKDPQ(N, G, LDG, D, O, INFO)
            H = CR_HYPOT(G(Q,P), G(P,Q))
         END IF
         IF ((H .NE. ZERO) .OR. (SIGN(ONE,G(P,P)) .NE. ONE) .OR. (SIGN(ONE,G(Q,Q)) .NE. ONE) .OR. (G(P,P) .LT. G(Q,Q))) THEN
+           !DIR$ FORCEINLINE
            D(K) = SENC(H, P, Q)
            W = MAX(W, D(K))
         ELSE ! no transformation
@@ -70,6 +71,7 @@ SUBROUTINE SMKDPQ(N, G, LDG, D, O, INFO)
            H = CR_HYPOT(G(Q,P), G(P,Q))
         END IF
         IF ((H .NE. ZERO) .OR. (SIGN(ONE,G(P,P)) .NE. ONE) .OR. (SIGN(ONE,G(Q,Q)) .NE. ONE) .OR. (G(P,P) .LT. G(Q,Q))) THEN
+           !DIR$ FORCEINLINE
            D(K) = SENC(H, P, Q)
            W = MAX(W, D(K))
         ELSE ! no transformation
@@ -83,6 +85,7 @@ SUBROUTINE SMKDPQ(N, G, LDG, D, O, INFO)
   ! find the remaining pivots
   IF (L .EQ. 0) THEN
      DO INFO = 1, N/2
+        !DIR$ FORCEINLINE
         CALL DDEC(W, P, Q)
         K = M + INFO
         O(1,K) = P
@@ -90,6 +93,7 @@ SUBROUTINE SMKDPQ(N, G, LDG, D, O, INFO)
         W = MONE
         DO K = 1, M
            IF (D(K) .GT. WZERO) THEN
+              !DIR$ FORCEINLINE
               CALL DDEC(D(K), I, J)
               IF ((I .NE. P) .AND. (I .NE. Q) .AND. (J .NE. P) .AND. (J .NE. Q)) THEN
                  W = MAX(W, D(K))
@@ -102,6 +106,7 @@ SUBROUTINE SMKDPQ(N, G, LDG, D, O, INFO)
      END DO
   ELSE ! OpenMP
      DO INFO = 1, N/2
+        !DIR$ FORCEINLINE
         CALL DDEC(W, P, Q)
         K = M + INFO
         O(1,K) = P
@@ -110,6 +115,7 @@ SUBROUTINE SMKDPQ(N, G, LDG, D, O, INFO)
         !$OMP PARALLEL DO DEFAULT(NONE) SHARED(D,M,P,Q) PRIVATE(I,J,K) REDUCTION(MAX:W)
         DO K = 1, M
            IF (D(K) .GT. WZERO) THEN
+              !DIR$ FORCEINLINE
               CALL DDEC(D(K), I, J)
               IF ((I .NE. P) .AND. (I .NE. Q) .AND. (J .NE. P) .AND. (J .NE. Q)) THEN
                  W = MAX(W, D(K))
