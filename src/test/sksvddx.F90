@@ -146,6 +146,7 @@ PROGRAM SKSVDDX
         JOB = JOB + 1
      END DO
   END DO
+  J = 3
   JOB = 123
   INFO = -HUGE(INFO)
   INFO = INFO - 1
