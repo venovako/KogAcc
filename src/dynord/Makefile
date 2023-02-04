@@ -55,6 +55,9 @@
 ..\obj\$(PLAT)\ymk3pq.obj: dynord\ymk3pq.F90 dynord\gmk3pq.F90 $(MKFS) dynord\Makefile
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\dynord\ymk3pq.F90
 
+..\obj\$(PLAT)\smkdpq.obj: dynord\smkdpq.F90 $(MKFS) dynord\Makefile
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\dynord\smkdpq.F90
+
 ..\obj\$(PLAT)\spqcmp.obj: dynord\spqcmp.f90 dynord\gpqcmp.f90 $(MKFS) dynord\Makefile
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\dynord\spqcmp.f90
 

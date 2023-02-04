@@ -39,3 +39,6 @@
 
 ..\obj\$(PLAT)\yksvd0.obj: blksvd\yksvd0.F90 blksvd\hksvd0.F90 $(MKFS) blksvd\Makefile
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\blksvd\yksvd0.F90
+
+..\obj\$(PLAT)\sksvdd.obj: blksvd\sksvdd.F90 $(MKFS) blksvd\Makefile
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\blksvd\sksvdd.F90
