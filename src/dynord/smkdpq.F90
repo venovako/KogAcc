@@ -27,9 +27,9 @@ SUBROUTINE SMKDPQ(N, G, LDG, D, O, INFO)
 
   REAL(KIND=REAL64) :: W
   REAL(KIND=REAL32) :: H
-  INTEGER :: I, J, K, L, M, P, Q, S, T, X
+  INTEGER :: I, J, K, L, M, P, Q
 
-  I = INFO
+  L = INFO
   INFO = 0
   IF (LDG .LT. N) INFO = -3
   IF (N .LT. 0) INFO = -1
@@ -38,64 +38,90 @@ SUBROUTINE SMKDPQ(N, G, LDG, D, O, INFO)
 
   M = (N * (N - 1)) / 2
   ! build D and determine its largest element
-  L = 0
   W = MONE
-  !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,D,L,M,O) PRIVATE(H,J,K,P,Q) REDUCTION(MAX:W)
-  DO J = 1, M
-     P = O(1,J)
-     Q = O(2,J)
-     IF (G(Q,P) .EQ. ZERO) THEN
-        H = ABS(G(P,Q))
-     ELSE IF (G(P,Q) .EQ. ZERO) THEN
-        H = ABS(G(Q,P))
-     ELSE ! none are 0
-        H = CR_HYPOT(G(Q,P), G(P,Q))
-     END IF
-     IF ((H .NE. ZERO) .OR. (SIGN(ONE,G(P,P)) .NE. ONE) .OR. (SIGN(ONE,G(Q,Q)) .NE. ONE) .OR. (G(P,P) .LT. G(Q,Q))) THEN
-        !$OMP ATOMIC CAPTURE SEQ_CST
-        L = L + 1
-        K = L
-        !$OMP END ATOMIC
-        D(K) = SENC(H, P, Q)
-        W = MAX(W, D(K))
-     END IF
-  END DO
-  !$OMP END PARALLEL DO
-  IF (W .LE. WZERO) RETURN
-
-  ! find the remaining pivots
-  DO INFO = 1, N/2
-     CALL DDEC(W, P, Q)
-     K = M + INFO
-     O(1,K) = P
-     O(2,K) = Q
-     IF (L .LE. 0) EXIT
-     IF (MOD(INFO, 2) .EQ. 0) THEN
-        S = M
-        T = 0
-     ELSE ! INFO odd
-        S = 0
-        T = M
-     END IF
-     X = 0
-     W = MONE
-     !$OMP PARALLEL DO DEFAULT(NONE) SHARED(D,L,P,Q,S,T,X) PRIVATE(I,J,K) REDUCTION(MAX:W)
-     DO K = 1, L
-        CALL DDEC(D(S+K), I, J)
-        IF ((I .NE. P) .AND. (I .NE. Q) .AND. (J .NE. P) .AND. (J .NE. Q)) THEN
-           !$OMP ATOMIC CAPTURE SEQ_CST
-           X = X + 1
-           I = X
-           !$OMP END ATOMIC
-           J = S + K
-           D(T+I) = D(J)
-           W = MAX(W, D(J))
+  IF (L .EQ. 0) THEN
+     DO K = 1, M
+        P = O(1,K)
+        Q = O(2,K)
+        IF (G(Q,P) .EQ. ZERO) THEN
+           H = ABS(G(P,Q))
+        ELSE IF (G(P,Q) .EQ. ZERO) THEN
+           H = ABS(G(Q,P))
+        ELSE ! none are 0
+           H = CR_HYPOT(G(Q,P), G(P,Q))
+        END IF
+        IF ((H .NE. ZERO) .OR. (SIGN(ONE,G(P,P)) .NE. ONE) .OR. (SIGN(ONE,G(Q,Q)) .NE. ONE) .OR. (G(P,P) .LT. G(Q,Q))) THEN
+           D(K) = SENC(H, P, Q)
+           W = MAX(W, D(K))
+        ELSE ! no transformation
+           D(K) = MONE
+        END IF
+     END DO
+  ELSE ! OpenMP
+     !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,D,M,O) PRIVATE(H,K,P,Q) REDUCTION(MAX:W)
+     DO K = 1, M
+        P = O(1,K)
+        Q = O(2,K)
+        IF (G(Q,P) .EQ. ZERO) THEN
+           H = ABS(G(P,Q))
+        ELSE IF (G(P,Q) .EQ. ZERO) THEN
+           H = ABS(G(Q,P))
+        ELSE ! none are 0
+           H = CR_HYPOT(G(Q,P), G(P,Q))
+        END IF
+        IF ((H .NE. ZERO) .OR. (SIGN(ONE,G(P,P)) .NE. ONE) .OR. (SIGN(ONE,G(Q,Q)) .NE. ONE) .OR. (G(P,P) .LT. G(Q,Q))) THEN
+           D(K) = SENC(H, P, Q)
+           W = MAX(W, D(K))
+        ELSE ! no transformation
+           D(K) = MONE
         END IF
      END DO
      !$OMP END PARALLEL DO
-     IF (W .LE. WZERO) EXIT
-     L = X
-  END DO
+  END IF
+  IF (W .LE. WZERO) RETURN
+
+  ! find the remaining pivots
+  IF (L .EQ. 0) THEN
+     DO INFO = 1, N/2
+        CALL DDEC(W, P, Q)
+        K = M + INFO
+        O(1,K) = P
+        O(2,K) = Q
+        W = MONE
+        DO K = 1, M
+           IF (D(K) .GT. WZERO) THEN
+              CALL DDEC(D(K), I, J)
+              IF ((I .NE. P) .AND. (I .NE. Q) .AND. (J .NE. P) .AND. (J .NE. Q)) THEN
+                 W = MAX(W, D(K))
+              ELSE ! colliding
+                 D(K) = MONE
+              END IF
+           END IF
+        END DO
+        IF (W .LE. WZERO) EXIT
+     END DO
+  ELSE ! OpenMP
+     DO INFO = 1, N/2
+        CALL DDEC(W, P, Q)
+        K = M + INFO
+        O(1,K) = P
+        O(2,K) = Q
+        W = MONE
+        !$OMP PARALLEL DO DEFAULT(NONE) SHARED(D,M,P,Q) PRIVATE(I,J,K) REDUCTION(MAX:W)
+        DO K = 1, M
+           IF (D(K) .GT. WZERO) THEN
+              CALL DDEC(D(K), I, J)
+              IF ((I .NE. P) .AND. (I .NE. Q) .AND. (J .NE. P) .AND. (J .NE. Q)) THEN
+                 W = MAX(W, D(K))
+              ELSE ! colliding
+                 D(K) = MONE
+              END IF
+           END IF
+        END DO
+        !$OMP END PARALLEL DO
+        IF (W .LE. WZERO) EXIT
+     END DO
+  END IF
 
 CONTAINS
 

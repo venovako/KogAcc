@@ -130,7 +130,7 @@ PROGRAM SKSVDDX
   IF (INFO .NE. 0) ERROR STOP 'SRDINP'
 
   ALLOCATE(SV(M))
-  ALLOCATE(W(MAX(3*M,2*M*(M-1))))
+  ALLOCATE(W(MAX(3*M,M*(M-1))))
   ! if, e.g., ||G||_F is known to be numerically finite and reasonably below HUGE,
   ! the dynamic scaling can be turned off for speed
   W(1) = REAL(I, K)

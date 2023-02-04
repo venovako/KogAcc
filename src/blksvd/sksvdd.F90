@@ -124,7 +124,7 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
   M = N * (N - 1)
   I = N / 2
   J = M / 2
-  CALL C_F_POINTER(C_LOC(W), D, [M])
+  CALL C_F_POINTER(C_LOC(W), D, [J])
   R => O(:,J+1:J+I)
 
   IF (N .EQ. 1) THEN
@@ -589,6 +589,7 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
   ! no convergence if INFO = MRQSTP
   INFO = STP
   R => NULL()
+  D => NULL()
 
   ! extract SV from G with a safe backscaling
   IF (LOMP) THEN
