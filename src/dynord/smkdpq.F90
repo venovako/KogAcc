@@ -84,12 +84,14 @@ SUBROUTINE SMKDPQ(N, G, LDG, D, O, INFO)
 
   ! find the remaining pivots
   IF (L .EQ. 0) THEN
-     DO INFO = 1, N/2
+     L = N / 2
+     DO INFO = 1, L
         !DIR$ FORCEINLINE
         CALL DDEC(W, P, Q)
         K = M + INFO
         O(1,K) = P
         O(2,K) = Q
+        IF (INFO .GE. L) EXIT
         W = MONE
         DO K = 1, M
            IF (D(K) .GT. WZERO) THEN
@@ -105,12 +107,14 @@ SUBROUTINE SMKDPQ(N, G, LDG, D, O, INFO)
         IF (W .LE. WZERO) EXIT
      END DO
   ELSE ! OpenMP
-     DO INFO = 1, N/2
+     L = N / 2
+     DO INFO = 1, L
         !DIR$ FORCEINLINE
         CALL DDEC(W, P, Q)
         K = M + INFO
         O(1,K) = P
         O(2,K) = Q
+        IF (INFO .GE. L) EXIT
         W = MONE
         !$OMP PARALLEL DO DEFAULT(NONE) SHARED(D,M,P,Q) PRIVATE(I,J,K) REDUCTION(MAX:W)
         DO K = 1, M

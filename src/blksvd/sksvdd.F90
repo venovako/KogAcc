@@ -335,10 +335,9 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
         RETURN
      END IF
      I = L
-     IF (I .EQ. 0) THEN
-        ! convergence
-        EXIT
-     ELSE IF (I .GT. 0) THEN
+     ! convergence
+     IF (I .EQ. 0) EXIT
+     IF (I .GT. 0) THEN
         TT = TT + I
      ELSE ! should never happen
         INFO = -12
