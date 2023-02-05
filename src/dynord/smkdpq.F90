@@ -1,3 +1,4 @@
+!>@brief \b SMKDPQ builds N/2 pivot index pairs for the next transformation of G.
 SUBROUTINE SMKDPQ(N, G, LDG, D, O, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32, REAL64
   IMPLICIT NONE
