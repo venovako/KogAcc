@@ -54,3 +54,6 @@
 
 ../obj/$(PLAT)/dlwsv2.$(OXT): ksvd2/dlwsv2.f90 $(MKFS) ksvd2/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/dlwsv2.f90
+
+../obj/$(PLAT)/skerr2.$(OXT): ksvd2/skerr2.f90 $(MKFS) ksvd2/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/skerr2.f90

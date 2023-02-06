@@ -1,5 +1,5 @@
-!>@brief \b SERR2 computes the errors in the SVD of G.
-SUBROUTINE SERR2(G, U, V, S, E, INFO)
+!>@brief \b SKERR2 computes the errors in the SVD of G.
+SUBROUTINE SKERR2(G, U, V, S, E, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32, REAL128
   IMPLICIT NONE
   INTEGER, PARAMETER :: K = REAL128
@@ -60,4 +60,4 @@ SUBROUTINE SERR2(G, U, V, S, E, INFO)
   ELSE ! || G ||_F > 0
      E(3) = HYPOT(HYPOT(SX(1,1), SX(2,1)), HYPOT(SX(1,2), SX(2,2))) / E(3)
   END IF
-END SUBROUTINE SERR2
+END SUBROUTINE SKERR2

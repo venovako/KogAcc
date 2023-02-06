@@ -105,7 +105,8 @@ OBJS_KSVD2=\
 ..\obj\$(PLAT)\qcvgpp.obj\
 ..\obj\$(PLAT)\ycvgpp.obj\
 ..\obj\$(PLAT)\slwsv2.obj\
-..\obj\$(PLAT)\dlwsv2.obj
+..\obj\$(PLAT)\dlwsv2.obj\
+..\obj\$(PLAT)\skerr2.obj
 
 OBJS_FAUX=\
 ..\obj\$(PLAT)\sthalt.obj\
