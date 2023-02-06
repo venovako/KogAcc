@@ -43,5 +43,11 @@
 ..\obj\$(PLAT)\dlwsv2.obj: ksvd2\dlwsv2.f90 $(MKFS) ksvd2\Makefile
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\ksvd2\dlwsv2.f90
 
-..\obj\$(PLAT)\skerr2.obj: ksvd2\skerr2.f90 $(MKFS) ksvd2\Makefile
+..\obj\$(PLAT)\skerr2.obj: ksvd2\skerr2.f90 ksvd2\gkerr2.f90 $(MKFS) ksvd2\Makefile
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\ksvd2\skerr2.f90
+
+..\obj\$(PLAT)\dkerr2.obj: ksvd2\dkerr2.f90 ksvd2\gkerr2.f90 $(MKFS) ksvd2\Makefile
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\ksvd2\dkerr2.f90
+
+..\obj\$(PLAT)\qerr2.obj: ksvd2\qkerr2.f90 ksvd2\gkerr2.f90 $(MKFS) ksvd2\Makefile
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\ksvd2\qkerr2.f90

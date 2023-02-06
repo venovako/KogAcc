@@ -55,5 +55,14 @@
 ../obj/$(PLAT)/dlwsv2.$(OXT): ksvd2/dlwsv2.f90 $(MKFS) ksvd2/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/dlwsv2.f90
 
-../obj/$(PLAT)/skerr2.$(OXT): ksvd2/skerr2.f90 $(MKFS) ksvd2/GNUmakefile
+../obj/$(PLAT)/skerr2.$(OXT): ksvd2/skerr2.f90 ksvd2/gkerr2.f90 $(MKFS) ksvd2/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/skerr2.f90
+
+../obj/$(PLAT)/dkerr2.$(OXT): ksvd2/dkerr2.f90 ksvd2/gkerr2.f90 $(MKFS) ksvd2/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/dkerr2.f90
+
+../obj/$(PLAT)/qkerr2.$(OXT): ksvd2/qkerr2.f90 ksvd2/gkerr2.f90 $(MKFS) ksvd2/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/qkerr2.f90
+
+../obj/$(PLAT)/xkerr2.$(OXT): ksvd2/xkerr2.f90 ksvd2/gkerr2.f90 $(MKFS) ksvd2/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/xkerr2.f90
