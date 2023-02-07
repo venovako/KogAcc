@@ -46,8 +46,17 @@
 ..\obj\$(PLAT)\skerr2.obj: ksvd2\skerr2.f90 ksvd2\gkerr2.f90 $(MKFS) ksvd2\Makefile
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\ksvd2\skerr2.f90
 
+..\obj\$(PLAT)\ckerr2.obj: ksvd2\ckerr2.f90 ksvd2\hkerr2.f90 $(MKFS) ksvd2\Makefile
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\ksvd2\ckerr2.f90
+
 ..\obj\$(PLAT)\dkerr2.obj: ksvd2\dkerr2.f90 ksvd2\gkerr2.f90 $(MKFS) ksvd2\Makefile
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\ksvd2\dkerr2.f90
 
-..\obj\$(PLAT)\qerr2.obj: ksvd2\qkerr2.f90 ksvd2\gkerr2.f90 $(MKFS) ksvd2\Makefile
+..\obj\$(PLAT)\zkerr2.obj: ksvd2\zkerr2.f90 ksvd2\hkerr2.f90 $(MKFS) ksvd2\Makefile
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\ksvd2\zkerr2.f90
+
+..\obj\$(PLAT)\qkerr2.obj: ksvd2\qkerr2.f90 ksvd2\gkerr2.f90 $(MKFS) ksvd2\Makefile
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\ksvd2\qkerr2.f90
+
+..\obj\$(PLAT)\ykerr2.obj: ksvd2\ykerr2.f90 ksvd2\hkerr2.f90 $(MKFS) ksvd2\Makefile
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\ksvd2\ykerr2.f90
