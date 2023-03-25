@@ -81,3 +81,6 @@
 
 ..\bin\$(PLAT)\sksvdd.exe: test\sksvddx.F90 ..\lib\$(PLAT)\blksvd.lib ..\lib\$(PLAT)\dynord.lib ..\lib\$(PLAT)\ksvd2.lib ..\lib\$(PLAT)\arrbio.lib ..\lib\$(PLAT)\faux.lib $(MKFS) test/GNUmakefile
 	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp ..\..\..\src\test\sksvddx.F90 /Fesksvdd.exe ..\..\..\lib\$(PLAT)\blksvd.lib ..\..\..\lib\$(PLAT)\dynord.lib ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\arrbio.lib ..\..\..\lib\$(PLAT)\faux.lib $(LAPACK)
+
+..\bin\$(PLAT)\cksvdd.exe: test\cksvddx.F90 ..\lib\$(PLAT)\blksvd.lib ..\lib\$(PLAT)\dynord.lib ..\lib\$(PLAT)\ksvd2.lib ..\lib\$(PLAT)\arrbio.lib ..\lib\$(PLAT)\faux.lib $(MKFS) test/GNUmakefile
+	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp ..\..\..\src\test\cksvddx.F90 /Fecksvdd.exe ..\..\..\lib\$(PLAT)\blksvd.lib ..\..\..\lib\$(PLAT)\dynord.lib ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\arrbio.lib ..\..\..\lib\$(PLAT)\faux.lib $(LAPACK)

@@ -59,7 +59,8 @@ OBJS_BLKSVD=\
 ../obj/$(PLAT)/zksvd0.$(OXT)\
 ../obj/$(PLAT)/qksvd0.$(OXT)\
 ../obj/$(PLAT)/yksvd0.$(OXT)\
-../obj/$(PLAT)/sksvdd.$(OXT)
+../obj/$(PLAT)/sksvdd.$(OXT)\
+../obj/$(PLAT)/cksvdd.$(OXT)
 
 OBJS_DYNORD=\
 ../obj/$(PLAT)/sabsg.$(OXT)\
@@ -150,7 +151,8 @@ EXES_BLKSVD=\
 ../bin/$(PLAT)/zksvd0.exe\
 ../bin/$(PLAT)/qksvd0.exe\
 ../bin/$(PLAT)/yksvd0.exe\
-../bin/$(PLAT)/sksvdd.exe
+../bin/$(PLAT)/sksvdd.exe\
+../bin/$(PLAT)/cksvdd.exe
 
 EXES_DYNORD=\
 ../bin/$(PLAT)/spqsort.exe\

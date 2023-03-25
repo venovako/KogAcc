@@ -1,3 +1,119 @@
+!>@brief \b CKSVDD computes the SVD of G as U S V^H, with S returned in SV and U and V optionally accumulated on either identity for the SVD, or on preset input matrices.
+SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
+  USE, INTRINSIC :: ISO_C_BINDING
+  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: INT64, REAL32, REAL64, REAL128
+  !$ USE OMP_LIB
+  IMPLICIT NONE
+
+#ifdef CR_MATH
+  INTERFACE
+#ifdef NDEBUG
+     PURE FUNCTION CR_HYPOT(X, Y) BIND(C,NAME='cr_hypotf')
+#else
+     FUNCTION CR_HYPOT(X, Y) BIND(C,NAME='cr_hypotf')
+#endif
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_float
+       REAL(KIND=c_float), INTENT(IN), VALUE :: X, Y
+       REAL(KIND=c_float) :: CR_HYPOT
+     END FUNCTION CR_HYPOT
+  END INTERFACE
+#else
+#define CR_HYPOT HYPOT
+#endif
+  INTERFACE
+     SUBROUTINE CLANGO(O, N, G, LDG, S, INFO)
+       USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
+       IMPLICIT NONE
+       CHARACTER, INTENT(IN) :: O
+       INTEGER, INTENT(IN) :: N, LDG
+       COMPLEX(KIND=REAL32), INTENT(IN) :: G(N,LDG)
+       REAL(KIND=REAL32), INTENT(OUT) :: S
+       INTEGER, INTENT(INOUT) :: INFO
+     END SUBROUTINE CLANGO
+  END INTERFACE
+  INTERFACE
+     SUBROUTINE CSCALG(M, N, G, LDG, S, INFO)
+       USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
+       IMPLICIT NONE
+       INTEGER, INTENT(IN) :: M, N, LDG, S
+       COMPLEX(KIND=REAL32), INTENT(INOUT) :: G(LDG,N)
+       INTEGER, INTENT(INOUT) :: INFO
+     END SUBROUTINE CSCALG
+  END INTERFACE
+  INTERFACE
+     SUBROUTINE CMKDPQ(N, G, LDG, D, O, INFO)
+       USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32, REAL64
+       IMPLICIT NONE
+       INTEGER, INTENT(IN) :: N, LDG
+       COMPLEX(KIND=REAL32), INTENT(IN) :: G(LDG,N)
+       REAL(KIND=REAL64), INTENT(OUT) :: D(*)
+       INTEGER, INTENT(INOUT) :: O(2,*), INFO
+     END SUBROUTINE CMKDPQ
+  END INTERFACE
+  INTERFACE
+#ifdef NDEBUG
+     PURE SUBROUTINE CKSVD2(G, U, V, S, INFO)
+#else
+     SUBROUTINE CKSVD2(G, U, V, S, INFO)
+#endif
+       USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
+       IMPLICIT NONE
+       COMPLEX(KIND=REAL32), INTENT(IN) :: G(2,2)
+       COMPLEX(KIND=REAL32), INTENT(OUT) :: U(2,2), V(2,2)
+       REAL(KIND=REAL32), INTENT(OUT) :: S(2)
+       INTEGER, INTENT(INOUT) :: INFO
+     END SUBROUTINE CKSVD2
+  END INTERFACE
+  INTERFACE
+     PURE SUBROUTINE CCVGPP(G, U, V, S, INFO)
+       USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
+       IMPLICIT NONE
+       COMPLEX(KIND=REAL32), INTENT(IN) :: G(2,2), U(2,2), V(2,2)
+       REAL(KIND=REAL32), INTENT(INOUT) :: S(2)
+       INTEGER, INTENT(INOUT) :: INFO
+     END SUBROUTINE CCVGPP
+  END INTERFACE
+  INTERFACE
+     PURE SUBROUTINE CROTC(M, N, G, LDG, P, Q, W, INFO)
+       USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
+       IMPLICIT NONE
+       INTEGER, INTENT(IN) :: M, N, LDG, P, Q
+       COMPLEX(KIND=REAL32), INTENT(INOUT) :: G(LDG,N)
+       COMPLEX(KIND=REAL32), INTENT(IN) :: W(2,2)
+       INTEGER, INTENT(INOUT) :: INFO
+     END SUBROUTINE CROTC
+  END INTERFACE
+  INTERFACE
+     PURE SUBROUTINE CROTR(M, N, G, LDG, P, Q, W, INFO)
+       USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
+       IMPLICIT NONE
+       INTEGER, INTENT(IN) :: M, N, LDG, P, Q
+       COMPLEX(KIND=REAL32), INTENT(INOUT) :: G(LDG,N)
+       COMPLEX(KIND=REAL32), INTENT(IN) :: W(2,2)
+       INTEGER, INTENT(INOUT) :: INFO
+     END SUBROUTINE CROTR
+  END INTERFACE
+
+  INTEGER, PARAMETER :: K = REAL32, USID = 8, UACC = 16, VSID = 32, VACC = 64
+  REAL(KIND=K), PARAMETER :: ZERO = 0.0_K, ONE = 1.0_K
+  COMPLEX(KIND=K), PARAMETER :: CZERO = (ZERO,ZERO), CONE = (ONE,ZERO)
+  INTEGER, INTENT(IN) :: JOB, N, LDG, LDU, LDV
+  COMPLEX(KIND=K), INTENT(INOUT), TARGET :: G(LDG,N)
+  COMPLEX(KIND=K), INTENT(INOUT) :: U(LDU,N), V(LDV,N)
+  REAL(KIND=REAL128), INTENT(INOUT), TARGET :: SV(N)
+  ! W is assumed to be aligned as a double precision array
+  REAL(KIND=K), INTENT(INOUT), TARGET :: W(*)
+  INTEGER, INTENT(INOUT), TARGET :: O(2,*)
+  INTEGER, INTENT(INOUT) :: INFO
+
+  REAL(KIND=REAL64), POINTER, CONTIGUOUS :: D(:)
+  INTEGER, POINTER, CONTIGUOUS :: R(:,:)
+  COMPLEX(KIND=K) :: G2(2,2), U2(2,2), V2(2,2)
+  REAL(KIND=K) :: GN, UN, VN
+  INTEGER(KIND=INT64) :: TT, TM, SM
+  INTEGER :: MRQSTP, I, J, L, M, P, Q, T, GS, US, VS, WV, WS, STP, XSG, XSU, XSV
+  LOGICAL :: LOMP, LUSID, LUACC, LVSID, LVACC
+
   MRQSTP = INFO
   INFO = 0
   LOMP = .FALSE.
@@ -14,34 +130,6 @@
   IF (N .LT. 0) INFO = -2
   IF (JOB .LT. 0) INFO = -1
   IF (JOB .GT. 124) INFO = -1
-  JS = IAND(JOB, 7)
-  M = N * (N - 1)
-  M_2 = M / 2
-  SELECT CASE (JS)
-  CASE (0,1) ! row/column cyclic
-     NP = 1
-     NS = M_2
-  CASE (2) ! generalized Mantharam-Eberlein
-     IF (MOD(N, 2) .EQ. 0) THEN
-        NP = N / 2
-        NS = N - 1
-     ELSE ! N odd
-        INFO = -2
-     END IF
-  CASE (3) ! dynamic ordering
-     NP = N / 2
-     IF ((N .GE. 2) .AND. (O(1) .GT. 0)) NP = MIN(NP, O(1))
-     NS = 1
-  CASE (4) ! modified modulus
-     IF (MOD(N, 2) .EQ. 0) THEN
-        NP = N / 2
-        NS = N
-     ELSE ! N odd
-        INFO = -2
-     END IF
-  CASE DEFAULT
-     INFO = -1
-  END SELECT
   IF (INFO .NE. 0) RETURN
   IF (N .EQ. 0) RETURN
 
@@ -50,12 +138,11 @@
   LVSID = (IAND(JOB, VSID) .NE. 0)
   LVACC = (IAND(JOB, VACC) .NE. 0)
 
-#ifdef ANIMATE
-  CALL C_F_POINTER(C_LOC(SV), CP)
-  CTX = CP
-  CP => NULL()
-  IF (C_ASSOCIATED(CTX)) L = VN_CMPLXVIS_FRAME(CTX, G, LDG)
-#endif
+  M = N * (N - 1)
+  I = N / 2
+  J = M / 2
+  CALL C_F_POINTER(C_LOC(W), D, [J])
+  R => O(:,J+1:J+I)
 
   IF (N .EQ. 1) THEN
      W(2) = ABS(REAL(G(1,1)))
@@ -78,9 +165,6 @@
         W(2) = MAX(ABS(REAL(U(1,1))), ABS(AIMAG(U(1,1))))
         W(3) = ONE
      END IF
-#ifdef ANIMATE
-     IF (C_ASSOCIATED(CTX)) L = VN_CMPLXVIS_FRAME(CTX, G, LDG)
-#endif
      RETURN
   END IF
 
@@ -148,7 +232,7 @@
   ! scale G
   !$ L = OMP_GET_NUM_THREADS()
   IF (.NOT. LOMP) L = 0
-  CALL LANGO('N', N, G, LDG, GN, L)
+  CALL CLANGO('N', N, G, LDG, GN, L)
   IF (L .NE. 0) THEN
      INFO = -3
      RETURN
@@ -163,7 +247,7 @@
   IF (GS .NE. 0) THEN
      !$ L = OMP_GET_NUM_THREADS()
      IF (.NOT. LOMP) L = 0
-     CALL SCALG(N, N, G, LDG, GS, L)
+     CALL CSCALG(N, N, G, LDG, GS, L)
      IF (L .NE. 0) THEN
         INFO = -3
         RETURN
@@ -187,7 +271,7 @@
      ELSE ! scaling of U might be required
         !$ L = OMP_GET_NUM_THREADS()
         IF (.NOT. LOMP) L = 0
-        CALL LANGO('N', N, U, LDU, UN, L)
+        CALL CLANGO('N', N, U, LDU, UN, L)
         IF (L .NE. 0) THEN
            INFO = -5
            RETURN
@@ -203,7 +287,7 @@
      IF (US .NE. 0) THEN
         !$ L = OMP_GET_NUM_THREADS()
         IF (.NOT. LOMP) L = 0
-        CALL SCALG(N, N, U, LDU, US, L)
+        CALL CSCALG(N, N, U, LDU, US, L)
         IF (L .NE. 0) THEN
            INFO = -5
            RETURN
@@ -231,7 +315,7 @@
      ELSE ! scaling of V might be required
         !$ L = OMP_GET_NUM_THREADS()
         IF (.NOT. LOMP) L = 0
-        CALL LANGO('N', N, V, LDV, VN, L)
+        CALL CLANGO('N', N, V, LDV, VN, L)
         IF (L .NE. 0) THEN
            INFO = -7
            RETURN
@@ -247,7 +331,7 @@
      IF (VS .NE. 0) THEN
         !$ L = OMP_GET_NUM_THREADS()
         IF (.NOT. LOMP) L = 0
-        CALL SCALG(N, N, V, LDV, VS, L)
+        CALL CSCALG(N, N, V, LDV, VS, L)
         IF (L .NE. 0) THEN
            INFO = -7
            RETURN
@@ -259,74 +343,26 @@
      VS = 0
   END IF
 
-  ! associate R with SV
-  CALL C_F_POINTER(C_LOC(SV), R, [2,2*NP])
-  IF (.NOT. ASSOCIATED(R)) THEN
-     INFO = -9
-     RETURN
-  END IF
   ! initialize the counters
   TT = 0_INT64
   TM = 0_INT64
   SM = 0_INT64
-#ifndef NDEBUG
-  WRITE (OUTPUT_UNIT,*) '"STEP","GN","UN","VN","PAIRS","OFF_G_F","BIG_TRANS"'
-  FLUSH(OUTPUT_UNIT)
-#endif
 
   DO STP = 0, MRQSTP-1
      T = STP + 1
-#ifndef NDEBUG
-     WRITE (OUTPUT_UNIT,'(I10)',ADVANCE='NO') T
-     WRITE (OUTPUT_UNIT,9,ADVANCE='NO') ',', GN
-     WRITE (OUTPUT_UNIT,9,ADVANCE='NO') ',', UN
-     WRITE (OUTPUT_UNIT,9,ADVANCE='NO') ',', VN
-     FLUSH(OUTPUT_UNIT)
-#endif
-#ifdef ANIMATE
-     IF (C_ASSOCIATED(CTX)) L = VN_CMPLXVIS_FRAME(CTX, G, LDG)
-#endif
 
      ! build the current step's pairs
-     IF (JS .EQ. 3) THEN
-        !$ L = OMP_GET_NUM_THREADS()
-        IF (.NOT. LOMP) L = 0
-        CALL MK3PQ(NP, N, G, LDG, W, O, L)
-        IF (L .LT. 0) THEN
-           INFO = -10
-           RETURN
-        END IF
-        I = L
-     ELSE ! tabular O
-#ifdef NDEBUG
-        W(M_2 + 1) = -ONE
-#else
-        CALL LANGO('O', N, G, LDG, W(M_2 + 1), L)
-#endif
-        I = NP
+     !$ L = OMP_GET_NUM_THREADS()
+     IF (.NOT. LOMP) L = 0
+     CALL CMKDPQ(N, G, LDG, D, O, L)
+     IF (L .LT. 0) THEN
+        INFO = -10
+        RETURN
      END IF
+     I = L
+     ! convergence
+     IF (I .EQ. 0) EXIT
      IF (I .GT. 0) THEN
-        !$ L = OMP_GET_NUM_THREADS()
-        IF (.NOT. LOMP) L = 0
-        CALL JSTEP(JS, N, NS, T, I, O, R, L)
-        IF (L .NE. 0) THEN
-           INFO = -11
-           RETURN
-        END IF
-     END IF
-#ifndef NDEBUG
-     WRITE (OUTPUT_UNIT,'(A,I5)',ADVANCE='NO') ',', I
-     WRITE (OUTPUT_UNIT,9,ADVANCE='NO') ',', W(M_2 + 1)
-     FLUSH(OUTPUT_UNIT)
-#endif
-     IF (I .EQ. 0) THEN
-        ! convergence
-#ifndef NDEBUG
-        WRITE (OUTPUT_UNIT,'(A,I5)') ',', 0
-        FLUSH(OUTPUT_UNIT)
-#endif
-        EXIT
-     ELSE IF (I .GT. 0) THEN
         TT = TT + I
      ELSE ! should never happen
         INFO = -12
@@ -355,9 +391,9 @@
            ELSE ! no inner scaling
               T = -1
            END IF
-           CALL KSVD2(G2, U2, V2, W(WS), T)
+           CALL CKSVD2(G2, U2, V2, W(WS), T)
            R(2,I+J) = T
-           CALL CVGPP(G2, U2, V2, W(WS), T)
+           CALL CCVGPP(G2, U2, V2, W(WS), T)
            R(1,I+J) = T
            W(WV) = REAL(V2(1,1))
            W(WV+1) = AIMAG(V2(1,1))
@@ -375,7 +411,7 @@
            IF (IAND(T, 2) .NE. 0) THEN
               IF (LUACC) THEN
                  L = 0
-                 CALL ROTC(N, N, U, LDU, P, Q, U2, L)
+                 CALL CROTC(N, N, U, LDU, P, Q, U2, L)
                  IF (L .LT. 0) THEN
                     M = M + 1
                     CYCLE
@@ -386,7 +422,7 @@
               G2(1,2) = CONJG(U2(2,1))
               G2(2,2) = CONJG(U2(2,2))
               L = 0
-              CALL ROTR(N, N, G, LDG, P, Q, G2, L)
+              CALL CROTR(N, N, G, LDG, P, Q, G2, L)
               IF (L .LT. 0) THEN
                  M = M + 1
                  CYCLE
@@ -413,14 +449,14 @@
               V2(2,2) = CMPLX(W(WV+6), W(WV+7), K)
               IF (LVACC) THEN
                  L = 0
-                 CALL ROTC(N, N, V, LDV, P, Q, V2, L)
+                 CALL CROTC(N, N, V, LDV, P, Q, V2, L)
                  IF (L .LT. 0) THEN
                     M = M + (I + 1)
                     CYCLE
                  END IF
               END IF
               L = 0
-              CALL ROTC(N, N, G, LDG, P, Q, V2, L)
+              CALL CROTC(N, N, G, LDG, P, Q, V2, L)
               IF (L .LT. 0) THEN
                  M = M + (I + 1)
                  CYCLE
@@ -457,9 +493,9 @@
            ELSE ! no inner scaling
               T = -1
            END IF
-           CALL KSVD2(G2, U2, V2, W(WS), T)
+           CALL CKSVD2(G2, U2, V2, W(WS), T)
            R(2,I+J) = T
-           CALL CVGPP(G2, U2, V2, W(WS), T)
+           CALL CCVGPP(G2, U2, V2, W(WS), T)
            R(1,I+J) = T
            IF (T .LT. 0) THEN
               INFO = -14
@@ -469,7 +505,7 @@
            IF (IAND(T, 2) .NE. 0) THEN
               IF (LUACC) THEN
                  L = 0
-                 CALL ROTC(N, N, U, LDU, P, Q, U2, L)
+                 CALL CROTC(N, N, U, LDU, P, Q, U2, L)
                  IF (L .LT. 0) THEN
                     INFO = -15
                     RETURN
@@ -480,7 +516,7 @@
               G2(1,2) = CONJG(U2(2,1))
               G2(2,2) = CONJG(U2(2,2))
               L = 0
-              CALL ROTR(N, N, G, LDG, P, Q, G2, L)
+              CALL CROTR(N, N, G, LDG, P, Q, G2, L)
               IF (L .LT. 0) THEN
                  INFO = -16
                  RETURN
@@ -490,14 +526,14 @@
            IF (IAND(T, 4) .NE. 0) THEN
               IF (LVACC) THEN
                  L = 0
-                 CALL ROTC(N, N, V, LDV, P, Q, V2, L)
+                 CALL CROTC(N, N, V, LDV, P, Q, V2, L)
                  IF (L .LT. 0) THEN
                     INFO = -17
                     RETURN
                  END IF
               END IF
               L = 0
-              CALL ROTC(N, N, G, LDG, P, Q, V2, L)
+              CALL CROTC(N, N, G, LDG, P, Q, V2, L)
               IF (L .LT. 0) THEN
                  INFO = -18
                  RETURN
@@ -511,93 +547,77 @@
            IF (IAND(T, 8) .NE. 0) M = M + 1
         END DO
      END IF
-#ifndef NDEBUG
-     WRITE (OUTPUT_UNIT,'(A,I5)') ',', M
-     FLUSH(OUTPUT_UNIT)
-#endif
-     TM = TM + M
 
-     ! optionally scale G
-     IF (XSG .EQ. 0) THEN
-        !$ L = OMP_GET_NUM_THREADS()
-        IF (.NOT. LOMP) L = 0
-        CALL LANGO('N', N, G, LDG, GN, L)
-        IF (L .NE. 0) THEN
-           INFO = -3
-           RETURN
-        END IF
-        T = EXPONENT(HUGE(GN)) - EXPONENT(GN) - 9
-        IF (T .LT. 0) THEN
+     IF (M .GT. 0) THEN
+        TM = TM + M
+
+        ! optionally scale G
+        IF (XSG .EQ. 0) THEN
            !$ L = OMP_GET_NUM_THREADS()
            IF (.NOT. LOMP) L = 0
-           CALL SCALG(N, N, G, LDG, T, L)
+           CALL CLANGO('N', N, G, LDG, GN, L)
            IF (L .NE. 0) THEN
               INFO = -3
               RETURN
            END IF
-           GN = SCALE(GN, T)
-           GS = GS + T
+           T = EXPONENT(HUGE(GN)) - EXPONENT(GN) - 9
+           IF (T .LT. 0) THEN
+              !$ L = OMP_GET_NUM_THREADS()
+              IF (.NOT. LOMP) L = 0
+              CALL CSCALG(N, N, G, LDG, T, L)
+              IF (L .NE. 0) THEN
+                 INFO = -3
+                 RETURN
+              END IF
+              GN = SCALE(GN, T)
+              GS = GS + T
+           END IF
         END IF
-     END IF
 
-     ! optionally scale U
-     IF (LUACC .AND. (.NOT. LUSID) .AND. (XSU .EQ. 0)) THEN
-        !$ L = OMP_GET_NUM_THREADS()
-        IF (.NOT. LOMP) L = 0
-        CALL LANGO('N', N, U, LDU, UN, L)
-        IF (L .NE. 0) THEN
-           INFO = -5
-           RETURN
-        END IF
-        T = EXPONENT(HUGE(UN)) - EXPONENT(UN) - 4
-        IF (T .LT. 0) THEN
+        ! optionally scale U
+        IF (LUACC .AND. (.NOT. LUSID) .AND. (XSU .EQ. 0)) THEN
            !$ L = OMP_GET_NUM_THREADS()
            IF (.NOT. LOMP) L = 0
-           CALL SCALG(N, N, U, LDU, T, L)
+           CALL CLANGO('N', N, U, LDU, UN, L)
            IF (L .NE. 0) THEN
               INFO = -5
               RETURN
            END IF
-           UN = SCALE(UN, T)
-           US = US + T
+           T = EXPONENT(HUGE(UN)) - EXPONENT(UN) - 4
+           IF (T .LT. 0) THEN
+              !$ L = OMP_GET_NUM_THREADS()
+              IF (.NOT. LOMP) L = 0
+              CALL CSCALG(N, N, U, LDU, T, L)
+              IF (L .NE. 0) THEN
+                 INFO = -5
+                 RETURN
+              END IF
+              UN = SCALE(UN, T)
+              US = US + T
+           END IF
         END IF
-     END IF
 
-     ! optionally scale V
-     IF (LVACC .AND. (.NOT. LVSID) .AND. (XSV .EQ. 0)) THEN
-        !$ L = OMP_GET_NUM_THREADS()
-        IF (.NOT. LOMP) L = 0
-        CALL LANGO('N', N, V, LDV, VN, L)
-        IF (L .NE. 0) THEN
-           INFO = -7
-           RETURN
-        END IF
-        T = EXPONENT(HUGE(VN)) - EXPONENT(VN) - 4
-        IF (T .LT. 0) THEN
+        ! optionally scale V
+        IF (LVACC .AND. (.NOT. LVSID) .AND. (XSV .EQ. 0)) THEN
            !$ L = OMP_GET_NUM_THREADS()
            IF (.NOT. LOMP) L = 0
-           CALL SCALG(N, N, V, LDV, T, L)
+           CALL CLANGO('N', N, V, LDV, VN, L)
            IF (L .NE. 0) THEN
               INFO = -7
               RETURN
            END IF
-           VN = SCALE(VN, T)
-           VS = VS + T
-        END IF
-     END IF
-
-     ! check for convergence
-     IF (JS .NE. 3) THEN
-        SM = SM + M
-        T = STP + 1
-        IF (MOD(T, NS) .EQ. 0) THEN
-           L = T / NS
-#ifndef NDEBUG
-           WRITE (OUTPUT_UNIT,*) 'sweep', L, ' completed with:', SM, ' big transformations'
-           FLUSH(OUTPUT_UNIT)
-#endif
-           IF (SM .EQ. 0_INT64) EXIT
-           SM = 0_INT64
+           T = EXPONENT(HUGE(VN)) - EXPONENT(VN) - 4
+           IF (T .LT. 0) THEN
+              !$ L = OMP_GET_NUM_THREADS()
+              IF (.NOT. LOMP) L = 0
+              CALL CSCALG(N, N, V, LDV, T, L)
+              IF (L .NE. 0) THEN
+                 INFO = -7
+                 RETURN
+              END IF
+              VN = SCALE(VN, T)
+              VS = VS + T
+           END IF
         END IF
      END IF
   END DO
@@ -605,13 +625,7 @@
   ! no convergence if INFO = MRQSTP
   INFO = STP
   R => NULL()
-#ifndef NDEBUG
-  WRITE (OUTPUT_UNIT,*) 'exited after:', TT, ' transformations, of which big:', TM
-  FLUSH(OUTPUT_UNIT)
-#endif
-#ifdef ANIMATE
-  IF (C_ASSOCIATED(CTX)) L = VN_CMPLXVIS_FRAME(CTX, G, LDG)
-#endif
+  D => NULL()
 
   ! extract SV from G with a safe backscaling
   IF (LOMP) THEN
@@ -644,7 +658,7 @@
   IF (GS .NE. 0) THEN
      !$ L = OMP_GET_NUM_THREADS()
      IF (.NOT. LOMP) L = 0
-     CALL SCALG(N, N, G, LDG, -GS, L)
+     CALL CSCALG(N, N, G, LDG, -GS, L)
      IF (L .NE. 0) THEN
         INFO = -3
         RETURN
@@ -654,7 +668,7 @@
   IF (US .NE. 0) THEN
      !$ L = OMP_GET_NUM_THREADS()
      IF (.NOT. LOMP) L = 0
-     CALL SCALG(N, N, U, LDU, -US, L)
+     CALL CSCALG(N, N, U, LDU, -US, L)
      IF (L .NE. 0) THEN
         INFO = -5
         RETURN
@@ -664,7 +678,7 @@
   IF (VS .NE. 0) THEN
      !$ L = OMP_GET_NUM_THREADS()
      IF (.NOT. LOMP) L = 0
-     CALL SCALG(N, N, V, LDV, -VS, L)
+     CALL CSCALG(N, N, V, LDV, -VS, L)
      IF (L .NE. 0) THEN
         INFO = -7
         RETURN
@@ -679,6 +693,4 @@
   W(4) = REAL(GS, K)
   W(5) = REAL(US, K)
   W(6) = REAL(VS, K)
-#ifdef ANIMATE
-  IF (C_ASSOCIATED(CTX)) L = VN_CMPLXVIS_FRAME(CTX, G, LDG)
-#endif
+END SUBROUTINE CKSVDD

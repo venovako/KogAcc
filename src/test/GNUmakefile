@@ -102,3 +102,6 @@
 
 ../bin/$(PLAT)/sksvdd.exe: test/sksvddx.F90 ../lib/$(PLAT)/libblksvd.a ../lib/$(PLAT)/libdynord.a ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libarrbio.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o sksvdd.exe ../../../src/test/sksvddx.F90 -L../../../lib/$(PLAT) -lblksvd -ldynord -lksvd2 -larrbio -lfaux $(LAPACK)
+
+../bin/$(PLAT)/cksvdd.exe: test/cksvddx.F90 ../lib/$(PLAT)/libblksvd.a ../lib/$(PLAT)/libdynord.a ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libarrbio.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o cksvdd.exe ../../../src/test/cksvddx.F90 -L../../../lib/$(PLAT) -lblksvd -ldynord -lksvd2 -larrbio -lfaux $(LAPACK)
