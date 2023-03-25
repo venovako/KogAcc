@@ -81,6 +81,7 @@ OBJS_DYNORD=\
 ../obj/$(PLAT)/qmk3pq.$(OXT)\
 ../obj/$(PLAT)/ymk3pq.$(OXT)\
 ../obj/$(PLAT)/smkdpq.$(OXT)\
+../obj/$(PLAT)/cmkdpq.$(OXT)\
 ../obj/$(PLAT)/spqcmp.$(OXT)\
 ../obj/$(PLAT)/dpqcmp.$(OXT)\
 ../obj/$(PLAT)/qpqcmp.$(OXT)\
