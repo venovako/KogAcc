@@ -70,12 +70,6 @@
 ../bin/$(PLAT)/jsweep.exe: test/jsweepx.f90 ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o jsweep.exe ../../../src/test/jsweepx.f90 -L../../../lib/$(PLAT) -lfaux -L../../../../JACSD -ljstrat$(DEBUG)
 
-../bin/$(PLAT)/s2g101.exe: test/s2g101.F90 $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o s2g101.exe ../../../src/test/s2g101.F90 -L../../../lib/$(PLAT) -lfaux
-
-../bin/$(PLAT)/s2g110.exe: test/s2g110.F90 $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o s2g110.exe ../../../src/test/s2g110.F90 -L../../../lib/$(PLAT) -lfaux
-
 ../bin/$(PLAT)/sksvd0.exe: test/sksvd0x.F90 test/gksvd0x.F90 ../lib/$(PLAT)/libblksvd.a ../lib/$(PLAT)/libdynord.a ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libarrbio.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o sksvd0.exe ../../../src/test/sksvd0x.F90 -L../../../lib/$(PLAT) -lblksvd -ldynord -lksvd2 -larrbio -lfaux -L../../../../JACSD -ljstrat$(DEBUG) $(LAPACK)
 

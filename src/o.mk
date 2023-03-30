@@ -241,12 +241,6 @@ EXES_TEST += \
 endif # x86
 endif # gfortran
 
-ifeq ($(findstring if,$(COMPILER)),if)
-EXES_TEST += \
-../bin/$(PLAT)/s2g101.exe\
-../bin/$(PLAT)/s2g110.exe
-endif # if(ort|x)
-
 OBJS=$(OBJS_ARRBIO) $(OBJS_BLKSVD) $(OBJS_DYNORD) $(OBJS_KSVD2) $(OBJS_FAUX)
 
 LIBS=\
