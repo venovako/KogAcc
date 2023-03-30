@@ -23,7 +23,7 @@
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\faux\ylango.F90
 
 ..\obj\$(PLAT)\srotc.obj: faux\srotc.F90 $(MKFS) faux\grotc.F90 faux\Makefile
-	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\srotc.F90
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\faux\srotc.F90
 
 ..\obj\$(PLAT)\crotc.obj: faux\crotc.F90 faux\hrotc.F90 $(MKFS) faux\Makefile
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\faux\crotc.F90
@@ -59,22 +59,22 @@
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\faux\yrotr.F90
 
 ..\obj\$(PLAT)\sscalg.obj: faux\sscalg.F90 faux\gscalg.F90 $(MKFS) faux\Makefile
-	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\sscalg.F90
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\faux\sscalg.F90
 
 ..\obj\$(PLAT)\cscalg.obj: faux\cscalg.F90 faux\hscalg.F90 $(MKFS) faux\Makefile
-	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\cscalg.F90
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\faux\cscalg.F90
 
 ..\obj\$(PLAT)\dscalg.obj: faux\dscalg.F90 faux\gscalg.F90 $(MKFS) faux\Makefile
-	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\dscalg.F90
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\faux\dscalg.F90
 
 ..\obj\$(PLAT)\zscalg.obj: faux\zscalg.F90 faux\hscalg.F90 $(MKFS) faux\Makefile
-	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\zscalg.F90
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\faux\zscalg.F90
 
 ..\obj\$(PLAT)\qscalg.obj: faux\qscalg.F90 faux\gscalg.F90 $(MKFS) faux\Makefile
-	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\qscalg.F90
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\faux\qscalg.F90
 
 ..\obj\$(PLAT)\yscalg.obj: faux\yscalg.F90 faux\hscalg.F90 $(MKFS) faux\Makefile
-	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\yscalg.F90
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\faux\yscalg.F90
 
 ..\obj\$(PLAT)\jstep.obj: faux\jstep.f90 $(MKFS) faux\Makefile
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\jstep.f90
