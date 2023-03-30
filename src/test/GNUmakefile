@@ -40,28 +40,28 @@
 ../bin/$(PLAT)/xpqsort.exe: test/xpqsortx.f90 ../lib/$(PLAT)/libdynord.a $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o xpqsort.exe ../../../src/test/xpqsortx.f90 -L../../../lib/$(PLAT) -ldynord
 
-../bin/$(PLAT)/srnd.exe: test/srnd.f90 $(MKFS) test/GNUmakefile
+../bin/$(PLAT)/srnd.exe: test/srnd.f90 test/grnd.f90 $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o srnd.exe ../../../src/test/srnd.f90
 
-../bin/$(PLAT)/crnd.exe: test/crnd.f90 $(MKFS) test/GNUmakefile
+../bin/$(PLAT)/crnd.exe: test/crnd.f90 test/hrnd.f90 $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o crnd.exe ../../../src/test/crnd.f90
 
-../bin/$(PLAT)/drnd.exe: test/drnd.f90 $(MKFS) test/GNUmakefile
+../bin/$(PLAT)/drnd.exe: test/drnd.f90 test/grnd.f90 $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o drnd.exe ../../../src/test/drnd.f90
 
-../bin/$(PLAT)/zrnd.exe: test/zrnd.f90 $(MKFS) test/GNUmakefile
+../bin/$(PLAT)/zrnd.exe: test/zrnd.f90 test/hrnd.f90 $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o zrnd.exe ../../../src/test/zrnd.f90
 
-../bin/$(PLAT)/qrnd.exe: test/qrnd.f90 $(MKFS) test/GNUmakefile
+../bin/$(PLAT)/qrnd.exe: test/qrnd.f90 test/grnd.f90 $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o qrnd.exe ../../../src/test/qrnd.f90
 
-../bin/$(PLAT)/yrnd.exe: test/yrnd.f90 $(MKFS) test/GNUmakefile
+../bin/$(PLAT)/yrnd.exe: test/yrnd.f90 test/hrnd.f90 $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o yrnd.exe ../../../src/test/yrnd.f90
 
-../bin/$(PLAT)/xrnd.exe: test/xrnd.f90 $(MKFS) test/GNUmakefile
+../bin/$(PLAT)/xrnd.exe: test/xrnd.f90 test/grnd.f90 $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o xrnd.exe ../../../src/test/xrnd.f90
 
-../bin/$(PLAT)/wrnd.exe: test/wrnd.f90 $(MKFS) test/GNUmakefile
+../bin/$(PLAT)/wrnd.exe: test/wrnd.f90 test/hrnd.f90 $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o wrnd.exe ../../../src/test/wrnd.f90
 
 ../bin/$(PLAT)/sthalt.exe: test/sthaltx.f90 ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
