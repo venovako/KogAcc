@@ -12,7 +12,7 @@
   GX(1,2) = UX(2,1)
   GX(2,2) = UX(2,2)
 
-  ! VX = U^H U - I
+  ! VX = U^T U - I
   VX = MATMUL(GX, UX)
   VX(1,1) = VX(1,1) - ONE
   VX(2,2) = VX(2,2) - ONE
@@ -60,7 +60,7 @@
   UX(1,2) = UX(1,2) * SX(2,2)
   UX(2,2) = UX(2,2) * SX(2,2)
 
-  ! SX = (U \Sigma) V^H - G
+  ! SX = (U \Sigma) V^T - G
   SX = MATMUL(UX, VX) - GX
   IF (E(3) .EQ. ZERO) THEN
      E(3) = HYPOT(HYPOT(SX(1,1), SX(2,1)), HYPOT(SX(1,2), SX(2,2)))
