@@ -114,6 +114,7 @@
 #endif
   END DO
   !$OMP END PARALLEL
+  WRITE (*,'(I10)',ADVANCE='NO'), N
 #ifdef UPPER
   DO I = 1, 9
      WRITE (*,1,ADVANCE='NO') ',', F(I)
@@ -121,7 +122,7 @@
   DO I = 10, 11
      WRITE (*,1,ADVANCE='NO') ',', -F(I)
   END DO
-  WRITE (*,1) -F(12)
+  WRITE (*,1) ',', -F(12)
 #else
   DO I = 1, 3
      WRITE (*,1,ADVANCE='NO') ',', F(I)
@@ -129,7 +130,7 @@
   DO I = 4, 5
      WRITE (*,1,ADVANCE='NO') ',', -F(I)
   END DO
-  WRITE (*,1) -F(6)
+  WRITE (*,1) ',', -F(6)
 #endif
   DEALLOCATE(E)
   DEALLOCATE(INFO)
@@ -138,5 +139,4 @@
   DEALLOCATE(U)
   DEALLOCATE(G)
   DEALLOCATE(ISEED)
-1 FORMAT(A,ES16.9E2)
 ! FORMAT(A,ES45.36E4)
