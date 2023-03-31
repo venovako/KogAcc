@@ -33,10 +33,8 @@
   END SELECT
   IF (I .EQ. 2) THEN
      ALLOCATE(ISEED(SSIZE))
+     CALL RANDOM_SEED
      CALL RANDOM_SEED(GET=ISEED)
-     DO I = 1, SSIZE
-        WRITE (ERROR_UNIT,*) ISEED(I)
-     END DO
   ELSE IF (I .EQ. (SSIZE + 2)) THEN
      ALLOCATE(ISEED(SSIZE))
      DO I = 1, SSIZE
@@ -47,6 +45,9 @@
   ELSE ! a wrong SEED
      ERROR STOP 'invalid number of SEED arguments'
   END IF
+  DO I = 1, SSIZE
+     WRITE (ERROR_UNIT,*) ISEED(I)
+  END DO
   IF (UPPER) THEN
      ALLOCATE(H(6))
      DO I = 1, N
