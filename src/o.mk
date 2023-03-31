@@ -242,7 +242,8 @@ EXES_KSVD2 += \
 ../bin/$(PLAT)/wksvd2.exe
 EXES_TEST += \
 ../bin/$(PLAT)/xrnd.exe\
-../bin/$(PLAT)/wrnd.exe
+../bin/$(PLAT)/wrnd.exe\
+../bin/$(PLAT)/xrnd2g.exe
 endif # x86
 endif # gfortran
 

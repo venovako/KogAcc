@@ -114,7 +114,7 @@
 #endif
   END DO
   !$OMP END PARALLEL
-  WRITE (*,'(I10)',ADVANCE='NO'), N
+  WRITE (*,'(I10)',ADVANCE='NO') N
 #ifdef UPPER
   DO I = 1, 9
      WRITE (*,1,ADVANCE='NO') ',', F(I)
