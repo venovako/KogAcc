@@ -181,7 +181,9 @@ EXES_TEST=\
 ..\bin\$(PLAT)\qrnd.exe\
 ..\bin\$(PLAT)\yrnd.exe\
 ..\bin\$(PLAT)\srnd2u.exe\
-..\bin\$(PLAT)\srnd2g.exe
+..\bin\$(PLAT)\srnd2g.exe\
+..\bin\$(PLAT)\drnd2u.exe\
+..\bin\$(PLAT)\drnd2g.exe
 
 OBJS=$(OBJS_ARRBIO) $(OBJS_BLKSVD) $(OBJS_DYNORD) $(OBJS_KSVD2) $(OBJS_FAUX)
 

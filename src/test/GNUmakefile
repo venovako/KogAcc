@@ -70,6 +70,12 @@
 ../bin/$(PLAT)/srnd2g.exe: test/srnd2t.F90 test/grnd2t.F90 $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o srnd2g.exe ../../../src/test/srnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux
 
+../bin/$(PLAT)/drnd2u.exe: test/drnd2t.F90 test/grnd2t.F90 $(MKFS) test/GNUmakefile
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -DUPPER=.TRUE. -o drnd2u.exe ../../../src/test/drnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux $(LAPACK)
+
+../bin/$(PLAT)/drnd2g.exe: test/drnd2t.F90 test/grnd2t.F90 $(MKFS) test/GNUmakefile
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o drnd2g.exe ../../../src/test/drnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux
+
 ../bin/$(PLAT)/sthalt.exe: test/sthaltx.f90 ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o sthalt.exe ../../../src/test/sthaltx.f90 -L../../../lib/$(PLAT) -lfaux
 
