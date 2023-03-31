@@ -183,7 +183,8 @@ EXES_TEST=\
 ../bin/$(PLAT)/srnd2u.exe\
 ../bin/$(PLAT)/srnd2g.exe\
 ../bin/$(PLAT)/drnd2u.exe\
-../bin/$(PLAT)/drnd2g.exe
+../bin/$(PLAT)/drnd2g.exe\
+../bin/$(PLAT)/qrnd2g.exe
 
 ifeq ($(COMPILER),gfortran)
 ifeq ($(findstring 86,$(ARCH)),86)
