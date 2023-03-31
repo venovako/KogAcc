@@ -49,6 +49,12 @@
 ..\bin\$(PLAT)\yrnd.exe: test\yrnd.f90 test\hrnd.f90 $(MKFS) test\Makefile
 	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) ..\..\..\src\test\yrnd.f90 /Feyrnd.exe $(LDFLAGS)
 
+..\bin\$(PLAT)\srnd2u.exe: test\srnd2t.F90 test\grnd2t.F90 $(MKFS) test\Makefile
+	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /DUPPER=.TRUE. /fpp ..\..\..\src\test\srnd2t.F90 /Fesrnd2u.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\faux.lib $(LAPACK)
+
+..\bin\$(PLAT)\srnd2g.exe: test\srnd2t.F90 test\grnd2t.F90 $(MKFS) test\Makefile
+	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp ..\..\..\src\test\srnd2t.F90 /Fesrnd2g.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\faux.lib
+
 ..\bin\$(PLAT)\sthalt.exe: test\sthaltx.f90 ..\lib\$(PLAT)\faux.lib $(MKFS) test\Makefile
 	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) ..\..\..\src\test\sthaltx.f90 /Festhalt.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\faux.lib
 

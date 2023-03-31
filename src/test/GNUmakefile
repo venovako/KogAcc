@@ -64,6 +64,12 @@
 ../bin/$(PLAT)/wrnd.exe: test/wrnd.f90 test/hrnd.f90 $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o wrnd.exe ../../../src/test/wrnd.f90
 
+../bin/$(PLAT)/srnd2u.exe: test/srnd2t.F90 test/grnd2t.F90 $(MKFS) test/GNUmakefile
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -DUPPER=.TRUE. -o srnd2u.exe ../../../src/test/srnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux $(LAPACK)
+
+../bin/$(PLAT)/srnd2g.exe: test/srnd2t.F90 test/grnd2t.F90 $(MKFS) test/GNUmakefile
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o srnd2g.exe ../../../src/test/srnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux
+
 ../bin/$(PLAT)/sthalt.exe: test/sthaltx.f90 ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o sthalt.exe ../../../src/test/sthaltx.f90 -L../../../lib/$(PLAT) -lfaux
 
