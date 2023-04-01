@@ -55,6 +55,9 @@
 ..\bin\$(PLAT)\srnd2g.exe: test\srnd2t.F90 test\grnd2t.F90 $(MKFS) test\Makefile
 	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp ..\..\..\src\test\srnd2t.F90 /Fesrnd2g.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\faux.lib
 
+..\bin\$(PLAT)\crnd2g.exe: test\crnd2t.F90 test\hrnd2t.F90 $(MKFS) test\Makefile
+	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp ..\..\..\src\test\crnd2t.F90 /Fecrnd2g.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\faux.lib
+
 ..\bin\$(PLAT)\drnd2u.exe: test\drnd2t.F90 test\grnd2t.F90 $(MKFS) test\Makefile
 	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /DUPPER=.TRUE. /fpp ..\..\..\src\test\drnd2t.F90 /Fedrnd2u.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\faux.lib $(LAPACK)
 

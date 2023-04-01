@@ -1,4 +1,4 @@
-!>@brief XRND2T tests a set of pseudorandom quadruple precision real 2x2 matrices.
+!>@brief XRND2T tests a set of pseudorandom extended precision real 2x2 matrices.
 PROGRAM XRND2T
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL128, ERROR_UNIT
   !$ USE OMP_LIB
