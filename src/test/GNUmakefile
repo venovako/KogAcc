@@ -79,11 +79,20 @@
 ../bin/$(PLAT)/drnd2g.exe: test/drnd2t.F90 test/grnd2t.F90 $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o drnd2g.exe ../../../src/test/drnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux
 
+../bin/$(PLAT)/zrnd2g.exe: test/zrnd2t.F90 test/hrnd2t.F90 $(MKFS) test/GNUmakefile
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o zrnd2g.exe ../../../src/test/zrnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux
+
 ../bin/$(PLAT)/qrnd2g.exe: test/qrnd2t.F90 test/grnd2t.F90 $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o qrnd2g.exe ../../../src/test/qrnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux
 
+../bin/$(PLAT)/yrnd2g.exe: test/yrnd2t.F90 test/hrnd2t.F90 $(MKFS) test/GNUmakefile
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o yrnd2g.exe ../../../src/test/yrnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux
+
 ../bin/$(PLAT)/xrnd2g.exe: test/xrnd2t.F90 test/grnd2t.F90 $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o xrnd2g.exe ../../../src/test/xrnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux
+
+../bin/$(PLAT)/wrnd2g.exe: test/wrnd2t.F90 test/hrnd2t.F90 $(MKFS) test/GNUmakefile
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o wrnd2g.exe ../../../src/test/wrnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux
 
 ../bin/$(PLAT)/sthalt.exe: test/sthaltx.f90 ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o sthalt.exe ../../../src/test/sthaltx.f90 -L../../../lib/$(PLAT) -lfaux

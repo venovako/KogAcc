@@ -64,8 +64,14 @@
 ..\bin\$(PLAT)\drnd2g.exe: test\drnd2t.F90 test\grnd2t.F90 $(MKFS) test\Makefile
 	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp ..\..\..\src\test\drnd2t.F90 /Fedrnd2g.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\faux.lib
 
+..\bin\$(PLAT)\zrnd2g.exe: test\zrnd2t.F90 test\hrnd2t.F90 $(MKFS) test\Makefile
+	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp ..\..\..\src\test\zrnd2t.F90 /Fezrnd2g.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\faux.lib
+
 ..\bin\$(PLAT)\qrnd2g.exe: test\qrnd2t.F90 test\grnd2t.F90 $(MKFS) test\Makefile
 	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp ..\..\..\src\test\qrnd2t.F90 /Feqrnd2g.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\faux.lib
+
+..\bin\$(PLAT)\yrnd2g.exe: test\yrnd2t.F90 test\hrnd2t.F90 $(MKFS) test\Makefile
+	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp ..\..\..\src\test\yrnd2t.F90 /Feyrnd2g.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\faux.lib
 
 ..\bin\$(PLAT)\sthalt.exe: test\sthaltx.f90 ..\lib\$(PLAT)\faux.lib $(MKFS) test\Makefile
 	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) ..\..\..\src\test\sthaltx.f90 /Festhalt.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\faux.lib

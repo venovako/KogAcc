@@ -185,7 +185,9 @@ EXES_TEST=\
 ../bin/$(PLAT)/crnd2g.exe\
 ../bin/$(PLAT)/drnd2u.exe\
 ../bin/$(PLAT)/drnd2g.exe\
-../bin/$(PLAT)/qrnd2g.exe
+../bin/$(PLAT)/zrnd2g.exe\
+../bin/$(PLAT)/qrnd2g.exe\
+../bin/$(PLAT)/yrnd2g.exe
 
 ifeq ($(COMPILER),gfortran)
 ifeq ($(findstring 86,$(ARCH)),86)
@@ -244,7 +246,8 @@ EXES_KSVD2 += \
 EXES_TEST += \
 ../bin/$(PLAT)/xrnd.exe\
 ../bin/$(PLAT)/wrnd.exe\
-../bin/$(PLAT)/xrnd2g.exe
+../bin/$(PLAT)/xrnd2g.exe\
+../bin/$(PLAT)/wrnd2g.exe
 endif # x86
 endif # gfortran
 
