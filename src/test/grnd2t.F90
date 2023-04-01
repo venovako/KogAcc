@@ -81,18 +81,24 @@
      F(1) = MAX(F(1), E(1,K,1))
      F(2) = MAX(F(2), E(2,K,1))
      F(3) = MAX(F(3), E(3,K,1))
-     F(4) = MAX(F(4), E(1,K,2))
-     F(5) = MAX(F(5), E(2,K,2))
-     F(6) = MAX(F(6), E(3,K,2))
+     F(4) = MAX(F(4), -E(1,K,1))
+     F(5) = MAX(F(5), -E(2,K,1))
+     F(6) = MAX(F(6), -E(3,K,1))
+     F(7) = MAX(F(7), E(1,K,2))
+     F(8) = MAX(F(8), E(2,K,2))
+     F(9) = MAX(F(9), E(3,K,2))
+     F(10) = MAX(F(10), -E(1,K,2))
+     F(11) = MAX(F(11), -E(2,K,2))
+     F(12) = MAX(F(12), -E(3,K,2))
      Q = E(1,K,2) / E(1,K,1)
-     F(7) = MAX(F(7), Q)
-     F(10) = MAX(F(10), -Q)
+     F(13) = MAX(F(13), Q)
+     F(16) = MAX(F(16), -Q)
      Q = E(2,K,2) / E(2,K,1)
-     F(8) = MAX(F(8), Q)
-     F(11) = MAX(F(11), -Q)
+     F(14) = MAX(F(14), Q)
+     F(17) = MAX(F(17), -Q)
      Q = E(3,K,2) / E(3,K,1)
-     F(9) = MAX(F(9), Q)
-     F(12) = MAX(F(12), -Q)
+     F(15) = MAX(F(15), Q)
+     F(18) = MAX(F(18), -Q)
 #else
      ! for each matrix, harvest an additional random number to determine the signs of the elements
      CALL RANDOM_NUMBER(T)
@@ -115,21 +121,26 @@
   END DO
   !$OMP END PARALLEL
   WRITE (*,'(I10)',ADVANCE='NO') N
+  WRITE (*,1,ADVANCE='NO') ',', F(1)
+  WRITE (*,1,ADVANCE='NO') ',', F(2)
+  WRITE (*,1,ADVANCE='NO') ',', F(3)
+  WRITE (*,1,ADVANCE='NO') ',', -F(4)
+  WRITE (*,1,ADVANCE='NO') ',', -F(5)
 #ifdef UPPER
-  DO I = 1, 9
-     WRITE (*,1,ADVANCE='NO') ',', F(I)
-  END DO
-  DO I = 10, 11
-     WRITE (*,1,ADVANCE='NO') ',', -F(I)
-  END DO
-  WRITE (*,1) ',', -F(12)
+  WRITE (*,1,ADVANCE='NO') ',', -F(6)
+  WRITE (*,1,ADVANCE='NO') ',', F(7)
+  WRITE (*,1,ADVANCE='NO') ',', F(8)
+  WRITE (*,1,ADVANCE='NO') ',', F(9)
+  WRITE (*,1,ADVANCE='NO') ',', -F(10)
+  WRITE (*,1,ADVANCE='NO') ',', -F(11)
+  WRITE (*,1,ADVANCE='NO') ',', -F(12)
+  WRITE (*,1,ADVANCE='NO') ',', F(13)
+  WRITE (*,1,ADVANCE='NO') ',', F(14)
+  WRITE (*,1,ADVANCE='NO') ',', F(15)
+  WRITE (*,1,ADVANCE='NO') ',', -F(16)
+  WRITE (*,1,ADVANCE='NO') ',', -F(17)
+  WRITE (*,1) ',', -F(18)
 #else
-  DO I = 1, 3
-     WRITE (*,1,ADVANCE='NO') ',', F(I)
-  END DO
-  DO I = 4, 5
-     WRITE (*,1,ADVANCE='NO') ',', -F(I)
-  END DO
   WRITE (*,1) ',', -F(6)
 #endif
   DEALLOCATE(E)
