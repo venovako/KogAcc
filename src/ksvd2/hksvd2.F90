@@ -20,29 +20,53 @@
   S(1) = ZERO
   S(2) = ZERO
 
+  ! check if G has a non-finite value
+  Y = ABS(AIMAG(G(2,2)))
+  IF (.NOT. (Y .LE. H)) THEN
+     INFO = IERR
+     RETURN
+  END IF
+  X = ABS(REAL(G(2,2)))
+  IF (.NOT. (X .LE. H)) THEN
+     INFO = IERR
+     RETURN
+  END IF
+  B(2,2) = CMPLX(X, Y, K)
+  Y = ABS(AIMAG(G(1,2)))
+  IF (.NOT. (Y .LE. H)) THEN
+     INFO = IERR
+     RETURN
+  END IF
+  X = ABS(REAL(G(1,2)))
+  IF (.NOT. (X .LE. H)) THEN
+     INFO = IERR
+     RETURN
+  END IF
+  B(1,2) = CMPLX(X, Y, K)
+  Y = ABS(AIMAG(G(2,1)))
+  IF (.NOT. (Y .LE. H)) THEN
+     INFO = IERR
+     RETURN
+  END IF
+  X = ABS(REAL(G(2,1)))
+  IF (.NOT. (X .LE. H)) THEN
+     INFO = IERR
+     RETURN
+  END IF
+  B(2,1) = CMPLX(X, Y, K)
+  Y = ABS(AIMAG(G(1,1)))
+  IF (.NOT. (Y .LE. H)) THEN
+     INFO = IERR
+     RETURN
+  END IF
+  X = ABS(REAL(G(1,1)))
+  IF (.NOT. (X .LE. H)) THEN
+     INFO = IERR
+     RETURN
+  END IF
+  B(1,1) = CMPLX(X, Y, K)
+
   IF (INFO .EQ. 0) THEN
-     ! check if G has a non-finite value
-     Y = ABS(AIMAG(G(2,2)))
-     IF (.NOT. (Y .LE. H)) INFO = IERR
-     X = ABS(REAL(G(2,2)))
-     IF (.NOT. (X .LE. H)) INFO = IERR
-     B(2,2) = CMPLX(X, Y, K)
-     Y = ABS(AIMAG(G(1,2)))
-     IF (.NOT. (Y .LE. H)) INFO = IERR
-     X = ABS(REAL(G(1,2)))
-     IF (.NOT. (X .LE. H)) INFO = IERR
-     B(1,2) = CMPLX(X, Y, K)
-     Y = ABS(AIMAG(G(2,1)))
-     IF (.NOT. (Y .LE. H)) INFO = IERR
-     X = ABS(REAL(G(2,1)))
-     IF (.NOT. (X .LE. H)) INFO = IERR
-     B(2,1) = CMPLX(X, Y, K)
-     Y = ABS(AIMAG(G(1,1)))
-     IF (.NOT. (Y .LE. H)) INFO = IERR
-     X = ABS(REAL(G(1,1)))
-     IF (.NOT. (X .LE. H)) INFO = IERR
-     B(1,1) = CMPLX(X, Y, K)
-     IF (INFO .NE. 0) RETURN
      ! determine the scaling factor s
      INFO = IERR
      ! ... real parts ...
@@ -250,54 +274,56 @@
      X =  TANG
      Y = -TANG
      IF (SECG .GT. ONE) THEN
-        B(2,1) = U(1,1)
+        Z = U(1,1)
         U(1,1) = CMPLX(IEEE_FMA(X, REAL(U(2,1)), REAL(U(1,1))) / SECG, IEEE_FMA(X, AIMAG(U(2,1)), AIMAG(U(1,1))) / SECG, K)
-        U(2,1) = CMPLX(IEEE_FMA(Y, REAL(B(2,1)), REAL(U(2,1))) / SECG, IEEE_FMA(Y, AIMAG(B(2,1)), AIMAG(U(2,1))) / SECG, K)
-        B(2,1) = U(1,2)
+        U(2,1) = CMPLX(IEEE_FMA(Y, REAL(     Z), REAL(U(2,1))) / SECG, IEEE_FMA(Y, AIMAG(     Z), AIMAG(U(2,1))) / SECG, K)
+        Z = U(1,2)
         U(1,2) = CMPLX(IEEE_FMA(X, REAL(U(2,2)), REAL(U(1,2))) / SECG, IEEE_FMA(X, AIMAG(U(2,2)), AIMAG(U(1,2))) / SECG, K)
-        U(2,2) = CMPLX(IEEE_FMA(Y, REAL(B(2,1)), REAL(U(2,2))) / SECG, IEEE_FMA(Y, AIMAG(B(2,1)), AIMAG(U(2,2))) / SECG, K)
-        B(2,1) = B(1,2)
+        U(2,2) = CMPLX(IEEE_FMA(Y, REAL(     Z), REAL(U(2,2))) / SECG, IEEE_FMA(Y, AIMAG(     Z), AIMAG(U(2,2))) / SECG, K)
+        Z = B(1,2)
         B(1,2) = CMPLX(IEEE_FMA(X, REAL(B(2,2)), REAL(B(1,2))) / SECG, IEEE_FMA(X, AIMAG(B(2,2)), AIMAG(B(1,2))) / SECG, K)
-        B(2,2) = CMPLX(IEEE_FMA(Y, REAL(B(2,1)), REAL(B(2,2))) / SECG, IEEE_FMA(Y, AIMAG(B(2,1)), AIMAG(B(2,2))) / SECG, K)
+        B(2,2) = CMPLX(IEEE_FMA(Y, REAL(     Z), REAL(B(2,2))) / SECG, IEEE_FMA(Y, AIMAG(     Z), AIMAG(B(2,2))) / SECG, K)
      ELSE ! SECG = 1
-        B(2,1) = U(1,1)
+        Z = U(1,1)
         U(1,1) = CMPLX(IEEE_FMA(X, REAL(U(2,1)), REAL(U(1,1))), IEEE_FMA(X, AIMAG(U(2,1)), AIMAG(U(1,1))), K)
-        U(2,1) = CMPLX(IEEE_FMA(Y, REAL(B(2,1)), REAL(U(2,1))), IEEE_FMA(Y, AIMAG(B(2,1)), AIMAG(U(2,1))), K)
-        B(2,1) = U(1,2)
+        U(2,1) = CMPLX(IEEE_FMA(Y, REAL(     Z), REAL(U(2,1))), IEEE_FMA(Y, AIMAG(     Z), AIMAG(U(2,1))), K)
+        Z = U(1,2)
         U(1,2) = CMPLX(IEEE_FMA(X, REAL(U(2,2)), REAL(U(1,2))), IEEE_FMA(X, AIMAG(U(2,2)), AIMAG(U(1,2))), K)
-        U(2,2) = CMPLX(IEEE_FMA(Y, REAL(B(2,1)), REAL(U(2,2))), IEEE_FMA(Y, AIMAG(B(2,1)), AIMAG(U(2,2))), K)
-        B(2,1) = B(1,2)
+        U(2,2) = CMPLX(IEEE_FMA(Y, REAL(     Z), REAL(U(2,2))), IEEE_FMA(Y, AIMAG(     Z), AIMAG(U(2,2))), K)
+        Z = B(1,2)
         B(1,2) = CMPLX(IEEE_FMA(X, REAL(B(2,2)), REAL(B(1,2))), IEEE_FMA(X, AIMAG(B(2,2)), AIMAG(B(1,2))), K)
-        B(2,2) = CMPLX(IEEE_FMA(Y, REAL(B(2,1)), REAL(B(2,2))), IEEE_FMA(Y, AIMAG(B(2,1)), AIMAG(B(2,2))), K)
+        B(2,2) = CMPLX(IEEE_FMA(Y, REAL(     Z), REAL(B(2,2))), IEEE_FMA(Y, AIMAG(     Z), AIMAG(B(2,2))), K)
      END IF
 #else
      IF (SECG .GT. ONE) THEN
-        B(2,1) = U(1,1)
+        Z = U(1,1)
         U(1,1) = (U(1,1) + TANG * U(2,1)) / SECG
-        U(2,1) = (U(2,1) - TANG * B(2,1)) / SECG
-        B(2,1) = U(1,2)
+        U(2,1) = (U(2,1) - TANG *      Z) / SECG
+        Z = U(1,2)
         U(1,2) = (U(1,2) + TANG * U(2,2)) / SECG
-        U(2,2) = (U(2,2) - TANG * B(2,1)) / SECG
-        B(2,1) = B(1,2)
+        U(2,2) = (U(2,2) - TANG *      Z) / SECG
+        Z = B(1,2)
         B(1,2) = (B(1,2) + TANG * B(2,2)) / SECG
-        B(2,2) = (B(2,2) - TANG * B(2,1)) / SECG
+        B(2,2) = (B(2,2) - TANG *      Z) / SECG
      ELSE ! SECG = 1
-        B(2,1) = U(1,1)
+        Z = U(1,1)
         U(1,1) = U(1,1) + TANG * U(2,1)
-        U(2,1) = U(2,1) - TANG * B(2,1)
-        B(2,1) = U(1,2)
+        U(2,1) = U(2,1) - TANG *      Z
+        Z = U(1,2)
         U(1,2) = U(1,2) + TANG * U(2,2)
-        U(2,2) = U(2,2) - TANG * B(2,1)
-        B(2,1) = B(1,2)
+        U(2,2) = U(2,2) - TANG *      Z
+        Z = B(1,2)
         B(1,2) = B(1,2) + TANG * B(2,2)
-        B(2,2) = B(2,2) - TANG * B(2,1)
+        B(2,2) = B(2,2) - TANG *      Z
      END IF
 #endif
      ! recompute the magnitudes in the second column
      A(1,2) = CR_HYPOT(REAL(B(1,2)), AIMAG(B(1,2)))
      A(2,2) = CR_HYPOT(REAL(B(2,2)), AIMAG(B(2,2)))
   END IF
+#ifndef NDEBUG
   B(2,1) = CZERO
+#endif
 
   ! make B(1,2) real and non-negative
   IF (AIMAG(B(1,2)) .EQ. ZERO) THEN
@@ -368,7 +394,7 @@
 #ifdef _OPENMP
   IF (OMP_GET_NUM_THREADS() .LE. 1) THEN
 #endif
-     WRITE (ERROR_UNIT,9) '   X=', X, ',    Y=', Y
+     WRITE (ERROR_UNIT,9) 'X_12=', X, ', Y_22=', Y
 #ifdef _OPENMP
   END IF
 #endif
@@ -407,7 +433,7 @@
 #ifdef _OPENMP
   IF (OMP_GET_NUM_THREADS() .LE. 1) THEN
 #endif
-     WRITE (ERROR_UNIT,9) '   T=', T, ',ROOTH=', ROOTH
+     WRITE (ERROR_UNIT,9) 'TG2F=', T, ',ROOTH=', ROOTH
 #ifdef _OPENMP
   END IF
 #endif
@@ -488,18 +514,18 @@
      S(1) = (SECP / SECF) * A(1,1) ! the first scaled singular value
      Z = U(1,1)
      U(1,1) = CMPLX(IEEE_FMA(X, REAL(U(2,1)), REAL(U(1,1))) / SECF, IEEE_FMA(X, AIMAG(U(2,1)), AIMAG(U(1,1))) / SECF, K)
-     U(2,1) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(U(2,1))) / SECF, IEEE_FMA(Y,      AIMAG(Z), AIMAG(U(2,1))) / SECF, K)
+     U(2,1) = CMPLX(IEEE_FMA(Y, REAL(     Z), REAL(U(2,1))) / SECF, IEEE_FMA(Y, AIMAG(     Z), AIMAG(U(2,1))) / SECF, K)
      Z = U(1,2)
      U(1,2) = CMPLX(IEEE_FMA(X, REAL(U(2,2)), REAL(U(1,2))) / SECF, IEEE_FMA(X, AIMAG(U(2,2)), AIMAG(U(1,2))) / SECF, K)
-     U(2,2) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(U(2,2))) / SECF, IEEE_FMA(Y,      AIMAG(Z), AIMAG(U(2,2))) / SECF, K)
+     U(2,2) = CMPLX(IEEE_FMA(Y, REAL(     Z), REAL(U(2,2))) / SECF, IEEE_FMA(Y, AIMAG(     Z), AIMAG(U(2,2))) / SECF, K)
   ELSE ! SECF = 1
      S(1) = SECP * A(1,1) ! the first scaled singular value
      Z = U(1,1)
      U(1,1) = CMPLX(IEEE_FMA(X, REAL(U(2,1)), REAL(U(1,1))), IEEE_FMA(X, AIMAG(U(2,1)), AIMAG(U(1,1))), K)
-     U(2,1) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(U(2,1))), IEEE_FMA(Y,      AIMAG(Z), AIMAG(U(2,1))), K)
+     U(2,1) = CMPLX(IEEE_FMA(Y, REAL(     Z), REAL(U(2,1))), IEEE_FMA(Y, AIMAG(     Z), AIMAG(U(2,1))), K)
      Z = U(1,2)
      U(1,2) = CMPLX(IEEE_FMA(X, REAL(U(2,2)), REAL(U(1,2))), IEEE_FMA(X, AIMAG(U(2,2)), AIMAG(U(1,2))), K)
-     U(2,2) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(U(2,2))), IEEE_FMA(Y,      AIMAG(Z), AIMAG(U(2,2))), K)
+     U(2,2) = CMPLX(IEEE_FMA(Y, REAL(     Z), REAL(U(2,2))), IEEE_FMA(Y, AIMAG(     Z), AIMAG(U(2,2))), K)
   END IF
   ! update V, S
   X =  TANP
@@ -508,18 +534,18 @@
      S(2) = (SECF / SECP) * A(2,2) ! the second scaled singular value
      Z = V(1,1)
      V(1,1) = CMPLX(IEEE_FMA(X, REAL(V(1,2)), REAL(V(1,1))) / SECP, IEEE_FMA(X, AIMAG(V(1,2)), AIMAG(V(1,1))) / SECP, K)
-     V(1,2) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(V(1,2))) / SECP, IEEE_FMA(Y,      AIMAG(Z), AIMAG(V(1,2))) / SECP, K)
+     V(1,2) = CMPLX(IEEE_FMA(Y, REAL(     Z), REAL(V(1,2))) / SECP, IEEE_FMA(Y, AIMAG(     Z), AIMAG(V(1,2))) / SECP, K)
      Z = V(2,1)
      V(2,1) = CMPLX(IEEE_FMA(X, REAL(V(2,2)), REAL(V(2,1))) / SECP, IEEE_FMA(X, AIMAG(V(2,2)), AIMAG(V(2,1))) / SECP, K)
-     V(2,2) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(V(2,2))) / SECP, IEEE_FMA(Y,      AIMAG(Z), AIMAG(V(2,2))) / SECP, K)
+     V(2,2) = CMPLX(IEEE_FMA(Y, REAL(     Z), REAL(V(2,2))) / SECP, IEEE_FMA(Y, AIMAG(     Z), AIMAG(V(2,2))) / SECP, K)
   ELSE ! SECP = 1
      S(2) = SECF * A(2,2) ! the second scaled singular value
      Z = V(1,1)
      V(1,1) = CMPLX(IEEE_FMA(X, REAL(V(1,2)), REAL(V(1,1))), IEEE_FMA(X, AIMAG(V(1,2)), AIMAG(V(1,1))), K)
-     V(1,2) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(V(1,2))), IEEE_FMA(Y,      AIMAG(Z), AIMAG(V(1,2))), K)
+     V(1,2) = CMPLX(IEEE_FMA(Y, REAL(     Z), REAL(V(1,2))), IEEE_FMA(Y, AIMAG(     Z), AIMAG(V(1,2))), K)
      Z = V(2,1)
      V(2,1) = CMPLX(IEEE_FMA(X, REAL(V(2,2)), REAL(V(2,1))), IEEE_FMA(X, AIMAG(V(2,2)), AIMAG(V(2,1))), K)
-     V(2,2) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(V(2,2))), IEEE_FMA(Y,      AIMAG(Z), AIMAG(V(2,2))), K)
+     V(2,2) = CMPLX(IEEE_FMA(Y, REAL(     Z), REAL(V(2,2))), IEEE_FMA(Y, AIMAG(     Z), AIMAG(V(2,2))), K)
   END IF
 #else
   ! update U, S

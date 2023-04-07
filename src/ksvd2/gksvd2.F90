@@ -14,17 +14,29 @@
   S(1) = ZERO
   S(2) = ZERO
 
+  ! check if G has a non-finite value
+  B(1,1) = ABS(G(1,1))
+  IF (.NOT. (B(1,1) .LE. H)) THEN
+     INFO = IERR
+     RETURN
+  END IF
+  B(2,1) = ABS(G(2,1))
+  IF (.NOT. (B(2,1) .LE. H)) THEN
+     INFO = IERR
+     RETURN
+  END IF
+  B(1,2) = ABS(G(1,2))
+  IF (.NOT. (B(1,2) .LE. H)) THEN
+     INFO = IERR
+     RETURN
+  END IF
+  B(2,2) = ABS(G(2,2))
+  IF (.NOT. (B(2,2) .LE. H)) THEN
+     INFO = IERR
+     RETURN
+  END IF
+
   IF (INFO .EQ. 0) THEN
-     ! check if G has a non-finite value
-     B(2,2) = ABS(G(2,2))
-     IF (.NOT. (B(2,2) .LE. H)) INFO = IERR
-     B(1,2) = ABS(G(1,2))
-     IF (.NOT. (B(1,2) .LE. H)) INFO = IERR
-     B(2,1) = ABS(G(2,1))
-     IF (.NOT. (B(2,1) .LE. H)) INFO = IERR
-     B(1,1) = ABS(G(1,1))
-     IF (.NOT. (B(1,1) .LE. H)) INFO = IERR
-     IF (INFO .NE. 0) RETURN
      ! determine the scaling factor s
      INFO = IERR
      IF (B(1,1) .NE. ZERO) INFO = MAX(INFO, EXPONENT(B(1,1)))
@@ -116,9 +128,9 @@
 
   ! make B(1,1) non-negative
   IF (SIGN(ONE, B(1,1)) .NE. ONE) THEN
-     IF (U(1,1) .EQ. ONE) THEN
+     IF (U(1,1) .NE. ZERO) THEN
         U(1,1) = -U(1,1)
-     ELSE ! U(1,2) has to be one
+     ELSE ! U(1,2) .NE. ZERO
         U(1,2) = -U(1,2)
      END IF
      B(1,1) = -B(1,1)
@@ -127,9 +139,9 @@
 
   ! make B(2,1) non-negative
   IF (SIGN(ONE, B(2,1)) .NE. ONE) THEN
-     IF (U(2,1) .EQ. ONE) THEN
+     IF (U(2,1) .NE. ZERO) THEN
         U(2,1) = -U(2,1)
-     ELSE ! U(2,2) has to be one
+     ELSE ! U(2,2) .NE. ZERO
         U(2,2) = -U(2,2)
      END IF
      B(2,1) = -B(2,1)
@@ -173,59 +185,63 @@
      X =  TANG
      Y = -TANG
      IF (SECG .GT. ONE) THEN
-        B(2,1) = U(1,1)
+        Z = U(1,1)
         U(1,1) = IEEE_FMA(X, U(2,1), U(1,1)) / SECG
-        U(2,1) = IEEE_FMA(Y, B(2,1), U(2,1)) / SECG
-        B(2,1) = U(1,2)
+        U(2,1) = IEEE_FMA(Y,      Z, U(2,1)) / SECG
+        Z = U(1,2)
         U(1,2) = IEEE_FMA(X, U(2,2), U(1,2)) / SECG
-        U(2,2) = IEEE_FMA(Y, B(2,1), U(2,2)) / SECG
-        B(2,1) = B(1,2)
+        U(2,2) = IEEE_FMA(Y,      Z, U(2,2)) / SECG
+        Z = B(1,2)
         B(1,2) = IEEE_FMA(X, B(2,2), B(1,2)) / SECG
-        B(2,2) = IEEE_FMA(Y, B(2,1), B(2,2)) / SECG
+        B(2,2) = IEEE_FMA(Y,      Z, B(2,2)) / SECG
      ELSE ! SECG = 1
-        B(2,1) = U(1,1)
+        Z = U(1,1)
         U(1,1) = IEEE_FMA(X, U(2,1), U(1,1))
-        U(2,1) = IEEE_FMA(Y, B(2,1), U(2,1))
-        B(2,1) = U(1,2)
+        U(2,1) = IEEE_FMA(Y,      Z, U(2,1))
+        Z = U(1,2)
         U(1,2) = IEEE_FMA(X, U(2,2), U(1,2))
-        U(2,2) = IEEE_FMA(Y, B(2,1), U(2,2))
-        B(2,1) = B(1,2)
+        U(2,2) = IEEE_FMA(Y,      Z, U(2,2))
+        Z = B(1,2)
         B(1,2) = IEEE_FMA(X, B(2,2), B(1,2))
-        B(2,2) = IEEE_FMA(Y, B(2,1), B(2,2))
+        B(2,2) = IEEE_FMA(Y,      Z, B(2,2))
      END IF
 #else
      IF (SECG .GT. ONE) THEN
-        B(2,1) = U(1,1)
+        Z = U(1,1)
         U(1,1) = (U(1,1) + TANG * U(2,1)) / SECG
-        U(2,1) = (U(2,1) - TANG * B(2,1)) / SECG
-        B(2,1) = U(1,2)
+        U(2,1) = (U(2,1) - TANG *      Z) / SECG
+        Z = U(1,2)
         U(1,2) = (U(1,2) + TANG * U(2,2)) / SECG
-        U(2,2) = (U(2,2) - TANG * B(2,1)) / SECG
-        B(2,1) = B(1,2)
+        U(2,2) = (U(2,2) - TANG *      Z) / SECG
+        Z = B(1,2)
         B(1,2) = (B(1,2) + TANG * B(2,2)) / SECG
-        B(2,2) = (B(2,2) - TANG * B(2,1)) / SECG
+        B(2,2) = (B(2,2) - TANG *      Z) / SECG
      ELSE ! SECG = 1
-        B(2,1) = U(1,1)
+        Z = U(1,1)
         U(1,1) = U(1,1) + TANG * U(2,1)
-        U(2,1) = U(2,1) - TANG * B(2,1)
-        B(2,1) = U(1,2)
+        U(2,1) = U(2,1) - TANG *      Z
+        Z = U(1,2)
         U(1,2) = U(1,2) + TANG * U(2,2)
-        U(2,2) = U(2,2) - TANG * B(2,1)
-        B(2,1) = B(1,2)
+        U(2,2) = U(2,2) - TANG *      Z
+        Z = B(1,2)
         B(1,2) = B(1,2) + TANG * B(2,2)
-        B(2,2) = B(2,2) - TANG * B(2,1)
+        B(2,2) = B(2,2) - TANG *      Z
      END IF
 #endif
+     ! recompute the norm of the second column
+     ! S(2) = CR_HYPOT(B(1,2), B(2,2))
   END IF
+#ifndef NDEBUG
   B(2,1) = ZERO
+#endif
 
   ! make B(1,2) non-negative
   IF (SIGN(ONE, B(1,2)) .NE. ONE) THEN
      B(1,2) = -B(1,2)
      B(2,2) = -B(2,2)
-     IF (V(1,2) .EQ. ONE) THEN
+     IF (V(1,2) .NE. ZERO) THEN
         V(1,2) = -V(1,2)
-     ELSE ! V(2,2) has to be one
+     ELSE ! V(2,2) .NE. ZERO
         V(2,2) = -V(2,2)
      END IF
   END IF
@@ -263,7 +279,7 @@
 #ifdef _OPENMP
   IF (OMP_GET_NUM_THREADS() .LE. 1) THEN
 #endif
-     WRITE (ERROR_UNIT,9) '   X=', X, ',    Y=', Y
+     WRITE (ERROR_UNIT,9) 'X_12=', X, ', Y_22=', Y
 #ifdef _OPENMP
   END IF
 #endif
@@ -274,23 +290,23 @@
   IF (Y .EQ. ONE) THEN
      Z = TWO / X
   ELSE IF (X .EQ. ONE) THEN
-     Z = SCALE(Y, 1)
+     Z = TWO * Y
 #ifdef USE_IEEE_INTRINSIC
      Z = Z / IEEE_FMA(-Y, Y, TWO)
 #else
      Z = Z / (TWO - Y * Y)
 #endif
   ELSE IF (X .EQ. Y) THEN
-     Z = SCALE(X * X, 1)
+     Z = (TWO * X) * X
   ELSE IF (X .LT. Y) THEN
-     Z = SCALE(X, 1) * Y
+     Z = (TWO * X) * Y
 #ifdef USE_IEEE_INTRINSIC
      Z = Z / IEEE_FMA(X, X, IEEE_FMA(-Y, Y, ONE))
 #else
      Z = Z / ((ONE - Y * Y) + X * X)
 #endif
   ELSE ! X > Y
-     Z = SCALE(Y, 1) * X
+     Z = (TWO * Y) * X
      ! a possible underflow of X-Y is safe so it does not have to be avoided
 #ifdef USE_IEEE_INTRINSIC
      Z = Z / IEEE_FMA(X - Y, X + Y, ONE)
@@ -302,7 +318,7 @@
 #ifdef _OPENMP
   IF (OMP_GET_NUM_THREADS() .LE. 1) THEN
 #endif
-     WRITE (ERROR_UNIT,9) '   Z=', Z, ',ROOTH=', ROOTH
+     WRITE (ERROR_UNIT,9) 'TG2F=', Z, ',ROOTH=', ROOTH
 #ifdef _OPENMP
   END IF
 #endif
