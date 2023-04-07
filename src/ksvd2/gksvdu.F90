@@ -1,4 +1,4 @@
-  ! a partial fix of the Y >= 1, X > 0 problem
+  ! \tan(2\varphi), with a partial fix of the Y >= 1, X > 0 problem
   IF (Y .EQ. ONE) THEN
      T = TWO / X
   ELSE IF (X .EQ. ONE) THEN
@@ -37,7 +37,7 @@
 #endif
 
   ! the functions of \varphi
-  ! Negative tan(2\varphi) can happen only if Y is the largest element by magnitude
+  ! Negative \tan(2\varphi) can happen only if Y is the largest element by magnitude
   ! (impossible mathematically), what in turn, with the correctly rounded hypot,
   ! can happen only as a consequence of the pivoted QR factorization.
   IF (T .EQ. ZERO) THEN

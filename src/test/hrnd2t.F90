@@ -28,9 +28,11 @@
   ELSE ! a wrong SEED
      ERROR STOP 'invalid number of SEED arguments'
   END IF
+#ifndef _OPENMP
   DO I = 1, SSIZE
      WRITE (ERROR_UNIT,*) ISEED(I)
   END DO
+#endif
   ALLOCATE(G(2,2,N))
   F = -HUGE(F(1))
   ALLOCATE(U(2,2,N))
