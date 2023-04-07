@@ -228,8 +228,6 @@
         B(2,2) = B(2,2) - TANG *      Z
      END IF
 #endif
-     ! recompute the norm of the second column
-     ! S(2) = CR_HYPOT(B(1,2), B(2,2))
   END IF
 #ifndef NDEBUG
   B(2,1) = ZERO
@@ -253,8 +251,16 @@
      B(2,2) = -B(2,2)
   END IF
 
-  ! exit if B is diagonal
-  IF (B(1,2) .EQ. ZERO) GOTO 8
+  ! recompute the norm of the second column
+  IF (B(2,2) .EQ. ZERO) THEN
+     S(2) = B(1,2)
+  ELSE IF (B(1,2) .EQ. ZERO) THEN
+     S(2) = B(2,2)
+     ! B is diagonal, so exit
+     GOTO 8
+  ELSE ! full second column
+     S(2) = CR_HYPOT(B(1,2), B(2,2))
+  END IF
 
 #ifndef NDEBUG
   ! internal consistency check
@@ -286,110 +292,8 @@
 #endif
   IF (X .EQ. ZERO) GOTO 8
 
-  ! a partial fix of the Y >= 1, X > 0 problem
-  IF (Y .EQ. ONE) THEN
-     Z = TWO / X
-  ELSE IF (X .EQ. ONE) THEN
-     Z = TWO * Y
-#ifdef USE_IEEE_INTRINSIC
-     Z = Z / IEEE_FMA(-Y, Y, TWO)
-#else
-     Z = Z / (TWO - Y * Y)
-#endif
-  ELSE IF (X .EQ. Y) THEN
-     Z = (TWO * X) * X
-  ELSE IF (X .LT. Y) THEN
-     Z = (TWO * X) * Y
-#ifdef USE_IEEE_INTRINSIC
-     Z = Z / IEEE_FMA(X, X, IEEE_FMA(-Y, Y, ONE))
-#else
-     Z = Z / ((ONE - Y * Y) + X * X)
-#endif
-  ELSE ! X > Y
-     Z = (TWO * Y) * X
-     ! a possible underflow of X-Y is safe so it does not have to be avoided
-#ifdef USE_IEEE_INTRINSIC
-     Z = Z / IEEE_FMA(X - Y, X + Y, ONE)
-#else
-     Z = Z / ((X - Y) * (X + Y) + ONE)
-#endif
-  END IF
-#ifndef NDEBUG
-#ifdef _OPENMP
-  IF (OMP_GET_NUM_THREADS() .LE. 1) THEN
-#endif
-     WRITE (ERROR_UNIT,9) 'TG2F=', Z, ',ROOTH=', ROOTH
-#ifdef _OPENMP
-  END IF
-#endif
-#endif
-
-  ! the functions of \varphi
-  ! Negative tan(2\varphi) can happen only if Y is the largest element by magnitude
-  ! (impossible mathematically), what in turn, with the correctly rounded hypot,
-  ! can happen only as a consequence of the pivoted QR factorization.
-  IF (Z .EQ. ZERO) THEN
-     TANF = ZERO
-     SECF = ONE
-  ELSE IF (ABS(Z) .GT. H) THEN
-     TANF = SIGN(ONE, Z)
-     SECF = SQRT(TWO)
-  ELSE ! finite non-zero Z
-#ifdef CR_MATH
-     TANF = CR_HYPOT(Z, ONE)
-#else
-     Z = SIGN(MIN(ABS(Z), ROOTH), Z)
-#ifdef USE_IEEE_INTRINSIC
-     TANF = SQRT(IEEE_FMA(Z, Z, ONE))
-#else
-     TANF = SQRT(Z * Z + ONE)
-#endif
-#endif
-     TANF = Z / (ONE + TANF)
-#ifdef CR_MATH
-     SECF = CR_HYPOT(TANF, ONE)
-#else
-#ifdef USE_IEEE_INTRINSIC
-     SECF = SQRT(IEEE_FMA(TANF, TANF, ONE))
-#else
-     SECF = SQRT(TANF * TANF + ONE)
-#endif
-#endif
-  END IF
-#ifndef NDEBUG
-#ifdef _OPENMP
-  IF (OMP_GET_NUM_THREADS() .LE. 1) THEN
-#endif
-     WRITE (ERROR_UNIT,9) 'TANF=', TANF, ', SECF=', SECF
-#ifdef _OPENMP
-  END IF
-#endif
-#endif
-
-  ! the functions of \psi
-#ifdef USE_IEEE_INTRINSIC
-  TANP = IEEE_FMA(Y, TANF, X)
-#else
-  TANP = Y * TANF + X
-#endif
-#ifdef CR_MATH
-  SECP = CR_HYPOT(TANP, ONE)
-#else
-#ifdef USE_IEEE_INTRINSIC
-  SECP = SQRT(IEEE_FMA(TANP, TANP, ONE))
-#else
-  SECP = SQRT(TANP * TANP + ONE)
-#endif
-#endif
-#ifndef NDEBUG
-#ifdef _OPENMP
-  IF (OMP_GET_NUM_THREADS() .LE. 1) THEN
-#endif
-     WRITE (ERROR_UNIT,9) 'TANP=', TANP, ', SECP=', SECP
-#ifdef _OPENMP
-  END IF
-#endif
-#endif
+  ! execute the upper-triangular SVD procedure
+#include "gksvdu.F90"
 
 #ifdef USE_IEEE_INTRINSIC
   ! update U, S

@@ -48,7 +48,7 @@ SUBROUTINE QKSVD2(G, U, V, S, INFO)
   REAL(KIND=K), INTENT(OUT) :: U(2,2), V(2,2), S(2)
   INTEGER, INTENT(INOUT) :: INFO
 
-  REAL(KIND=K) :: B(2,2), X, Y, Z
+  REAL(KIND=K) :: B(2,2), T, X, Y, Z
   REAL(KIND=K) :: TANG, SECG, TANF, SECF, TANP, SECP
 
 #include "gksvd2.F90"
