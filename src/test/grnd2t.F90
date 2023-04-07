@@ -72,6 +72,18 @@
      G(2,1,K) = ZERO
      IF (IAND(M, 4) .NE. 0) G(1,2,K) = -G(1,2,K)
      IF (IAND(M, 8) .NE. 0) G(2,2,K) = -G(2,2,K)
+#if (UPPER > 0)
+     ! prevent the pivoted QR from taking place
+     L = MAX(EXPONENT(G(1,2,K)), EXPONENT(G(2,2,K))) - EXPONENT(G(1,1,K))
+     IF (L .GE. 0) THEN
+        L = L + UPPER
+     ELSE IF (-L .LT. UPPER) THEN
+        L = UPPER + L
+     ELSE ! L .GE. -UPPER
+        L = 0
+     END IF
+     G(1,1,K) = SCALE(G(1,1,K), L)
+#endif
      INFO(K,1) = 0
      CALL KSVD2(G(1,1,K), U(1,1,K,1), V(1,1,K,1), S(1,K,1), INFO(K,1))
      CALL KERR2(G(1,1,K), U(1,1,K,1), V(1,1,K,1), S(1,K,1), E(1,K,1), INFO(K,1))
