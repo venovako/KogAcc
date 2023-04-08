@@ -196,19 +196,19 @@
   ! make B(1,1) real and non-negative
   IF (AIMAG(B(1,1)) .EQ. ZERO) THEN
      IF (SIGN(ONE, REAL(B(1,1))) .NE. ONE) THEN
-        IF (REAL(U(1,1)) .EQ. ONE) THEN
-           U(1,1) = CMPLX(-ONE, ZERO, K)
-        ELSE ! U(1,2) has to be one
-           U(1,2) = CMPLX(-ONE, ZERO, K)
+        IF (REAL(U(1,1)) .NE. ZERO) THEN
+           U(1,1) = CMPLX(-REAL(U(1,1)), ZERO, K)
+        ELSE ! REAL(U(1,2)) .NE. ZERO
+           U(1,2) = CMPLX(-REAL(U(1,2)), ZERO, K)
         END IF
         B(1,1) = CMPLX(-REAL(B(1,1)), ZERO, K)
         B(1,2) = -B(1,2)
      END IF
   ELSE ! the general case
      Z = CONJG(B(1,1)) / A(1,1)
-     IF (REAL(U(1,1)) .EQ. ONE) THEN
+     IF (REAL(U(1,1)) .NE. ZERO) THEN
         U(1,1) = Z
-     ELSE ! U(1,2) has to be one
+     ELSE ! REAL(U(1,2)) .NE. ZERO
         U(1,2) = Z
      END IF
      B(1,1) = CMPLX(A(1,1), ZERO, K)
@@ -218,19 +218,19 @@
   ! make B(2,1) real and non-negative
   IF (AIMAG(B(2,1)) .EQ. ZERO) THEN
      IF (SIGN(ONE, REAL(B(2,1))) .NE. ONE) THEN
-        IF (REAL(U(2,1)) .EQ. ONE) THEN
-           U(2,1) = CMPLX(-ONE, ZERO, K)
-        ELSE ! U(2,2) has to be one
-           U(2,2) = CMPLX(-ONE, ZERO, K)
+        IF (REAL(U(2,1)) .NE. ZERO) THEN
+           U(2,1) = CMPLX(-REAL(U(2,1)), ZERO, K)
+        ELSE ! REAL(U(2,2)) .NE. ZERO
+           U(2,2) = CMPLX(-REAL(U(2,2)), ZERO, K)
         END IF
         B(2,1) = CMPLX(-REAL(B(2,1)), ZERO, K)
         B(2,2) = -B(2,2)
      END IF
   ELSE ! the general case
      Z = CONJG(B(2,1)) / A(2,1)
-     IF (REAL(U(2,2)) .EQ. ONE) THEN
+     IF (REAL(U(2,2)) .NE. ZERO) THEN
         U(2,2) = Z
-     ELSE ! U(2,1) has to be one
+     ELSE ! REAL(U(2,1)) .NE. ZERO
         U(2,1) = Z
      END IF
      B(2,1) = CMPLX(A(2,1), ZERO, K)
@@ -268,7 +268,7 @@
 #endif
 
   ! apply the Givens rotation
-  B(1,1) = S(1)
+  B(1,1) = CMPLX(S(1), ZERO, K)
   IF (TANG .GT. ZERO) THEN
 #ifdef USE_IEEE_INTRINSIC
      X =  TANG
@@ -320,6 +320,9 @@
      ! recompute the magnitudes in the second column
      A(1,2) = CR_HYPOT(REAL(B(1,2)), AIMAG(B(1,2)))
      A(2,2) = CR_HYPOT(REAL(B(2,2)), AIMAG(B(2,2)))
+     T = ONE
+  ELSE ! TANG .EQ. ZERO
+     T = ZERO
   END IF
 #ifndef NDEBUG
   B(2,1) = CZERO
@@ -330,21 +333,22 @@
      IF (SIGN(ONE, REAL(B(1,2))) .NE. ONE) THEN
         B(1,2) = CMPLX(-REAL(B(1,2)), ZERO, K)
         B(2,2) = -B(2,2)
-        IF (REAL(V(1,2)) .EQ. ONE) THEN
-           V(1,2) = CMPLX(-ONE, ZERO, K)
-        ELSE ! V(2,2) has to be one
-           V(2,2) = CMPLX(-ONE, ZERO, K)
+        IF (REAL(V(1,2)) .NE. ZERO) THEN
+           V(1,2) = CMPLX(-REAL(V(1,2)), ZERO, K)
+        ELSE ! REAL(V(2,2)) .NE. ZERO
+           V(2,2) = CMPLX(-REAL(V(2,2)), ZERO, K)
         END IF
      END IF
   ELSE ! the general case
      Z = CONJG(B(1,2)) / A(1,2)
      B(1,2) = CMPLX(A(1,2), ZERO, K)
      B(2,2) = CMUL(B(2,2), Z)
-     IF (REAL(V(1,2)) .EQ. ONE) THEN
+     IF (REAL(V(1,2)) .NE. ZERO) THEN
         V(1,2) = Z
-     ELSE ! V(2,2) has to be one
+     ELSE ! REAL(V(2,2)) .NE. ZERO
         V(2,2) = Z
      END IF
+     T = T + ONE
   END IF
 
   ! make B(2,2) real and non-negative
@@ -359,6 +363,7 @@
      U(2,1) = CMUL(Z, U(2,1))
      U(2,2) = CMUL(Z, U(2,2))
      B(2,2) = CMPLX(A(2,2), ZERO, K)
+     T = T + TWO
   END IF
 
   ! B is now real so copy it to A
@@ -369,15 +374,20 @@
   A(1,2) = REAL(B(1,2))
   A(2,2) = REAL(B(2,2))
 
-  ! recompute the norm of the second column
-  IF (A(2,2) .EQ. ZERO) THEN
-     S(2) = A(1,2)
+  ! recompute the norm of the second column if needed
+  IF (T .NE. ZERO) THEN
+     IF (A(2,2) .EQ. ZERO) THEN
+        S(2) = A(1,2)
+     ELSE IF (A(1,2) .EQ. ZERO) THEN
+        S(2) = A(2,2)
+        ! A is diagonal
+        GOTO 8
+     ELSE ! full second column
+        S(2) = CR_HYPOT(A(1,2), A(2,2))
+     END IF
   ELSE IF (A(1,2) .EQ. ZERO) THEN
-     S(2) = A(2,2)
-     ! A is diagonal, so exit
+     ! A is diagonal
      GOTO 8
-  ELSE ! full second column
-     S(2) = CR_HYPOT(A(1,2), A(2,2))
   END IF
 
 #ifndef NDEBUG

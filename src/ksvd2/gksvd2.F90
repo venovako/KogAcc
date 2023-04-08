@@ -251,15 +251,20 @@
      B(2,2) = -B(2,2)
   END IF
 
-  ! recompute the norm of the second column
-  IF (B(2,2) .EQ. ZERO) THEN
-     S(2) = B(1,2)
+  ! recompute the norm of the second column if needed
+  IF (TANG .NE. ZERO) THEN
+     IF (B(2,2) .EQ. ZERO) THEN
+        S(2) = B(1,2)
+     ELSE IF (B(1,2) .EQ. ZERO) THEN
+        S(2) = B(2,2)
+        ! B is diagonal
+        GOTO 8
+     ELSE ! full second column
+        S(2) = CR_HYPOT(B(1,2), B(2,2))
+     END IF
   ELSE IF (B(1,2) .EQ. ZERO) THEN
-     S(2) = B(2,2)
-     ! B is diagonal, so exit
+     ! B is diagonal
      GOTO 8
-  ELSE ! full second column
-     S(2) = CR_HYPOT(B(1,2), B(2,2))
   END IF
 
 #ifndef NDEBUG
