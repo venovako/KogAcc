@@ -22,6 +22,18 @@
 ../bin/$(PLAT)/wksvd2.exe: test/wksvd2x.F90 test/uksvd2.F90 ../lib/$(PLAT)/libksvd2.a $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o wksvd2.exe ../../../src/test/wksvd2x.F90 -L../../../lib/$(PLAT) -lksvd2
 
+../bin/$(PLAT)/skalt2.exe: test/skalt2x.F90 test/tksvd2.F90 ../lib/$(PLAT)/libksvd2.a $(MKFS) test/GNUmakefile
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o skalt2.exe ../../../src/test/skalt2x.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux
+
+../bin/$(PLAT)/dkalt2.exe: test/dkalt2x.F90 test/tksvd2.F90 ../lib/$(PLAT)/libksvd2.a $(MKFS) test/GNUmakefile
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o dkalt2.exe ../../../src/test/dkalt2x.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux
+
+../bin/$(PLAT)/qkalt2.exe: test/qkalt2x.F90 test/tksvd2.F90 ../lib/$(PLAT)/libksvd2.a $(MKFS) test/GNUmakefile
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o qkalt2.exe ../../../src/test/qkalt2x.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux
+
+../bin/$(PLAT)/xkalt2.exe: test/xkalt2x.F90 test/tksvd2.F90 ../lib/$(PLAT)/libksvd2.a $(MKFS) test/GNUmakefile
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o xkalt2.exe ../../../src/test/xkalt2x.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux
+
 ../bin/$(PLAT)/slwsv2.exe: test/slwsv2x.F90 test/tlasv2.F90 ../lib/$(PLAT)/libksvd2.a $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o slwsv2.exe ../../../src/test/slwsv2x.F90 -L../../../lib/$(PLAT) -lksvd2 $(LAPACK)
 

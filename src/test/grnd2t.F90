@@ -43,11 +43,11 @@
   ALLOCATE(E(3,N,2))
   !$OMP PARALLEL DEFAULT(NONE) SHARED(G,U,V,S,INFO,E,N) PRIVATE(I,J,K,L,M,Q) REDUCTION(MAX:F)
 #else
-  ALLOCATE(U(2,2,N))
-  ALLOCATE(V(2,2,N))
-  ALLOCATE(S(2,N))
-  ALLOCATE(INFO(N))
-  ALLOCATE(E(3,N))
+  ALLOCATE(U(2,2,N,1))
+  ALLOCATE(V(2,2,N,1))
+  ALLOCATE(S(2,N,1))
+  ALLOCATE(INFO(N,1))
+  ALLOCATE(E(3,N,1))
   !$OMP PARALLEL DEFAULT(NONE) SHARED(G,U,V,S,INFO,E,N) PRIVATE(I,J,K,L,M,T) REDUCTION(MAX:F)
 #endif
   K = 0
@@ -121,16 +121,16 @@
      IF (IAND(M, 2) .NE. 0) G(2,1,K) = -G(2,1,K)
      IF (IAND(M, 4) .NE. 0) G(1,2,K) = -G(1,2,K)
      IF (IAND(M, 8) .NE. 0) G(2,2,K) = -G(2,2,K)
-     INFO(K) = 0
-     CALL KSVD2(G(1,1,K), U(1,1,K), V(1,1,K), S(1,K), INFO(K))
-     CALL KERR2(G(1,1,K), U(1,1,K), V(1,1,K), S(1,K), E(1,K), INFO(K))
-     IF (INFO(K) .NE. 0) CALL STHALT('KSVD2')
-     F(1) = MAX(F(1), E(1,K))
-     F(2) = MAX(F(2), E(2,K))
-     F(3) = MAX(F(3), E(3,K))
-     F(4) = MAX(F(4), -E(1,K))
-     F(5) = MAX(F(5), -E(2,K))
-     F(6) = MAX(F(6), -E(3,K))
+     INFO(K,1) = 0
+     CALL KSVD2(G(1,1,K), U(1,1,K,1), V(1,1,K,1), S(1,K,1), INFO(K,1))
+     CALL KERR2(G(1,1,K), U(1,1,K,1), V(1,1,K,1), S(1,K,1), E(1,K,1), INFO(K,1))
+     IF (INFO(K,1) .NE. 0) CALL STHALT('KSVD2')
+     F(1) = MAX(F(1), E(1,K,1))
+     F(2) = MAX(F(2), E(2,K,1))
+     F(3) = MAX(F(3), E(3,K,1))
+     F(4) = MAX(F(4), -E(1,K,1))
+     F(5) = MAX(F(5), -E(2,K,1))
+     F(6) = MAX(F(6), -E(3,K,1))
 #endif
   END DO
   !$OMP END PARALLEL

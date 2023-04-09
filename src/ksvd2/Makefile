@@ -19,6 +19,15 @@
 ..\obj\$(PLAT)\yksvd2.obj: ksvd2\yksvd2.F90 ksvd2\hksvd2.F90 ksvd2\gksvdu.F90 $(MKFS) ksvd2\Makefile
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\ksvd2\yksvd2.F90
 
+..\obj\$(PLAT)\skalt2.obj: ksvd2\skalt2.F90 ksvd2\gkalt2.F90 $(MKFS) ksvd2\Makefile
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\ksvd2\skalt2.F90
+
+..\obj\$(PLAT)\dkalt2.obj: ksvd2\dkalt2.F90 ksvd2\gkalt2.F90 $(MKFS) ksvd2\Makefile
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\ksvd2\dkalt2.F90
+
+..\obj\$(PLAT)\qkalt2.obj: ksvd2\qkalt2.F90 ksvd2\gkalt2.F90 $(MKFS) ksvd2\Makefile
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\ksvd2\qkalt2.F90
+
 ..\obj\$(PLAT)\scvgpp.obj: ksvd2\scvgpp.f90 ksvd2\gcvgpp.f90 $(MKFS) ksvd2\Makefile
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\ksvd2\scvgpp.f90
 

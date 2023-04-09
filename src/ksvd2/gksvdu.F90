@@ -45,7 +45,7 @@
      SECF = ONE
   ELSE IF (ABS(T) .GT. H) THEN
      TANF = SIGN(ONE, T)
-     SECF = SQRT(TWO)
+     SECF = ROOT2
   ELSE ! finite non-zero T
 #ifdef CR_MATH
      TANF = CR_HYPOT(T, ONE)

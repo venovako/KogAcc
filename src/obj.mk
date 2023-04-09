@@ -100,6 +100,9 @@ OBJS_KSVD2=\
 ..\obj\$(PLAT)\zksvd2.obj\
 ..\obj\$(PLAT)\qksvd2.obj\
 ..\obj\$(PLAT)\yksvd2.obj\
+..\obj\$(PLAT)\skalt2.obj\
+..\obj\$(PLAT)\dkalt2.obj\
+..\obj\$(PLAT)\qkalt2.obj\
 ..\obj\$(PLAT)\scvgpp.obj\
 ..\obj\$(PLAT)\ccvgpp.obj\
 ..\obj\$(PLAT)\dcvgpp.obj\
@@ -166,6 +169,9 @@ EXES_KSVD2=\
 ..\bin\$(PLAT)\zksvd2.exe\
 ..\bin\$(PLAT)\qksvd2.exe\
 ..\bin\$(PLAT)\yksvd2.exe\
+..\bin\$(PLAT)\skalt2.exe\
+..\bin\$(PLAT)\dkalt2.exe\
+..\bin\$(PLAT)\qkalt2.exe\
 ..\bin\$(PLAT)\slwsv2.exe\
 ..\bin\$(PLAT)\dlwsv2.exe
 

@@ -1,4 +1,4 @@
-!>@brief \b XKSVD2 computes the SVD of an extended precision 2x2 matrix G as G = U S V^T, assuming rounding to nearest.
+!>@brief \b XKALT2 computes the SVD of an extended precision 2x2 matrix G as G = U S V^T, assuming rounding to nearest.
 !!
 !!@param G [IN]; G is a general 2x2 extended precision matrix with finite elements.
 !!@param U [OUT]; U is an orthogonal extended precision matrix of order two.
@@ -7,9 +7,9 @@
 !!@param INFO [INOUT]; do not set to anything but zero on input unless the effects are understood; on output, the scaling parameter s such that 2^{-s} S' = S.
 !!If G has a non-finite element, then s=-HUGE(s), U=V=I, and s_{11}'=s_{22}'=0.
 #ifdef NDEBUG
-PURE SUBROUTINE XKSVD2(G, U, V, S, INFO)
+PURE SUBROUTINE XKALT2(G, U, V, S, INFO)
 #else
-SUBROUTINE XKSVD2(G, U, V, S, INFO)
+SUBROUTINE XKALT2(G, U, V, S, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: ERROR_UNIT
   !$ USE OMP_LIB
 #endif
@@ -47,11 +47,12 @@ SUBROUTINE XKSVD2(G, U, V, S, INFO)
   REAL(KIND=K), INTENT(OUT) :: U(2,2), V(2,2), S(2)
   INTEGER, INTENT(INOUT) :: INFO
 
-  REAL(KIND=K) :: B(2,2), T, X, Y, Z
-  REAL(KIND=K) :: TANG, SECG, TANF, SECF, TANP, SECP
+  REAL(KIND=K) :: A(2,2), B(2,2), T, X, Y, Z
+  REAL(KIND=K) :: TANG, SECG, TANF, SECF, COSF, SINF, TANP, SECP, COSP, SINP
+  INTEGER :: I, J, L
 
-#include "gksvd2.F90"
+#include "gkalt2.F90"
 #ifndef NDEBUG
 9 FORMAT(2(A,ES30.21E4))
 #endif
-END SUBROUTINE XKSVD2
+END SUBROUTINE XKALT2

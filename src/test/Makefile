@@ -16,6 +16,15 @@
 ..\bin\$(PLAT)\yksvd2.exe: test\yksvd2x.F90 test\uksvd2.F90 ..\lib\$(PLAT)\ksvd2.lib $(MKFS) test\Makefile
 	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp ..\..\..\src\test\yksvd2x.F90 /Feyksvd2.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib
 
+..\bin\$(PLAT)\skalt2.exe: test\skalt2x.F90 test\tksvd2.F90 ..\lib\$(PLAT)\ksvd2.lib $(MKFS) test\Makefile
+	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp ..\..\..\src\test\skalt2x.F90 /Feskalt2.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib
+
+..\bin\$(PLAT)\dkalt2.exe: test\dkalt2x.F90 test\tksvd2.F90 ..\lib\$(PLAT)\ksvd2.lib $(MKFS) test\Makefile
+	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp ..\..\..\src\test\dkalt2x.F90 /Fedkalt2.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib
+
+..\bin\$(PLAT)\qkalt2.exe: test\qkalt2x.F90 test\tksvd2.F90 ..\lib\$(PLAT)\ksvd2.lib $(MKFS) test\Makefile
+	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp ..\..\..\src\test\qkalt2x.F90 /Feqkalt2.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib
+
 ..\bin\$(PLAT)\slwsv2.exe: test\slwsv2x.F90 test\tlasv2.F90 ..\lib\$(PLAT)\ksvd2.lib $(MKFS) test\Makefile
 	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp ..\..\..\src\test\slwsv2x.F90 /Feslwsv2.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib $(LAPACK)
 

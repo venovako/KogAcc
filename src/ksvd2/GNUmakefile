@@ -25,6 +25,18 @@
 ../obj/$(PLAT)/wksvd2.$(OXT): ksvd2/wksvd2.F90 ksvd2/hksvd2.F90 ksvd2/gksvdu.F90 $(MKFS) ksvd2/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/wksvd2.F90
 
+../obj/$(PLAT)/skalt2.$(OXT): ksvd2/skalt2.F90 ksvd2/gkalt2.F90 $(MKFS) ksvd2/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/skalt2.F90
+
+../obj/$(PLAT)/dkalt2.$(OXT): ksvd2/dkalt2.F90 ksvd2/gkalt2.F90 $(MKFS) ksvd2/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/dkalt2.F90
+
+../obj/$(PLAT)/qkalt2.$(OXT): ksvd2/qkalt2.F90 ksvd2/gkalt2.F90 $(MKFS) ksvd2/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/qkalt2.F90
+
+../obj/$(PLAT)/xkalt2.$(OXT): ksvd2/xkalt2.F90 ksvd2/gkalt2.F90 $(MKFS) ksvd2/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/xkalt2.F90
+
 ../obj/$(PLAT)/scvgpp.$(OXT): ksvd2/scvgpp.f90 ksvd2/gcvgpp.f90 $(MKFS) ksvd2/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/scvgpp.f90
 

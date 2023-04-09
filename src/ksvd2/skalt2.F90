@@ -1,4 +1,4 @@
-!>@brief \b SKSVD2 computes the SVD of a single precision 2x2 matrix G as G = U S V^T, assuming rounding to nearest.
+!>@brief \b SKALT2 computes the SVD of a single precision 2x2 matrix G as G = U S V^T, assuming rounding to nearest.
 !!
 !!@param G [IN]; G is a general 2x2 single precision matrix with finite elements.
 !!@param U [OUT]; U is an orthogonal single precision matrix of order two.
@@ -7,10 +7,10 @@
 !!@param INFO [INOUT]; do not set to anything but zero on input unless the effects are understood; on output, the scaling parameter s such that 2^{-s} S' = S.
 !!If G has a non-finite element, then s=-HUGE(s), U=V=I, and s_{11}'=s_{22}'=0.
 #ifdef NDEBUG
-PURE SUBROUTINE SKSVD2(G, U, V, S, INFO)
+PURE SUBROUTINE SKALT2(G, U, V, S, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
 #else
-SUBROUTINE SKSVD2(G, U, V, S, INFO)
+SUBROUTINE SKALT2(G, U, V, S, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: ERROR_UNIT, REAL32
   !$ USE OMP_LIB
 #endif
@@ -62,11 +62,12 @@ SUBROUTINE SKSVD2(G, U, V, S, INFO)
   REAL(KIND=K), INTENT(OUT) :: U(2,2), V(2,2), S(2)
   INTEGER, INTENT(INOUT) :: INFO
 
-  REAL(KIND=K) :: B(2,2), T, X, Y, Z
-  REAL(KIND=K) :: TANG, SECG, TANF, SECF, TANP, SECP
+  REAL(KIND=K) :: A(2,2), B(2,2), T, X, Y, Z
+  REAL(KIND=K) :: TANG, SECG, TANF, SECF, COSF, SINF, TANP, SECP, COSP, SINP
+  INTEGER :: I, J, L
 
-#include "gksvd2.F90"
+#include "gkalt2.F90"
 #ifndef NDEBUG
 9 FORMAT(2(A,ES16.9E2))
 #endif
-END SUBROUTINE SKSVD2
+END SUBROUTINE SKALT2
