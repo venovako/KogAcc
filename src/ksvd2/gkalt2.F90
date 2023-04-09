@@ -502,7 +502,6 @@
   ! TANP = X / Y
   S(2) = (Y * COSP + X * SINP) * COSF
 #endif
-
   IF (SIGN(ONE, S(1)) .NE. ONE) THEN
      U(1,1) = -U(1,1)
      U(1,2) = -U(1,2)
@@ -537,3 +536,7 @@
   Z = U(2,1)
   U(2,1) = U(1,2)
   U(1,2) = Z
+
+  ! check for overflow
+  IF (.NOT. (S(1) .LE. H)) INFO = IERR
+  IF (.NOT. (S(2) .LE. H)) INFO = L

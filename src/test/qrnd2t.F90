@@ -50,7 +50,7 @@ PROGRAM QRND2T
   INTEGER, ALLOCATABLE :: ISEED(:)
   REAL(KIND=REAL128), ALLOCATABLE :: G(:,:,:), U(:,:,:,:), V(:,:,:,:), S(:,:,:), E(:,:,:)
   INTEGER, ALLOCATABLE :: INFO(:,:)
-  REAL(KIND=REAL128) :: F(6), T
+  REAL(KIND=REAL128) :: F(18), Q, T
   INTEGER :: SSIZE, I, J, K, L, M, N
   CHARACTER(LEN=64) :: CLA
 #include "grnd2t.F90"
