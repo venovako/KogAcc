@@ -90,10 +90,16 @@
         INFO = 0
      END IF
      CALL KERR2(G, U, V, S, E(1,3), INFO)
-     T = MAX(S(1), S(2))
-     E(4,3) = MAX(ABS(QS(1) - T) / QS(1), QZERO)
-     T = MIN(S(1), S(2))
-     E(5,3) = MAX(ABS(QS(2) - T) / QS(2), QZERO)
+     ! be extremely cautious
+     S(1) = ABS(S(1))
+     S(2) = ABS(S(2))
+     IF (S(1) .LT. S(2)) THEN
+        T = S(1)
+        S(1) = S(2)
+        S(2) = T
+     END IF
+     E(4,3) = MAX(ABS(QS(1) - S(1)) / QS(1), QZERO)
+     E(5,3) = MAX(ABS(QS(2) - S(2)) / QS(2), QZERO)
      F(1,12) = MAX(E(1,3), F(1,12))
      F(2,12) = MAX(-E(1,3), F(2,12))
      F(1,13) = MAX(E(2,3), F(1,13))
