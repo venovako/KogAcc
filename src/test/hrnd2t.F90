@@ -36,7 +36,7 @@
   Q = QZERO
   Q = -QONE / Q
   F = Q
-  !$OMP PARALLEL DEFAULT(NONE) SHARED(N) PRIVATE(G,U,V,S,QG,QU,QV,QS,E,INFO,I,J,K,L,M,P,T,Q) REDUCTION(MAX:F)
+  !$OMP PARALLEL DEFAULT(NONE) SHARED(N) PRIVATE(G,U,V,S,QG,QU,QV,QS,E,INFO,I,J,K,L,M,Q) REDUCTION(MAX:F)
   K = 0
   !$ K = INT(OMP_GET_THREAD_NUM())
   L = 1
@@ -50,14 +50,15 @@
      I = M * (L + 1) + (K - M) * L + 1
   END IF
   J = MIN(I + (L - 1), N)
-  CALL C_F_POINTER(C_LOC(G), P, [4, 2])
-  CALL RANDOM_NUMBER(P)
   DO K = I, J
-     ! for each matrix, harvest two additional random numbers to determine the signs of the elements
-     CALL RANDOM_NUMBER(T)
-     M = EXPONENT(T)
-     CALL RANDOM_NUMBER(T)
-     L = EXPONENT(T)
+     CALL RANDOM_NUMBER(S)
+     G(1,1) = CMPLX(S(1,1), S(2,1), D)
+     G(2,1) = CMPLX(S(1,2), S(2,2), D)
+     G(1,2) = CMPLX(S(1,3), S(2,3), D)
+     G(2,2) = CMPLX(S(1,4), S(2,4), D)
+     ! for each matrix, two additional random numbers are harvested to determine the signs of the elements
+     M = EXPONENT(S(1,5))
+     L = EXPONENT(S(2,5))
      IF (IAND(M, 1) .NE. 0) THEN
         IF (IAND(L, 1) .NE. 0) THEN
            G(1,1) = -G(1,1)
@@ -119,13 +120,13 @@
      IF (INFO .LE. -HUGE(INFO)) CALL STHALT('KSVD2')
      IF (INFO .NE. 0) THEN
         L = -INFO
-        S(1) = SCALE(S(1), L)
-        S(2) = SCALE(S(2), L)
+        S(1,1) = SCALE(S(1,1), L)
+        S(2,1) = SCALE(S(2,1), L)
         INFO = 0
      END IF
      CALL KERR2(G, U, V, S, E, INFO)
-     E(4) = MAX(ABS(QS(1) - S(1)) / QS(1), QZERO)
-     E(5) = MAX(ABS(QS(2) - S(2)) / QS(2), QZERO)
+     E(4) = MAX(ABS(QS(1) - S(1,1)) / QS(1), QZERO)
+     E(5) = MAX(ABS(QS(2) - S(2,1)) / QS(2), QZERO)
      F(1,2) = MAX(E(1), F(1,2))
      F(2,2) = MAX(-E(1), F(2,2))
      F(1,3) = MAX(E(2), F(1,3))
@@ -138,7 +139,6 @@
      F(2,6) = MAX(-E(5), F(2,6))
   END DO
   !$OMP END PARALLEL
-  P => NULL()
   L = 6
   WRITE (OUTPUT_UNIT,'(I11)',ADVANCE='NO') N
   DO K = 1, L-1
