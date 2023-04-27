@@ -14,7 +14,7 @@ The recent GNU (``gfortran`` 13+) and Intel (``ifx`` 2023.1+) Fortran compilers 
 Other 64-bit OSes (e.g., Oracle Solaris) and non-x86_64 (e.g., ppc64le) platforms might also be supported to a certain extent, if the reference BLAS and LAPACK libraries have been built.
 
 First, clone [JACSD](https://github.com/venovako/JACSD) repository, with the same parent directory as this one has (e.g., ``venovako/JACSD`` and ``venovako/KogAcc``).
-Then, build the ``jstrat`` library, with the same (no-)debug mode as it is meant to be used here.
+Then, build the ``jstrat`` library, with the same compilers and (no-)debug mode as it is meant to be used here.
 
 Building the documentation requires a recent version of [Doxygen](https://doxygen.nl).
 
