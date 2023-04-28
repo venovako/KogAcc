@@ -1,5 +1,7 @@
   ! \tan(2\varphi), with a partial fix of the Y >= 1, X > 0 problem
-  IF (Y .EQ. ONE) THEN
+  IF (X .EQ. ZERO) THEN
+     T = ZERO
+  ELSE IF (Y .EQ. ONE) THEN
      T = TWO / X
   ELSE IF (X .EQ. ONE) THEN
      T = TWO * Y

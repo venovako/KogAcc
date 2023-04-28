@@ -103,6 +103,9 @@ OBJS_KSVD2=\
 ..\obj\$(PLAT)\skalt2.obj\
 ..\obj\$(PLAT)\dkalt2.obj\
 ..\obj\$(PLAT)\qkalt2.obj\
+..\obj\$(PLAT)\sksum2.obj\
+..\obj\$(PLAT)\dksum2.obj\
+..\obj\$(PLAT)\qksum2.obj\
 ..\obj\$(PLAT)\scvgpp.obj\
 ..\obj\$(PLAT)\ccvgpp.obj\
 ..\obj\$(PLAT)\dcvgpp.obj\
@@ -172,6 +175,9 @@ EXES_KSVD2=\
 ..\bin\$(PLAT)\skalt2.exe\
 ..\bin\$(PLAT)\dkalt2.exe\
 ..\bin\$(PLAT)\qkalt2.exe\
+..\bin\$(PLAT)\sksum2.exe\
+..\bin\$(PLAT)\dksum2.exe\
+..\bin\$(PLAT)\qksum2.exe\
 ..\bin\$(PLAT)\slwsv2.exe\
 ..\bin\$(PLAT)\dlwsv2.exe
 
@@ -189,12 +195,19 @@ EXES_TEST=\
 ..\bin\$(PLAT)\srnd2p.exe\
 ..\bin\$(PLAT)\srnd2u.exe\
 ..\bin\$(PLAT)\srnd2g.exe\
+..\bin\$(PLAT)\ssum2p.exe\
+..\bin\$(PLAT)\ssum2u.exe\
+..\bin\$(PLAT)\ssum2g.exe\
 ..\bin\$(PLAT)\crnd2g.exe\
 ..\bin\$(PLAT)\drnd2p.exe\
 ..\bin\$(PLAT)\drnd2u.exe\
 ..\bin\$(PLAT)\drnd2g.exe\
+..\bin\$(PLAT)\dsum2p.exe\
+..\bin\$(PLAT)\dsum2u.exe\
+..\bin\$(PLAT)\dsum2g.exe\
 ..\bin\$(PLAT)\zrnd2g.exe\
 ..\bin\$(PLAT)\qrnd2g.exe\
+..\bin\$(PLAT)\qsum2g.exe\
 ..\bin\$(PLAT)\yrnd2g.exe
 
 OBJS=$(OBJS_ARRBIO) $(OBJS_BLKSVD) $(OBJS_DYNORD) $(OBJS_KSVD2) $(OBJS_FAUX)

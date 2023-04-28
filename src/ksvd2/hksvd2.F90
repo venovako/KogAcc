@@ -270,9 +270,9 @@
   ! apply the Givens rotation
   B(1,1) = CMPLX(S(1), ZERO, K)
   IF (TANG .GT. ZERO) THEN
-#ifdef USE_IEEE_INTRINSIC
      X =  TANG
      Y = -TANG
+#ifdef USE_IEEE_INTRINSIC
      IF (SECG .GT. ONE) THEN
         Z = U(1,1)
         U(1,1) = CMPLX(IEEE_FMA(X, REAL(U(2,1)), REAL(U(1,1))) / SECG, IEEE_FMA(X, AIMAG(U(2,1)), AIMAG(U(1,1))) / SECG, K)
@@ -297,24 +297,24 @@
 #else
      IF (SECG .GT. ONE) THEN
         Z = U(1,1)
-        U(1,1) = (U(1,1) + TANG * U(2,1)) / SECG
-        U(2,1) = (U(2,1) - TANG *      Z) / SECG
+        U(1,1) = (U(1,1) + X * U(2,1)) / SECG
+        U(2,1) = (U(2,1) + Y *      Z) / SECG
         Z = U(1,2)
-        U(1,2) = (U(1,2) + TANG * U(2,2)) / SECG
-        U(2,2) = (U(2,2) - TANG *      Z) / SECG
+        U(1,2) = (U(1,2) + X * U(2,2)) / SECG
+        U(2,2) = (U(2,2) + Y *      Z) / SECG
         Z = B(1,2)
-        B(1,2) = (B(1,2) + TANG * B(2,2)) / SECG
-        B(2,2) = (B(2,2) - TANG *      Z) / SECG
+        B(1,2) = (B(1,2) + X * B(2,2)) / SECG
+        B(2,2) = (B(2,2) + Y *      Z) / SECG
      ELSE ! SECG = 1
         Z = U(1,1)
-        U(1,1) = U(1,1) + TANG * U(2,1)
-        U(2,1) = U(2,1) - TANG *      Z
+        U(1,1) = U(1,1) + X * U(2,1)
+        U(2,1) = U(2,1) + Y *      Z
         Z = U(1,2)
-        U(1,2) = U(1,2) + TANG * U(2,2)
-        U(2,2) = U(2,2) - TANG *      Z
+        U(1,2) = U(1,2) + X * U(2,2)
+        U(2,2) = U(2,2) + Y *      Z
         Z = B(1,2)
-        B(1,2) = B(1,2) + TANG * B(2,2)
-        B(2,2) = B(2,2) - TANG *      Z
+        B(1,2) = B(1,2) + X * B(2,2)
+        B(2,2) = B(2,2) + Y *      Z
      END IF
 #endif
      ! recompute the magnitudes in the second column
@@ -423,12 +423,11 @@
   ! execute the upper-triangular SVD procedure
 #include "gksvdu.F90"
 
-#ifdef USE_IEEE_INTRINSIC
-  ! update U, S
+  ! update U
   X =  TANF
   Y = -TANF
+#ifdef USE_IEEE_INTRINSIC
   IF (SECF .NE. ONE) THEN
-     S(1) = (SECP / SECF) * A(1,1) ! the first scaled singular value
      Z = U(1,1)
      U(1,1) = CMPLX(IEEE_FMA(X, REAL(U(2,1)), REAL(U(1,1))) / SECF, IEEE_FMA(X, AIMAG(U(2,1)), AIMAG(U(1,1))) / SECF, K)
      U(2,1) = CMPLX(IEEE_FMA(Y, REAL(     Z), REAL(U(2,1))) / SECF, IEEE_FMA(Y, AIMAG(     Z), AIMAG(U(2,1))) / SECF, K)
@@ -436,7 +435,6 @@
      U(1,2) = CMPLX(IEEE_FMA(X, REAL(U(2,2)), REAL(U(1,2))) / SECF, IEEE_FMA(X, AIMAG(U(2,2)), AIMAG(U(1,2))) / SECF, K)
      U(2,2) = CMPLX(IEEE_FMA(Y, REAL(     Z), REAL(U(2,2))) / SECF, IEEE_FMA(Y, AIMAG(     Z), AIMAG(U(2,2))) / SECF, K)
   ELSE ! SECF = 1
-     S(1) = SECP * A(1,1) ! the first scaled singular value
      Z = U(1,1)
      U(1,1) = CMPLX(IEEE_FMA(X, REAL(U(2,1)), REAL(U(1,1))), IEEE_FMA(X, AIMAG(U(2,1)), AIMAG(U(1,1))), K)
      U(2,1) = CMPLX(IEEE_FMA(Y, REAL(     Z), REAL(U(2,1))), IEEE_FMA(Y, AIMAG(     Z), AIMAG(U(2,1))), K)
@@ -444,64 +442,35 @@
      U(1,2) = CMPLX(IEEE_FMA(X, REAL(U(2,2)), REAL(U(1,2))), IEEE_FMA(X, AIMAG(U(2,2)), AIMAG(U(1,2))), K)
      U(2,2) = CMPLX(IEEE_FMA(Y, REAL(     Z), REAL(U(2,2))), IEEE_FMA(Y, AIMAG(     Z), AIMAG(U(2,2))), K)
   END IF
-  ! update V, S
-  X =  TANP
-  Y = -TANP
-  IF (SECP .NE. ONE) THEN
-     S(2) = (SECF / SECP) * A(2,2) ! the second scaled singular value
-     Z = V(1,1)
-     V(1,1) = CMPLX(IEEE_FMA(X, REAL(V(1,2)), REAL(V(1,1))) / SECP, IEEE_FMA(X, AIMAG(V(1,2)), AIMAG(V(1,1))) / SECP, K)
-     V(1,2) = CMPLX(IEEE_FMA(Y, REAL(     Z), REAL(V(1,2))) / SECP, IEEE_FMA(Y, AIMAG(     Z), AIMAG(V(1,2))) / SECP, K)
-     Z = V(2,1)
-     V(2,1) = CMPLX(IEEE_FMA(X, REAL(V(2,2)), REAL(V(2,1))) / SECP, IEEE_FMA(X, AIMAG(V(2,2)), AIMAG(V(2,1))) / SECP, K)
-     V(2,2) = CMPLX(IEEE_FMA(Y, REAL(     Z), REAL(V(2,2))) / SECP, IEEE_FMA(Y, AIMAG(     Z), AIMAG(V(2,2))) / SECP, K)
-  ELSE ! SECP = 1
-     S(2) = SECF * A(2,2) ! the second scaled singular value
-     Z = V(1,1)
-     V(1,1) = CMPLX(IEEE_FMA(X, REAL(V(1,2)), REAL(V(1,1))), IEEE_FMA(X, AIMAG(V(1,2)), AIMAG(V(1,1))), K)
-     V(1,2) = CMPLX(IEEE_FMA(Y, REAL(     Z), REAL(V(1,2))), IEEE_FMA(Y, AIMAG(     Z), AIMAG(V(1,2))), K)
-     Z = V(2,1)
-     V(2,1) = CMPLX(IEEE_FMA(X, REAL(V(2,2)), REAL(V(2,1))), IEEE_FMA(X, AIMAG(V(2,2)), AIMAG(V(2,1))), K)
-     V(2,2) = CMPLX(IEEE_FMA(Y, REAL(     Z), REAL(V(2,2))), IEEE_FMA(Y, AIMAG(     Z), AIMAG(V(2,2))), K)
-  END IF
 #else
-  ! update U, S
-  IF (SECF .NE. ONE) THEN
-     S(1) = (SECP / SECF) * A(1,1) ! the first scaled singular value
+    IF (SECF .NE. ONE) THEN
      Z = U(1,1)
-     U(1,1) = (U(1,1) + TANF * U(2,1)) / SECF
-     U(2,1) = (U(2,1) - TANF *      Z) / SECF
+     U(1,1) = (U(1,1) + X * U(2,1)) / SECF
+     U(2,1) = (U(2,1) + Y *      Z) / SECF
      Z = U(1,2)
-     U(1,2) = (U(1,2) + TANF * U(2,2)) / SECF
-     U(2,2) = (U(2,2) - TANF *      Z) / SECF
+     U(1,2) = (U(1,2) + X * U(2,2)) / SECF
+     U(2,2) = (U(2,2) + Y *      Z) / SECF
   ELSE ! SECF = 1
-     S(1) = SECP * A(1,1) ! the first scaled singular value
      Z = U(1,1)
-     U(1,1) = U(1,1) + TANF * U(2,1)
-     U(2,1) = U(2,1) - TANF *      Z
+     U(1,1) = U(1,1) + X * U(2,1)
+     U(2,1) = U(2,1) + Y *      Z
      Z = U(1,2)
-     U(1,2) = U(1,2) + TANF * U(2,2)
-     U(2,2) = U(2,2) - TANF *      Z
-  END IF
-  ! update V, S
-  IF (SECP .NE. ONE) THEN
-     S(2) = (SECF / SECP) * A(2,2) ! the second scaled singular value
-     Z = V(1,1)
-     V(1,1) = (V(1,1) + TANP * V(1,2)) / SECP
-     V(1,2) = (V(1,2) - TANP *      Z) / SECP
-     Z = V(2,1)
-     V(2,1) = (V(2,1) + TANP * V(2,2)) / SECP
-     V(2,2) = (V(2,2) - TANP *      Z) / SECP
-  ELSE ! SECP = 1
-     S(2) = SECF * A(2,2) ! the second scaled singular value
-     Z = V(1,1)
-     V(1,1) = V(1,1) + TANP * V(1,2)
-     V(1,2) = V(1,2) - TANP *      Z
-     Z = V(2,1)
-     V(2,1) = V(2,1) + TANP * V(2,2)
-     V(2,2) = V(2,2) - TANP *      Z
+     U(1,2) = U(1,2) + X * U(2,2)
+     U(2,2) = U(2,2) + Y *      Z
   END IF
 #endif
+
+  ! update S
+  IF (SECF .NE. ONE) THEN
+     S(1) = (SECP / SECF) * A(1,1) ! the first scaled singular value
+  ELSE ! SECF = 1
+     S(1) = SECP * A(1,1) ! the first scaled singular value
+  END IF
+  IF (SECP .NE. ONE) THEN
+     S(2) = (SECF / SECP) * A(2,2) ! the second scaled singular value
+  ELSE ! SECP = 1
+     S(2) = SECF * A(2,2) ! the second scaled singular value
+  END IF
 #ifndef NDEBUG
 #ifdef _OPENMP
   IF (OMP_GET_NUM_THREADS() .LE. 1) THEN
@@ -510,6 +479,43 @@
 #ifdef _OPENMP
   END IF
 #endif
+#endif
+
+  ! update V
+  X =  TANP
+  Y = -TANP
+#ifdef USE_IEEE_INTRINSIC
+  IF (SECP .NE. ONE) THEN
+     Z = V(1,1)
+     V(1,1) = CMPLX(IEEE_FMA(X, REAL(V(1,2)), REAL(V(1,1))) / SECP, IEEE_FMA(X, AIMAG(V(1,2)), AIMAG(V(1,1))) / SECP, K)
+     V(1,2) = CMPLX(IEEE_FMA(Y, REAL(     Z), REAL(V(1,2))) / SECP, IEEE_FMA(Y, AIMAG(     Z), AIMAG(V(1,2))) / SECP, K)
+     Z = V(2,1)
+     V(2,1) = CMPLX(IEEE_FMA(X, REAL(V(2,2)), REAL(V(2,1))) / SECP, IEEE_FMA(X, AIMAG(V(2,2)), AIMAG(V(2,1))) / SECP, K)
+     V(2,2) = CMPLX(IEEE_FMA(Y, REAL(     Z), REAL(V(2,2))) / SECP, IEEE_FMA(Y, AIMAG(     Z), AIMAG(V(2,2))) / SECP, K)
+  ELSE ! SECP = 1
+     Z = V(1,1)
+     V(1,1) = CMPLX(IEEE_FMA(X, REAL(V(1,2)), REAL(V(1,1))), IEEE_FMA(X, AIMAG(V(1,2)), AIMAG(V(1,1))), K)
+     V(1,2) = CMPLX(IEEE_FMA(Y, REAL(     Z), REAL(V(1,2))), IEEE_FMA(Y, AIMAG(     Z), AIMAG(V(1,2))), K)
+     Z = V(2,1)
+     V(2,1) = CMPLX(IEEE_FMA(X, REAL(V(2,2)), REAL(V(2,1))), IEEE_FMA(X, AIMAG(V(2,2)), AIMAG(V(2,1))), K)
+     V(2,2) = CMPLX(IEEE_FMA(Y, REAL(     Z), REAL(V(2,2))), IEEE_FMA(Y, AIMAG(     Z), AIMAG(V(2,2))), K)
+  END IF
+#else
+  IF (SECP .NE. ONE) THEN
+     Z = V(1,1)
+     V(1,1) = (V(1,1) + X * V(1,2)) / SECP
+     V(1,2) = (V(1,2) + Y *      Z) / SECP
+     Z = V(2,1)
+     V(2,1) = (V(2,1) + X * V(2,2)) / SECP
+     V(2,2) = (V(2,2) + Y *      Z) / SECP
+  ELSE ! SECP = 1
+     Z = V(1,1)
+     V(1,1) = V(1,1) + X * V(1,2)
+     V(1,2) = V(1,2) + Y *      Z
+     Z = V(2,1)
+     V(2,1) = V(2,1) + X * V(2,2)
+     V(2,2) = V(2,2) + Y *      Z
+  END IF
 #endif
 
   ! symmetric permutation if S(1) < S(2) exceptionally

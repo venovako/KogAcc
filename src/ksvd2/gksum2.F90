@@ -181,51 +181,27 @@
   ! apply the Givens rotation
   B(1,1) = S(1)
   IF (TANG .GT. ZERO) THEN
+#ifdef USE_IEEE_INTRINSIC
      X =  TANG
      Y = -TANG
-#ifdef USE_IEEE_INTRINSIC
      IF (SECG .GT. ONE) THEN
-        Z = U(1,1)
-        U(1,1) = IEEE_FMA(X, U(2,1), U(1,1)) / SECG
-        U(2,1) = IEEE_FMA(Y,      Z, U(2,1)) / SECG
-        Z = U(1,2)
-        U(1,2) = IEEE_FMA(X, U(2,2), U(1,2)) / SECG
-        U(2,2) = IEEE_FMA(Y,      Z, U(2,2)) / SECG
         Z = B(1,2)
         B(1,2) = IEEE_FMA(X, B(2,2), B(1,2)) / SECG
         B(2,2) = IEEE_FMA(Y,      Z, B(2,2)) / SECG
      ELSE ! SECG = 1
-        Z = U(1,1)
-        U(1,1) = IEEE_FMA(X, U(2,1), U(1,1))
-        U(2,1) = IEEE_FMA(Y,      Z, U(2,1))
-        Z = U(1,2)
-        U(1,2) = IEEE_FMA(X, U(2,2), U(1,2))
-        U(2,2) = IEEE_FMA(Y,      Z, U(2,2))
         Z = B(1,2)
         B(1,2) = IEEE_FMA(X, B(2,2), B(1,2))
         B(2,2) = IEEE_FMA(Y,      Z, B(2,2))
      END IF
 #else
      IF (SECG .GT. ONE) THEN
-        Z = U(1,1)
-        U(1,1) = (U(1,1) + X * U(2,1)) / SECG
-        U(2,1) = (U(2,1) + Y *      Z) / SECG
-        Z = U(1,2)
-        U(1,2) = (U(1,2) + X * U(2,2)) / SECG
-        U(2,2) = (U(2,2) + Y *      Z) / SECG
         Z = B(1,2)
-        B(1,2) = (B(1,2) + X * B(2,2)) / SECG
-        B(2,2) = (B(2,2) + Y *      Z) / SECG
+        B(1,2) = (B(1,2) + TANG * B(2,2)) / SECG
+        B(2,2) = (B(2,2) - TANG *      Z) / SECG
      ELSE ! SECG = 1
-        Z = U(1,1)
-        U(1,1) = U(1,1) + X * U(2,1)
-        U(2,1) = U(2,1) + Y *      Z
-        Z = U(1,2)
-        U(1,2) = U(1,2) + X * U(2,2)
-        U(2,2) = U(2,2) + Y *      Z
         Z = B(1,2)
-        B(1,2) = B(1,2) + X * B(2,2)
-        B(2,2) = B(2,2) + Y *      Z
+        B(1,2) = B(1,2) + TANG * B(2,2)
+        B(2,2) = B(2,2) - TANG *      Z
      END IF
 #endif
   END IF
@@ -245,11 +221,8 @@
   END IF
 
   ! make B(2,2) non-negative
-  IF (SIGN(ONE, B(2,2)) .NE. ONE) THEN
-     IF (U(2,1) .NE. ZERO) U(2,1) = -U(2,1)
-     IF (U(2,2) .NE. ZERO) U(2,2) = -U(2,2)
-     B(2,2) = -B(2,2)
-  END IF
+  SECG = SIGN(ONE, B(2,2))
+  IF (SECG .NE. ONE) B(2,2) = -B(2,2)
 
   ! recompute the norm of the second column if needed
   IF (TANG .NE. ZERO) THEN
@@ -257,8 +230,6 @@
         S(2) = B(1,2)
      ELSE IF (B(1,2) .EQ. ZERO) THEN
         S(2) = B(2,2)
-        ! B is diagonal
-        GOTO 8
      ELSE ! full second column
         S(2) = CR_HYPOT(B(1,2), B(2,2))
      END IF
@@ -295,47 +266,159 @@
   END IF
 #endif
 #endif
-  IF (X .EQ. ZERO) GOTO 8
 
   ! execute the upper-triangular SVD procedure
 #include "gksvdu.F90"
 
-  ! update U
-  X =  TANF
-  Y = -TANF
+  IF (SECG .EQ. ONE) THEN
+     T = TANF + TANG
 #ifdef USE_IEEE_INTRINSIC
-  IF (SECF .NE. ONE) THEN
-     Z = U(1,1)
-     U(1,1) = IEEE_FMA(X, U(2,1), U(1,1)) / SECF
-     U(2,1) = IEEE_FMA(Y,      Z, U(2,1)) / SECF
-     Z = U(1,2)
-     U(1,2) = IEEE_FMA(X, U(2,2), U(1,2)) / SECF
-     U(2,2) = IEEE_FMA(Y,      Z, U(2,2)) / SECF
-  ELSE ! SECF = 1
-     Z = U(1,1)
-     U(1,1) = IEEE_FMA(X, U(2,1), U(1,1))
-     U(2,1) = IEEE_FMA(Y,      Z, U(2,1))
-     Z = U(1,2)
-     U(1,2) = IEEE_FMA(X, U(2,2), U(1,2))
-     U(2,2) = IEEE_FMA(Y,      Z, U(2,2))
-  END IF
+     T = T / IEEE_FMA(-TANF, TANG, ONE)
 #else
-  IF (SECF .NE. ONE) THEN
-     Z = U(1,1)
-     U(1,1) = (U(1,1) + X * U(2,1)) / SECF
-     U(2,1) = (U(2,1) + Y *      Z) / SECF
-     Z = U(1,2)
-     U(1,2) = (U(1,2) + X * U(2,2)) / SECF
-     U(2,2) = (U(2,2) + Y *      Z) / SECF
-  ELSE ! SECF = 1
-     Z = U(1,1)
-     U(1,1) = U(1,1) + X * U(2,1)
-     U(2,1) = U(2,1) + Y *      Z
-     Z = U(1,2)
-     U(1,2) = U(1,2) + X * U(2,2)
-     U(2,2) = U(2,2) + Y *      Z
-  END IF
+     T = T / (ONE - TANF * TANG)
 #endif
+     IF (T .EQ. ZERO) THEN
+        SECG = ONE
+     ELSE IF (.NOT. (ABS(T) .LE. HUGE(T))) THEN
+        T = SIGN(ONE, T) ! here, T = SING
+        SECG = ZERO ! here, SECG = COSG
+     ELSE ! the general case
+#ifdef CR_MATH
+        SECG = CR_HYPOT(T, ONE)
+#else
+#ifdef USE_IEEE_INTRINSIC
+        SECG = SQRT(IEEE_FMA(T, T, ONE))
+#else
+        SECG = SQRT(T * T + ONE)
+#endif
+#endif
+     END IF
+     ! update U
+     X =  T
+     Y = -T
+#ifdef USE_IEEE_INTRINSIC
+     IF (SECG .EQ. ZERO) THEN
+        Z = U(1,1)
+        U(1,1) = X * U(2,1)
+        U(2,1) = Y *      Z
+        Z = U(1,2)
+        U(1,2) = X * U(2,2)
+        U(2,2) = Y *      Z
+     ELSE IF (SECG .NE. ONE) THEN
+        Z = U(1,1)
+        U(1,1) = IEEE_FMA(X, U(2,1), U(1,1)) / SECG
+        U(2,1) = IEEE_FMA(Y,      Z, U(2,1)) / SECG
+        Z = U(1,2)
+        U(1,2) = IEEE_FMA(X, U(2,2), U(1,2)) / SECG
+        U(2,2) = IEEE_FMA(Y,      Z, U(2,2)) / SECG
+     ELSE ! SECG = 1
+        Z = U(1,1)
+        U(1,1) = IEEE_FMA(X, U(2,1), U(1,1))
+        U(2,1) = IEEE_FMA(Y,      Z, U(2,1))
+        Z = U(1,2)
+        U(1,2) = IEEE_FMA(X, U(2,2), U(1,2))
+        U(2,2) = IEEE_FMA(Y,      Z, U(2,2))
+     END IF
+#else
+     IF (SECG .EQ. ZERO) THEN
+        Z = U(1,1)
+        U(1,1) = X * U(2,1)
+        U(2,1) = Y *      Z
+        Z = U(1,2)
+        U(1,2) = X * U(2,2)
+        U(2,2) = Y *      Z
+     ELSE IF (SECG .NE. ONE) THEN
+        Z = U(1,1)
+        U(1,1) = (U(1,1) + X * U(2,1)) / SECG
+        U(2,1) = (U(2,1) + Y *      Z) / SECG
+        Z = U(1,2)
+        U(1,2) = (U(1,2) + X * U(2,2)) / SECG
+        U(2,2) = (U(2,2) + Y *      Z) / SECG
+     ELSE ! SECG = 1
+        Z = U(1,1)
+        U(1,1) = U(1,1) + X * U(2,1)
+        U(2,1) = U(2,1) + Y *      Z
+        Z = U(1,2)
+        U(1,2) = U(1,2) + X * U(2,2)
+        U(2,2) = U(2,2) + Y *      Z
+     END IF
+#endif
+  ELSE ! SECG = -1
+     T = TANF - TANG
+#ifdef USE_IEEE_INTRINSIC
+     T = T / IEEE_FMA(TANF, TANG, ONE)
+#else
+     T = T / (ONE + TANF * TANG)
+#endif
+     IF (T .EQ. ZERO) THEN
+        SECG = ONE
+     ELSE IF (.NOT. (ABS(T) .LE. HUGE(T))) THEN
+        T = SIGN(ONE, T) ! here, T = SING
+        SECG = ZERO ! here, SECG = COSG
+     ELSE ! the general case
+#ifdef CR_MATH
+        SECG = CR_HYPOT(T, ONE)
+#else
+#ifdef USE_IEEE_INTRINSIC
+        SECG = SQRT(IEEE_FMA(T, T, ONE))
+#else
+        SECG = SQRT(T * T + ONE)
+#endif
+#endif
+     END IF
+     ! update U
+#ifndef NDEBUG
+     X =  T
+#endif
+     Y = -T
+#ifdef USE_IEEE_INTRINSIC
+     IF (SECG .EQ. ZERO) THEN
+        Z = U(1,1)
+        U(1,1) = Y * U(2,1)
+        U(2,1) = Y *      Z
+        Z = U(1,2)
+        U(1,2) = Y * U(2,2)
+        U(2,2) = Y *      Z
+     ELSE IF (SECG .NE. ONE) THEN
+        Z = U(1,1)
+        U(1,1) = IEEE_FMA(Y, U(2,1),  U(1,1)) / SECG
+        U(2,1) = IEEE_FMA(Y,      Z, -U(2,1)) / SECG
+        Z = U(1,2)
+        U(1,2) = IEEE_FMA(Y, U(2,2),  U(1,2)) / SECG
+        U(2,2) = IEEE_FMA(Y,      Z, -U(2,2)) / SECG
+     ELSE ! SECG = 1
+        Z = U(1,1)
+        U(1,1) = IEEE_FMA(Y, U(2,1),  U(1,1))
+        U(2,1) = IEEE_FMA(Y,      Z, -U(2,1))
+        Z = U(1,2)
+        U(1,2) = IEEE_FMA(Y, U(2,2),  U(1,2))
+        U(2,2) = IEEE_FMA(Y,      Z, -U(2,2))
+     END IF
+#else
+     IF (SECG .EQ. ZERO) THEN
+        Z = U(1,1)
+        U(1,1) = Y * U(2,1)
+        U(2,1) = Y *      Z
+        Z = U(1,2)
+        U(1,2) = Y * U(2,2)
+        U(2,2) = Y *      Z
+     ELSE IF (SECG .NE. ONE) THEN
+        Z = U(1,1)
+        U(1,1) = (Y * U(2,1) + U(1,1)) / SECG
+        U(2,1) = (Y *      Z - U(2,1)) / SECG
+        Z = U(1,2)
+        U(1,2) = (Y * U(2,2) + U(1,2)) / SECG
+        U(2,2) = (Y *      Z - U(2,2)) / SECG
+     ELSE ! SECG = 1
+        Z = U(1,1)
+        U(1,1) = Y * U(2,1) + U(1,1)
+        U(2,1) = Y *      Z - U(2,1)
+        Z = U(1,2)
+        U(1,2) = Y * U(2,2) + U(1,2)
+        U(2,2) = Y *      Z - U(2,2)
+     END IF
+#endif
+  END IF
 
   ! update S
   IF (SECF .NE. ONE) THEN
