@@ -60,6 +60,7 @@ OBJS_BLKSVD=\
 ../obj/$(PLAT)/qksvd0.$(OXT)\
 ../obj/$(PLAT)/yksvd0.$(OXT)\
 ../obj/$(PLAT)/sksvdd.$(OXT)\
+../obj/$(PLAT)/sksumd.$(OXT)\
 ../obj/$(PLAT)/cksvdd.$(OXT)
 
 OBJS_DYNORD=\
@@ -158,6 +159,7 @@ EXES_BLKSVD=\
 ../bin/$(PLAT)/qksvd0.exe\
 ../bin/$(PLAT)/yksvd0.exe\
 ../bin/$(PLAT)/sksvdd.exe\
+../bin/$(PLAT)/sksumd.exe\
 ../bin/$(PLAT)/cksvdd.exe
 
 EXES_DYNORD=\
