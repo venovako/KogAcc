@@ -272,7 +272,6 @@
 
   ! T = TAN
   ! X = COS
-  ! Y = SIN
   IF (SECG .EQ. ONE) THEN
      T = TANF + TANG
 #ifdef USE_IEEE_INTRINSIC
@@ -296,6 +295,7 @@
         SECG = SQRT(T * T + ONE)
 #endif
 #endif
+        ! Y = SIN
         IF (.NOT. (SECG .LE. HUGE(SECG))) THEN
            X = ZERO
            Y = SIGN(ONE, T)
@@ -334,6 +334,7 @@
         SECG = SQRT(T * T + ONE)
 #endif
 #endif
+        ! Y = -SIN
         IF (.NOT. (SECG .LE. HUGE(SECG))) THEN
            X = ZERO
            Y = -SIGN(ONE, T)
