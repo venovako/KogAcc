@@ -498,11 +498,23 @@
 
   ! \sigma
 #ifdef USE_IEEE_INTRINSIC
-  S(1) = IEEE_FMA(Y, COSP, X * SINP) * COSF
+  SECG = Y * COSP
+  T = X * SINP
+  IF (ABS(SECG) .GE. ABS(T)) THEN
+     S(1) = IEEE_FMA(Y, COSP, T) * COSF
+  ELSE ! |SECG| < |T|
+     S(1) = IEEE_FMA(X, SINP, SECG) * COSF
+  END IF
   X = IEEE_FMA(B(1,1), TANF, -B(2,1))
   Y = IEEE_FMA(-B(1,2), TANF, B(2,2))
   ! TANP = X / Y
-  S(2) = IEEE_FMA(Y, COSP, X * SINP) * COSF
+  SECG = Y * COSP
+  T = X * SINP
+  IF (ABS(SECG) .GE. ABS(T)) THEN
+     S(2) = IEEE_FMA(Y, COSP, T) * COSF
+  ELSE ! |SECG| < |T|
+     S(2) = IEEE_FMA(X, SINP, SECG) * COSF
+  END IF
 #else
   S(1) = (Y * COSP + X * SINP) * COSF
   X = B(1,1) * TANF - B(2,1)
