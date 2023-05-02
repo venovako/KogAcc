@@ -406,17 +406,18 @@
      T = (TWO * T) / ((X - Y) * (X + Y))
   END IF
   ! \tan\varphi
-  IF (T .EQ. ZERO) THEN
+  X = ABS(T)
+  IF (X .EQ. ZERO) THEN
      TANF = SIGN(ZERO, T)
      SECF = ONE
-  ELSE IF (ABS(T) .GT. H) THEN
+  ELSE IF (.NOT. (X .LE. H)) THEN
      TANF = SIGN(ONE, T)
      SECF = ROOT2
   ELSE ! finite non-zero T
 #ifdef CR_MATH
      TANF = CR_HYPOT(T, ONE)
 #else
-     T = SIGN(MIN(ABS(T), ROOTH), T)
+     T = SIGN(MIN(X, ROOTH), T)
 #ifdef USE_IEEE_INTRINSIC
      TANF = SQRT(IEEE_FMA(T, T, ONE))
 #else
@@ -427,11 +428,14 @@
 #ifdef CR_MATH
      SECF = CR_HYPOT(TANF, ONE)
 #else
+     SECF = ABS(TANF)
+     IF (SECF .LT. ROOTH) THEN
 #ifdef USE_IEEE_INTRINSIC
-     SECF = SQRT(IEEE_FMA(TANF, TANF, ONE))
+        SECF = SQRT(IEEE_FMA(TANF, TANF, ONE))
 #else
-     SECF = SQRT(TANF * TANF + ONE)
+        SECF = SQRT(TANF * TANF + ONE)
 #endif
+     END IF
 #endif
   END IF
 #ifndef NDEBUG
@@ -444,7 +448,7 @@
 #endif
 #endif
   COSF = ONE / SECF
-  SINF = TANF * COSF
+  SINF = TANF / SECF
 
   ! TANP = (G12 + G22 * TANF) / (G11 + G21 * TANF) = (G11 * TANF - G21) / (G22 - G12 * TANF)
 
@@ -464,17 +468,21 @@
 #ifdef CR_MATH
   SECP = CR_HYPOT(TANP, ONE)
 #else
+  SECP = ABS(TANP)
+  IF (SECP .LT. ROOTH) THEN
 #ifdef USE_IEEE_INTRINSIC
-  SECP = SQRT(IEEE_FMA(TANP, TANP, ONE))
+     SECP = SQRT(IEEE_FMA(TANP, TANP, ONE))
 #else
-  SECP = SQRT(TANP * TANP + ONE)
+     SECP = SQRT(TANP * TANP + ONE)
 #endif
+  END IF
 #endif
-  COSP = ONE / SECP
-  IF (ABS(TANP) .LE. H) THEN
-     SINP = TANP * COSP
-  ELSE ! TANP .EQ. \pm\infty
+  IF (.NOT. (ABS(TANP) .LE. H)) THEN
+     COSP = ZERO
      SINP = SIGN(ONE, TANP)
+  ELSE ! the general case
+     COSP = ONE / SECP
+     SINP = TANP / SECP
   END IF
 
   ! U^T

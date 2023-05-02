@@ -279,21 +279,24 @@
 #else
      T = T / (ONE - TANF * TANG)
 #endif
-     IF (T .EQ. ZERO) THEN
+     SECG = ABS(T)
+     IF (SECG .EQ. ZERO) THEN
         X = ONE
         Y = SIGN(ZERO, T)
-     ELSE IF (.NOT. (ABS(T) .LE. HUGE(T))) THEN
+     ELSE IF (.NOT. (SECG .LE. HUGE(SECG))) THEN
         X = ZERO
         Y = SIGN(ONE, T)
      ELSE ! the general case
 #ifdef CR_MATH
         SECG = CR_HYPOT(T, ONE)
 #else
+        IF (SECG .LT. ROOTH) THEN
 #ifdef USE_IEEE_INTRINSIC
-        SECG = SQRT(IEEE_FMA(T, T, ONE))
+           SECG = SQRT(IEEE_FMA(T, T, ONE))
 #else
-        SECG = SQRT(T * T + ONE)
+           SECG = SQRT(T * T + ONE)
 #endif
+        END IF
 #endif
         ! Y = SIN
         IF (.NOT. (SECG .LE. HUGE(SECG))) THEN
@@ -318,21 +321,24 @@
 #else
      T = T / (ONE + TANF * TANG)
 #endif
-     IF (T .EQ. ZERO) THEN
+     SECG = ABS(T)
+     IF (SECG .EQ. ZERO) THEN
         X = ONE
         Y = SIGN(ZERO, T)
-     ELSE IF (.NOT. (ABS(T) .LE. HUGE(T))) THEN
+     ELSE IF (.NOT. (SECG .LE. HUGE(SECG))) THEN
         X = ZERO
         Y = SIGN(ONE, T)
      ELSE ! the general case
 #ifdef CR_MATH
         SECG = CR_HYPOT(T, ONE)
 #else
+        IF (SECG .LT. ROOTH) THEN
 #ifdef USE_IEEE_INTRINSIC
-        SECG = SQRT(IEEE_FMA(T, T, ONE))
+           SECG = SQRT(IEEE_FMA(T, T, ONE))
 #else
-        SECG = SQRT(T * T + ONE)
+           SECG = SQRT(T * T + ONE)
 #endif
+        END IF
 #endif
         ! Y = -SIN
         IF (.NOT. (SECG .LE. HUGE(SECG))) THEN
