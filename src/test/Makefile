@@ -25,15 +25,6 @@
 ..\bin\$(PLAT)\qkalt2.exe: test\qkalt2x.F90 test\tksvd2.F90 ..\lib\$(PLAT)\ksvd2.lib $(MKFS) test\Makefile
 	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp ..\..\..\src\test\qkalt2x.F90 /Feqkalt2.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib
 
-..\bin\$(PLAT)\sksum2.exe: test\sksum2x.F90 test\tksvd2.F90 ..\lib\$(PLAT)\ksvd2.lib $(MKFS) test\Makefile
-	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp ..\..\..\src\test\sksum2x.F90 /Fesksum2.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib
-
-..\bin\$(PLAT)\dksum2.exe: test\dksum2x.F90 test\tksvd2.F90 ..\lib\$(PLAT)\ksvd2.lib $(MKFS) test\Makefile
-	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp ..\..\..\src\test\dksum2x.F90 /Fedksum2.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib
-
-..\bin\$(PLAT)\qksum2.exe: test\qksum2x.F90 test\tksvd2.F90 ..\lib\$(PLAT)\ksvd2.lib $(MKFS) test\Makefile
-	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp ..\..\..\src\test\qksum2x.F90 /Feqksum2.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib
-
 ..\bin\$(PLAT)\slwsv2.exe: test\slwsv2x.F90 test\tlasv2.F90 ..\lib\$(PLAT)\ksvd2.lib $(MKFS) test\Makefile
 	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp ..\..\..\src\test\slwsv2x.F90 /Feslwsv2.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib $(LAPACK)
 
@@ -68,52 +59,31 @@
 	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) ..\..\..\src\test\yrnd.f90 /Feyrnd.exe $(LDFLAGS)
 
 ..\bin\$(PLAT)\srnd2p.exe: test\srnd2t.F90 test\grnd2t.F90 test\grnd2u.F90 ..\lib\$(PLAT)\ksvd2.lib ..\lib\$(PLAT)\faux.lib $(MKFS) test\Makefile
-	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp /DKALT2=SKALT2 /DUPPER=2 ..\..\..\src\test\srnd2t.F90 /Fesrnd2p.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\faux.lib $(LAPACK)
+	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp /DUPPER=2 ..\..\..\src\test\srnd2t.F90 /Fesrnd2p.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\faux.lib $(LAPACK)
 
 ..\bin\$(PLAT)\srnd2u.exe: test\srnd2t.F90 test\grnd2t.F90 test\grnd2u.F90 ..\lib\$(PLAT)\ksvd2.lib ..\lib\$(PLAT)\faux.lib $(MKFS) test\Makefile
-	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp /DKALT2=SKALT2 /DUPPER=0 ..\..\..\src\test\srnd2t.F90 /Fesrnd2u.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\faux.lib $(LAPACK)
+	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp /DUPPER=0 ..\..\..\src\test\srnd2t.F90 /Fesrnd2u.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\faux.lib $(LAPACK)
 
 ..\bin\$(PLAT)\srnd2g.exe: test\srnd2t.F90 test\grnd2t.F90 test\grnd2g.F90 ..\lib\$(PLAT)\ksvd2.lib ..\lib\$(PLAT)\faux.lib $(MKFS) test\Makefile
-	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp /DKALT2=SKALT2 ..\..\..\src\test\srnd2t.F90 /Fesrnd2g.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\faux.lib
-
-..\bin\$(PLAT)\ssum2p.exe: test\srnd2t.F90 test\grnd2t.F90 test\grnd2u.F90 ..\lib\$(PLAT)\ksvd2.lib ..\lib\$(PLAT)\faux.lib $(MKFS) test\Makefile
-	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp /DKALT2=SKSUM2 /DUPPER=2 ..\..\..\src\test\srnd2t.F90 /Fessum2p.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\faux.lib $(LAPACK)
-
-..\bin\$(PLAT)\ssum2u.exe: test\srnd2t.F90 test\grnd2t.F90 test\grnd2u.F90 ..\lib\$(PLAT)\ksvd2.lib ..\lib\$(PLAT)\faux.lib $(MKFS) test\Makefile
-	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp /DKALT2=SKSUM2 /DUPPER=0 ..\..\..\src\test\srnd2t.F90 /Fessum2u.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\faux.lib $(LAPACK)
-
-..\bin\$(PLAT)\ssum2g.exe: test\srnd2t.F90 test\grnd2t.F90 test\grnd2g.F90 ..\lib\$(PLAT)\ksvd2.lib ..\lib\$(PLAT)\faux.lib $(MKFS) test\Makefile
-	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp /DKALT2=SKSUM2 ..\..\..\src\test\srnd2t.F90 /Fessum2g.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\faux.lib
+	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp ..\..\..\src\test\srnd2t.F90 /Fesrnd2g.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\faux.lib
 
 ..\bin\$(PLAT)\crnd2g.exe: test\crnd2t.F90 test\hrnd2t.F90 ..\lib\$(PLAT)\ksvd2.lib ..\lib\$(PLAT)\faux.lib $(MKFS) test\Makefile
 	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp ..\..\..\src\test\crnd2t.F90 /Fecrnd2g.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\faux.lib
 
 ..\bin\$(PLAT)\drnd2p.exe: test\drnd2t.F90 test\grnd2t.F90 ..\lib\$(PLAT)\ksvd2.lib ..\lib\$(PLAT)\faux.lib test\grnd2u.F90 $(MKFS) test\Makefile
-	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp /DKALT2=DKALT2 /DUPPER=2 ..\..\..\src\test\drnd2t.F90 /Fedrnd2p.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\faux.lib $(LAPACK)
+	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp /DUPPER=2 ..\..\..\src\test\drnd2t.F90 /Fedrnd2p.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\faux.lib $(LAPACK)
 
 ..\bin\$(PLAT)\drnd2u.exe: test\drnd2t.F90 test\grnd2t.F90 ..\lib\$(PLAT)\ksvd2.lib ..\lib\$(PLAT)\faux.lib test\grnd2u.F90 $(MKFS) test\Makefile
-	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp /DKALT2=DKALT2 /DUPPER=0 ..\..\..\src\test\drnd2t.F90 /Fedrnd2u.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\faux.lib $(LAPACK)
+	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp /DUPPER=0 ..\..\..\src\test\drnd2t.F90 /Fedrnd2u.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\faux.lib $(LAPACK)
 
 ..\bin\$(PLAT)\drnd2g.exe: test\drnd2t.F90 test\grnd2t.F90 ..\lib\$(PLAT)\ksvd2.lib ..\lib\$(PLAT)\faux.lib test\grnd2g.F90 $(MKFS) test\Makefile
-	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp /DKALT2=DKALT2 ..\..\..\src\test\drnd2t.F90 /Fedrnd2g.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\faux.lib
-
-..\bin\$(PLAT)\dsum2p.exe: test\drnd2t.F90 test\grnd2t.F90 ..\lib\$(PLAT)\ksvd2.lib ..\lib\$(PLAT)\faux.lib test\grnd2u.F90 $(MKFS) test\Makefile
-	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp /DKALT2=DKSUM2 /DUPPER=2 ..\..\..\src\test\drnd2t.F90 /Fedsum2p.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\faux.lib $(LAPACK)
-
-..\bin\$(PLAT)\dsum2u.exe: test\drnd2t.F90 test\grnd2t.F90 ..\lib\$(PLAT)\ksvd2.lib ..\lib\$(PLAT)\faux.lib test\grnd2u.F90 $(MKFS) test\Makefile
-	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp /DKALT2=DKSUM2 /DUPPER=0 ..\..\..\src\test\drnd2t.F90 /Fedsum2u.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\faux.lib $(LAPACK)
-
-..\bin\$(PLAT)\dsum2g.exe: test\drnd2t.F90 test\grnd2t.F90 ..\lib\$(PLAT)\ksvd2.lib ..\lib\$(PLAT)\faux.lib test\grnd2g.F90 $(MKFS) test\Makefile
-	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp /DKALT2=DKSUM2 ..\..\..\src\test\drnd2t.F90 /Fedsum2g.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\faux.lib
+	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp ..\..\..\src\test\drnd2t.F90 /Fedrnd2g.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\faux.lib
 
 ..\bin\$(PLAT)\zrnd2g.exe: test\zrnd2t.F90 test\hrnd2t.F90 ..\lib\$(PLAT)\ksvd2.lib ..\lib\$(PLAT)\faux.lib $(MKFS) test\Makefile
 	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp ..\..\..\src\test\zrnd2t.F90 /Fezrnd2g.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\faux.lib
 
 ..\bin\$(PLAT)\qrnd2g.exe: test\qrnd2t.F90 test\grnd2t.F90 test\grnd2g.F90 ..\lib\$(PLAT)\ksvd2.lib ..\lib\$(PLAT)\faux.lib $(MKFS) test\Makefile
-	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp /DKALT2=QKALT2 ..\..\..\src\test\qrnd2t.F90 /Feqrnd2g.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\faux.lib
-
-..\bin\$(PLAT)\qsum2g.exe: test\qrnd2t.F90 test\grnd2t.F90 test\grnd2g.F90 ..\lib\$(PLAT)\ksvd2.lib ..\lib\$(PLAT)\faux.lib $(MKFS) test\Makefile
-	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp /DKALT2=QKSUM2 ..\..\..\src\test\qrnd2t.F90 /Feqsum2g.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\faux.lib
+	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp ..\..\..\src\test\qrnd2t.F90 /Feqrnd2g.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\faux.lib
 
 ..\bin\$(PLAT)\yrnd2g.exe: test\yrnd2t.F90 test\hrnd2t.F90 ..\lib\$(PLAT)\ksvd2.lib ..\lib\$(PLAT)\faux.lib $(MKFS) test\Makefile
 	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp ..\..\..\src\test\yrnd2t.F90 /Feyrnd2g.exe $(LDFLAGS) ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\faux.lib
@@ -144,9 +114,6 @@
 
 ..\bin\$(PLAT)\sksvdd.exe: test\sksvddx.F90 ..\lib\$(PLAT)\blksvd.lib ..\lib\$(PLAT)\dynord.lib ..\lib\$(PLAT)\ksvd2.lib ..\lib\$(PLAT)\arrbio.lib ..\lib\$(PLAT)\faux.lib $(MKFS) test/GNUmakefile
 	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp ..\..\..\src\test\sksvddx.F90 /Fesksvdd.exe ..\..\..\lib\$(PLAT)\blksvd.lib ..\..\..\lib\$(PLAT)\dynord.lib ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\arrbio.lib ..\..\..\lib\$(PLAT)\faux.lib $(LAPACK)
-
-..\bin\$(PLAT)\sksumd.exe: test\sksumdx.F90 ..\lib\$(PLAT)\blksvd.lib ..\lib\$(PLAT)\dynord.lib ..\lib\$(PLAT)\ksvd2.lib ..\lib\$(PLAT)\arrbio.lib ..\lib\$(PLAT)\faux.lib $(MKFS) test/GNUmakefile
-	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp ..\..\..\src\test\sksumdx.F90 /Fesksumd.exe ..\..\..\lib\$(PLAT)\blksvd.lib ..\..\..\lib\$(PLAT)\dynord.lib ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\arrbio.lib ..\..\..\lib\$(PLAT)\faux.lib $(LAPACK)
 
 ..\bin\$(PLAT)\cksvdd.exe: test\cksvddx.F90 ..\lib\$(PLAT)\blksvd.lib ..\lib\$(PLAT)\dynord.lib ..\lib\$(PLAT)\ksvd2.lib ..\lib\$(PLAT)\arrbio.lib ..\lib\$(PLAT)\faux.lib $(MKFS) test/GNUmakefile
 	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /fpp ..\..\..\src\test\cksvddx.F90 /Fecksvdd.exe ..\..\..\lib\$(PLAT)\blksvd.lib ..\..\..\lib\$(PLAT)\dynord.lib ..\..\..\lib\$(PLAT)\ksvd2.lib ..\..\..\lib\$(PLAT)\arrbio.lib ..\..\..\lib\$(PLAT)\faux.lib $(LAPACK)

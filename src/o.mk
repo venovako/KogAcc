@@ -60,7 +60,6 @@ OBJS_BLKSVD=\
 ../obj/$(PLAT)/qksvd0.$(OXT)\
 ../obj/$(PLAT)/yksvd0.$(OXT)\
 ../obj/$(PLAT)/sksvdd.$(OXT)\
-../obj/$(PLAT)/sksumd.$(OXT)\
 ../obj/$(PLAT)/cksvdd.$(OXT)
 
 OBJS_DYNORD=\
@@ -104,9 +103,6 @@ OBJS_KSVD2=\
 ../obj/$(PLAT)/skalt2.$(OXT)\
 ../obj/$(PLAT)/dkalt2.$(OXT)\
 ../obj/$(PLAT)/qkalt2.$(OXT)\
-../obj/$(PLAT)/sksum2.$(OXT)\
-../obj/$(PLAT)/dksum2.$(OXT)\
-../obj/$(PLAT)/qksum2.$(OXT)\
 ../obj/$(PLAT)/scvgpp.$(OXT)\
 ../obj/$(PLAT)/ccvgpp.$(OXT)\
 ../obj/$(PLAT)/dcvgpp.$(OXT)\
@@ -159,7 +155,6 @@ EXES_BLKSVD=\
 ../bin/$(PLAT)/qksvd0.exe\
 ../bin/$(PLAT)/yksvd0.exe\
 ../bin/$(PLAT)/sksvdd.exe\
-../bin/$(PLAT)/sksumd.exe\
 ../bin/$(PLAT)/cksvdd.exe
 
 EXES_DYNORD=\
@@ -177,9 +172,6 @@ EXES_KSVD2=\
 ../bin/$(PLAT)/skalt2.exe\
 ../bin/$(PLAT)/dkalt2.exe\
 ../bin/$(PLAT)/qkalt2.exe\
-../bin/$(PLAT)/sksum2.exe\
-../bin/$(PLAT)/dksum2.exe\
-../bin/$(PLAT)/qksum2.exe\
 ../bin/$(PLAT)/slwsv2.exe\
 ../bin/$(PLAT)/dlwsv2.exe
 
@@ -197,19 +189,12 @@ EXES_TEST=\
 ../bin/$(PLAT)/srnd2p.exe\
 ../bin/$(PLAT)/srnd2u.exe\
 ../bin/$(PLAT)/srnd2g.exe\
-../bin/$(PLAT)/ssum2p.exe\
-../bin/$(PLAT)/ssum2u.exe\
-../bin/$(PLAT)/ssum2g.exe\
 ../bin/$(PLAT)/crnd2g.exe\
 ../bin/$(PLAT)/drnd2p.exe\
 ../bin/$(PLAT)/drnd2u.exe\
 ../bin/$(PLAT)/drnd2g.exe\
-../bin/$(PLAT)/dsum2p.exe\
-../bin/$(PLAT)/dsum2u.exe\
-../bin/$(PLAT)/dsum2g.exe\
 ../bin/$(PLAT)/zrnd2g.exe\
 ../bin/$(PLAT)/qrnd2g.exe\
-../bin/$(PLAT)/qsum2g.exe\
 ../bin/$(PLAT)/yrnd2g.exe
 
 ifeq ($(COMPILER),gfortran)
@@ -245,7 +230,6 @@ OBJS_DYNORD += \
 OBJS_KSVD2 += \
 ../obj/$(PLAT)/xksvd2.$(OXT)\
 ../obj/$(PLAT)/xkalt2.$(OXT)\
-../obj/$(PLAT)/xksum2.$(OXT)\
 ../obj/$(PLAT)/wksvd2.$(OXT)\
 ../obj/$(PLAT)/xcvgpp.$(OXT)\
 ../obj/$(PLAT)/wcvgpp.$(OXT)\
@@ -268,13 +252,11 @@ EXES_DYNORD += \
 EXES_KSVD2 += \
 ../bin/$(PLAT)/xksvd2.exe\
 ../bin/$(PLAT)/xkalt2.exe\
-../bin/$(PLAT)/xksum2.exe\
 ../bin/$(PLAT)/wksvd2.exe
 EXES_TEST += \
 ../bin/$(PLAT)/xrnd.exe\
 ../bin/$(PLAT)/wrnd.exe\
 ../bin/$(PLAT)/xrnd2g.exe\
-../bin/$(PLAT)/xsum2g.exe\
 ../bin/$(PLAT)/wrnd2g.exe
 endif # x86
 endif # gfortran

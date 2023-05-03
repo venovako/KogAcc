@@ -43,8 +43,5 @@
 ..\obj\$(PLAT)\sksvdd.obj: blksvd\sksvdd.F90 $(MKFS) blksvd\Makefile
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\blksvd\sksvdd.F90
 
-..\obj\$(PLAT)\sksumd.obj: blksvd\sksumd.F90 $(MKFS) blksvd\Makefile
-	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\blksvd\sksumd.F90
-
 ..\obj\$(PLAT)\cksvdd.obj: blksvd\cksvdd.F90 $(MKFS) blksvd\Makefile
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\blksvd\cksvdd.F90

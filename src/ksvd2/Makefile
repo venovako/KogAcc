@@ -28,15 +28,6 @@
 ..\obj\$(PLAT)\qkalt2.obj: ksvd2\qkalt2.F90 ksvd2\gkalt2.F90 $(MKFS) ksvd2\Makefile
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\ksvd2\qkalt2.F90
 
-..\obj\$(PLAT)\sksum2.obj: ksvd2\sksum2.F90 ksvd2\gksum2.F90 ksvd2\gksvdu.F90 $(MKFS) ksvd2\Makefile
-	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\ksvd2\sksum2.F90
-
-..\obj\$(PLAT)\dksum2.obj: ksvd2\dksum2.F90 ksvd2\gksum2.F90 ksvd2\gksvdu.F90 $(MKFS) ksvd2\Makefile
-	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\ksvd2\dksum2.F90
-
-..\obj\$(PLAT)\qksum2.obj: ksvd2\qksum2.F90 ksvd2\gksum2.F90 ksvd2\gksvdu.F90 $(MKFS) ksvd2\Makefile
-	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\ksvd2\qksum2.F90
-
 ..\obj\$(PLAT)\scvgpp.obj: ksvd2\scvgpp.f90 ksvd2\gcvgpp.f90 $(MKFS) ksvd2\Makefile
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\ksvd2\scvgpp.f90
 
