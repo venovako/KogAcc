@@ -49,6 +49,7 @@ SUBROUTINE XKSUM2(G, U, V, S, INFO)
 
   REAL(KIND=K) :: B(2,2), T, X, Y, Z
   REAL(KIND=K) :: TANG, SECG, TANF, SECF, TANP, SECP
+  INTEGER :: I, J, L
 
 #include "gksum2.F90"
 #ifndef NDEBUG

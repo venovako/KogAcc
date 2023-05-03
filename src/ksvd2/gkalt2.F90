@@ -20,7 +20,7 @@
      INFO = IERR
      RETURN
   END IF
-  B(2,1) = ABS(G(2,1))   
+  B(2,1) = ABS(G(2,1))
   IF (.NOT. (B(2,1) .LE. H)) THEN
      INFO = IERR
      RETURN
@@ -241,9 +241,9 @@
 #endif
   ! apply the left Givens rotation
   IF (TANG .GT. ZERO) THEN
-#ifdef USE_IEEE_INTRINSIC
      X =  TANG
      Y = -TANG
+#ifdef USE_IEEE_INTRINSIC
      IF (SECG .GT. ONE) THEN
         Z = U(1,1)
         U(1,1) = IEEE_FMA(X, U(2,1), U(1,1)) / SECG
@@ -262,18 +262,18 @@
 #else
      IF (SECG .GT. ONE) THEN
         Z = U(1,1)
-        U(1,1) = (U(1,1) + TANG * U(2,1)) / SECG
-        U(2,1) = (U(2,1) - TANG *      Z) / SECG
+        U(1,1) = (U(1,1) + X * U(2,1)) / SECG
+        U(2,1) = (U(2,1) + Y *      Z) / SECG
         Z = U(1,2)
-        U(1,2) = (U(1,2) + TANG * U(2,2)) / SECG
-        U(2,2) = (U(2,2) - TANG *      Z) / SECG
+        U(1,2) = (U(1,2) + X * U(2,2)) / SECG
+        U(2,2) = (U(2,2) + Y *      Z) / SECG
      ELSE ! SECG = 1
         Z = U(1,1)
-        U(1,1) = U(1,1) + TANG * U(2,1)
-        U(2,1) = U(2,1) - TANG *      Z
+        U(1,1) = U(1,1) + X * U(2,1)
+        U(2,1) = U(2,1) + Y *      Z
         Z = U(1,2)
-        U(1,2) = U(1,2) + TANG * U(2,2)
-        U(2,2) = U(2,2) - TANG *      Z
+        U(1,2) = U(1,2) + X * U(2,2)
+        U(2,2) = U(2,2) + Y *      Z
      END IF
 #endif
   END IF
@@ -318,9 +318,9 @@
 #endif
   ! apply the right Givens rotation
   IF (TANG .GT. ZERO) THEN
-#ifdef USE_IEEE_INTRINSIC
      X =  TANG
      Y = -TANG
+#ifdef USE_IEEE_INTRINSIC
      IF (SECG .GT. ONE) THEN
         Z = V(1,1)
         V(1,1) = IEEE_FMA(X, V(1,2), V(1,1)) / SECG
@@ -339,18 +339,18 @@
 #else
      IF (SECG .GT. ONE) THEN
         Z = V(1,1)
-        V(1,1) = (V(1,1) + TANG * V(1,2)) / SECG
-        V(1,2) = (V(1,2) - TANG *      Z) / SECG
+        V(1,1) = (V(1,1) + X * V(1,2)) / SECG
+        V(1,2) = (V(1,2) + Y *      Z) / SECG
         Z = V(2,1)
-        V(2,1) = (V(2,1) + TANG * V(2,2)) / SECG
-        V(2,2) = (V(2,2) - TANG *      Z) / SECG
+        V(2,1) = (V(2,1) + X * V(2,2)) / SECG
+        V(2,2) = (V(2,2) + Y *      Z) / SECG
      ELSE ! SECG = 1
         Z = V(1,1)
-        V(1,1) = V(1,1) + TANG * V(1,2)
-        V(1,2) = V(1,2) - TANG *      Z
+        V(1,1) = V(1,1) + X * V(1,2)
+        V(1,2) = V(1,2) + Y *      Z
         Z = V(2,1)
-        V(2,1) = V(2,1) + TANG * V(2,2)
-        V(2,2) = V(2,2) - TANG *      Z
+        V(2,1) = V(2,1) + X * V(2,2)
+        V(2,2) = V(2,2) + Y *      Z
      END IF
 #endif
   END IF

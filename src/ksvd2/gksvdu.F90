@@ -1,6 +1,6 @@
-  ! \tan(2\varphi), with a partial fix of the Y >= 1, X > 0 problem
+  ! \tan(2\varphi)
   IF (X .EQ. ZERO) THEN
-     T = ZERO
+     T = X
   ELSE IF (Y .EQ. ONE) THEN
      T = TWO / X
   ELSE IF (X .EQ. ONE) THEN
@@ -15,9 +15,9 @@
   ELSE IF (X .LT. Y) THEN
      T = (TWO * X) * Y
 #ifdef USE_IEEE_INTRINSIC
-     T = T / IEEE_FMA(X, X, IEEE_FMA(-Y, Y, ONE))
+     T = T / IEEE_FMA(X - Y, X + Y, ONE)
 #else
-     T = T / ((ONE - Y * Y) + X * X)
+     T = T / ((X - Y) * (X + Y) + ONE)
 #endif
   ELSE ! X > Y
      T = (TWO * Y) * X
@@ -39,13 +39,10 @@
 #endif
 
   ! the functions of \varphi
-  ! Negative \tan(2\varphi) can happen only if Y is the largest element by magnitude
-  ! (impossible mathematically), what in turn, with the correctly rounded hypot,
-  ! can happen only as a consequence of the pivoted QR factorization.
   IF (T .EQ. ZERO) THEN
-     TANF = ZERO
+     TANF = SIGN(ZERO, T)
      SECF = ONE
-  ELSE IF (ABS(T) .GT. H) THEN
+  ELSE IF (.NOT. (ABS(T) .LE. H)) THEN
      TANF = SIGN(ONE, T)
      SECF = ROOT2
   ELSE ! finite non-zero T
@@ -63,11 +60,15 @@
 #ifdef CR_MATH
      SECF = CR_HYPOT(TANF, ONE)
 #else
+     SECF = ABS(TANF)
+     ! should always be true
+     IF (SECF .LT. ROOTH) THEN
 #ifdef USE_IEEE_INTRINSIC
-     SECF = SQRT(IEEE_FMA(TANF, TANF, ONE))
+        SECF = SQRT(IEEE_FMA(TANF, TANF, ONE))
 #else
-     SECF = SQRT(TANF * TANF + ONE)
+        SECF = SQRT(TANF * TANF + ONE)
 #endif
+     END IF
 #endif
   END IF
 #ifndef NDEBUG
@@ -89,11 +90,15 @@
 #ifdef CR_MATH
   SECP = CR_HYPOT(TANP, ONE)
 #else
+  SECP = ABS(TANP)
+  ! should always be true
+  IF (SECP .LT. ROOTH) THEN
 #ifdef USE_IEEE_INTRINSIC
-  SECP = SQRT(IEEE_FMA(TANP, TANP, ONE))
+     SECP = SQRT(IEEE_FMA(TANP, TANP, ONE))
 #else
-  SECP = SQRT(TANP * TANP + ONE)
+     SECP = SQRT(TANP * TANP + ONE)
 #endif
+  END IF
 #endif
 #ifndef NDEBUG
 #ifdef _OPENMP

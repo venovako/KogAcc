@@ -36,18 +36,35 @@
      RETURN
   END IF
 
+  ! determine the G's structure
+  I = 0
+  L = IERR - 1
+  J = L
+  IF (B(1,1) .NE. ZERO) THEN
+     I = IOR(I, 1)
+     J = MAX(J, EXPONENT(B(1,1)))
+  END IF
+  IF (B(2,1) .NE. ZERO) THEN
+     I = IOR(I, 2)
+     J = MAX(J, EXPONENT(B(2,1)))
+  END IF
+  IF (B(1,2) .NE. ZERO) THEN
+     I = IOR(I, 4)
+     J = MAX(J, EXPONENT(B(1,2)))
+  END IF
+  IF (B(2,2) .NE. ZERO) THEN
+     I = IOR(I, 8)
+     J = MAX(J, EXPONENT(B(2,2)))
+  END IF
+  IF (J .EQ. L) J = 0
+
   IF (INFO .EQ. 0) THEN
-     ! determine the scaling factor s
-     INFO = IERR
-     IF (B(1,1) .NE. ZERO) INFO = MAX(INFO, EXPONENT(B(1,1)))
-     IF (B(2,1) .NE. ZERO) INFO = MAX(INFO, EXPONENT(B(2,1)))
-     IF (B(1,2) .NE. ZERO) INFO = MAX(INFO, EXPONENT(B(1,2)))
-     IF (B(2,2) .NE. ZERO) INFO = MAX(INFO, EXPONENT(B(2,2)))
-     IF (INFO .EQ. IERR) THEN
-        INFO = 0
-     ELSE ! non-zero B
-        INFO = EXPONENT(H) - INFO - 2
-     END IF
+     SELECT CASE (I)
+     CASE (3, 5, 10, 12)
+        INFO = EXPONENT(H) - J - 1
+     CASE (7, 11, 13, 14, 15)
+        INFO = EXPONENT(H) - J - 2
+     END SELECT
   ELSE IF (INFO .LT. 0) THEN
      INFO = INFO + 1
   END IF
@@ -65,8 +82,347 @@
      B(2,2) = G(2,2)
   END IF
 
+  SELECT CASE (I)
+  CASE (0)
+     ! [ 0 0 ]
+     ! [ 0 0 ]
+     U(1,1) = SIGN(ONE, B(1,1))
+     U(2,2) = SIGN(ONE, B(2,2))
+     S(1) = ZERO
+     S(2) = ZERO
+  CASE (1)
+     ! [ x 0 ]
+     ! [ 0 0 ]
+     U(1,1) = SIGN(ONE, B(1,1))
+     U(2,2) = SIGN(ONE, B(2,2))
+     S(1) = ABS(B(1,1))
+     S(2) = ZERO
+  CASE (2)
+     ! [ 0 0 ]
+     ! [ x 0 ]
+     U(1,1) = ZERO
+     U(2,1) = SIGN(ONE, B(1,2))
+     U(1,2) = SIGN(ONE, B(2,1))
+     U(2,2) = ZERO
+     S(1) = ABS(B(2,1))
+     S(2) = ZERO
+  CASE (3)
+     ! [ x 0 ]
+     ! [ x 0 ]
+     GOTO 1
+  CASE (4)
+     ! [ 0 x ]
+     ! [ 0 0 ]
+     U(1,1) = SIGN(ONE, B(1,2))
+     U(2,2) = SIGN(ONE, B(2,1))
+     V(1,1) = ZERO
+     V(2,1) = ONE
+     V(1,2) = ONE
+     V(2,2) = ZERO
+     S(1) = ABS(B(1,2))
+     S(2) = ZERO
+  CASE (5)
+     ! [ x x ]
+     ! [ 0 0 ]
+     GOTO 2
+  CASE (6)
+     ! [ 0 x ]
+     ! [ x 0 ]
+     U(1,1) = SIGN(ONE, B(1,2))
+     U(2,2) = SIGN(ONE, B(2,1))
+     V(1,1) = ZERO
+     V(2,1) = ONE
+     V(1,2) = ONE
+     V(2,2) = ZERO
+     S(1) = ABS(B(1,2))
+     S(2) = ABS(B(2,1))
+  CASE (7)
+     ! [ x x ]
+     ! [ x 0 ]
+     Z = B(1,1)
+     B(1,1) = B(1,2)
+     B(1,2) = Z
+     B(2,2) = B(2,1)
+     V(1,1) = ZERO
+     V(2,1) = ONE
+     V(1,2) = ONE
+     V(2,2) = ZERO
+     GOTO 3
+  CASE (8)
+     ! [ 0 0 ]
+     ! [ 0 x ]
+     U(1,1) = ZERO
+     U(2,1) = SIGN(ONE, B(1,1))
+     U(1,2) = SIGN(ONE, B(2,2))
+     U(2,2) = ZERO
+     V(1,1) = ZERO
+     V(2,1) = ONE
+     V(1,2) = ONE
+     V(2,2) = ZERO
+     S(1) = ABS(B(2,2))
+     S(2) = ZERO
+  CASE (9)
+     ! [ x 0 ]
+     ! [ 0 x ]
+     U(1,1) = SIGN(ONE, B(1,1))
+     U(2,2) = SIGN(ONE, B(2,2))
+     S(1) = ABS(B(1,1))
+     S(2) = ABS(B(2,2))
+  CASE (10)
+     ! [ 0 0 ]
+     ! [ x x ]
+     U(1,1) = ZERO
+     U(2,1) = ONE
+     U(1,2) = ONE
+     U(2,2) = ZERO
+     B(1,1) = B(2,1)
+     B(1,2) = B(2,2)
+     GOTO 2
+  CASE (11)
+     ! [ x 0 ]
+     ! [ x x ]
+     U(1,1) = ZERO
+     U(2,1) = ONE
+     U(1,2) = ONE
+     U(2,2) = ZERO
+     Z = B(1,1)
+     B(1,1) = B(2,2)
+     B(2,2) = Z
+     B(1,2) = B(2,1)
+     V(1,1) = ZERO
+     V(2,1) = ONE
+     V(1,2) = ONE
+     V(2,2) = ZERO     
+     GOTO 3
+  CASE (12)
+     ! [ 0 x ]
+     ! [ 0 x ]
+     B(1,1) = B(1,2)
+     B(2,1) = B(2,2)
+     V(1,1) = ZERO
+     V(2,1) = ONE
+     V(1,2) = ONE
+     V(2,2) = ZERO
+     GOTO 1
+  CASE (13)
+     ! [ x x ]
+     ! [ 0 x ]
+     GOTO 3
+  CASE (14)
+     ! [ 0 x ]
+     ! [ x x ]
+     U(1,1) = ZERO
+     U(2,1) = ONE
+     U(1,2) = ONE
+     U(2,2) = ZERO
+     B(1,1) = B(2,1)
+     Z = B(1,2)
+     B(1,2) = B(2,2)
+     B(2,2) = Z
+     GOTO 3
+  CASE (15)
+     ! [ x x ]
+     ! [ x x ]
+     GOTO 4
+  CASE DEFAULT
+     INFO = L
+     RETURN
+  END SELECT
+  GOTO 8
+
+  ! [ x 0 ]
+  ! [ x 0 ]
+1 IF (SIGN(ONE, B(1,1)) .NE. ONE) THEN
+     U(1,1) = -ONE
+     B(1,1) = -B(1,1)
+  END IF
+  IF (SIGN(ONE, B(2,1)) .NE. ONE) THEN
+     U(2,2) = -ONE
+     B(2,1) = -B(2,1)
+  END IF
+  IF (B(1,1) .LT. B(2,1)) THEN
+     Z = U(1,1)
+     U(1,1) = U(2,1)
+     U(2,1) = Z
+     Z = U(1,2)
+     U(1,2) = U(2,2)
+     U(2,2) = Z
+     X = B(1,1)
+     B(1,1) = B(2,1)
+     B(2,1) = X
+  END IF
+  S(1) = CR_HYPOT(B(1,1), B(2,1))
+  S(2) = ZERO
+  ! compute the left Givens rotation
+  TANG = B(2,1) / B(1,1)
+#ifdef CR_MATH
+  SECG = CR_HYPOT(TANG, ONE)
+#else
+#ifdef USE_IEEE_INTRINSIC
+  SECG = SQRT(IEEE_FMA(TANG, TANG, ONE))
+#else
+  SECG = SQRT(TANG * TANG + ONE)
+#endif
+#endif
+#ifndef NDEBUG
+  WRITE (ERROR_UNIT,9) 'TANL=', TANG, ', SECL=', SECG
+#endif
+  ! apply the left Givens rotation
+  IF (TANG .GT. ZERO) THEN
+     X =  TANG
+     Y = -TANG
+#ifdef USE_IEEE_INTRINSIC
+     IF (SECG .GT. ONE) THEN
+        Z = U(1,1)
+        U(1,1) = IEEE_FMA(X, U(2,1), U(1,1)) / SECG
+        U(2,1) = IEEE_FMA(Y,      Z, U(2,1)) / SECG
+        Z = U(1,2)
+        U(1,2) = IEEE_FMA(X, U(2,2), U(1,2)) / SECG
+        U(2,2) = IEEE_FMA(Y,      Z, U(2,2)) / SECG
+     ELSE ! SECG = 1
+        Z = U(1,1)
+        U(1,1) = IEEE_FMA(X, U(2,1), U(1,1))
+        U(2,1) = IEEE_FMA(Y,      Z, U(2,1))
+        Z = U(1,2)
+        U(1,2) = IEEE_FMA(X, U(2,2), U(1,2))
+        U(2,2) = IEEE_FMA(Y,      Z, U(2,2))
+     END IF
+#else
+     IF (SECG .GT. ONE) THEN
+        Z = U(1,1)
+        U(1,1) = (U(1,1) + X * U(2,1)) / SECG
+        U(2,1) = (U(2,1) + Y *      Z) / SECG
+        Z = U(1,2)
+        U(1,2) = (U(1,2) + X * U(2,2)) / SECG
+        U(2,2) = (U(2,2) + Y *      Z) / SECG
+     ELSE ! SECG = 1
+        Z = U(1,1)
+        U(1,1) = U(1,1) + X * U(2,1)
+        U(2,1) = U(2,1) + Y *      Z
+        Z = U(1,2)
+        U(1,2) = U(1,2) + X * U(2,2)
+        U(2,2) = U(2,2) + Y *      Z
+     END IF
+#endif
+  END IF
+  GOTO 8
+
+  ! [ x x ]
+  ! [ 0 0 ]
+2 IF (SIGN(ONE, B(1,1)) .NE. ONE) THEN
+     B(1,1) = -B(1,1)
+     V(1,1) = -ONE
+  END IF
+  IF (SIGN(ONE, B(1,2)) .NE. ONE) THEN
+     B(1,2) = -B(1,2)
+     V(2,2) = -ONE
+  END IF
+  IF (B(1,1) .LT. B(1,2)) THEN
+     Y = B(1,1)
+     B(1,1) = B(1,2)
+     B(1,2) = Y
+     Z = V(1,1)
+     V(1,1) = V(1,2)
+     V(1,2) = Z
+     Z = V(2,1)
+     V(2,1) = V(2,2)
+     V(2,2) = Z
+  END IF
+  S(1) = CR_HYPOT(B(1,1), B(1,2))
+  S(2) = ZERO
+  ! compute the right Givens rotation
+  TANG = B(1,2) / B(1,1)
+#ifdef CR_MATH
+  SECG = CR_HYPOT(TANG, ONE)
+#else
+#ifdef USE_IEEE_INTRINSIC
+  SECG = SQRT(IEEE_FMA(TANG, TANG, ONE))
+#else
+  SECG = SQRT(TANG * TANG + ONE)
+#endif
+#endif
+#ifndef NDEBUG
+  WRITE (ERROR_UNIT,9) 'TANR=', TANG, ', SECR=', SECG
+#endif
+  ! apply the right Givens rotation
+  IF (TANG .GT. ZERO) THEN
+     X =  TANG
+     Y = -TANG
+#ifdef USE_IEEE_INTRINSIC
+     IF (SECG .GT. ONE) THEN
+        Z = V(1,1)
+        V(1,1) = IEEE_FMA(X, V(1,2), V(1,1)) / SECG
+        V(1,2) = IEEE_FMA(Y,      Z, V(1,2)) / SECG
+        Z = V(2,1)
+        V(2,1) = IEEE_FMA(X, V(2,2), V(2,1)) / SECG
+        V(2,2) = IEEE_FMA(Y,      Z, V(2,2)) / SECG
+     ELSE ! SECG = 1
+        Z = V(1,1)
+        V(1,1) = IEEE_FMA(X, V(1,2), V(1,1))
+        V(1,2) = IEEE_FMA(Y,      Z, V(1,2))
+        Z = V(2,1)
+        V(2,1) = IEEE_FMA(X, V(2,2), V(2,1))
+        V(2,2) = IEEE_FMA(Y,      Z, V(2,2))
+     END IF
+#else
+     IF (SECG .GT. ONE) THEN
+        Z = V(1,1)
+        V(1,1) = (V(1,1) + X * V(1,2)) / SECG
+        V(1,2) = (V(1,2) + Y *      Z) / SECG
+        Z = V(2,1)
+        V(2,1) = (V(2,1) + X * V(2,2)) / SECG
+        V(2,2) = (V(2,2) + Y *      Z) / SECG
+     ELSE ! SECG = 1
+        Z = V(1,1)
+        V(1,1) = V(1,1) + X * V(1,2)
+        V(1,2) = V(1,2) + Y *      Z
+        Z = V(2,1)
+        V(2,1) = V(2,1) + X * V(2,2)
+        V(2,2) = V(2,2) + Y *      Z
+     END IF
+#endif
+  END IF
+  GOTO 8
+
+  ! [ x x ]
+  ! [ 0 x ]
+3 IF (SIGN(ONE, B(1,1)) .NE. ONE) THEN
+     IF (U(1,1) .NE. ZERO) THEN
+        U(1,1) = -U(1,1)
+     ELSE ! U(1,2) has to be non-zero
+        U(1,2) = -U(1,2)
+     END IF
+     B(1,1) = -B(1,1)
+     B(1,2) = -B(1,2)
+  END IF
+  IF (SIGN(ONE, B(1,2)) .NE. ONE) THEN
+     B(1,2) = -B(1,2)
+     B(2,2) = -B(2,2)
+     IF (V(1,2) .NE. ZERO) THEN
+        V(1,2) = -V(1,2)
+     ELSE ! V(2,2) has to be non-zero
+        V(2,2) = -V(2,2)
+     END IF
+  END IF
+  IF (SIGN(ONE, B(2,2)) .NE. ONE) THEN
+     IF (U(2,1) .NE. ZERO) THEN
+        U(2,1) = -U(2,1)
+     ELSE ! U(2,2) has to be non-zero
+        U(2,2) = -U(2,2)
+     END IF
+     B(2,2) = -B(2,2)
+  END IF
+  IF (B(1,1) .GE. MAX(B(1,2), B(2,2))) THEN
+     TANG = ZERO
+     SECG = ONE
+     GOTO 5
+  END IF
+  B(2,1) = ZERO
+
+  ! [ x x ]
+  ! [ ? x ]
   ! compute the first column norm
-  IF (B(2,1) .EQ. ZERO) THEN
+4 IF (B(2,1) .EQ. ZERO) THEN
      S(1) = ABS(B(1,1))
   ELSE IF (B(1,1) .EQ. ZERO) THEN
      S(1) = ABS(B(2,1))
@@ -83,16 +439,15 @@
      S(2) = CR_HYPOT(B(1,2), B(2,2))
   END IF
 
-  ! swap the columns if necessary, avoiding the QR (especially with a small angle) if possible
-  IF ((S(1) .LT. S(2)) .OR. ((S(1) .EQ. S(2)) .AND. (B(1,1) .NE. ZERO) .AND. (B(2,1) .NE. ZERO) .AND. &
-       ((B(1,2) .EQ. ZERO) .OR. (B(2,2) .EQ. ZERO) .OR. ((ABS(B(1,1)) + ABS(B(2,1))) .LT. (ABS(B(1,2)) + ABS(B(2,2))))))) THEN
-     Y = B(1,1)
+  ! swap the columns and their norms if necessary
+  IF (S(1) .LT. S(2)) THEN
+     Z = B(1,1)
      B(1,1) = B(1,2)
-     B(1,2) = Y
+     B(1,2) = Z
 
-     Y = B(2,1)
+     Z = B(2,1)
      B(2,1) = B(2,2)
-     B(2,2) = Y
+     B(2,2) = Z
 
      Z = V(1,1)
      V(1,1) = V(1,2)
@@ -117,13 +472,13 @@
      U(1,2) = U(2,2)
      U(2,2) = Z
 
-     X = B(1,1)
+     Z = B(1,1)
      B(1,1) = B(2,1)
-     B(2,1) = X
+     B(2,1) = Z
 
-     X = B(1,2)
+     Z = B(1,2)
      B(1,2) = B(2,2)
-     B(2,2) = X
+     B(2,2) = Z
   END IF
 
   ! make B(1,1) non-negative
@@ -205,9 +560,6 @@
      END IF
 #endif
   END IF
-#ifndef NDEBUG
-  B(2,1) = ZERO
-#endif
 
   ! make B(1,2) non-negative
   IF (SIGN(ONE, B(1,2)) .NE. ONE) THEN
@@ -248,15 +600,17 @@
 #ifdef _OPENMP
      END IF
 #endif
-     INFO = IERR - 1
+     INFO = L
      RETURN
   END IF
 #endif
+
   ! division by B(1,1)
   ! [ 1 X ]
   ! [ 0 Y ]
-  X = B(1,2) / B(1,1)
-  Y = B(2,2) / B(1,1)
+5 T = B(1,1)
+  X = B(1,2) / T
+  Y = B(2,2) / T
 #ifndef NDEBUG
 #ifdef _OPENMP
   IF (OMP_GET_NUM_THREADS() .LE. 1) THEN
@@ -272,7 +626,7 @@
 
   ! T = TAN
   ! X = COS
-  IF (SECG .EQ. ONE) THEN
+6 IF (SECG .EQ. ONE) THEN
      T = TANF + TANG
 #ifdef USE_IEEE_INTRINSIC
      T = T / IEEE_FMA(-TANF, TANG, ONE)
