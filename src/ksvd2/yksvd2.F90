@@ -53,6 +53,7 @@ SUBROUTINE YKSVD2(G, U, V, S, INFO)
   COMPLEX(KIND=K) :: B(2,2), Z
   REAL(KIND=K) :: A(2,2), X, Y, T
   REAL(KIND=K) :: TANG, SECG, TANF, SECF, TANP, SECP
+  INTEGER :: I, J, L
 
 #include "hksvd2.F90"
 #ifndef NDEBUG

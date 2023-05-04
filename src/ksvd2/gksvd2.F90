@@ -247,9 +247,9 @@
      Z = U(1,2)
      U(1,2) = U(2,2)
      U(2,2) = Z
-     X = B(1,1)
+     Z = B(1,1)
      B(1,1) = B(2,1)
-     B(2,1) = X
+     B(2,1) = Z
   END IF
   S(1) = CR_HYPOT(B(1,1), B(2,1))
   S(2) = ZERO
@@ -258,11 +258,15 @@
 #ifdef CR_MATH
   SECG = CR_HYPOT(TANG, ONE)
 #else
+  SECG = ABS(TANG)
+  ! should always be true
+  IF (SECG .LT. ROOTH) THEN
 #ifdef USE_IEEE_INTRINSIC
-  SECG = SQRT(IEEE_FMA(TANG, TANG, ONE))
+     SECG = SQRT(IEEE_FMA(TANG, TANG, ONE))
 #else
-  SECG = SQRT(TANG * TANG + ONE)
+     SECG = SQRT(TANG * TANG + ONE)
 #endif
+  END IF
 #endif
 #ifndef NDEBUG
   WRITE (ERROR_UNIT,9) 'TANL=', TANG, ', SECL=', SECG
@@ -318,9 +322,9 @@
      V(2,2) = -ONE
   END IF
   IF (B(1,1) .LT. B(1,2)) THEN
-     Y = B(1,1)
+     Z = B(1,1)
      B(1,1) = B(1,2)
-     B(1,2) = Y
+     B(1,2) = Z
      Z = V(1,1)
      V(1,1) = V(1,2)
      V(1,2) = Z
@@ -335,11 +339,15 @@
 #ifdef CR_MATH
   SECG = CR_HYPOT(TANG, ONE)
 #else
+  SECG = ABS(TANG)
+  ! should always be true
+  IF (SECG .LT. ROOTH) THEN
 #ifdef USE_IEEE_INTRINSIC
-  SECG = SQRT(IEEE_FMA(TANG, TANG, ONE))
+     SECG = SQRT(IEEE_FMA(TANG, TANG, ONE))
 #else
-  SECG = SQRT(TANG * TANG + ONE)
+     SECG = SQRT(TANG * TANG + ONE)
 #endif
+  END IF
 #endif
 #ifndef NDEBUG
   WRITE (ERROR_UNIT,9) 'TANR=', TANG, ', SECR=', SECG
@@ -444,22 +452,18 @@
      Z = B(1,1)
      B(1,1) = B(1,2)
      B(1,2) = Z
-
      Z = B(2,1)
      B(2,1) = B(2,2)
      B(2,2) = Z
-
-     Z = V(1,1)
-     V(1,1) = V(1,2)
-     V(1,2) = Z
-
-     Z = V(2,1)
-     V(2,1) = V(2,2)
-     V(2,2) = Z
-
      Y = S(1)
      S(1) = S(2)
      S(2) = Y
+     Z = V(1,1)
+     V(1,1) = V(1,2)
+     V(1,2) = Z
+     Z = V(2,1)
+     V(2,1) = V(2,2)
+     V(2,2) = Z
   END IF
 
   ! swap the rows if necessary
@@ -467,15 +471,12 @@
      Z = U(1,1)
      U(1,1) = U(2,1)
      U(2,1) = Z
-
      Z = U(1,2)
      U(1,2) = U(2,2)
      U(2,2) = Z
-
      Z = B(1,1)
      B(1,1) = B(2,1)
      B(2,1) = Z
-
      Z = B(1,2)
      B(1,2) = B(2,2)
      B(2,2) = Z
@@ -513,11 +514,15 @@
 #ifdef CR_MATH
         SECG = CR_HYPOT(TANG, ONE)
 #else
+        SECG = ABS(TANG)
+        ! should always be true
+        IF (SECG .LT. ROOTH) THEN
 #ifdef USE_IEEE_INTRINSIC
-        SECG = SQRT(IEEE_FMA(TANG, TANG, ONE))
+           SECG = SQRT(IEEE_FMA(TANG, TANG, ONE))
 #else
-        SECG = SQRT(TANG * TANG + ONE)
+           SECG = SQRT(TANG * TANG + ONE)
 #endif
+        END IF
 #endif
      ELSE ! TANG = 0
         SECG = ONE
@@ -536,9 +541,9 @@
   ! apply the Givens rotation
   B(1,1) = S(1)
   IF (TANG .GT. ZERO) THEN
-#ifdef USE_IEEE_INTRINSIC
      X =  TANG
      Y = -TANG
+#ifdef USE_IEEE_INTRINSIC
      IF (SECG .GT. ONE) THEN
         Z = B(1,2)
         B(1,2) = IEEE_FMA(X, B(2,2), B(1,2)) / SECG
@@ -551,12 +556,12 @@
 #else
      IF (SECG .GT. ONE) THEN
         Z = B(1,2)
-        B(1,2) = (B(1,2) + TANG * B(2,2)) / SECG
-        B(2,2) = (B(2,2) - TANG *      Z) / SECG
+        B(1,2) = (B(1,2) + X * B(2,2)) / SECG
+        B(2,2) = (B(2,2) + Y *      Z) / SECG
      ELSE ! SECG = 1
         Z = B(1,2)
-        B(1,2) = B(1,2) + TANG * B(2,2)
-        B(2,2) = B(2,2) - TANG *      Z
+        B(1,2) = B(1,2) + X * B(2,2)
+        B(2,2) = B(2,2) + Y *      Z
      END IF
 #endif
   END IF
@@ -770,7 +775,7 @@
   END IF
 #endif
 
-  ! symmetric permutation if S(1) < S(2) exceptionally
+  ! symmetric permutation if S(1) < S(2)
 8 IF (S(1) .LT. S(2)) THEN
      Z = U(1,1)
      U(1,1) = U(2,1)
@@ -778,15 +783,15 @@
      Z = U(1,2)
      U(1,2) = U(2,2)
      U(2,2) = Z
+     Y = S(1)
+     S(1) = S(2)
+     S(2) = Y
      Z = V(1,1)
      V(1,1) = V(1,2)
      V(1,2) = Z
      Z = V(2,1)
      V(2,1) = V(2,2)
      V(2,2) = Z
-     Y = S(1)
-     S(1) = S(2)
-     S(2) = Y
   END IF
 
   ! transpose U

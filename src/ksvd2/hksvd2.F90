@@ -66,33 +66,61 @@
   END IF
   B(1,1) = CMPLX(X, Y, K)
 
+  ! determine the G's structure
+  I = 0
+  L = IERR - 1
+  J = L
+  X = REAL(B(1,1))
+  Y = AIMAG(B(1,1))
+  IF (X .NE. ZERO) THEN
+     I = IOR(I, 1)
+     J = MAX(J, EXPONENT(X))
+  END IF
+  IF (Y .NE. ZERO) THEN
+     I = IOR(I, 1)
+     J = MAX(J, EXPONENT(Y))
+  END IF
+  X = REAL(B(2,1))
+  Y = AIMAG(B(2,1))
+  IF (X .NE. ZERO) THEN
+     I = IOR(I, 2)
+     J = MAX(J, EXPONENT(X))
+  END IF
+  IF (Y .NE. ZERO) THEN
+     I = IOR(I, 2)
+     J = MAX(J, EXPONENT(Y))
+  END IF
+  X = REAL(B(1,2))
+  Y = AIMAG(B(1,2))
+  IF (X .NE. ZERO) THEN
+     I = IOR(I, 4)
+     J = MAX(J, EXPONENT(X))
+  END IF
+  IF (Y .NE. ZERO) THEN
+     I = IOR(I, 4)
+     J = MAX(J, EXPONENT(Y))
+  END IF
+  X = REAL(B(2,2))
+  Y = AIMAG(B(2,2))
+  IF (X .NE. ZERO) THEN
+     I = IOR(I, 8)
+     J = MAX(J, EXPONENT(X))
+  END IF
+  IF (Y .NE. ZERO) THEN
+     I = IOR(I, 8)
+     J = MAX(J, EXPONENT(Y))
+  END IF
+  IF (J .EQ. L) J = 0
+
   IF (INFO .EQ. 0) THEN
-     ! determine the scaling factor s
-     INFO = IERR
-     ! ... real parts ...
-     X = REAL(B(1,1))
-     IF (X .NE. ZERO) INFO = MAX(INFO, EXPONENT(X))
-     X = REAL(B(2,1))
-     IF (X .NE. ZERO) INFO = MAX(INFO, EXPONENT(X))
-     X = REAL(B(1,2))
-     IF (X .NE. ZERO) INFO = MAX(INFO, EXPONENT(X))
-     X = REAL(B(2,2))
-     IF (X .NE. ZERO) INFO = MAX(INFO, EXPONENT(X))
-     ! ... imaginary parts ...
-     Y = AIMAG(B(1,1))
-     IF (Y .NE. ZERO) INFO = MAX(INFO, EXPONENT(Y))
-     Y = AIMAG(B(2,1))
-     IF (Y .NE. ZERO) INFO = MAX(INFO, EXPONENT(Y))
-     Y = AIMAG(B(1,2))
-     IF (Y .NE. ZERO) INFO = MAX(INFO, EXPONENT(Y))
-     Y = AIMAG(B(2,2))
-     IF (Y .NE. ZERO) INFO = MAX(INFO, EXPONENT(Y))
-     ! compute s
-     IF (INFO .EQ. IERR) THEN
-        INFO = 0
-     ELSE ! non-zero G
-        INFO = EXPONENT(H) - INFO - 2
-     END IF
+     SELECT CASE (I)
+     CASE (0)
+        CONTINUE
+     CASE (1, 2, 4, 8)
+        INFO = EXPONENT(H) - J - 1
+     CASE DEFAULT
+        INFO = EXPONENT(H) - J - 2
+     END SELECT
   ELSE IF (INFO .LT. 0) THEN
      INFO = INFO + 1
   END IF
@@ -116,8 +144,368 @@
   A(1,2) = CR_HYPOT(REAL(B(1,2)), AIMAG(B(1,2)))
   A(2,2) = CR_HYPOT(REAL(B(2,2)), AIMAG(B(2,2)))
 
+  SELECT CASE (I)
+  CASE (0)
+     ! [ 0 0 ]
+     ! [ 0 0 ]
+     U(1,1) = CMPLX(SIGN(ONE, REAL(B(1,1))), ZERO, K)
+     U(2,2) = CMPLX(SIGN(ONE, REAL(B(2,2))), ZERO, K)
+     S(1) = ZERO
+     S(2) = ZERO
+  CASE (1)
+     ! [ x 0 ]
+     ! [ 0 0 ]
+     U(1,1) = CONJG(B(1,1)) / A(1,1)
+     U(2,2) = CMPLX(SIGN(ONE, REAL(B(2,2))), ZERO, K)
+     S(1) = A(1,1)
+     S(2) = ZERO
+  CASE (2)
+     ! [ 0 0 ]
+     ! [ x 0 ]
+     U(1,1) = CZERO
+     U(2,1) = CMPLX(SIGN(ONE, REAL(B(1,2))), ZERO, K)
+     U(1,2) = CONJG(B(2,1)) / A(2,1)
+     U(2,2) = CZERO
+     S(1) = A(2,1)
+     S(2) = ZERO
+  CASE (3)
+     ! [ x 0 ]
+     ! [ x 0 ]
+     GOTO 1
+  CASE (4)
+     ! [ 0 x ]
+     ! [ 0 0 ]
+     U(1,1) = CONJG(B(1,2)) / A(1,2)
+     U(2,2) = CMPLX(SIGN(ONE, REAL(B(2,1))), ZERO, K)
+     V(1,1) = CZERO
+     V(2,1) = CONE
+     V(1,2) = CONE
+     V(2,2) = CZERO
+     S(1) = A(1,2)
+     S(2) = ZERO
+  CASE (5)
+     ! [ x x ]
+     ! [ 0 0 ]
+     GOTO 2
+  CASE (6)
+     ! [ 0 x ]
+     ! [ x 0 ]
+     U(1,1) = CONJG(B(1,2)) / A(1,2)
+     U(2,2) = CONJG(B(2,1)) / A(2,1)
+     V(1,1) = CZERO
+     V(2,1) = CONE
+     V(1,2) = CONE
+     V(2,2) = CZERO
+     S(1) = A(1,2)
+     S(2) = A(2,1)
+  CASE (7)
+     ! [ x x ]
+     ! [ x 0 ]
+     Z = B(1,1)
+     B(1,1) = B(1,2)
+     B(1,2) = Z
+     B(2,2) = B(2,1)
+     Y = A(1,1)
+     A(1,1) = A(1,2)
+     A(1,2) = Y
+     A(2,2) = A(2,1)
+     V(1,1) = CZERO
+     V(2,1) = CONE
+     V(1,2) = CONE
+     V(2,2) = CZERO
+     GOTO 3
+  CASE (8)
+     ! [ 0 0 ]
+     ! [ 0 x ]
+     U(1,1) = CZERO
+     U(2,1) = CMPLX(SIGN(ONE, REAL(B(1,1))), ZERO, K)
+     U(1,2) = CONJG(B(2,2)) / A(2,2)
+     U(2,2) = CZERO
+     V(1,1) = CZERO
+     V(2,1) = CONE
+     V(1,2) = CONE
+     V(2,2) = CZERO
+     S(1) = A(2,2)
+     S(2) = ZERO
+  CASE (9)
+     ! [ x 0 ]
+     ! [ 0 x ]
+     U(1,1) = CONJG(B(1,1)) / A(1,1)
+     U(2,2) = CONJG(B(2,2)) / A(2,2)
+     S(1) = A(1,1)
+     S(2) = A(2,2)
+  CASE (10)
+     ! [ 0 0 ]
+     ! [ x x ]
+     U(1,1) = CZERO
+     U(2,1) = CONE
+     U(1,2) = CONE
+     U(2,2) = CZERO
+     B(1,1) = B(2,1)
+     B(1,2) = B(2,2)
+     A(1,1) = A(2,1)
+     A(1,2) = A(2,2)
+     GOTO 2
+  CASE (11)
+     ! [ x 0 ]
+     ! [ x x ]
+     U(1,1) = CZERO
+     U(2,1) = CONE
+     U(1,2) = CONE
+     U(2,2) = CZERO
+     Z = B(1,1)
+     B(1,1) = B(2,2)
+     B(2,2) = Z
+     B(1,2) = B(2,1)
+     Y = A(1,1)
+     A(1,1) = A(2,2)
+     A(2,2) = Y
+     A(1,2) = A(2,1)
+     V(1,1) = CZERO
+     V(2,1) = CONE
+     V(1,2) = CONE
+     V(2,2) = CZERO     
+     GOTO 3
+  CASE (12)
+     ! [ 0 x ]
+     ! [ 0 x ]
+     B(1,1) = B(1,2)
+     B(2,1) = B(2,2)
+     A(1,1) = A(1,2)
+     A(2,1) = A(2,2)
+     V(1,1) = CZERO
+     V(2,1) = CONE
+     V(1,2) = CONE
+     V(2,2) = CZERO
+     GOTO 1
+  CASE (13)
+     ! [ x x ]
+     ! [ 0 x ]
+     GOTO 3
+  CASE (14)
+     ! [ 0 x ]
+     ! [ x x ]
+     U(1,1) = CZERO
+     U(2,1) = CONE
+     U(1,2) = CONE
+     U(2,2) = CZERO
+     B(1,1) = B(2,1)
+     Z = B(1,2)
+     B(1,2) = B(2,2)
+     B(2,2) = Z
+     A(1,1) = A(2,1)
+     X = A(1,2)
+     A(1,2) = A(2,2)
+     A(2,2) = X
+     GOTO 3
+  CASE (15)
+     ! [ x x ]
+     ! [ x x ]
+     GOTO 4
+  CASE DEFAULT
+     INFO = L
+     RETURN
+  END SELECT
+  GOTO 8
+
+  ! [ x 0 ]
+  ! [ x 0 ]
+1 Z = CONJG(B(1,1)) / A(1,1)
+  U(1,1) = CMUL(Z, U(1,1))
+  U(1,2) = CMUL(Z, U(1,2))
+  B(1,1) = CMPLX(A(1,1), ZERO, K)
+  Z = CONJG(B(2,1)) / A(2,1)
+  U(2,1) = CMUL(Z, U(2,1))
+  U(2,2) = CMUL(Z, U(2,2))
+  B(2,1) = CMPLX(A(2,1), ZERO, K)
+  IF (A(1,1) .LT. A(2,1)) THEN
+     Z = U(1,1)
+     U(1,1) = U(2,1)
+     U(2,1) = Z
+     Z = U(1,2)
+     U(1,2) = U(2,2)
+     U(2,2) = Z
+     Z = B(1,1)
+     B(1,1) = B(2,1)
+     B(2,1) = Z
+     X = A(1,1)
+     A(1,1) = A(2,1)
+     A(2,1) = X
+  END IF
+  S(1) = CR_HYPOT(A(1,1), A(2,1))
+  S(2) = ZERO
+  ! compute the left Givens rotation
+  TANG = A(2,1) / A(1,1)
+#ifdef CR_MATH
+  SECG = CR_HYPOT(TANG, ONE)
+#else
+  SECG = ABS(TANG)
+  ! should always be true
+  IF (SECG .LT. ROOTH) THEN
+#ifdef USE_IEEE_INTRINSIC
+     SECG = SQRT(IEEE_FMA(TANG, TANG, ONE))
+#else
+     SECG = SQRT(TANG * TANG + ONE)
+#endif
+  END IF
+#endif
+#ifndef NDEBUG
+  WRITE (ERROR_UNIT,9) 'TANL=', TANG, ', SECL=', SECG
+#endif
+  ! apply the left Givens rotation
+  IF (TANG .GT. ZERO) THEN
+     X =  TANG
+     Y = -TANG
+#ifdef USE_IEEE_INTRINSIC
+     IF (SECG .GT. ONE) THEN
+        Z = U(1,1)
+        U(1,1) = CMPLX(IEEE_FMA(X, REAL(U(2,1)), REAL(U(1,1))) / SECG, IEEE_FMA(X, AIMAG(U(2,1)), AIMAG(U(1,1))) / SECG, K)
+        U(2,1) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(U(2,1))) / SECG, IEEE_FMA(Y,      AIMAG(Z), AIMAG(U(2,1))) / SECG, K)
+        Z = U(1,2)
+        U(1,2) = CMPLX(IEEE_FMA(X, REAL(U(2,2)), REAL(U(1,2))) / SECG, IEEE_FMA(X, AIMAG(U(2,2)), AIMAG(U(1,2))) / SECG, K)
+        U(2,2) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(U(2,2))) / SECG, IEEE_FMA(Y,      AIMAG(Z), AIMAG(U(2,2))) / SECG, K)
+     ELSE ! SECG = 1
+        Z = U(1,1)
+        U(1,1) = CMPLX(IEEE_FMA(X, REAL(U(2,1)), REAL(U(1,1))), IEEE_FMA(X, AIMAG(U(2,1)), AIMAG(U(1,1))), K)
+        U(2,1) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(U(2,1))), IEEE_FMA(Y,      AIMAG(Z), AIMAG(U(2,1))), K)
+        Z = U(1,2)
+        U(1,2) = CMPLX(IEEE_FMA(X, REAL(U(2,2)), REAL(U(1,2))), IEEE_FMA(X, AIMAG(U(2,2)), AIMAG(U(1,2))), K)
+        U(2,2) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(U(2,2))), IEEE_FMA(Y,      AIMAG(Z), AIMAG(U(2,2))), K)
+     END IF
+#else
+     IF (SECG .GT. ONE) THEN
+        Z = U(1,1)
+        U(1,1) = (U(1,1) + X * U(2,1)) / SECG
+        U(2,1) = (U(2,1) + Y *      Z) / SECG
+        Z = U(1,2)
+        U(1,2) = (U(1,2) + X * U(2,2)) / SECG
+        U(2,2) = (U(2,2) + Y *      Z) / SECG
+     ELSE ! SECG = 1
+        Z = U(1,1)
+        U(1,1) = U(1,1) + X * U(2,1)
+        U(2,1) = U(2,1) + Y *      Z
+        Z = U(1,2)
+        U(1,2) = U(1,2) + X * U(2,2)
+        U(2,2) = U(2,2) + Y *      Z
+     END IF
+#endif
+  END IF
+  GOTO 8
+
+  ! [ x x ]
+  ! [ 0 0 ]
+2 Z = CONJG(B(1,1)) / A(1,1)
+  V(1,1) = CMUL(V(1,1), Z)
+  V(2,1) = CMUL(V(2,1), Z)
+  B(1,1) = CMPLX(A(1,1), ZERO, K)
+  Z = CONJG(B(1,2)) / A(1,2)
+  V(1,2) = CMUL(V(1,2), Z)
+  V(2,2) = CMUL(V(2,2), Z)
+  B(1,2) = CMPLX(A(1,2), ZERO, K)
+  IF (A(1,1) .LT. A(1,2)) THEN
+     Z = B(1,1)
+     B(1,1) = B(1,2)
+     B(1,2) = Z
+     Y = A(1,1)
+     A(1,1) = A(1,2)
+     A(1,2) = Y
+     Z = V(1,1)
+     V(1,1) = V(1,2)
+     V(1,2) = Z
+     Z = V(2,1)
+     V(2,1) = V(2,2)
+     V(2,2) = Z
+  END IF
+  S(1) = CR_HYPOT(A(1,1), A(1,2))
+  S(2) = ZERO
+  ! compute the right Givens rotation
+  TANG = A(1,2) / A(1,1)
+#ifdef CR_MATH
+  SECG = CR_HYPOT(TANG, ONE)
+#else
+  SECG = ABS(TANG)
+  ! should always be true
+  IF (SECG .LT. ROOTH) THEN
+#ifdef USE_IEEE_INTRINSIC
+     SECG = SQRT(IEEE_FMA(TANG, TANG, ONE))
+#else
+     SECG = SQRT(TANG * TANG + ONE)
+#endif
+  END IF
+#endif
+#ifndef NDEBUG
+  WRITE (ERROR_UNIT,9) 'TANR=', TANG, ', SECR=', SECG
+#endif
+  ! apply the right Givens rotation
+  IF (TANG .GT. ZERO) THEN
+     X =  TANG
+     Y = -TANG
+#ifdef USE_IEEE_INTRINSIC
+     IF (SECG .GT. ONE) THEN
+        Z = V(1,1)
+        V(1,1) = CMPLX(IEEE_FMA(X, REAL(V(1,2)), REAL(V(1,1))) / SECG, IEEE_FMA(X, AIMAG(V(1,2)), AIMAG(V(1,1))) / SECG, K)
+        V(1,2) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(V(1,2))) / SECG, IEEE_FMA(Y,      AIMAG(Z), AIMAG(V(1,2))) / SECG, K)
+        Z = V(2,1)
+        V(2,1) = CMPLX(IEEE_FMA(X, REAL(V(2,2)), REAL(V(2,1))) / SECG, IEEE_FMA(X, AIMAG(V(2,2)), AIMAG(V(2,1))) / SECG, K)
+        V(2,2) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(V(2,2))) / SECG, IEEE_FMA(Y,      AIMAG(Z), AIMAG(V(2,2))) / SECG, K)
+     ELSE ! SECG = 1
+        Z = V(1,1)
+        V(1,1) = CMPLX(IEEE_FMA(X, REAL(V(1,2)), REAL(V(1,1))), IEEE_FMA(X, AIMAG(V(1,2)), AIMAG(V(1,1))), K)
+        V(1,2) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(V(1,2))), IEEE_FMA(Y,      AIMAG(Z), AIMAG(V(1,2))), K)
+        Z = V(2,1)
+        V(2,1) = CMPLX(IEEE_FMA(X, REAL(V(2,2)), REAL(V(2,1))), IEEE_FMA(X, AIMAG(V(2,2)), AIMAG(V(2,1))), K)
+        V(2,2) = CMPLX(IEEE_FMA(Y,      REAL(Z), REAL(V(2,2))), IEEE_FMA(Y,      AIMAG(Z), AIMAG(V(2,2))), K)
+     END IF
+#else
+     IF (SECG .GT. ONE) THEN
+        Z = V(1,1)
+        V(1,1) = (V(1,1) + X * V(1,2)) / SECG
+        V(1,2) = (V(1,2) + Y *      Z) / SECG
+        Z = V(2,1)
+        V(2,1) = (V(2,1) + X * V(2,2)) / SECG
+        V(2,2) = (V(2,2) + Y *      Z) / SECG
+     ELSE ! SECG = 1
+        Z = V(1,1)
+        V(1,1) = V(1,1) + X * V(1,2)
+        V(1,2) = V(1,2) + Y *      Z
+        Z = V(2,1)
+        V(2,1) = V(2,1) + X * V(2,2)
+        V(2,2) = V(2,2) + Y *      Z
+     END IF
+#endif
+  END IF
+  GOTO 8
+
+  ! [ x x ]
+  ! [ 0 x ]
+3 Z = CONJG(B(1,1)) / A(1,1)
+  U(1,1) = CMUL(Z, U(1,1))
+  U(1,2) = CMUL(Z, U(1,2))
+  B(1,1) = CMPLX(A(1,1), ZERO, K)
+  B(1,2) = CMUL(Z, B(1,2))
+  A(1,2) = CR_HYPOT(REAL(B(1,2)), AIMAG(B(1,2)))
+  Z = CONJG(B(1,2)) / A(1,2)
+  B(1,2) = CMPLX(A(1,2), ZERO, K)
+  B(2,2) = CMUL(B(2,2), Z)
+  A(2,2) = CR_HYPOT(REAL(B(2,2)), AIMAG(B(2,2)))
+  V(1,2) = CMUL(V(1,2), Z)
+  V(2,2) = CMUL(V(2,2), Z)
+  Z = CONJG(B(2,2)) / A(2,2)
+  U(2,1) = CMUL(Z, U(2,1))
+  U(2,2) = CMUL(Z, U(2,2))
+  B(2,2) = CMPLX(A(2,2), ZERO, K)
+  IF (A(1,1) .GE. MAX(A(1,2), A(2,2))) THEN
+     S(1) = A(1,1)
+     S(2) = CR_HYPOT(A(1,2), A(2,2))
+     GOTO 5
+  END IF
+  B(2,1) = CZERO
+  A(2,1) = ZERO
+
+  ! [ x x ]
+  ! [ ? x ]
   ! compute the first column norm
-  IF (A(2,1) .EQ. ZERO) THEN
+4 IF (A(2,1) .EQ. ZERO) THEN
      S(1) = A(1,1)
   ELSE IF (A(1,1) .EQ. ZERO) THEN
      S(1) = A(2,1)
@@ -134,36 +522,29 @@
      S(2) = CR_HYPOT(A(1,2), A(2,2))
   END IF
 
-  ! swap the columns if necessary, avoiding the QR (especially with a small angle) if possible
-  IF ((S(1) .LT. S(2)) .OR. ((S(1) .EQ. S(2)) .AND. (A(1,1) .NE. ZERO) .AND. (A(2,1) .NE. ZERO) .AND. &
-       ((A(1,2) .EQ. ZERO) .OR. (A(2,2) .EQ. ZERO) .OR. ((A(1,1) + A(2,1)) .LT. (A(1,2) + A(2,2)))))) THEN
+  ! swap the columns if necessary
+  IF (S(1) .LT. S(2)) THEN
      Z = B(1,1)
      B(1,1) = B(1,2)
      B(1,2) = Z
-
      Z = B(2,1)
      B(2,1) = B(2,2)
      B(2,2) = Z
-
-     Z = V(1,1)
-     V(1,1) = V(1,2)
-     V(1,2) = Z
-
-     Z = V(2,1)
-     V(2,1) = V(2,2)
-     V(2,2) = Z
-
      Y = A(1,1)
      A(1,1) = A(1,2)
      A(1,2) = Y
-
      Y = A(2,1)
      A(2,1) = A(2,2)
      A(2,2) = Y
-
      Y = S(1)
      S(1) = S(2)
      S(2) = Y
+     Z = V(1,1)
+     V(1,1) = V(1,2)
+     V(1,2) = Z
+     Z = V(2,1)
+     V(2,1) = V(2,2)
+     V(2,2) = Z
   END IF
 
   ! swap the rows if necessary
@@ -171,71 +552,38 @@
      Z = U(1,1)
      U(1,1) = U(2,1)
      U(2,1) = Z
-
      Z = U(1,2)
      U(1,2) = U(2,2)
      U(2,2) = Z
-
      Z = B(1,1)
      B(1,1) = B(2,1)
      B(2,1) = Z
-
      Z = B(1,2)
      B(1,2) = B(2,2)
      B(2,2) = Z
-
      X = A(1,1)
      A(1,1) = A(2,1)
      A(2,1) = X
-
      X = A(1,2)
      A(1,2) = A(2,2)
      A(2,2) = X
   END IF
 
   ! make B(1,1) real and non-negative
-  IF (AIMAG(B(1,1)) .EQ. ZERO) THEN
-     IF (SIGN(ONE, REAL(B(1,1))) .NE. ONE) THEN
-        IF (REAL(U(1,1)) .NE. ZERO) THEN
-           U(1,1) = CMPLX(-REAL(U(1,1)), ZERO, K)
-        ELSE ! REAL(U(1,2)) .NE. ZERO
-           U(1,2) = CMPLX(-REAL(U(1,2)), ZERO, K)
-        END IF
-        B(1,1) = CMPLX(-REAL(B(1,1)), ZERO, K)
-        B(1,2) = -B(1,2)
-     END IF
-  ELSE ! the general case
-     Z = CONJG(B(1,1)) / A(1,1)
-     IF (REAL(U(1,1)) .NE. ZERO) THEN
-        U(1,1) = Z
-     ELSE ! REAL(U(1,2)) .NE. ZERO
-        U(1,2) = Z
-     END IF
-     B(1,1) = CMPLX(A(1,1), ZERO, K)
-     B(1,2) = CMUL(Z, B(1,2))
-  END IF
+  Z = CONJG(B(1,1)) / A(1,1)
+  U(1,1) = CMUL(Z, U(1,1))
+  U(1,2) = CMUL(Z, U(1,2))
+  B(1,1) = CMPLX(A(1,1), ZERO, K)
+  B(1,2) = CMUL(Z, B(1,2))
+  A(1,2) = CR_HYPOT(REAL(B(1,2)), AIMAG(B(1,2)))
 
   ! make B(2,1) real and non-negative
-  IF (AIMAG(B(2,1)) .EQ. ZERO) THEN
-     IF (SIGN(ONE, REAL(B(2,1))) .NE. ONE) THEN
-        IF (REAL(U(2,1)) .NE. ZERO) THEN
-           U(2,1) = CMPLX(-REAL(U(2,1)), ZERO, K)
-        ELSE ! REAL(U(2,2)) .NE. ZERO
-           U(2,2) = CMPLX(-REAL(U(2,2)), ZERO, K)
-        END IF
-        B(2,1) = CMPLX(-REAL(B(2,1)), ZERO, K)
-        B(2,2) = -B(2,2)
-     END IF
-  ELSE ! the general case
-     Z = CONJG(B(2,1)) / A(2,1)
-     IF (REAL(U(2,2)) .NE. ZERO) THEN
-        U(2,2) = Z
-     ELSE ! REAL(U(2,1)) .NE. ZERO
-        U(2,1) = Z
-     END IF
-     B(2,1) = CMPLX(A(2,1), ZERO, K)
-     B(2,2) = CMUL(Z, B(2,2))
-  END IF
+  Z = CONJG(B(2,1)) / A(2,1)
+  U(2,1) = CMUL(Z, U(2,1))
+  U(2,2) = CMUL(Z, U(2,2))
+  B(2,1) = CMPLX(A(2,1), ZERO, K)
+  B(2,2) = CMUL(Z, B(2,2))
+  A(2,2) = CR_HYPOT(REAL(B(2,2)), AIMAG(B(2,2)))
 
   ! compute the Givens rotation
   IF (A(2,1) .EQ. ZERO) THEN
@@ -247,11 +595,15 @@
 #ifdef CR_MATH
         SECG = CR_HYPOT(TANG, ONE)
 #else
+        SECG = ABS(TANG)
+        ! should always be true
+        IF (SECG .LT. ROOTH) THEN
 #ifdef USE_IEEE_INTRINSIC
-        SECG = SQRT(IEEE_FMA(TANG, TANG, ONE))
+           SECG = SQRT(IEEE_FMA(TANG, TANG, ONE))
 #else
-        SECG = SQRT(TANG * TANG + ONE)
+           SECG = SQRT(TANG * TANG + ONE)
 #endif
+        END IF
 #endif
      ELSE ! TANG = 0
         SECG = ONE
@@ -268,7 +620,8 @@
 #endif
 
   ! apply the Givens rotation
-  B(1,1) = CMPLX(S(1), ZERO, K)
+  A(1,1) = S(1)
+  B(1,1) = CMPLX(A(1,1), ZERO, K)
   IF (TANG .GT. ZERO) THEN
      X =  TANG
      Y = -TANG
@@ -320,75 +673,31 @@
      ! recompute the magnitudes in the second column
      A(1,2) = CR_HYPOT(REAL(B(1,2)), AIMAG(B(1,2)))
      A(2,2) = CR_HYPOT(REAL(B(2,2)), AIMAG(B(2,2)))
-     T = ONE
-  ELSE ! TANG .EQ. ZERO
-     T = ZERO
   END IF
-#ifndef NDEBUG
-  B(2,1) = CZERO
-#endif
 
   ! make B(1,2) real and non-negative
-  IF (AIMAG(B(1,2)) .EQ. ZERO) THEN
-     IF (SIGN(ONE, REAL(B(1,2))) .NE. ONE) THEN
-        B(1,2) = CMPLX(-REAL(B(1,2)), ZERO, K)
-        B(2,2) = -B(2,2)
-        IF (REAL(V(1,2)) .NE. ZERO) THEN
-           V(1,2) = CMPLX(-REAL(V(1,2)), ZERO, K)
-        ELSE ! REAL(V(2,2)) .NE. ZERO
-           V(2,2) = CMPLX(-REAL(V(2,2)), ZERO, K)
-        END IF
-     END IF
-  ELSE ! the general case
-     Z = CONJG(B(1,2)) / A(1,2)
-     B(1,2) = CMPLX(A(1,2), ZERO, K)
-     B(2,2) = CMUL(B(2,2), Z)
-     IF (REAL(V(1,2)) .NE. ZERO) THEN
-        V(1,2) = Z
-     ELSE ! REAL(V(2,2)) .NE. ZERO
-        V(2,2) = Z
-     END IF
-     T = T + ONE
-  END IF
+  Z = CONJG(B(1,2)) / A(1,2)
+  B(1,2) = CMPLX(A(1,2), ZERO, K)
+  B(2,2) = CMUL(B(2,2), Z)
+  A(2,2) = CR_HYPOT(REAL(B(2,2)), AIMAG(B(2,2)))
+  V(1,2) = CMUL(V(1,2), Z)
+  V(2,2) = CMUL(V(2,2), Z)
 
   ! make B(2,2) real and non-negative
-  IF (AIMAG(B(2,2)) .EQ. ZERO) THEN
-     IF (SIGN(ONE, REAL(B(2,2))) .NE. ONE) THEN
-        IF (U(2,1) .NE. CZERO) U(2,1) = -U(2,1)
-        IF (U(2,2) .NE. CZERO) U(2,2) = -U(2,2)
-        B(2,2) = CMPLX(-REAL(B(2,2)), ZERO, K)
-     END IF
-  ELSE ! the general case
-     Z = CONJG(B(2,2)) / A(2,2)
-     U(2,1) = CMUL(Z, U(2,1))
-     U(2,2) = CMUL(Z, U(2,2))
-     B(2,2) = CMPLX(A(2,2), ZERO, K)
-     T = T + TWO
-  END IF
+  Z = CONJG(B(2,2)) / A(2,2)
+  U(2,1) = CMUL(Z, U(2,1))
+  U(2,2) = CMUL(Z, U(2,2))
+  B(2,2) = CMPLX(A(2,2), ZERO, K)
 
-  ! B is now real so copy it to A
-  A(1,1) = REAL(B(1,1))
-#ifndef NDEBUG
-  A(2,1) = REAL(B(2,1))
-#endif
-  A(1,2) = REAL(B(1,2))
-  A(2,2) = REAL(B(2,2))
-
-  ! recompute the norm of the second column if needed
-  IF (T .NE. ZERO) THEN
-     IF (A(2,2) .EQ. ZERO) THEN
-        S(2) = A(1,2)
-     ELSE IF (A(1,2) .EQ. ZERO) THEN
-        S(2) = A(2,2)
-        ! A is diagonal
-        GOTO 8
-     ELSE ! full second column
-        S(2) = CR_HYPOT(A(1,2), A(2,2))
-     END IF
+  ! recompute the norm of the second column
+  IF (A(2,2) .EQ. ZERO) THEN
+     S(2) = A(1,2)
   ELSE IF (A(1,2) .EQ. ZERO) THEN
-     ! A is diagonal
-     GOTO 8
+     S(2) = A(2,2)
+  ELSE ! full second column
+     S(2) = CR_HYPOT(A(1,2), A(2,2))
   END IF
+  IF (A(1,2) .EQ. ZERO) GOTO 8
 
 #ifndef NDEBUG
   ! internal consistency check
@@ -400,15 +709,16 @@
 #ifdef _OPENMP
      END IF
 #endif
-     INFO = IERR - 1
+     INFO = L
      RETURN
   END IF
 #endif
   ! division by A(1,1)
   ! [ 1 X ]
   ! [ 0 Y ]
-  X = A(1,2) / A(1,1)
-  Y = A(2,2) / A(1,1)
+5 T = A(1,1)
+  X = A(1,2) / T
+  Y = A(2,2) / T
 #ifndef NDEBUG
 #ifdef _OPENMP
   IF (OMP_GET_NUM_THREADS() .LE. 1) THEN
@@ -518,7 +828,7 @@
   END IF
 #endif
 
-  ! symmetric permutation if S(1) < S(2) exceptionally
+  ! symmetric permutation if S(1) < S(2)
 8 IF (S(1) .LT. S(2)) THEN
      Z = U(1,1)
      U(1,1) = U(2,1)
@@ -526,15 +836,15 @@
      Z = U(1,2)
      U(1,2) = U(2,2)
      U(2,2) = Z
+     Y = S(1)
+     S(1) = S(2)
+     S(2) = Y
      Z = V(1,1)
      V(1,1) = V(1,2)
      V(1,2) = Z
      Z = V(2,1)
      V(2,1) = V(2,2)
      V(2,2) = Z
-     Y = S(1)
-     S(1) = S(2)
-     S(2) = Y
   END IF
 
   ! conjugate-transpose U
