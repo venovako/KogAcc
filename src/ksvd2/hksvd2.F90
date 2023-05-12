@@ -577,6 +577,9 @@
      B(1,1) = CMPLX(A(1,1), ZERO, K)
      B(1,2) = CMUL(Z, B(1,2))
      A(1,2) = CR_HYPOT(REAL(B(1,2)), AIMAG(B(1,2)))
+  ELSE ! should never happen
+     INFO = L
+     RETURN
   END IF
 
   ! make B(2,1) real and non-negative
@@ -587,6 +590,8 @@
      B(2,1) = CMPLX(A(2,1), ZERO, K)
      B(2,2) = CMUL(Z, B(2,2))
      A(2,2) = CR_HYPOT(REAL(B(2,2)), AIMAG(B(2,2)))
+  ELSE ! ignore the signs of the real and the imaginary zero
+     B(2,1) = CZERO
   END IF
 
   ! compute the Givens rotation
@@ -687,6 +692,8 @@
      A(2,2) = CR_HYPOT(REAL(B(2,2)), AIMAG(B(2,2)))
      V(1,2) = CMUL(V(1,2), Z)
      V(2,2) = CMUL(V(2,2), Z)
+  ELSE ! ignore the signs of the real and the imaginary zero
+     B(1,2) = CZERO
   END IF
 
   ! make B(2,2) real and non-negative
@@ -695,6 +702,12 @@
      U(2,1) = CMUL(Z, U(2,1))
      U(2,2) = CMUL(Z, U(2,2))
      B(2,2) = CMPLX(A(2,2), ZERO, K)
+  ELSE IF (SIGN(ONE, REAL(B(2,2))) .NE. ONE) THEN
+     U(2,1) = -U(2,1)
+     U(2,2) = -U(2,2)
+     B(2,2) = CZERO
+  ELSE ! ignore the sign of the imaginary zero
+     B(2,2) = CZERO
   END IF
 
   ! recompute the norm of the second column
