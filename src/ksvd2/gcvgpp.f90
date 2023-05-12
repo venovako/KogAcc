@@ -1,13 +1,26 @@
   IF (INFO .LE. -HUGE(INFO)) RETURN
   IF (INFO .NE. 0) THEN
      INFO = -INFO
-     S(1) = SCALE(S(1), INFO)
-     S(2) = SCALE(S(2), INFO)
-     INFO = 0
+     T = SCALE(S(1), INFO)
+     IF (.NOT. (ABS(T) .LE. HUGE(T))) THEN
+        T = SCALE(S(2), INFO)
+        IF (.NOT. (ABS(T) .LE. HUGE(T))) THEN
+           INFO = -3
+        ELSE ! S(2) OK
+           S(2) = T
+           INFO = -1
+        END IF
+     ELSE ! S(1) OK
+        S(1) = T
+        T = SCALE(S(2), INFO)
+        IF (.NOT. (ABS(T) .LE. HUGE(T))) THEN
+           INFO = -2
+        ELSE ! S(2) OK
+           S(2) = T
+           INFO = 0
+        END IF
+     END IF
   END IF
-
-  IF (.NOT. (S(1) .LE. HUGE(S(1)))) INFO = -1
-  IF (.NOT. (S(2) .LE. HUGE(S(2)))) INFO = INFO - 2
   IF (INFO .NE. 0) RETURN
 
   ! G not diagonal

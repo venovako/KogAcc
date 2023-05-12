@@ -570,20 +570,24 @@
   END IF
 
   ! make B(1,1) real and non-negative
-  Z = CONJG(B(1,1)) / A(1,1)
-  U(1,1) = CMUL(Z, U(1,1))
-  U(1,2) = CMUL(Z, U(1,2))
-  B(1,1) = CMPLX(A(1,1), ZERO, K)
-  B(1,2) = CMUL(Z, B(1,2))
-  A(1,2) = CR_HYPOT(REAL(B(1,2)), AIMAG(B(1,2)))
+  IF (A(1,1) .GT. ZERO) THEN
+     Z = CONJG(B(1,1)) / A(1,1)
+     U(1,1) = CMUL(Z, U(1,1))
+     U(1,2) = CMUL(Z, U(1,2))
+     B(1,1) = CMPLX(A(1,1), ZERO, K)
+     B(1,2) = CMUL(Z, B(1,2))
+     A(1,2) = CR_HYPOT(REAL(B(1,2)), AIMAG(B(1,2)))
+  END IF
 
   ! make B(2,1) real and non-negative
-  Z = CONJG(B(2,1)) / A(2,1)
-  U(2,1) = CMUL(Z, U(2,1))
-  U(2,2) = CMUL(Z, U(2,2))
-  B(2,1) = CMPLX(A(2,1), ZERO, K)
-  B(2,2) = CMUL(Z, B(2,2))
-  A(2,2) = CR_HYPOT(REAL(B(2,2)), AIMAG(B(2,2)))
+  IF (A(2,1) .GT. ZERO) THEN
+     Z = CONJG(B(2,1)) / A(2,1)
+     U(2,1) = CMUL(Z, U(2,1))
+     U(2,2) = CMUL(Z, U(2,2))
+     B(2,1) = CMPLX(A(2,1), ZERO, K)
+     B(2,2) = CMUL(Z, B(2,2))
+     A(2,2) = CR_HYPOT(REAL(B(2,2)), AIMAG(B(2,2)))
+  END IF
 
   ! compute the Givens rotation
   IF (A(2,1) .EQ. ZERO) THEN
@@ -676,18 +680,22 @@
   END IF
 
   ! make B(1,2) real and non-negative
-  Z = CONJG(B(1,2)) / A(1,2)
-  B(1,2) = CMPLX(A(1,2), ZERO, K)
-  B(2,2) = CMUL(B(2,2), Z)
-  A(2,2) = CR_HYPOT(REAL(B(2,2)), AIMAG(B(2,2)))
-  V(1,2) = CMUL(V(1,2), Z)
-  V(2,2) = CMUL(V(2,2), Z)
+  IF (A(1,2) .GT. ZERO) THEN
+     Z = CONJG(B(1,2)) / A(1,2)
+     B(1,2) = CMPLX(A(1,2), ZERO, K)
+     B(2,2) = CMUL(B(2,2), Z)
+     A(2,2) = CR_HYPOT(REAL(B(2,2)), AIMAG(B(2,2)))
+     V(1,2) = CMUL(V(1,2), Z)
+     V(2,2) = CMUL(V(2,2), Z)
+  END IF
 
   ! make B(2,2) real and non-negative
-  Z = CONJG(B(2,2)) / A(2,2)
-  U(2,1) = CMUL(Z, U(2,1))
-  U(2,2) = CMUL(Z, U(2,2))
-  B(2,2) = CMPLX(A(2,2), ZERO, K)
+  IF (A(2,2) .GT. ZERO) THEN
+     Z = CONJG(B(2,2)) / A(2,2)
+     U(2,1) = CMUL(Z, U(2,1))
+     U(2,2) = CMUL(Z, U(2,2))
+     B(2,2) = CMPLX(A(2,2), ZERO, K)
+  END IF
 
   ! recompute the norm of the second column
   IF (A(2,2) .EQ. ZERO) THEN
