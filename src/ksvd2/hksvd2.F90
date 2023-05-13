@@ -155,7 +155,12 @@
   CASE (1)
      ! [ x 0 ]
      ! [ 0 0 ]
-     U(1,1) = CONJG(B(1,1)) / A(1,1)
+     IF (A(1,1) .GT. ZERO) THEN
+        U(1,1) = CONJG(B(1,1)) / A(1,1)
+     ELSE ! should never happen
+        INFO = L
+        RETURN
+     END IF
      U(2,2) = CMPLX(SIGN(ONE, REAL(B(2,2))), ZERO, K)
      S(1) = A(1,1)
      S(2) = ZERO
@@ -164,7 +169,12 @@
      ! [ x 0 ]
      U(1,1) = CZERO
      U(2,1) = CMPLX(SIGN(ONE, REAL(B(1,2))), ZERO, K)
-     U(1,2) = CONJG(B(2,1)) / A(2,1)
+     IF (A(2,1) .GT. ZERO) THEN
+        U(1,2) = CONJG(B(2,1)) / A(2,1)
+     ELSE ! should never happen
+        INFO = L
+        RETURN
+     END IF
      U(2,2) = CZERO
      S(1) = A(2,1)
      S(2) = ZERO
@@ -175,7 +185,12 @@
   CASE (4)
      ! [ 0 x ]
      ! [ 0 0 ]
-     U(1,1) = CONJG(B(1,2)) / A(1,2)
+     IF (A(1,2) .GT. ZERO) THEN
+        U(1,1) = CONJG(B(1,2)) / A(1,2)
+     ELSE ! should never happen
+        INFO = L
+        RETURN
+     END IF
      U(2,2) = CMPLX(SIGN(ONE, REAL(B(2,1))), ZERO, K)
      V(1,1) = CZERO
      V(2,1) = CONE
@@ -190,8 +205,18 @@
   CASE (6)
      ! [ 0 x ]
      ! [ x 0 ]
-     U(1,1) = CONJG(B(1,2)) / A(1,2)
-     U(2,2) = CONJG(B(2,1)) / A(2,1)
+     IF (A(1,2) .GT. ZERO) THEN
+        U(1,1) = CONJG(B(1,2)) / A(1,2)
+     ELSE ! should never happen
+        INFO = L
+        RETURN
+     END IF
+     IF (A(2,1) .GT. ZERO) THEN
+        U(2,2) = CONJG(B(2,1)) / A(2,1)
+     ELSE ! should never happen
+        INFO = L
+        RETURN
+     END IF
      V(1,1) = CZERO
      V(2,1) = CONE
      V(1,2) = CONE
@@ -219,7 +244,12 @@
      ! [ 0 x ]
      U(1,1) = CZERO
      U(2,1) = CMPLX(SIGN(ONE, REAL(B(1,1))), ZERO, K)
-     U(1,2) = CONJG(B(2,2)) / A(2,2)
+     IF (A(2,2) .GT. ZERO) THEN
+        U(1,2) = CONJG(B(2,2)) / A(2,2)
+     ELSE ! should never happen
+        INFO = L
+        RETURN
+     END IF
      U(2,2) = CZERO
      V(1,1) = CZERO
      V(2,1) = CONE
@@ -230,8 +260,18 @@
   CASE (9)
      ! [ x 0 ]
      ! [ 0 x ]
-     U(1,1) = CONJG(B(1,1)) / A(1,1)
-     U(2,2) = CONJG(B(2,2)) / A(2,2)
+     IF (A(1,1) .GT. ZERO) THEN
+        U(1,1) = CONJG(B(1,1)) / A(1,1)
+     ELSE ! should never happen
+        INFO = L
+        RETURN
+     END IF
+     IF (A(2,2) .GT. ZERO) THEN
+        U(2,2) = CONJG(B(2,2)) / A(2,2)
+     ELSE ! should never happen
+        INFO = L
+        RETURN
+     END IF
      S(1) = A(1,1)
      S(2) = A(2,2)
   CASE (10)
@@ -310,11 +350,21 @@
 
   ! [ x 0 ]
   ! [ x 0 ]
-1 Z = CONJG(B(1,1)) / A(1,1)
+1 IF (A(1,1) .GT. ZERO) THEN
+     Z = CONJG(B(1,1)) / A(1,1)
+  ELSE ! should never happen
+     INFO = L
+     RETURN
+  END IF
   U(1,1) = CMUL(Z, U(1,1))
   U(1,2) = CMUL(Z, U(1,2))
   B(1,1) = CMPLX(A(1,1), ZERO, K)
-  Z = CONJG(B(2,1)) / A(2,1)
+  IF (A(2,1) .GT. ZERO) THEN
+     Z = CONJG(B(2,1)) / A(2,1)
+  ELSE ! should never happen
+     INFO = L
+     RETURN
+  END IF
   U(2,1) = CMUL(Z, U(2,1))
   U(2,2) = CMUL(Z, U(2,2))
   B(2,1) = CMPLX(A(2,1), ZERO, K)
@@ -394,11 +444,21 @@
 
   ! [ x x ]
   ! [ 0 0 ]
-2 Z = CONJG(B(1,1)) / A(1,1)
+2 IF (A(1,1) .GT. ZERO) THEN
+     Z = CONJG(B(1,1)) / A(1,1)
+  ELSE ! should never happen
+     INFO = L
+     RETURN
+  END IF
   V(1,1) = CMUL(V(1,1), Z)
   V(2,1) = CMUL(V(2,1), Z)
   B(1,1) = CMPLX(A(1,1), ZERO, K)
-  Z = CONJG(B(1,2)) / A(1,2)
+  IF (A(1,2) .GT. ZERO) THEN
+     Z = CONJG(B(1,2)) / A(1,2)
+  ELSE ! should never happen
+     INFO = L
+     RETURN
+  END IF
   V(1,2) = CMUL(V(1,2), Z)
   V(2,2) = CMUL(V(2,2), Z)
   B(1,2) = CMPLX(A(1,2), ZERO, K)
@@ -478,19 +538,34 @@
 
   ! [ x x ]
   ! [ 0 x ]
-3 Z = CONJG(B(1,1)) / A(1,1)
+3 IF (A(1,1) .GT. ZERO) THEN
+     Z = CONJG(B(1,1)) / A(1,1)
+  ELSE ! should never happen
+     INFO = L
+     RETURN
+  END IF
   U(1,1) = CMUL(Z, U(1,1))
   U(1,2) = CMUL(Z, U(1,2))
   B(1,1) = CMPLX(A(1,1), ZERO, K)
   B(1,2) = CMUL(Z, B(1,2))
   A(1,2) = CR_HYPOT(REAL(B(1,2)), AIMAG(B(1,2)))
-  Z = CONJG(B(1,2)) / A(1,2)
+  IF (A(1,2) .GT. ZERO) THEN
+     Z = CONJG(B(1,2)) / A(1,2)
+  ELSE ! should never happen
+     INFO = L
+     RETURN
+  END IF
   B(1,2) = CMPLX(A(1,2), ZERO, K)
   B(2,2) = CMUL(B(2,2), Z)
   A(2,2) = CR_HYPOT(REAL(B(2,2)), AIMAG(B(2,2)))
   V(1,2) = CMUL(V(1,2), Z)
   V(2,2) = CMUL(V(2,2), Z)
-  Z = CONJG(B(2,2)) / A(2,2)
+  IF (A(2,2) .GT. ZERO) THEN
+     Z = CONJG(B(2,2)) / A(2,2)
+  ELSE ! should never happen
+     INFO = L
+     RETURN
+  END IF
   U(2,1) = CMUL(Z, U(2,1))
   U(2,2) = CMUL(Z, U(2,2))
   B(2,2) = CMPLX(A(2,2), ZERO, K)
