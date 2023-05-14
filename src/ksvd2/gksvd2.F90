@@ -225,6 +225,15 @@
      ! [ x x ]
      GOTO 4
   CASE DEFAULT
+#ifndef NDEBUG
+#ifdef _OPENMP
+     IF (OMP_GET_NUM_THREADS() .LE. 1) THEN
+#endif
+        WRITE (ERROR_UNIT,9) '   I=', REAL(I,K), ',    J=', REAL(J,K)
+#ifdef _OPENMP
+     END IF
+#endif
+#endif
      INFO = L
      RETURN
   END SELECT
@@ -269,7 +278,13 @@
   END IF
 #endif
 #ifndef NDEBUG
-  WRITE (ERROR_UNIT,9) 'TANL=', TANG, ', SECL=', SECG
+#ifdef _OPENMP
+     IF (OMP_GET_NUM_THREADS() .LE. 1) THEN
+#endif
+        WRITE (ERROR_UNIT,9) 'TANL=', TANG, ', SECL=', SECG
+#ifdef _OPENMP
+     END IF
+#endif
 #endif
   ! apply the left Givens rotation
   IF (TANG .GT. ZERO) THEN
@@ -350,7 +365,13 @@
   END IF
 #endif
 #ifndef NDEBUG
-  WRITE (ERROR_UNIT,9) 'TANR=', TANG, ', SECR=', SECG
+#ifdef _OPENMP
+     IF (OMP_GET_NUM_THREADS() .LE. 1) THEN
+#endif
+        WRITE (ERROR_UNIT,9) 'TANR=', TANG, ', SECR=', SECG
+#ifdef _OPENMP
+     END IF
+#endif
 #endif
   ! apply the right Givens rotation
   IF (TANG .GT. ZERO) THEN

@@ -155,12 +155,16 @@
   CASE (1)
      ! [ x 0 ]
      ! [ 0 0 ]
+#ifdef NDEBUG
+     U(1,1) = CONJG(B(1,1)) / A(1,1)
+#else
      IF (A(1,1) .GT. ZERO) THEN
         U(1,1) = CONJG(B(1,1)) / A(1,1)
      ELSE ! should never happen
         INFO = L
         RETURN
      END IF
+#endif
      U(2,2) = CMPLX(SIGN(ONE, REAL(B(2,2))), ZERO, K)
      S(1) = A(1,1)
      S(2) = ZERO
@@ -169,12 +173,16 @@
      ! [ x 0 ]
      U(1,1) = CZERO
      U(2,1) = CMPLX(SIGN(ONE, REAL(B(1,2))), ZERO, K)
+#ifdef NDEBUG
+     U(1,2) = CONJG(B(2,1)) / A(2,1)
+#else
      IF (A(2,1) .GT. ZERO) THEN
         U(1,2) = CONJG(B(2,1)) / A(2,1)
      ELSE ! should never happen
         INFO = L
         RETURN
      END IF
+#endif
      U(2,2) = CZERO
      S(1) = A(2,1)
      S(2) = ZERO
@@ -185,12 +193,16 @@
   CASE (4)
      ! [ 0 x ]
      ! [ 0 0 ]
+#ifdef NDEBUG
+     U(1,1) = CONJG(B(1,2)) / A(1,2)
+#else
      IF (A(1,2) .GT. ZERO) THEN
         U(1,1) = CONJG(B(1,2)) / A(1,2)
      ELSE ! should never happen
         INFO = L
         RETURN
      END IF
+#endif
      U(2,2) = CMPLX(SIGN(ONE, REAL(B(2,1))), ZERO, K)
      V(1,1) = CZERO
      V(2,1) = CONE
@@ -205,6 +217,10 @@
   CASE (6)
      ! [ 0 x ]
      ! [ x 0 ]
+#ifdef NDEBUG
+     U(1,1) = CONJG(B(1,2)) / A(1,2)
+     U(2,2) = CONJG(B(2,1)) / A(2,1)
+#else
      IF (A(1,2) .GT. ZERO) THEN
         U(1,1) = CONJG(B(1,2)) / A(1,2)
      ELSE ! should never happen
@@ -217,6 +233,7 @@
         INFO = L
         RETURN
      END IF
+#endif
      V(1,1) = CZERO
      V(2,1) = CONE
      V(1,2) = CONE
@@ -244,12 +261,16 @@
      ! [ 0 x ]
      U(1,1) = CZERO
      U(2,1) = CMPLX(SIGN(ONE, REAL(B(1,1))), ZERO, K)
+#ifdef NDEBUG
+     U(1,2) = CONJG(B(2,2)) / A(2,2)
+#else
      IF (A(2,2) .GT. ZERO) THEN
         U(1,2) = CONJG(B(2,2)) / A(2,2)
      ELSE ! should never happen
         INFO = L
         RETURN
      END IF
+#endif
      U(2,2) = CZERO
      V(1,1) = CZERO
      V(2,1) = CONE
@@ -260,6 +281,10 @@
   CASE (9)
      ! [ x 0 ]
      ! [ 0 x ]
+#ifdef NDEBUG
+     U(1,1) = CONJG(B(1,1)) / A(1,1)
+     U(2,2) = CONJG(B(2,2)) / A(2,2)
+#else
      IF (A(1,1) .GT. ZERO) THEN
         U(1,1) = CONJG(B(1,1)) / A(1,1)
      ELSE ! should never happen
@@ -272,6 +297,7 @@
         INFO = L
         RETURN
      END IF
+#endif
      S(1) = A(1,1)
      S(2) = A(2,2)
   CASE (10)
@@ -343,6 +369,15 @@
      ! [ x x ]
      GOTO 4
   CASE DEFAULT
+#ifndef NDEBUG
+#ifdef _OPENMP
+     IF (OMP_GET_NUM_THREADS() .LE. 1) THEN
+#endif
+        WRITE (ERROR_UNIT,9) '   I=', REAL(I,K), ',    J=', REAL(J,K)
+#ifdef _OPENMP
+     END IF
+#endif
+#endif
      INFO = L
      RETURN
   END SELECT
@@ -350,21 +385,30 @@
 
   ! [ x 0 ]
   ! [ x 0 ]
-1 IF (A(1,1) .GT. ZERO) THEN
+1 CONTINUE
+#ifdef NDEBUG
+  Z = CONJG(B(1,1)) / A(1,1)
+#else
+  IF (A(1,1) .GT. ZERO) THEN
      Z = CONJG(B(1,1)) / A(1,1)
   ELSE ! should never happen
      INFO = L
      RETURN
   END IF
+#endif
   U(1,1) = CMUL(Z, U(1,1))
   U(1,2) = CMUL(Z, U(1,2))
   B(1,1) = CMPLX(A(1,1), ZERO, K)
+#ifdef NDEBUG
+  Z = CONJG(B(2,1)) / A(2,1)
+#else
   IF (A(2,1) .GT. ZERO) THEN
      Z = CONJG(B(2,1)) / A(2,1)
   ELSE ! should never happen
      INFO = L
      RETURN
   END IF
+#endif
   U(2,1) = CMUL(Z, U(2,1))
   U(2,2) = CMUL(Z, U(2,2))
   B(2,1) = CMPLX(A(2,1), ZERO, K)
@@ -400,7 +444,13 @@
   END IF
 #endif
 #ifndef NDEBUG
-  WRITE (ERROR_UNIT,9) 'TANL=', TANG, ', SECL=', SECG
+#ifdef _OPENMP
+     IF (OMP_GET_NUM_THREADS() .LE. 1) THEN
+#endif
+        WRITE (ERROR_UNIT,9) 'TANL=', TANG, ', SECL=', SECG
+#ifdef _OPENMP
+     END IF
+#endif
 #endif
   ! apply the left Givens rotation
   IF (TANG .GT. ZERO) THEN
@@ -444,21 +494,30 @@
 
   ! [ x x ]
   ! [ 0 0 ]
-2 IF (A(1,1) .GT. ZERO) THEN
+2 CONTINUE
+#ifdef NDEBUG
+  Z = CONJG(B(1,1)) / A(1,1)
+#else
+  IF (A(1,1) .GT. ZERO) THEN
      Z = CONJG(B(1,1)) / A(1,1)
   ELSE ! should never happen
      INFO = L
      RETURN
   END IF
+#endif
   V(1,1) = CMUL(V(1,1), Z)
   V(2,1) = CMUL(V(2,1), Z)
   B(1,1) = CMPLX(A(1,1), ZERO, K)
+#ifdef NDEBUG
+  Z = CONJG(B(1,2)) / A(1,2)
+#else
   IF (A(1,2) .GT. ZERO) THEN
      Z = CONJG(B(1,2)) / A(1,2)
   ELSE ! should never happen
      INFO = L
      RETURN
   END IF
+#endif
   V(1,2) = CMUL(V(1,2), Z)
   V(2,2) = CMUL(V(2,2), Z)
   B(1,2) = CMPLX(A(1,2), ZERO, K)
@@ -494,7 +553,13 @@
   END IF
 #endif
 #ifndef NDEBUG
-  WRITE (ERROR_UNIT,9) 'TANR=', TANG, ', SECR=', SECG
+#ifdef _OPENMP
+     IF (OMP_GET_NUM_THREADS() .LE. 1) THEN
+#endif
+        WRITE (ERROR_UNIT,9) 'TANR=', TANG, ', SECR=', SECG
+#ifdef _OPENMP
+     END IF
+#endif
 #endif
   ! apply the right Givens rotation
   IF (TANG .GT. ZERO) THEN
@@ -538,12 +603,17 @@
 
   ! [ x x ]
   ! [ 0 x ]
-3 IF (A(1,1) .GT. ZERO) THEN
+3 CONTINUE
+#ifdef NDEBUG
+  Z = CONJG(B(1,1)) / A(1,1)
+#else
+  IF (A(1,1) .GT. ZERO) THEN
      Z = CONJG(B(1,1)) / A(1,1)
   ELSE ! should never happen
      INFO = L
      RETURN
   END IF
+#endif
   U(1,1) = CMUL(Z, U(1,1))
   U(1,2) = CMUL(Z, U(1,2))
   B(1,1) = CMPLX(A(1,1), ZERO, K)
@@ -551,9 +621,8 @@
   A(1,2) = CR_HYPOT(REAL(B(1,2)), AIMAG(B(1,2)))
   IF (A(1,2) .GT. ZERO) THEN
      Z = CONJG(B(1,2)) / A(1,2)
-  ELSE ! should never happen
-     INFO = L
-     RETURN
+  ELSE ! can it ever happen?
+     Z = CONE
   END IF
   B(1,2) = CMPLX(A(1,2), ZERO, K)
   B(2,2) = CMUL(B(2,2), Z)
@@ -562,9 +631,8 @@
   V(2,2) = CMUL(V(2,2), Z)
   IF (A(2,2) .GT. ZERO) THEN
      Z = CONJG(B(2,2)) / A(2,2)
-  ELSE ! should never happen
-     INFO = L
-     RETURN
+  ELSE ! can it ever happen?
+     Z = CMPLX(SIGN(ONE, REAL(B(2,2))), ZERO, K)
   END IF
   U(2,1) = CMUL(Z, U(2,1))
   U(2,2) = CMUL(Z, U(2,2))
@@ -645,17 +713,21 @@
   END IF
 
   ! make B(1,1) real and non-negative
+#ifdef NDEBUG
+  Z = CONJG(B(1,1)) / A(1,1)
+#else
   IF (A(1,1) .GT. ZERO) THEN
      Z = CONJG(B(1,1)) / A(1,1)
-     U(1,1) = CMUL(Z, U(1,1))
-     U(1,2) = CMUL(Z, U(1,2))
-     B(1,1) = CMPLX(A(1,1), ZERO, K)
-     B(1,2) = CMUL(Z, B(1,2))
-     A(1,2) = CR_HYPOT(REAL(B(1,2)), AIMAG(B(1,2)))
   ELSE ! should never happen
      INFO = L
      RETURN
   END IF
+#endif
+  U(1,1) = CMUL(Z, U(1,1))
+  U(1,2) = CMUL(Z, U(1,2))
+  B(1,1) = CMPLX(A(1,1), ZERO, K)
+  B(1,2) = CMUL(Z, B(1,2))
+  A(1,2) = CR_HYPOT(REAL(B(1,2)), AIMAG(B(1,2)))
 
   ! make B(2,1) real and non-negative
   IF (A(2,1) .GT. ZERO) THEN
