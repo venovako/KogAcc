@@ -32,5 +32,6 @@ On Windows, run ``nmake help`` in the Intel oneAPI command prompt.
 
 ### Example
 
-A small complex input matrix, outputs for various strategies, and GIF animations are [here](https://venovako.eu/z84/).
+The real variants are more accurate than the complex ones.
+That being said, a small complex input matrix, outputs for various strategies, and GIF animations are [here](https://venovako.eu/z84/).
 Please download them sparingly!
