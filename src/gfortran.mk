@@ -14,14 +14,14 @@ FCFLAGS += -fcheck=all,no-recursion -finit-local-zero -finit-real=snan -finit-de
 endif # ?NDEBUG
 FCFLAGS += -pedantic -Wall -Wextra -Wno-array-temporaries -Wno-compare-reals -Wno-c-binding-type
 ifndef INTRIN
-# gfortran might support IEEE_FMA from the version 13 onwards
+# gfortran supports IEEE_FMA from the version 13 onwards
 ifeq ($(shell if [ `$(FC) -dumpversion | cut -f1 -d.` -ge 13 ]; then echo i; fi),i)
 INTRIN=85
 else # GCC < 13
 ifeq ($(findstring 86,$(ARCH)),86)
 INTRIN=42
 else # !x86
-# TODO: check if REAL128 == long double
+# On non-Intel architectures, assumes that REAL128 == long double, what might not be always true!
 INTRIN=138
 endif # ?x86
 endif # ?GCC

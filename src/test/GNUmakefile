@@ -77,7 +77,7 @@
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o wrnd.exe ../../../src/test/wrnd.f90
 
 ../bin/$(PLAT)/srnd2p.exe: test/srnd2t.F90 test/grnd2t.F90 test/grnd2u.F90 ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -DUPPER=2 -o srnd2p.exe ../../../src/test/srnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux $(LAPACK)
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -DUPPER=1 -o srnd2p.exe ../../../src/test/srnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux $(LAPACK)
 
 ../bin/$(PLAT)/srnd2u.exe: test/srnd2t.F90 test/grnd2t.F90 test/grnd2u.F90 ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -DUPPER=0 -o srnd2u.exe ../../../src/test/srnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux $(LAPACK)
@@ -89,7 +89,7 @@
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o crnd2g.exe ../../../src/test/crnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux
 
 ../bin/$(PLAT)/drnd2p.exe: test/drnd2t.F90 test/grnd2t.F90 ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libfaux.a test/grnd2u.F90 $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -DUPPER=2 -o drnd2p.exe ../../../src/test/drnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux $(LAPACK)
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -DUPPER=1 -o drnd2p.exe ../../../src/test/drnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux $(LAPACK)
 
 ../bin/$(PLAT)/drnd2u.exe: test/drnd2t.F90 test/grnd2t.F90 ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libfaux.a test/grnd2u.F90 $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -DUPPER=0 -o drnd2u.exe ../../../src/test/drnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux $(LAPACK)
