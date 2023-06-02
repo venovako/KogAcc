@@ -1,32 +1,28 @@
   ! \tan(2\varphi)
-  IF (X .EQ. ZERO) THEN
-     T = X
+  IF ((X .EQ. ZERO) .OR. (Y .EQ. ZERO)) THEN
+     T = ZERO
+  ELSE IF (X .EQ. Y) THEN
+     T = (TWO * X) * Y
   ELSE IF (Y .EQ. ONE) THEN
      T = TWO / X
   ELSE IF (X .EQ. ONE) THEN
-     T = TWO * Y
 #ifdef USE_IEEE_INTRINSIC
-     T = T / IEEE_FMA(-Y, Y, TWO)
+     T = IEEE_FMA(-Y, Y, TWO)
 #else
-     T = T / (TWO - Y * Y)
+     T = TWO - Y * Y
 #endif
-  ELSE IF (X .EQ. Y) THEN
-     T = (TWO * X) * X
-  ELSE IF (X .LT. Y) THEN
-     T = (TWO * X) * Y
+     T = (TWO * Y) / T
+  ELSE ! the general case
 #ifdef USE_IEEE_INTRINSIC
-     T = T / IEEE_FMA(X - Y, X + Y, ONE)
+     T = IEEE_FMA(X - Y, X + Y, ONE)
 #else
-     T = T / ((X - Y) * (X + Y) + ONE)
+     T = (X - Y) * (X + Y) + ONE
 #endif
-  ELSE ! X > Y
-     T = (TWO * Y) * X
-     ! a possible underflow of X-Y is safe so it does not have to be avoided
-#ifdef USE_IEEE_INTRINSIC
-     T = T / IEEE_FMA(X - Y, X + Y, ONE)
-#else
-     T = T / ((X - Y) * (X + Y) + ONE)
-#endif
+     IF (ABS(T) .GT. ONE) THEN
+        T = MIN(X, Y) * ((TWO * MAX(X, Y)) / T)
+     ELSE ! |T| <= 1
+        T = MAX(X, Y) * ((TWO * MIN(X, Y)) / T)
+     END IF
   END IF
 #ifndef NDEBUG
 #ifdef _OPENMP
