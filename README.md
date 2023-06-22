@@ -36,9 +36,3 @@ On Linux or macOS, run ``make help`` (GNU make assumed) in the ``src`` subdirect
 On antoher \*nix OS where GNU `make` is not the default one, run ``gmake help`` instead.
 
 On Windows, run ``nmake help`` in the Intel oneAPI command prompt.
-
-### Example
-
-The real variants are more accurate than the complex ones.
-That said, a small complex input matrix, outputs for various strategies, and GIF animations are [here](https://venovako.eu/z84/).
-Please download them sparingly!
