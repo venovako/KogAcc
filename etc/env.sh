@@ -1,4 +1,22 @@
 #!/bin/bash
+if [ -n "${TSC_FREQ_kHZ}" ]
+then
+    unset TSC_FREQ_kHZ
+fi
+# A dirty hack to get the TSC frequency on KNLs (works on CentOS & Oracle Linux 7)...
+if [ `if [ -r /etc/redhat-release ]; then grep -c 'release 7' /etc/redhat-release; else echo 0; fi` = 1 ]
+then
+    TSC_FREQ_kHZ=`dmesg | grep 'TSC clocksource calibration' | cut -d':' -f3 | cut -d' ' -f2 | sed 's/\.//g'`
+else
+    TSC_FREQ_kHZ=0
+fi
+if [ "${TSC_FREQ_kHZ}" = "0" ]
+then
+    export TSC_FREQ_HZ=0
+else
+    export TSC_FREQ_HZ=${TSC_FREQ_kHZ}000
+fi
+unset TSC_FREQ_kHZ
 if [ -n "${KMP_DETERMINISTIC_REDUCTION}" ]
 then
     unset KMP_DETERMINISTIC_REDUCTION
