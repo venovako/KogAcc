@@ -1,58 +1,164 @@
+  EX = EXPONENT(X) - EXPONENT(T)
+  FX = FRACTION(X) / FRACTION(T)
+#ifndef NDEBUG
+  EX = EX + EXPONENT(FX)
+  FX = FRACTION(FX)
+#endif
+  TANP = SCALE(FX, EX) ! X/T
+  EY = EXPONENT(Y) - EXPONENT(T)
+  FY = FRACTION(Y) / FRACTION(T)
+#ifndef NDEBUG
+  EY = EY + EXPONENT(FY)
+  FY = FRACTION(FY)
+#endif
+  SECP = SCALE(FY, EY) ! Y/T
+
   ! \tan(2\varphi)
-  IF ((X .EQ. ZERO) .OR. (Y .EQ. ZERO)) THEN
-     T = ZERO
-  ELSE IF (X .EQ. Y) THEN
-     T = (TWO * X) * Y
-  ELSE IF (Y .EQ. ONE) THEN
-     T = TWO / X
-  ELSE IF (X .EQ. ONE) THEN
-#ifdef USE_IEEE_INTRINSIC
-     T = IEEE_FMA(-Y, Y, TWO)
-#else
-     T = TWO - Y * Y
+  IF ((EX .EQ. EY) .AND. (FX .EQ. FY)) THEN
+     ET = (1 + EX) + EY
+     FT = FX * FY
+#ifndef NDEBUG
+     ET = ET + EXPONENT(FT)
+     FT = FRACTION(FT)
 #endif
-     T = (TWO * Y) / T
+     TANF = SCALE(FT, ET)
+  ELSE IF (SECP .EQ. ONE) THEN
+     ET = 1 - EX
+     FT = ONE / FX
+#ifndef NDEBUG
+     ET = ET + EXPONENT(FT)
+     FT = FRACTION(FT)
+#endif
+     TANF = SCALE(FT, ET)
+  ELSE IF (TANP .EQ. ONE) THEN
+#ifdef USE_IEEE_INTRINSIC
+     TANF = IEEE_FMA(-SECP, SECP, TWO)
+#else
+     TANF = TWO - SECP * SECP
+#endif
+     ET = EXPONENT(TANF)
+     FT = FRACTION(TANF)
+     ET = (1 + EY) - ET
+     FT = FY / FT
+#ifndef NDEBUG
+     ET = ET + EXPONENT(FT)
+     FT = FRACTION(FT)
+#endif
+     TANF = SCALE(FT, ET)
   ELSE ! the general case
+     IF ((EX .LT. EY) .OR. ((EX .EQ. EY) .AND. (FX .LE. FY))) THEN
+        ET = EX - EY
 #ifdef USE_IEEE_INTRINSIC
-     T = IEEE_FMA(X - Y, X + Y, ONE)
+        TANF = IEEE_FMA(SCALE(IEEE_FMA(SCALE(ONE, ET), FX, -FY), EY), SCALE(IEEE_FMA(SCALE(ONE, ET), FX, FY), EY), ONE)
 #else
-     T = (X - Y) * (X + Y) + ONE
+        TANF = SCALE(SCALE(ONE, ET) * FX - FY, EY) * SCALE(SCALE(ONE, ET) * FX + FY, EY) + ONE
 #endif
-     IF (ABS(T) .GT. ONE) THEN
-        T = MIN(X, Y) * ((TWO * MAX(X, Y)) / T)
-     ELSE ! |T| <= 1
-        T = MAX(X, Y) * ((TWO * MIN(X, Y)) / T)
+        ET = EXPONENT(TANF)
+        FT = FRACTION(TANF)
+        IF (ABS(TANF) .GT. ONE) THEN
+           ET = (1 + EY) - ET
+           FT = FY / FT
+#ifndef NDEBUG
+           ET = ET + EXPONENT(FT)
+           FT = FRACTION(FT)
+#endif
+           ET = ET + EX
+           FT = FT * FX
+#ifndef NDEBUG
+           ET = ET + EXPONENT(FT)
+           FT = FRACTION(FT)
+#endif
+           TANF = SCALE(FT, ET)
+        ELSE IF (TANF .NE. ZERO) THEN
+           ET = (1 + EX) - ET
+           FT = FX / FT
+#ifndef NDEBUG
+           ET = ET + EXPONENT(FT)
+           FT = FRACTION(FT)
+#endif
+           ET = ET + EY
+           FT = FT * FY
+#ifndef NDEBUG
+           ET = ET + EXPONENT(FT)
+           FT = FRACTION(FT)
+#endif
+           TANF = SCALE(FT, ET)
+        ELSE ! TANF .EQ. ZERO
+           TANF = ONE / TANF
+        END IF
+     ELSE ! X > Y
+        ET = EY - EX
+#ifdef USE_IEEE_INTRINSIC
+        TANF = IEEE_FMA(SCALE(IEEE_FMA(SCALE(-ONE, ET), FY, FX), EX), SCALE(IEEE_FMA(SCALE(ONE, ET), FY, FX), EX), ONE)
+#else
+        TANF = SCALE(SCALE(-ONE, ET) * FY + FX, EX) * SCALE(SCALE(ONE, ET) * FY + FX, EX) + ONE
+#endif
+        ET = EXPONENT(TANF)
+        FT = FRACTION(TANF)
+        IF (ABS(TANF) .GT. ONE) THEN
+           ET = (1 + EX) - ET
+           FT = FX / FT
+#ifndef NDEBUG
+           ET = ET + EXPONENT(FT)
+           FT = FRACTION(FT)
+#endif
+           ET = ET + EY
+           FT = FT * FY
+#ifndef NDEBUG
+           ET = ET + EXPONENT(FT)
+           FT = FRACTION(FT)
+#endif
+           TANF = SCALE(FT, ET)
+        ELSE IF (TANF .NE. ZERO) THEN
+           ET = (1 + EY) - ET
+           FT = FY / FT
+#ifndef NDEBUG
+           ET = ET + EXPONENT(FT)
+           FT = FRACTION(FT)
+#endif
+           ET = ET + EX
+           FT = FT * FX
+#ifndef NDEBUG
+           ET = ET + EXPONENT(FT)
+           FT = FRACTION(FT)
+#endif
+           TANF = SCALE(FT, ET)
+        ELSE ! TANF .EQ. ZERO
+           TANF = ONE / TANF
+        END IF
      END IF
   END IF
 #ifndef NDEBUG
 #ifdef _OPENMP
   IF (OMP_GET_NUM_THREADS() .LE. 1) THEN
 #endif
-     WRITE (ERROR_UNIT,9) 'TG2F=', T, ',ROOTH=', ROOTH
+     WRITE (ERROR_UNIT,9) 'TG2F=', TANF, ',ROOTH=', ROOTH
 #ifdef _OPENMP
   END IF
 #endif
 #endif
 
   ! the functions of \varphi
-  IF (T .EQ. ZERO) THEN
-     TANF = SIGN(ZERO, T)
+  IF (TANF .EQ. ZERO) THEN
+     TANF = SIGN(ZERO, TANF)
      SECF = ONE
-  ELSE IF (.NOT. (ABS(T) .LE. H)) THEN
-     TANF = SIGN(ONE, T)
+  ELSE IF (.NOT. (ABS(TANF) .LE. H)) THEN
+     TANF = SIGN(ONE, TANF)
      SECF = ROOT2
-  ELSE ! finite non-zero T
+  ELSE ! finite non-zero
+     ! SECF = sec(2\varphi)
 #ifdef CR_MATH
-     TANF = CR_HYPOT(T, ONE)
+     SECF = CR_HYPOT(TANF, ONE)
 #else
-     T = SIGN(MIN(ABS(T), ROOTH), T)
+     SECF = SIGN(MIN(ABS(TANF), ROOTH), TANF)
 #ifdef USE_IEEE_INTRINSIC
-     TANF = SQRT(IEEE_FMA(T, T, ONE))
+     SECF = SQRT(IEEE_FMA(SECF, SECF, ONE))
 #else
-     TANF = SQRT(T * T + ONE)
+     SECF = SQRT(SECF * SECF + ONE)
 #endif
 #endif
-     TANF = T / (ONE + TANF)
+     TANF = TANF / (ONE + SECF)
+     ! SECF = sec(\varphi)
 #ifdef CR_MATH
      SECF = CR_HYPOT(TANF, ONE)
 #else
@@ -79,9 +185,9 @@
 
   ! the functions of \psi
 #ifdef USE_IEEE_INTRINSIC
-  TANP = IEEE_FMA(Y, TANF, X)
+  TANP = IEEE_FMA(Y, TANF, X) / T
 #else
-  TANP = Y * TANF + X
+  TANP = (Y * TANF + X) / T
 #endif
 #ifdef CR_MATH
   SECP = CR_HYPOT(TANP, ONE)

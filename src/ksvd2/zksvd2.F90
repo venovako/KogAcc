@@ -65,9 +65,9 @@ SUBROUTINE ZKSVD2(G, U, V, S, INFO)
   INTEGER, INTENT(INOUT) :: INFO
 
   COMPLEX(KIND=K) :: B(2,2), Z
-  REAL(KIND=K) :: A(2,2), X, Y, T
+  REAL(KIND=K) :: A(2,2), T, X, Y, FT, FX, FY
   REAL(KIND=K) :: TANG, SECG, TANF, SECF, TANP, SECP
-  INTEGER :: I, J, L
+  INTEGER :: I, J, L, ET, EX, EY
 
 #include "hksvd2.F90"
 #ifndef NDEBUG

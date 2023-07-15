@@ -648,7 +648,13 @@
 #endif
 
   ! execute the upper-triangular SVD procedure
+  IF ((X .GE. TINY(X)) .AND. (Y .GE. TINY(Y))) THEN
+#include "gksvdn.F90"
+  ELSE ! underflow of X or Y
+     X = B(1,2)
+     Y = B(2,2)
 #include "gksvdu.F90"
+  END IF
 
   ! T = TAN
   ! X = COS
