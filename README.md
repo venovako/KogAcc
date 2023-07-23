@@ -9,7 +9,7 @@ A portable Kogbetliantz-type SVD for general matrices.
 
 A recent Linux, macOS, or Windows is needed, and the oneAPI Intel Math Kernel Library (MKL) is assumed to be installed on x86_64 platforms when the GNU or the Intel compilers are used.
 
-The Intel's ``ifx`` Fortran compiler (e.g., 2023.1+) is recommended for testing the 2x2 complex SVD on random matrices; otherwise, ``ifort`` (e.g., 2021.9+) might be used as well.
+The Intel's ``ifx`` Fortran compiler (e.g., 2023.2+) is recommended for testing the 2x2 complex SVD on random matrices; otherwise, ``ifort`` (e.g., 2021.10+) might be used as well.
 The GNU ``gfortran`` (e.g., 13+) requires further testing, though it should work in general.
 Several routines and executables require having quadruple precision (``KIND=REAL128``) fully supported by the compiler, and therefore not all popular free compilers have been tested.
 
