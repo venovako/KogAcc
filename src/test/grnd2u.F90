@@ -13,6 +13,12 @@
      ELSE ! should never happen
         CALL STHALT('UPPER')
      END IF
+#if (UPPER == 2)
+     T = HUGE(T)
+     M = EXPONENT(T)
+     G(1,1) = SCALE(FRACTION(G(1,1)), M)
+     IF (G(1,1) .GE. T) G(1,1) = SCALE(FRACTION(ONE), M)
+#endif
 #endif
      ! use G(2,1) to determine the signs of the other three elements of G
      M = EXPONENT(G(2,1))
