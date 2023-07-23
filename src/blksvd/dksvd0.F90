@@ -91,14 +91,14 @@ SUBROUTINE DKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
   END INTERFACE
 #ifdef ANIMATE
   INTERFACE
-     FUNCTION VN_MTXVIS_FRAME(ctx, A, ldA) BIND(C,name='vn_mtxvis_frame')
-       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_ptr, c_double
+     FUNCTION PVN_RVIS_FRAME(ctx, A, ldA) BIND(C,name='pvn_rvis_frame_')
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_int, c_size_t, c_ptr, c_double
        IMPLICIT NONE
-       TYPE(c_ptr), INTENT(IN), VALUE :: ctx
-       INTEGER, INTENT(IN), VALUE :: ldA
+       TYPE(c_ptr), INTENT(IN), TARGET :: ctx
+       INTEGER(KIND=c_size_t), INTENT(IN), TARGET :: ldA
        REAL(KIND=c_double), INTENT(IN), TARGET :: A(ldA,*)
-       INTEGER :: VN_MTXVIS_FRAME
-     END FUNCTION VN_MTXVIS_FRAME
+       INTEGER(KIND=c_int) :: PVN_RVIS_FRAME
+     END FUNCTION PVN_RVIS_FRAME
   END INTERFACE
 #endif
 
@@ -118,8 +118,9 @@ SUBROUTINE DKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
   INTEGER :: MRQSTP, I, J, L, M, M_2, NP, NS, P, Q, T, JS, GS, US, VS, WV, WS, STP, XSG, XSU, XSV
   LOGICAL :: LOMP, LUSID, LUACC, LVSID, LVACC
 #ifdef ANIMATE
-  TYPE(c_ptr) :: CTX
+  TYPE(c_ptr), TARGET :: CTX
   TYPE(c_ptr), POINTER :: CP
+  INTEGER(KIND=c_size_t), TARGET :: LDF
 #endif
 
 #define LANGO DLANGO

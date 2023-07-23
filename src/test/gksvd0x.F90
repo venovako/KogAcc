@@ -98,8 +98,12 @@
   END IF
 
 #ifdef ANIMATE
-  CTX = C_NULL_PTR
-  I = VN_MTXVIS_START(CTX, BN, 12, M, M, ANIMATE, ANIMATE, LEN_TRIM(BN))
+  JOB = 3
+  I = LEN_TRIM(BN) + 1
+  BN(I:I) = C_NULL_CHAR
+  CTX = PVN_RVIS_START(M, M, JOB, BN)
+  BN(I:I) = ' '
+  BN = TRIM(BN)
   CALL C_F_POINTER(C_LOC(SV), CP)
   CP = CTX
   CP => NULL()
@@ -122,7 +126,7 @@
   ELSE IF (INFO .EQ. HUGE(INFO)) THEN
      WRITE (ERROR_UNIT,*) 'NO CONVERGENCE'
   ELSE ! all OK
-     WRITE (ERROR_UNIT,*) 'output basename: ', TRIM(BN)
+     WRITE (ERROR_UNIT,*) 'SUCCESS'
   END IF
 
   DEALLOCATE(O)
@@ -138,6 +142,11 @@
   DEALLOCATE(U)
 
 #ifdef ANIMATE
-  IF (I .EQ. 0) I = VN_MTXVIS_STOP(CTX)
-  CTX = C_NULL_PTR
+  IF (C_ASSOCIATED(CTX)) THEN
+     M = ANIMATE
+     JOB = 8
+     BN(I:I) = C_NULL_CHAR
+     I = INT(PVN_RVIS_STOP(CTX, M, M, JOB, BN))
+     CTX = C_NULL_PTR
+  END IF
 #endif

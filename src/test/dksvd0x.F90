@@ -66,22 +66,23 @@ PROGRAM DKSVD0X
 
 #ifdef ANIMATE
   INTERFACE
-     FUNCTION VN_MTXVIS_START(ctx, fname, act, mA, nA, sx, sy, fname_len) BIND(C,name='vn_mtxvis_start')
-       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_ptr, c_char
+     FUNCTION PVN_RVIS_START(mA, nA, act, fname) BIND(C,name='pvn_rvis_start_')
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_int, c_ptr, c_char
        IMPLICIT NONE
-       TYPE(c_ptr), INTENT(OUT), TARGET :: ctx
-       INTEGER, INTENT(IN), VALUE :: act, mA, nA, sx, sy, fname_len
+       INTEGER(KIND=c_int), INTENT(IN), TARGET :: mA, nA, act
        CHARACTER(KIND=c_char), INTENT(IN), TARGET :: fname(*)
-       INTEGER :: VN_MTXVIS_START
-     END FUNCTION VN_MTXVIS_START
+       TYPE(c_ptr) :: PVN_RVIS_START
+     END FUNCTION PVN_RVIS_START
   END INTERFACE
   INTERFACE
-     FUNCTION VN_MTXVIS_STOP(ctx) BIND(C,name='vn_mtxvis_stop')
-       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_ptr
+     FUNCTION PVN_RVIS_STOP(ctx, sx, sy, bpp, cmap) BIND(C,name='pvn_rvis_stop_')
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_int, c_ptr, c_char
        IMPLICIT NONE
-       TYPE(c_ptr), INTENT(IN), VALUE :: ctx
-       INTEGER :: VN_MTXVIS_STOP
-     END FUNCTION VN_MTXVIS_STOP
+       TYPE(c_ptr), INTENT(IN), TARGET :: ctx
+       INTEGER(KIND=c_int), INTENT(IN), TARGET :: sx, sy, bpp
+       CHARACTER(KIND=c_char), INTENT(IN), TARGET :: cmap(*)
+       INTEGER(KIND=c_int) :: PVN_RVIS_STOP
+     END FUNCTION PVN_RVIS_STOP
   END INTERFACE
 #endif
 
@@ -89,7 +90,8 @@ PROGRAM DKSVD0X
   CHARACTER(LEN=CLAL), TARGET :: BN
   INTEGER(KIND=INT64) :: C0, C1, CR
   REAL(KIND=REAL128) :: T
-  INTEGER :: JOB, M, N, LDG, LDU, LDV, INFO, I, J, L, S, P
+  INTEGER, TARGET :: JOB, M
+  INTEGER :: N, LDG, LDU, LDV, INFO, I, J, L, S, P
   REAL(KIND=K), ALLOCATABLE, TARGET :: G(:,:)
   !DIR$ ATTRIBUTES ALIGN: 64:: G
   REAL(KIND=K), ALLOCATABLE :: U(:,:)

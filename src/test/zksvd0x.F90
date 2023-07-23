@@ -65,22 +65,23 @@ PROGRAM ZKSVD0X
 
 #ifdef ANIMATE
   INTERFACE
-     FUNCTION VN_CMPLXVIS_START(ctx, fname, act, mA, nA, sx, sy, fname_len) BIND(C,name='vn_cmplxvis_start')
-       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_ptr, c_char
+     FUNCTION PVN_CVIS_START(mA, nA, act, rname, iname) BIND(C,name='pvn_cvis_start_')
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_int, c_ptr, c_char
        IMPLICIT NONE
-       TYPE(c_ptr), INTENT(OUT), TARGET :: ctx
-       INTEGER, INTENT(IN), VALUE :: act, mA, nA, sx, sy, fname_len
-       CHARACTER(KIND=c_char), INTENT(IN), TARGET :: fname(*)
-       INTEGER :: VN_CMPLXVIS_START
-     END FUNCTION VN_CMPLXVIS_START
+       INTEGER(KIND=c_int), INTENT(IN), TARGET :: mA, nA, act
+       CHARACTER(KIND=c_char), INTENT(IN), TARGET :: rname(*), iname(*)
+       TYPE(c_ptr) :: PVN_CVIS_START
+     END FUNCTION PVN_CVIS_START
   END INTERFACE
   INTERFACE
-     FUNCTION VN_CMPLXVIS_STOP(ctx) BIND(C,name='vn_cmplxvis_stop')
-       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_ptr
+     FUNCTION PVN_CVIS_STOP(ctx, sx, sy, rbpp, rcmap, ibpp, icmap) BIND(C,name='pvn_cvis_stop_')
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_int, c_ptr, c_char
        IMPLICIT NONE
-       TYPE(c_ptr), INTENT(IN), VALUE :: ctx
-       INTEGER :: VN_CMPLXVIS_STOP
-     END FUNCTION VN_CMPLXVIS_STOP
+       TYPE(c_ptr), INTENT(IN), TARGET :: ctx
+       INTEGER(KIND=c_int), INTENT(IN), TARGET :: sx, sy, rbpp, ibpp
+       CHARACTER(KIND=c_char), INTENT(IN), TARGET :: rcmap(*), icmap(*)
+       INTEGER(KIND=c_int) :: PVN_CVIS_STOP
+     END FUNCTION PVN_CVIS_STOP
   END INTERFACE
 #endif
 
@@ -88,7 +89,8 @@ PROGRAM ZKSVD0X
   CHARACTER(LEN=CLAL) :: BN
   INTEGER(KIND=INT64) :: C0, C1, CR
   REAL(KIND=REAL128) :: T
-  INTEGER :: JOB, M, N, LDG, LDU, LDV, INFO, I, J, L, S, P
+  INTEGER, TARGET :: JOB, M
+  INTEGER :: N, LDG, LDU, LDV, INFO, I, J, L, S, P
   COMPLEX(KIND=K), ALLOCATABLE, TARGET :: G(:,:)
   !DIR$ ATTRIBUTES ALIGN: 64:: G
   COMPLEX(KIND=K), ALLOCATABLE :: U(:,:)
@@ -102,6 +104,7 @@ PROGRAM ZKSVD0X
   INTEGER, ALLOCATABLE :: O(:)
   !DIR$ ATTRIBUTES ALIGN: 64:: O
 #ifdef ANIMATE
+  CHARACTER(LEN=CLAL) :: CN
   TYPE(c_ptr), TARGET :: CTX
   TYPE(c_ptr), POINTER :: CP
 #endif

@@ -54,7 +54,8 @@
   CALL C_F_POINTER(C_LOC(SV), CP)
   CTX = CP
   CP => NULL()
-  IF (C_ASSOCIATED(CTX)) L = VN_CMPLXVIS_FRAME(CTX, G, LDG)
+  LDF = INT(LDG, c_size_t)
+  IF (C_ASSOCIATED(CTX)) L = INT(PVN_CVIS_FRAME(CTX, G, LDF))
 #endif
 
   IF (N .EQ. 1) THEN
@@ -79,7 +80,7 @@
         W(3) = ONE
      END IF
 #ifdef ANIMATE
-     IF (C_ASSOCIATED(CTX)) L = VN_CMPLXVIS_FRAME(CTX, G, LDG)
+     IF (C_ASSOCIATED(CTX)) L = INT(PVN_CVIS_FRAME(CTX, G, LDF))
 #endif
      RETURN
   END IF
@@ -284,7 +285,7 @@
      FLUSH(OUTPUT_UNIT)
 #endif
 #ifdef ANIMATE
-     IF (C_ASSOCIATED(CTX)) L = VN_CMPLXVIS_FRAME(CTX, G, LDG)
+     IF (C_ASSOCIATED(CTX)) L = INT(PVN_CVIS_FRAME(CTX, G, LDF))
 #endif
 
      ! build the current step's pairs
@@ -610,7 +611,7 @@
   FLUSH(OUTPUT_UNIT)
 #endif
 #ifdef ANIMATE
-  IF (C_ASSOCIATED(CTX)) L = VN_CMPLXVIS_FRAME(CTX, G, LDG)
+  IF (C_ASSOCIATED(CTX)) L = INT(PVN_CVIS_FRAME(CTX, G, LDF))
 #endif
 
   ! extract SV from G with a safe backscaling
@@ -680,5 +681,5 @@
   W(5) = REAL(US, K)
   W(6) = REAL(VS, K)
 #ifdef ANIMATE
-  IF (C_ASSOCIATED(CTX)) L = VN_CMPLXVIS_FRAME(CTX, G, LDG)
+  IF (C_ASSOCIATED(CTX)) L = INT(PVN_CVIS_FRAME(CTX, G, LDF))
 #endif

@@ -89,6 +89,18 @@ SUBROUTINE SKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
        INTEGER, INTENT(OUT) :: R(2,P), INFO
      END SUBROUTINE JSTEP
   END INTERFACE
+#ifdef ANIMATE
+  INTERFACE
+     FUNCTION PVN_RVIS_FRAME(ctx, A, ldA) BIND(C,name='pvn_rvis_frame_f_')
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_int, c_size_t, c_ptr, c_float
+       IMPLICIT NONE
+       TYPE(c_ptr), INTENT(IN), TARGET :: ctx
+       INTEGER(KIND=c_size_t), INTENT(IN), TARGET :: ldA
+       REAL(KIND=c_float), INTENT(IN), TARGET :: A(ldA,*)
+       INTEGER(KIND=c_int) :: PVN_RVIS_FRAME
+     END FUNCTION PVN_RVIS_FRAME
+  END INTERFACE
+#endif
 
   INTEGER, PARAMETER :: K = REAL32, USID = 8, UACC = 16, VSID = 32, VACC = 64
   REAL(KIND=K), PARAMETER :: ZERO = 0.0_K, ONE = 1.0_K
@@ -105,6 +117,11 @@ SUBROUTINE SKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
   INTEGER(KIND=INT64) :: TT, TM, SM
   INTEGER :: MRQSTP, I, J, L, M, M_2, NP, NS, P, Q, T, JS, GS, US, VS, WV, WS, STP, XSG, XSU, XSV
   LOGICAL :: LOMP, LUSID, LUACC, LVSID, LVACC
+#ifdef ANIMATE
+  TYPE(c_ptr), TARGET :: CTX
+  TYPE(c_ptr), POINTER :: CP
+  INTEGER(KIND=c_size_t), TARGET :: LDF
+#endif
 
 #define LANGO SLANGO
 #define SCALG SSCALG
@@ -113,7 +130,6 @@ SUBROUTINE SKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
 #define CVGPP SCVGPP
 #define ROTC SROTC
 #define ROTR SROTR
-#undef ANIMATE
 #include "gksvd0.F90"
 #ifndef NDEBUG
 9 FORMAT(A,ES16.9E2)
