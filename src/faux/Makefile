@@ -79,5 +79,5 @@
 ..\obj\$(PLAT)\jstep.obj: faux\jstep.f90 $(MKFS) faux\Makefile
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\jstep.f90
 
-..\obj\$(PLAT)\jsweep.obj: faux\jsweepjs.f90 $(MKFS) faux\Makefile
-	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\jsweepjs.f90 /Fojsweep.obj
+..\obj\$(PLAT)\jsweep.obj: faux\jsweep.f90 $(MKFS) faux\Makefile
+	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /c ..\..\..\src\faux\jsweep.f90

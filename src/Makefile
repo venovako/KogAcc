@@ -53,7 +53,7 @@ all: dirs $(LIBS) $(EXES)
 	@echo $(PLAT)
 
 help:
-	@echo "nmake.exe [FORT=ifort|ifx] [ABI=lp64|ilp64] [NDEBUG=optimization_level] [INTRIN=...] [all|clean|dirs|doc|help]"
+	@echo "nmake.exe [FORT=ifort|ifx] [ABI=lp64|ilp64] [NDEBUG=optimization_level] [INTRIN=...] [ANIMATE=ppe] [all|clean|dirs|doc|help]"
 
 dirs:
 	-md ..\bin\$(PLAT)
