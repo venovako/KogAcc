@@ -1,5 +1,5 @@
-..\lib\$(PLAT)\faux.lib: $(OBJS_FAUX) $(MKFS) faux\Makefile
-	$(AR) $(ARFLAGS) /OUT:$@ $(OBJS_FAUX)
+..\lib\$(PLAT)\faux.lib: $(OBJS_FAUX) $(OBJS_CRF_MATH) $(OBJS_CRD_MATH) $(MKFS) faux\Makefile
+	$(AR) $(ARFLAGS) /OUT:$@ $(OBJS_FAUX) $(OBJS_CRF_MATH) $(OBJS_CRD_MATH)
 
 ..\obj\$(PLAT)\sthalt.obj: faux\sthalt.F90 $(MKFS) faux\Makefile
 	cd ..\obj\$(PLAT) && $(FC) $(FCFLAGS) /fpp /c ..\..\..\src\faux\sthalt.F90

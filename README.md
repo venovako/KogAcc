@@ -23,7 +23,7 @@ Building the documentation requires a recent version of [Doxygen](https://doxyge
 Many routines are documented only rudimentary for now.
 
 The correctly-rounded ``cr_hypot`` and ``cr_hypotf`` functions might optionally be used if provided by, e.g., the [CORE-MATH](https://core-math.gitlabpages.inria.fr) project.
-If their implementation is to be linked with, set the ``CR_MATH`` variable in ``[g]make`` invocation to the cloned ``core-math`` source code directory path.
+If their implementation is to be linked with, set the ``CR_MATH`` variable in ``[g|n]make`` invocation to the cloned ``core-math`` source code directory path.
 Note, ``hypot*_noerrno.c`` files are not provided there but can be easily modified from the corresponding ``hypot*.c`` files by eliminating all references to ``errno``.
 Then, ``hypotf*.c`` in ``src/binary32/hypot`` and ``hypot*.c`` in ``src/binary64/hypot`` subdirectories of the cloned CORE-MATH repository have to be compiled manually (check the paths here in ``src/x86_64.mk``).
 
