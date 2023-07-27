@@ -1,5 +1,5 @@
 ####################################################################
-#  LAPACK make include file.                                       #
+#  LAPACK make include file, modified for IBM XL Fortran.          #
 ####################################################################
 
 SHELL = /bin/bash
@@ -7,7 +7,7 @@ SHELL = /bin/bash
 #  CC is the C compiler, normally invoked with options CFLAGS.
 #
 CC = ibm-clang_r
-CFLAGS = -O3 -DNDEBUG -std=gnu17 -fPIC -fexceptions -ffp-contract=fast -fno-omit-frame-pointer -fopenmp-simd -pthread -march=native #-DUSE_IEEE_INTRINSIC -DWeirdNEC -DLAPACK_ILP64
+CFLAGS = -O3 -DNDEBUG -std=gnu17 -fPIC -fexceptions -ffp-contract=fast -fno-omit-frame-pointer -fopenmp-simd -pthread -march=native
 
 #  Modify the FC and FFLAGS definitions to the desired compiler
 #  and desired compiler options for your machine.  NOOPT refers to
@@ -18,9 +18,9 @@ CFLAGS = -O3 -DNDEBUG -std=gnu17 -fPIC -fexceptions -ffp-contract=fast -fno-omit
 #  should not compile LAPACK with flags such as -ffpe-trap=overflow.
 #
 FC = xlf_r
-FFLAGS = -O3 -qsclk=micro -qpic -qsaveopt -qarch=auto -qsimd=auto -qnosave -qstacktemp=-1 -qstrict -qstrict_induction #-qintsize=8 -DUSE_IEEE_INTRINSIC -DWeirdNEC -DLAPACK_ILP64
+FFLAGS = -O3 -WF,-qfpp -qsclk=micro -qpic -qsaveopt -qarch=auto -qsimd=auto -qnosave -qstacktemp=-1 -qstrict -qstrict_induction
 FFLAGS_DRV = $(FFLAGS)
-FFLAGS_NOOPT = -O0 -qsclk=micro -qpic -qsaveopt -qarch=auto -qsimd=auto -qnosave -qstacktemp=-1 -qstrict -qstrict_induction #-qintsize=8 -DUSE_IEEE_INTRINSIC -DWeirdNEC -DLAPACK_ILP64
+FFLAGS_NOOPT = -O0 -WF,-qfpp -qsclk=micro -qpic -qsaveopt -qarch=auto -qsimd=auto -qnosave -qstacktemp=-1 -qstrict -qstrict_induction
 
 #  Define LDFLAGS to the desired linker options for your machine.
 #
