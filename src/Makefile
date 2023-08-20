@@ -42,26 +42,11 @@ INTRIN=69
 !IFDEF INTRIN
 FCFLAGS=$(FCFLAGS) /DUSE_IEEE_INTRINSIC=$(INTRIN)
 !ENDIF # INTRIN
-!IFDEF CR_MATH
-FCFLAGS=$(FCFLAGS) /DCR_MATH=$(CR_MATH)
-!IFDEF NDEBUG
-# modified routines that do not reference errno
-OBJS_CRF_MATH=$(CR_MATH)\src\binary32\hypot\hypotf_noerrno.obj
-OBJS_CRD_MATH=$(CR_MATH)\src\binary64\hypot\hypot_noerrno.obj
-!ELSE # !NDEBUG
-OBJS_CRF_MATH=$(CR_MATH)\src\binary32\hypot\hypotf.obj
-OBJS_CRD_MATH=$(CR_MATH)\src\binary64\hypot\hypot.obj
-!ENDIF # ?NDEBUG
-!ENDIF # CR_MATH
 !IFDEF ANIMATE
 FCFLAGS=$(FCFLAGS) /DANIMATE=$(ANIMATE)
 !ENDIF # ANIMATE
 !IFNDEF PLAT
-!IFDEF CR_MATH
-PLAT=$(FORT)\$(OS)_$(ARCH)_$(ABI)$(DEBUG)
-!ELSE # !CR_MATH
 PLAT=$(FORT)\$(OS)-$(ARCH)-$(ABI)$(DEBUG)
-!ENDIF # ?CR_MATH
 !ENDIF # !PLAT
 MKFS=obj.mk Makefile arrbio\Makefile blksvd\Makefile dynord\Makefile ksvd2\Makefile faux\Makefile test\Makefile
 !INCLUDE obj.mk
@@ -71,7 +56,7 @@ all: dirs $(LIBS) $(EXES)
 	@echo $(PLAT)
 
 help:
-	@echo "nmake.exe [FORT=ifort|ifx] [ABI=lp64|ilp64] [NDEBUG=optimization_level] [INTRIN=...] [CR_MATH=dir] [ANIMATE=ppe] [all|clean|dirs|doc|help]"
+	@echo "nmake.exe [FORT=ifort|ifx] [ABI=lp64|ilp64] [NDEBUG=optimization_level] [INTRIN=...] [ANIMATE=ppe] [all|clean|dirs|doc|help]"
 
 dirs:
 	-md ..\bin\$(PLAT)

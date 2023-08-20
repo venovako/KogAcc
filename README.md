@@ -27,7 +27,8 @@ If their implementation is to be linked with, set the ``CR_MATH`` variable in a 
 Note, the ``hypot*_noerrno.c`` files are not provided there but can be easily modified from the corresponding ``hypot*.c`` files by eliminating all references to ``errno``.
 Then, ``hypotf*.c`` in ``src/binary32/hypot`` and ``hypot*.c`` in ``src/binary64/hypot`` subdirectories of the cloned CORE-MATH repository have to be compiled manually (check the paths here in ``src/x86_64.mk``).
 
-All testing has been performed with the correctly rounded functions.
+All testing has been performed on x86_64 Linux and macOS, with the correctly rounded functions.
+It is strongly recommended to use them whenever possible.
 
 ### Make options
 
