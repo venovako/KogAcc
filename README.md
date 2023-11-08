@@ -15,7 +15,7 @@ Other 64-bit OSes (e.g., Oracle Solaris) and non-x86_64 (e.g., ppc64le) platform
 However, not all functionality might be available.
 
 First, clone [libpvn](https://github.com/venovako/libpvn) repository, with the same parent directory as this one has (e.g., `venovako/libpvn` and `venovako/KogAcc`).
-Then, build the `pvn` library, with the same family of compilers and (no-)debug mode as it is meant to be used here.
+Then, build the `libpvn` library, with the same family of compilers and (no-)debug mode as it is meant to be used here.
 
 Building the documentation requires a recent version of [Doxygen](https://doxygen.nl) and [Graphviz](https://graphviz.org).
 Many routines are documented only rudimentary for now.
