@@ -7,7 +7,7 @@ SHELL = /bin/bash
 #  CC is the C compiler, normally invoked with options CFLAGS.
 #
 CC = icx
-CFLAGS = -O3 -DNDEBUG -std=c18 -xHost -fPIC -fexceptions -fno-omit-frame-pointer -fp-model=precise -fp-speculation=safe -fprotect-parens -fma -no-ftz -prec-div -fimf-precision=high -qopenmp-simd -qopt-report=3 -traceback
+CFLAGS = -O3 -DNDEBUG -std=c18 -xHost -fPIC -fexceptions -fno-omit-frame-pointer -fp-model=precise -fp-speculation=safe -fprotect-parens -fma -no-ftz -fimf-precision=high -qopenmp-simd -qopt-report=3 -traceback
 
 #  Modify the FC and FFLAGS definitions to the desired compiler
 #  and desired compiler options for your machine.  NOOPT refers to
