@@ -4,9 +4,9 @@ FC=$(COMPILER_PREFIX)gfortran$(COMPILER_SUFFIX)
 ifdef NDEBUG
 FCFLAGS=-O$(NDEBUG)
 else # !NDEBUG
-FCFLAGS=-Og -g
+FCFLAGS=-Og -ggdb3
 endif # ?NDEBUG
-FCFLAGS += -fopenmp -fPIC -fexceptions -fno-omit-frame-pointer -rdynamic -ffp-contract=fast -ffree-line-length-none -fstack-arrays
+FCFLAGS += -fopenmp -fPIC -fexceptions -fno-omit-frame-pointer -ffp-contract=fast -ffree-line-length-none -fstack-arrays -rdynamic
 ifdef NDEBUG
 FCFLAGS += -fgcse-las -fgcse-sm -fipa-pta -ftree-loop-distribution -ftree-loop-im -ftree-loop-ivcanon -fivopts -fvect-cost-model=unlimited -fvariable-expansion-in-unroller -fopt-info-optimized-vec
 else # !NDEBUG
@@ -21,7 +21,7 @@ else # GCC < 13
 ifeq ($(findstring 86,$(ARCH)),86)
 INTRIN=42
 else # !x86
-# On non-Intel architectures, assumes that REAL128 == long double, what might not be always true!
+# On non-Intel architectures, assumes that REAL128 == long double, what might not be true!
 INTRIN=138
 endif # ?x86
 endif # ?GCC

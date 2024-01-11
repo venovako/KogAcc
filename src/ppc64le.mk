@@ -1,3 +1,3 @@
 ifeq ($(COMPILER),gfortran)
-FCFLAGS += -mcpu=native
+FCFLAGS += -mcpu=native -mtraceback=full
 endif # gfortran

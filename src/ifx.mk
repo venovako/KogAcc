@@ -6,7 +6,7 @@ FCFLAGS=-O$(NDEBUG)
 else # !NDEBUG
 FCFLAGS=-O0 -g
 endif # ?NDEBUG
-FCFLAGS += -xHost -qopenmp -fPIC -fexceptions -fno-omit-frame-pointer -rdynamic -traceback -fp-model precise -fprotect-parens -fma -no-ftz -standard-semantics -static-libgcc
+FCFLAGS += -xHost -qopenmp -fPIC -fexceptions -fno-omit-frame-pointer -fp-model=precise -fp-speculation=safe -fimf-precision=high -fprotect-parens -fma -no-ftz -standard-semantics -rdynamic -static-libgcc -traceback -zero
 ifdef NDEBUG
 FCFLAGS += -inline-level=2 -vec-threshold0 -qopt-report=3
 else # !NDEBUG
