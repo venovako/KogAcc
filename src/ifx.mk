@@ -6,9 +6,9 @@ FCFLAGS=-O$(NDEBUG)
 else # !NDEBUG
 FCFLAGS=-O0 -g
 endif # ?NDEBUG
-FCFLAGS += -xHost -qopenmp -fPIC -fexceptions -fno-omit-frame-pointer -fp-model=precise -fp-speculation=safe -fimf-precision=high -fprotect-parens -fma -no-ftz -standard-semantics -rdynamic -static-libgcc -traceback -zero
+FCFLAGS += -xHost -fPIC -fexceptions -fno-omit-frame-pointer -fp-model=precise -fp-speculation=safe -fimf-precision=high -fma -fprotect-parens -no-ftz -qopenmp -standard-semantics -traceback -vec-threshold0 -rdynamic -static-libgcc
 ifdef NDEBUG
-FCFLAGS += -inline-level=2 -vec-threshold0 -qopt-report=3
+FCFLAGS += -inline-level=2 -qopt-report=3
 else # !NDEBUG
 FCFLAGS += -debug emit_column -debug extended -debug inline-debug-info -debug pubnames -check all
 endif # ?NDEBUG
