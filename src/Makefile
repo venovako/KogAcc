@@ -3,7 +3,7 @@ ARCH=x64
 AR=xilib.exe
 ARFLAGS=-qnoipo -lib /NOLOGO /VERBOSE
 !IFNDEF FORT
-FORT=ifort
+FORT=ifx
 !ENDIF # !FORT
 FC=$(FORT).exe
 !IFNDEF ABI
@@ -22,15 +22,17 @@ FCFLAGS=$(FCFLAGS) /Od
 !ENDIF # ?NDEBUG
 FCFLAGS=$(FCFLAGS) /QxHost /Qopenmp /fp:precise /Qfma /Qftz- /standard-semantics /traceback /libs:dll /threads
 !IF "$(FORT)"=="ifort"
-FCFLAGS=$(FCFLAGS) /Qopt-multi-version-aggressive /Qcomplex-limited-range- /Qfast-transcendentals- /Qprec-div /Qprec-sqrt
-!ENDIF # ifort
+FCFLAGS=$(FCFLAGS) /Qcomplex-limited-range- /Qfast-transcendentals- /Qprec-div /Qprec-sqrt /Qopt-multi-version-aggressive /Qdiag-disable:10448
+!ELSE # ifx
+FCFLAGS=$(FCFLAGS) /Qfp-speculation:safe /Qimf-precision:high
+!ENDIF # ?FORT
 !IFDEF NDEBUG
-FCFLAGS=$(FCFLAGS) /DNDEBUG=$(NDEBUG) /Ob2 /Qvec-threshold:0
 !IF "$(FORT)"=="ifort"
 FCFLAGS=$(FCFLAGS) /Qopt-report:5
 !ELSE # ifx
 FCFLAGS=$(FCFLAGS) /Qopt-report:3
 !ENDIF # ?FORT
+FCFLAGS=$(FCFLAGS) /DNDEBUG=$(NDEBUG) /Ob2 /Qvec-threshold:0 /Qdiag-disable:10397
 LDFLAGS=/link /RELEASE
 !ELSE # !NDEBUG
 FCFLAGS=$(FCFLAGS) /dbglibs /debug:full /debug:inline-debug-info /debug-parameters:all /check:all /warn:all
@@ -56,7 +58,7 @@ all: dirs $(LIBS) $(EXES)
 	@echo $(PLAT)
 
 help:
-	@echo "nmake.exe [FORT=ifort|ifx] [ABI=lp64|ilp64] [NDEBUG=optimization_level] [INTRIN=...] [ANIMATE=ppe] [all|clean|dirs|doc|help]"
+	@echo "nmake.exe [ABI=lp64|ilp64] [NDEBUG=optimization_level] [INTRIN=...] [ANIMATE=ppe] [all|clean|dirs|doc|help]"
 
 dirs:
 	-md ..\bin\$(PLAT)
