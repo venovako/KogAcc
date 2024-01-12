@@ -38,7 +38,8 @@
 
   ! determine the G's structure
   I = 0
-  L = IERR - 1
+  L = IERR
+  L = L - 1
   J = L
   IF (B(1,1) .NE. ZERO) THEN
      I = IOR(I, 1)
@@ -658,7 +659,7 @@
 
   ! T = TAN
   ! X = COS
-6 IF (SECG .EQ. ONE) THEN
+  IF (SECG .EQ. ONE) THEN
      T = TANF + TANG
 #ifdef USE_IEEE_INTRINSIC
      T = T / IEEE_FMA(-TANF, TANG, ONE)

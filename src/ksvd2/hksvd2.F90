@@ -68,7 +68,8 @@
 
   ! determine the G's structure
   I = 0
-  L = IERR - 1
+  L = IERR
+  L = L - 1
   J = L
   X = REAL(B(1,1))
   Y = AIMAG(B(1,1))

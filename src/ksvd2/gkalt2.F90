@@ -38,7 +38,8 @@
 
   ! determine the G's structure
   I = 0
-  L = IERR - 1
+  L = IERR
+  L = L - 1
   J = L
   IF (B(1,1) .NE. ZERO) THEN
      I = IOR(I, 1)
