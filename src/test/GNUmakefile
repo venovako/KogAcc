@@ -1,14 +1,14 @@
 ../bin/$(PLAT)/sksvd2.exe: test/sksvd2x.F90 test/tksvd2.F90 ../lib/$(PLAT)/libksvd2.a $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o sksvd2.exe ../../../src/test/sksvd2x.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o sksvd2.exe ../../../src/test/sksvd2x.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux -L../../../../libpvn/src -lpvn
 
 ../bin/$(PLAT)/cksvd2.exe: test/cksvd2x.F90 test/uksvd2.F90 ../lib/$(PLAT)/libksvd2.a $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o cksvd2.exe ../../../src/test/cksvd2x.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o cksvd2.exe ../../../src/test/cksvd2x.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux -L../../../../libpvn/src -lpvn
 
 ../bin/$(PLAT)/dksvd2.exe: test/dksvd2x.F90 test/tksvd2.F90 ../lib/$(PLAT)/libksvd2.a $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o dksvd2.exe ../../../src/test/dksvd2x.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o dksvd2.exe ../../../src/test/dksvd2x.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux -L../../../../libpvn/src -lpvn
 
 ../bin/$(PLAT)/zksvd2.exe: test/zksvd2x.F90 test/uksvd2.F90 ../lib/$(PLAT)/libksvd2.a $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o zksvd2.exe ../../../src/test/zksvd2x.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o zksvd2.exe ../../../src/test/zksvd2x.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux -L../../../../libpvn/src -lpvn
 
 ../bin/$(PLAT)/qksvd2.exe: test/qksvd2x.F90 test/tksvd2.F90 ../lib/$(PLAT)/libksvd2.a $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o qksvd2.exe ../../../src/test/qksvd2x.F90 -L../../../lib/$(PLAT) -lksvd2
@@ -23,10 +23,10 @@
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o wksvd2.exe ../../../src/test/wksvd2x.F90 -L../../../lib/$(PLAT) -lksvd2
 
 ../bin/$(PLAT)/skalt2.exe: test/skalt2x.F90 test/tksvd2.F90 ../lib/$(PLAT)/libksvd2.a $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o skalt2.exe ../../../src/test/skalt2x.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o skalt2.exe ../../../src/test/skalt2x.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux -L../../../../libpvn/src -lpvn
 
 ../bin/$(PLAT)/dkalt2.exe: test/dkalt2x.F90 test/tksvd2.F90 ../lib/$(PLAT)/libksvd2.a $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o dkalt2.exe ../../../src/test/dkalt2x.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o dkalt2.exe ../../../src/test/dkalt2x.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux -L../../../../libpvn/src -lpvn
 
 ../bin/$(PLAT)/qkalt2.exe: test/qkalt2x.F90 test/tksvd2.F90 ../lib/$(PLAT)/libksvd2.a $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o qkalt2.exe ../../../src/test/qkalt2x.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux
@@ -77,34 +77,34 @@
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o wrnd.exe ../../../src/test/wrnd.f90
 
 ../bin/$(PLAT)/srnd2u.exe: test/srnd2t.F90 test/grnd2t.F90 test/grnd2u.F90 ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -DUPPER=2 -o srnd2u.exe ../../../src/test/srnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux $(LAPACK)
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -DUPPER=2 -o srnd2u.exe ../../../src/test/srnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux -L../../../../libpvn/src -lpvn $(LAPACK)
 
 ../bin/$(PLAT)/srnd2p.exe: test/srnd2t.F90 test/grnd2t.F90 test/grnd2u.F90 ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -DUPPER=1 -o srnd2p.exe ../../../src/test/srnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux $(LAPACK)
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -DUPPER=1 -o srnd2p.exe ../../../src/test/srnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux -L../../../../libpvn/src -lpvn $(LAPACK)
 
 ../bin/$(PLAT)/srnd2n.exe: test/srnd2t.F90 test/grnd2t.F90 test/grnd2u.F90 ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -DUPPER=0 -o srnd2n.exe ../../../src/test/srnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux $(LAPACK)
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -DUPPER=0 -o srnd2n.exe ../../../src/test/srnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux -L../../../../libpvn/src -lpvn $(LAPACK)
 
 ../bin/$(PLAT)/srnd2g.exe: test/srnd2t.F90 test/grnd2t.F90 test/grnd2g.F90 ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o srnd2g.exe ../../../src/test/srnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o srnd2g.exe ../../../src/test/srnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux -L../../../../libpvn/src -lpvn
 
 ../bin/$(PLAT)/crnd2g.exe: test/crnd2t.F90 test/hrnd2t.F90 ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o crnd2g.exe ../../../src/test/crnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o crnd2g.exe ../../../src/test/crnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux -L../../../../libpvn/src -lpvn
 
 ../bin/$(PLAT)/drnd2u.exe: test/drnd2t.F90 test/grnd2t.F90 test/grnd2u.F90 ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -DUPPER=2 -o drnd2u.exe ../../../src/test/drnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux $(LAPACK)
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -DUPPER=2 -o drnd2u.exe ../../../src/test/drnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux -L../../../../libpvn/src -lpvn $(LAPACK)
 
 ../bin/$(PLAT)/drnd2p.exe: test/drnd2t.F90 test/grnd2t.F90 test/grnd2u.F90 ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -DUPPER=1 -o drnd2p.exe ../../../src/test/drnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux $(LAPACK)
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -DUPPER=1 -o drnd2p.exe ../../../src/test/drnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux -L../../../../libpvn/src -lpvn $(LAPACK)
 
 ../bin/$(PLAT)/drnd2n.exe: test/drnd2t.F90 test/grnd2t.F90 test/grnd2u.F90 ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -DUPPER=0 -o drnd2n.exe ../../../src/test/drnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux $(LAPACK)
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -DUPPER=0 -o drnd2n.exe ../../../src/test/drnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux -L../../../../libpvn/src -lpvn $(LAPACK)
 
 ../bin/$(PLAT)/drnd2g.exe: test/drnd2t.F90 test/grnd2t.F90 test/grnd2g.F90 ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o drnd2g.exe ../../../src/test/drnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o drnd2g.exe ../../../src/test/drnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux -L../../../../libpvn/src -lpvn
 
 ../bin/$(PLAT)/zrnd2g.exe: test/zrnd2t.F90 test/hrnd2t.F90 ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o zrnd2g.exe ../../../src/test/zrnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o zrnd2g.exe ../../../src/test/zrnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux -L../../../../libpvn/src -lpvn
 
 ../bin/$(PLAT)/qrnd2g.exe: test/qrnd2t.F90 test/grnd2t.F90 test/grnd2g.F90 ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o qrnd2g.exe ../../../src/test/qrnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux
@@ -149,7 +149,7 @@
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o wksvd0.exe ../../../src/test/wksvd0x.F90 -L../../../lib/$(PLAT) -lblksvd -ldynord -lksvd2 -larrbio -lfaux -L../../../../libpvn/src -lpvn
 
 ../bin/$(PLAT)/sksvdd.exe: test/sksvddx.F90 ../lib/$(PLAT)/libblksvd.a ../lib/$(PLAT)/libdynord.a ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libarrbio.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o sksvdd.exe ../../../src/test/sksvddx.F90 -L../../../lib/$(PLAT) -lblksvd -ldynord -lksvd2 -larrbio -lfaux $(LAPACK)
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o sksvdd.exe ../../../src/test/sksvddx.F90 -L../../../lib/$(PLAT) -lblksvd -ldynord -lksvd2 -larrbio -lfaux -L../../../../libpvn/src -lpvn $(LAPACK)
 
 ../bin/$(PLAT)/cksvdd.exe: test/cksvddx.F90 ../lib/$(PLAT)/libblksvd.a ../lib/$(PLAT)/libdynord.a ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libarrbio.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o cksvdd.exe ../../../src/test/cksvddx.F90 -L../../../lib/$(PLAT) -lblksvd -ldynord -lksvd2 -larrbio -lfaux $(LAPACK)
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o cksvdd.exe ../../../src/test/cksvddx.F90 -L../../../lib/$(PLAT) -lblksvd -ldynord -lksvd2 -larrbio -lfaux -L../../../../libpvn/src -lpvn $(LAPACK)

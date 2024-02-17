@@ -1,9 +1,8 @@
 include system.mk
 include $(COMPILER).mk
-include $(ARCH).mk
 include $(OS).mk
 include debug.mk
-MKFS=system.mk $(COMPILER).mk $(ARCH).mk $(OS).mk debug.mk
+MKFS=system.mk $(COMPILER).mk $(OS).mk debug.mk
 ifneq ($(ABI),lp64)
 include $(ABI).mk
 MKFS += $(ABI).mk
