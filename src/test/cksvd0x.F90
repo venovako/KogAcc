@@ -42,28 +42,6 @@ PROGRAM CKSVD0X
      END SUBROUTINE CKSVD0
   END INTERFACE
 
-#ifdef ANIMATE
-  INTERFACE
-     FUNCTION PVN_CVIS_START(mA, nA, act, rname, iname) BIND(C,name='pvn_cvis_start_f_')
-       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_int, c_ptr, c_char
-       IMPLICIT NONE
-       INTEGER(KIND=c_int), INTENT(IN), TARGET :: mA, nA, act
-       CHARACTER(KIND=c_char), INTENT(IN), TARGET :: rname(*), iname(*)
-       TYPE(c_ptr) :: PVN_CVIS_START
-     END FUNCTION PVN_CVIS_START
-  END INTERFACE
-  INTERFACE
-     FUNCTION PVN_CVIS_STOP(ctx, sx, sy, rbpp, rcmap, ibpp, icmap) BIND(C,name='pvn_cvis_stop_f_')
-       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_int, c_ptr, c_char
-       IMPLICIT NONE
-       TYPE(c_ptr), INTENT(IN), TARGET :: ctx
-       INTEGER(KIND=c_int), INTENT(IN), TARGET :: sx, sy, rbpp, ibpp
-       CHARACTER(KIND=c_char), INTENT(IN), TARGET :: rcmap(*), icmap(*)
-       INTEGER(KIND=c_int) :: PVN_CVIS_STOP
-     END FUNCTION PVN_CVIS_STOP
-  END INTERFACE
-#endif
-
   INTEGER, PARAMETER :: K = REAL32, CLAL = 256
   CHARACTER(LEN=CLAL) :: BN
   INTEGER(KIND=INT64) :: C0, C1, CR
@@ -84,8 +62,12 @@ PROGRAM CKSVD0X
   !DIR$ ATTRIBUTES ALIGN: 64:: O
 #ifdef ANIMATE
   CHARACTER(LEN=CLAL) :: CN
-  TYPE(c_ptr), TARGET :: CTX
+  TYPE(c_ptr) :: CTX
   TYPE(c_ptr), POINTER :: CP
+  TYPE(c_ptr), EXTERNAL :: PVN_CVIS_START_F
+  INTEGER(KIND=c_int), EXTERNAL :: PVN_CVIS_STOP_F
+#define PVN_CVIS_START PVN_CVIS_START_F
+#define PVN_CVIS_STOP PVN_CVIS_STOP_F
 #endif
 
 #define BRDG CBRDG

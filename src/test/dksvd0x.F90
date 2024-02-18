@@ -43,30 +43,8 @@ PROGRAM DKSVD0X
      END SUBROUTINE DKSVD0
   END INTERFACE
 
-#ifdef ANIMATE
-  INTERFACE
-     FUNCTION PVN_RVIS_START(mA, nA, act, fname) BIND(C,name='pvn_rvis_start_')
-       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_int, c_ptr, c_char
-       IMPLICIT NONE
-       INTEGER(KIND=c_int), INTENT(IN), TARGET :: mA, nA, act
-       CHARACTER(KIND=c_char), INTENT(IN), TARGET :: fname(*)
-       TYPE(c_ptr) :: PVN_RVIS_START
-     END FUNCTION PVN_RVIS_START
-  END INTERFACE
-  INTERFACE
-     FUNCTION PVN_RVIS_STOP(ctx, sx, sy, bpp, cmap) BIND(C,name='pvn_rvis_stop_')
-       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_int, c_ptr, c_char
-       IMPLICIT NONE
-       TYPE(c_ptr), INTENT(IN), TARGET :: ctx
-       INTEGER(KIND=c_int), INTENT(IN), TARGET :: sx, sy, bpp
-       CHARACTER(KIND=c_char), INTENT(IN), TARGET :: cmap(*)
-       INTEGER(KIND=c_int) :: PVN_RVIS_STOP
-     END FUNCTION PVN_RVIS_STOP
-  END INTERFACE
-#endif
-
   INTEGER, PARAMETER :: K = REAL64, CLAL = 256
-  CHARACTER(LEN=CLAL), TARGET :: BN
+  CHARACTER(LEN=CLAL) :: BN
   INTEGER(KIND=INT64) :: C0, C1, CR
   REAL(KIND=REAL128) :: T
   INTEGER, TARGET :: JOB, M
@@ -84,8 +62,10 @@ PROGRAM DKSVD0X
   INTEGER, ALLOCATABLE :: O(:)
   !DIR$ ATTRIBUTES ALIGN: 64:: O
 #ifdef ANIMATE
-  TYPE(c_ptr), TARGET :: CTX
+  TYPE(c_ptr) :: CTX
   TYPE(c_ptr), POINTER :: CP
+  TYPE(c_ptr), EXTERNAL :: PVN_RVIS_START
+  INTEGER(KIND=c_int), EXTERNAL :: PVN_RVIS_STOP
 #endif
 
 #define BRDG DBRDG

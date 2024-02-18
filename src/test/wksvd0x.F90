@@ -41,28 +41,6 @@ PROGRAM WKSVD0X
      END SUBROUTINE WKSVD0
   END INTERFACE
 
-#ifdef ANIMATE
-  INTERFACE
-     FUNCTION PVN_CVIS_START(mA, nA, act, rname, iname) BIND(C,name='pvn_cvis_start_l_')
-       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_int, c_ptr, c_char
-       IMPLICIT NONE
-       INTEGER(KIND=c_int), INTENT(IN), TARGET :: mA, nA, act
-       CHARACTER(KIND=c_char), INTENT(IN), TARGET :: rname(*), iname(*)
-       TYPE(c_ptr) :: PVN_CVIS_START
-     END FUNCTION PVN_CVIS_START
-  END INTERFACE
-  INTERFACE
-     FUNCTION PVN_CVIS_STOP(ctx, sx, sy, rbpp, rcmap, ibpp, icmap) BIND(C,name='pvn_cvis_stop_l_')
-       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_int, c_ptr, c_char
-       IMPLICIT NONE
-       TYPE(c_ptr), INTENT(IN), TARGET :: ctx
-       INTEGER(KIND=c_int), INTENT(IN), TARGET :: sx, sy, rbpp, ibpp
-       CHARACTER(KIND=c_char), INTENT(IN), TARGET :: rcmap(*), icmap(*)
-       INTEGER(KIND=c_int) :: PVN_CVIS_STOP
-     END FUNCTION PVN_CVIS_STOP
-  END INTERFACE
-#endif
-
   INTEGER, PARAMETER :: K = 10, CLAL = 256
   CHARACTER(LEN=CLAL) :: BN
   INTEGER(KIND=INT64) :: C0, C1, CR
@@ -76,8 +54,12 @@ PROGRAM WKSVD0X
   INTEGER, ALLOCATABLE :: O(:)
 #ifdef ANIMATE
   CHARACTER(LEN=CLAL) :: CN
-  TYPE(c_ptr), TARGET :: CTX
+  TYPE(c_ptr) :: CTX
   TYPE(c_ptr), POINTER :: CP
+  TYPE(c_ptr), EXTERNAL :: PVN_CVIS_START_L
+  INTEGER(KIND=c_int), EXTERNAL :: PVN_CVIS_STOP_L
+#define PVN_CVIS_START PVN_CVIS_START_L
+#define PVN_CVIS_STOP PVN_CVIS_STOP_L
 #endif
 
 #define BRDG WBRDG
