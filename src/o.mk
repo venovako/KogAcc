@@ -31,19 +31,7 @@ OBJS_ARRBIO=\
 ../obj/$(PLAT)/dbwr2.$(OXT)\
 ../obj/$(PLAT)/zbwr2.$(OXT)\
 ../obj/$(PLAT)/qbwr2.$(OXT)\
-../obj/$(PLAT)/ybwr2.$(OXT)\
-../obj/$(PLAT)/swrout.$(OXT)\
-../obj/$(PLAT)/cwrout.$(OXT)\
-../obj/$(PLAT)/dwrout.$(OXT)\
-../obj/$(PLAT)/zwrout.$(OXT)\
-../obj/$(PLAT)/qwrout.$(OXT)\
-../obj/$(PLAT)/ywrout.$(OXT)\
-../obj/$(PLAT)/srdinp.$(OXT)\
-../obj/$(PLAT)/crdinp.$(OXT)\
-../obj/$(PLAT)/drdinp.$(OXT)\
-../obj/$(PLAT)/zrdinp.$(OXT)\
-../obj/$(PLAT)/qrdinp.$(OXT)\
-../obj/$(PLAT)/yrdinp.$(OXT)
+../obj/$(PLAT)/ybwr2.$(OXT)
 
 OBJS_BLKSVD=\
 ../obj/$(PLAT)/nb2m.$(OXT)\
@@ -209,11 +197,7 @@ OBJS_ARRBIO += \
 ../obj/$(PLAT)/xbrd2.$(OXT)\
 ../obj/$(PLAT)/wbrd2.$(OXT)\
 ../obj/$(PLAT)/xbwr2.$(OXT)\
-../obj/$(PLAT)/wbwr2.$(OXT)\
-../obj/$(PLAT)/xwrout.$(OXT)\
-../obj/$(PLAT)/wwrout.$(OXT)\
-../obj/$(PLAT)/xrdinp.$(OXT)\
-../obj/$(PLAT)/wrdinp.$(OXT)
+../obj/$(PLAT)/wbwr2.$(OXT)
 OBJS_BLKSVD += \
 ../obj/$(PLAT)/xbrdg.$(OXT)\
 ../obj/$(PLAT)/wbrdg.$(OXT)\
