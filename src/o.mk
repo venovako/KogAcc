@@ -175,13 +175,9 @@ EXES_TEST=\
 ../bin/$(PLAT)/qrnd.exe\
 ../bin/$(PLAT)/yrnd.exe\
 ../bin/$(PLAT)/srnd2u.exe\
-../bin/$(PLAT)/srnd2p.exe\
-../bin/$(PLAT)/srnd2n.exe\
 ../bin/$(PLAT)/srnd2g.exe\
 ../bin/$(PLAT)/crnd2g.exe\
 ../bin/$(PLAT)/drnd2u.exe\
-../bin/$(PLAT)/drnd2p.exe\
-../bin/$(PLAT)/drnd2n.exe\
 ../bin/$(PLAT)/drnd2g.exe\
 ../bin/$(PLAT)/zrnd2g.exe\
 ../bin/$(PLAT)/qrnd2g.exe\

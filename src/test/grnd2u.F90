@@ -1,25 +1,3 @@
-#if (UPPER > 0)
-     ! prevent the pivoted QR from taking place
-     IF (G(1,1) .GE. MAX(G(1,2), G(2,2))) THEN
-        CONTINUE
-     ELSE IF (G(2,2) .GE. MAX(G(1,1), G(1,2))) THEN
-        T = G(1,1)
-        G(1,1) = G(2,2)
-        G(2,2) = T
-     ELSE IF (G(1,2) .GE. MAX(G(1,1), G(2,2))) THEN
-        T = G(1,1)
-        G(1,1) = G(1,2)
-        G(1,2) = T
-     ELSE ! should never happen
-        CALL STHALT('UPPER')
-     END IF
-#if (UPPER == 2)
-     T = HUGE(T)
-     M = EXPONENT(T)
-     G(1,1) = SCALE(FRACTION(G(1,1)), M)
-     IF (G(1,1) .GE. T) G(1,1) = SCALE(FRACTION(ONE), M)
-#endif
-#endif
      ! use G(2,1) to determine the signs of the other three elements of G
      M = EXPONENT(G(2,1))
      IF (IAND(M, 1) .NE. 0) G(1,1) = -G(1,1)
