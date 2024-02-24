@@ -13,11 +13,7 @@ MKFS += local.mk
 endif # local.mk
 MKFS += o.mk GNUmakefile arrbio/GNUmakefile blksvd/GNUmakefile dynord/GNUmakefile ksvd2/GNUmakefile faux/GNUmakefile test/GNUmakefile
 ifndef PLAT
-ifdef CR_MATH
-PLAT=$(COMPILER)/$(OS)_$(ARCH)_$(ABI)$(DEBUG)
-else # !CR_MATH
 PLAT=$(COMPILER)/$(OS)-$(ARCH)-$(ABI)$(DEBUG)
-endif # ?CR_MATH
 endif # !PLAT
 include o.mk
 
@@ -30,7 +26,7 @@ asm: dirs $(OBJS)
 	@echo $(CFLG) $(PLAT)
 
 help:
-	@echo $(MAKE) "[COMPILER=gfortran|ifx|ifort] [COMPILER_PREFIX=...] [COMPILER_SUFFIX=...] [ABI=lp64|ilp64] [NDEBUG=optimization_level] [INTRIN=...] [CR_MATH=dir] [ANIMATE=ppe] [all|asm|clean|dirs|doc|help]"
+	@echo $(MAKE) "[COMPILER=gfortran|ifx|ifort] [COMPILER_PREFIX=...] [COMPILER_SUFFIX=...] [ABI=lp64|ilp64] [NDEBUG=optimization_level] [INTRIN=...] [CR_MATH=...] [ANIMATE=ppe] [all|asm|clean|dirs|doc|help]"
 
 dirs:
 	@$(MKD) ../bin/$(PLAT) ../lib/$(PLAT) ../obj/$(PLAT)
