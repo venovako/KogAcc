@@ -9,11 +9,7 @@ CONTAINS
     IMPLICIT NONE
 #define CR_HYPOT HYPOT
     INTERFACE
-#ifdef NDEBUG
-       PURE SUBROUTINE XKSVD2(G, U, V, S, INFO)
-#else
        SUBROUTINE XKSVD2(G, U, V, S, INFO)
-#endif
          IMPLICIT NONE
          REAL(KIND=10), INTENT(IN) :: G(2,2)
          REAL(KIND=10), INTENT(OUT) :: U(2,2), V(2,2), S(2)
