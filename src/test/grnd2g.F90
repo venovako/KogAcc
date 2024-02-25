@@ -47,30 +47,3 @@
      F(2,5) = MAX(-E(4,1), F(2,5))
      F(1,6) = MAX(E(5,1), F(1,6))
      F(2,6) = MAX(-E(5,1), F(2,6))
-     CALL KALT2(G, U, V, S, INFO)
-     IF (INFO .LE. -HUGE(INFO)) CALL STHALT('KALT2')
-     IF (INFO .NE. 0) THEN
-        L = -INFO
-        S(1) = SCALE(S(1), L)
-        S(2) = SCALE(S(2), L)
-        INFO = 0
-     END IF
-     CALL KERR2(G, U, V, S, E(1,2), INFO)
-     E(4,2) = MAX(ABS(QS(1) - S(1)) / QS(1), QZERO)
-     E(5,2) = MAX(ABS(QS(2) - S(2)) / QS(2), QZERO)
-     F(1,7) = MAX(E(1,2), F(1,7))
-     F(2,7) = MAX(-E(1,2), F(2,7))
-     F(1,8) = MAX(E(2,2), F(1,8))
-     F(2,8) = MAX(-E(2,2), F(2,8))
-     F(1,9) = MAX(E(3,2), F(1,9))
-     F(2,9) = MAX(-E(3,2), F(2,9))
-     F(1,10) = MAX(E(4,2), F(1,10))
-     F(2,10) = MAX(-E(4,2), F(2,10))
-     F(1,11) = MAX(E(5,2), F(1,11))
-     F(2,11) = MAX(-E(5,2), F(2,11))
-     DO L = 1, 5
-        Q = E(L,2) / E(L,1)
-        INFO = 11 + L
-        F(1,INFO) = MAX(Q, F(1,INFO))
-        F(2,INFO) = MAX(-Q, F(2,INFO))
-     END DO

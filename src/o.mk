@@ -88,9 +88,6 @@ OBJS_KSVD2=\
 ../obj/$(PLAT)/zksvd2.$(OXT)\
 ../obj/$(PLAT)/qksvd2.$(OXT)\
 ../obj/$(PLAT)/yksvd2.$(OXT)\
-../obj/$(PLAT)/skalt2.$(OXT)\
-../obj/$(PLAT)/dkalt2.$(OXT)\
-../obj/$(PLAT)/qkalt2.$(OXT)\
 ../obj/$(PLAT)/scvgpp.$(OXT)\
 ../obj/$(PLAT)/ccvgpp.$(OXT)\
 ../obj/$(PLAT)/dcvgpp.$(OXT)\
@@ -157,9 +154,6 @@ EXES_KSVD2=\
 ../bin/$(PLAT)/zksvd2.exe\
 ../bin/$(PLAT)/qksvd2.exe\
 ../bin/$(PLAT)/yksvd2.exe\
-../bin/$(PLAT)/skalt2.exe\
-../bin/$(PLAT)/dkalt2.exe\
-../bin/$(PLAT)/qkalt2.exe\
 ../bin/$(PLAT)/slwsv2.exe\
 ../bin/$(PLAT)/dlwsv2.exe
 
@@ -211,7 +205,6 @@ OBJS_DYNORD += \
 ../obj/$(PLAT)/xpqsrt.$(OXT)
 OBJS_KSVD2 += \
 ../obj/$(PLAT)/xksvd2.$(OXT)\
-../obj/$(PLAT)/xkalt2.$(OXT)\
 ../obj/$(PLAT)/wksvd2.$(OXT)\
 ../obj/$(PLAT)/xcvgpp.$(OXT)\
 ../obj/$(PLAT)/wcvgpp.$(OXT)\
@@ -233,7 +226,6 @@ EXES_DYNORD += \
 ../bin/$(PLAT)/xpqsort.exe
 EXES_KSVD2 += \
 ../bin/$(PLAT)/xksvd2.exe\
-../bin/$(PLAT)/xkalt2.exe\
 ../bin/$(PLAT)/wksvd2.exe
 EXES_TEST += \
 ../bin/$(PLAT)/xrnd.exe\

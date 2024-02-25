@@ -46,8 +46,8 @@
      F(2,5) = MAX(-E(4,1), F(2,5))
      F(1,6) = MAX(E(5,1), F(1,6))
      F(2,6) = MAX(-E(5,1), F(2,6))
-     CALL KALT2(G, U, V, S, INFO)
-     IF (INFO .LE. -HUGE(INFO)) CALL STHALT('KALT2')
+     CALL LWSV2(G, U, V, S, INFO)
+     IF (INFO .LE. -HUGE(INFO)) CALL STHALT('LWSV2')
      IF (INFO .NE. 0) THEN
         L = -INFO
         S(1) = SCALE(S(1), L)
@@ -55,6 +55,14 @@
         INFO = 0
      END IF
      CALL KERR2(G, U, V, S, E(1,2), INFO)
+     ! be extremely cautious
+     S(1) = ABS(S(1))
+     S(2) = ABS(S(2))
+     IF (S(1) .LT. S(2)) THEN
+        T = S(1)
+        S(1) = S(2)
+        S(2) = T
+     END IF
      E(4,2) = MAX(ABS(QS(1) - S(1)) / QS(1), QZERO)
      E(5,2) = MAX(ABS(QS(2) - S(2)) / QS(2), QZERO)
      F(1,7) = MAX(E(1,2), F(1,7))
@@ -67,44 +75,9 @@
      F(2,10) = MAX(-E(4,2), F(2,10))
      F(1,11) = MAX(E(5,2), F(1,11))
      F(2,11) = MAX(-E(5,2), F(2,11))
-     CALL LWSV2(G, U, V, S, INFO)
-     IF (INFO .LE. -HUGE(INFO)) CALL STHALT('LWSV2')
-     IF (INFO .NE. 0) THEN
-        L = -INFO
-        S(1) = SCALE(S(1), L)
-        S(2) = SCALE(S(2), L)
-        INFO = 0
-     END IF
-     CALL KERR2(G, U, V, S, E(1,3), INFO)
-     ! be extremely cautious
-     S(1) = ABS(S(1))
-     S(2) = ABS(S(2))
-     IF (S(1) .LT. S(2)) THEN
-        T = S(1)
-        S(1) = S(2)
-        S(2) = T
-     END IF
-     E(4,3) = MAX(ABS(QS(1) - S(1)) / QS(1), QZERO)
-     E(5,3) = MAX(ABS(QS(2) - S(2)) / QS(2), QZERO)
-     F(1,12) = MAX(E(1,3), F(1,12))
-     F(2,12) = MAX(-E(1,3), F(2,12))
-     F(1,13) = MAX(E(2,3), F(1,13))
-     F(2,13) = MAX(-E(2,3), F(2,13))
-     F(1,14) = MAX(E(3,3), F(1,14))
-     F(2,14) = MAX(-E(3,3), F(2,14))
-     F(1,15) = MAX(E(4,3), F(1,15))
-     F(2,15) = MAX(-E(4,3), F(2,15))
-     F(1,16) = MAX(E(5,3), F(1,16))
-     F(2,16) = MAX(-E(5,3), F(2,16))
      DO L = 1, 5
-        Q = E(L,3) / E(L,1)
-        INFO = 16 + L
-        F(1,INFO) = MAX(Q, F(1,INFO))
-        F(2,INFO) = MAX(-Q, F(2,INFO))
-     END DO
-     DO L = 1, 5
-        Q = E(L,3) / E(L,2)
-        INFO = 21 + L
+        Q = E(L,2) / E(L,1)
+        INFO = 11 + L
         F(1,INFO) = MAX(Q, F(1,INFO))
         F(2,INFO) = MAX(-Q, F(2,INFO))
      END DO

@@ -60,9 +60,9 @@
   END DO
   !$OMP END PARALLEL
 #ifdef UPPER
-  L = 26
-#else
   L = 16
+#else
+  L = 6
 #endif
   WRITE (OUTPUT_UNIT,'(I11)',ADVANCE='NO') N
   DO K = 1, L-1
