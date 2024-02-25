@@ -5,7 +5,7 @@
 !!@param V [OUT]; V is an orthogonal quadruple precision matrix of order two.
 !!@param S [OUT]; S' is a quadruple precision array with two elements, s_{11}' and s_{22}', both non-negative and finite.
 !!@param INFO [INOUT]; do not set to anything but zero on input unless the effects are understood; on output, the scaling parameter s such that 2^{-s} S' = S.
-!!If G has a non-finite element, then s=-HUGE(s), U=V=I, and s_{11}'=s_{22}'=0.
+!!If G has a non-finite element, then s=-HUGE(s).
 SUBROUTINE QKSVD2(G, U, V, S, INFO)
   USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_int
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL128
