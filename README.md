@@ -1,20 +1,19 @@
 # KogAcc
-A portable Kogbetliantz-type SVD for general matrices.
+A Kogbetliantz-type SVD for general matrices.
 
 (... work in progress ...)
 
 ## Prerequisites
 
 The oneAPI Intel Math Kernel Library (MKL) is assumed to be installed on Linux or macOS x86_64 platforms when the GNU or the Intel compilers are used.
+Other 64-bit OSes (e.g., Oracle Solaris) and platforms (e.g., arm64 or ppc64le) might also be supported to a certain extent, if the reference BLAS and LAPACK libraries have been built.
 
+Intel's `ifx` is *strongly recommended* for testing the `n × n` SVD routines!
+Both `gfortran` and `ifort` might produce unreliable binaries in these cases.
 Several routines and executables require having quadruple precision (`KIND=REAL128`) fully supported by the compiler, and therefore not all popular free compilers have been tested.
 
-*Intel's `ifx` is recommended for testing the `n × n` SVD routines*.
-
-Other 64-bit OSes (e.g., Oracle Solaris) and non-x86_64 (e.g., arm64 or ppc64le) platforms might also be supported to a certain extent, if the reference BLAS and LAPACK libraries have been built.
-
 First, clone [libpvn](https://github.com/venovako/libpvn) repository, with the same parent directory as this one has (e.g., `venovako/libpvn` and `venovako/KogAcc`).
-Then, build the `libpvn` library, with the same family of compilers and (no-)debug mode as it is meant to be used here.
+Then, build the `libpvn` library, with the same family of compilers and (no-)debug mode as it is meant to be used here (e.g., with `icx` if `ifx` is desired).
 
 Building the documentation requires a recent version of [Doxygen](https://doxygen.nl) and [Graphviz](https://graphviz.org).
 Many routines are documented only rudimentary for now.

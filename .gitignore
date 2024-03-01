@@ -37,6 +37,7 @@
 *.opt.yaml
 *.pdb
 src/local.mk
+src/phi.mk
 
 # Directories
 bin
