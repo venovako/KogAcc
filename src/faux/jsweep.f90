@@ -1,18 +1,17 @@
 !>@brief \b JSWEEP fills in a look-up table O with S steps, each with P pairs, of a (quasi-)cyclic strategy J for a matrix of order N.
 SUBROUTINE JSWEEP(J, N, S, P, O, INFO)
-  USE, INTRINSIC :: ISO_C_BINDING
+  USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_int, c_intptr_t
   IMPLICIT NONE
 
   INTEGER, INTENT(IN) :: J, N
   INTEGER, INTENT(OUT) :: S, P, O(2,*), INFO
 
   INTEGER(KIND=c_int), ALLOCATABLE :: ARR(:,:)
-  TYPE(c_ptr) :: JS
+  INTEGER(KIND=c_intptr_t) :: JS
   INTEGER :: I, K, L
   INTEGER(KIND=c_int) :: ID, M
 
-  TYPE(c_ptr), EXTERNAL :: PVN_CJS_INIT
-  INTEGER(KIND=c_int), EXTERNAL :: PVN_CJS_NEXT, PVN_CJS_FREE
+  INTEGER(KIND=c_int), EXTERNAL :: PVN_CJS_INIT, PVN_CJS_NEXT, PVN_CJS_FREE
 
   INFO = 0
   S = 0
@@ -49,10 +48,13 @@ SUBROUTINE JSWEEP(J, N, S, P, O, INFO)
 
   ID = INT(J, c_int)
   M = INT(N, c_int)
-  JS = PVN_CJS_INIT(ID, M)
-  IF (.NOT. C_ASSOCIATED(JS)) THEN
+  JS = 0_c_intptr_t
+  INFO = INT(PVN_CJS_INIT(JS, ID, M))
+  IF (INFO .LT. 0) THEN
      INFO = 1
      RETURN
+  ELSE ! OK
+     INFO = 0
   END IF
 
   IF (J .EQ. 4) THEN
