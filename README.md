@@ -9,6 +9,8 @@ The oneAPI Intel Math Kernel Library (MKL) is assumed to be installed on Linux o
 
 Several routines and executables require having quadruple precision (`KIND=REAL128`) fully supported by the compiler, and therefore not all popular free compilers have been tested.
 
+*Intel's `ifx` is recommended for testing the `n × n` SVD routines*.
+
 Other 64-bit OSes (e.g., Oracle Solaris) and non-x86_64 (e.g., arm64 or ppc64le) platforms might also be supported to a certain extent, if the reference BLAS and LAPACK libraries have been built.
 
 First, clone [libpvn](https://github.com/venovako/libpvn) repository, with the same parent directory as this one has (e.g., `venovako/libpvn` and `venovako/KogAcc`).
