@@ -1,5 +1,5 @@
 ifndef COMPILER
-COMPILER=gfortran
+COMPILER=ifx
 endif # !COMPILER
 ifndef ARCH
 ARCH=$(shell uname -m)
