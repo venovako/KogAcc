@@ -26,7 +26,6 @@
   Z = W
   SELECT CASE (INFO)
   CASE (0)
-     ! should not happen with W orthogonal
      IF ((Z(1,1) .EQ. 0.0_K) .OR. (Z(2,2) .EQ. 0.0_K)) GOTO 1
      Z(2,1) = Z(2,1) / Z(1,1)
      Z(1,2) = Z(1,2) / Z(2,2)
@@ -43,7 +42,6 @@
         END DO
      END DO
   CASE (1)
-     ! should not happen with W orthogonal
      IF ((Z(2,1) .EQ. 0.0_K) .OR. (Z(2,2) .EQ. 0.0_K)) GOTO 1
      Z(1,1) = Z(1,1) / Z(2,1)
      Z(1,2) = Z(1,2) / Z(2,2)
@@ -60,7 +58,6 @@
         END DO
      END DO
   CASE (2)
-     ! should not happen with W orthogonal
      IF ((Z(1,1) .EQ. 0.0_K) .OR. (Z(1,2) .EQ. 0.0_K)) GOTO 1
      Z(2,1) = Z(2,1) / Z(1,1)
      Z(2,2) = Z(2,2) / Z(1,2)
@@ -77,7 +74,6 @@
         END DO
      END DO
   CASE (3)
-     ! should not happen with W orthogonal
      IF ((Z(2,1) .EQ. 0.0_K) .OR. (Z(1,2) .EQ. 0.0_K)) GOTO 1
      Z(1,1) = Z(1,1) / Z(2,1)
      Z(2,2) = Z(2,2) / Z(1,2)

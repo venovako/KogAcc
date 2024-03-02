@@ -73,12 +73,10 @@ PROGRAM SKSVDDX
      I = 0
   END IF
   M = N + MOD(N, 2)
-#ifdef __INTEL_COMPILER
   LDV = 64
   LDU = LDV / INT(SIZEOF(0.0_K))
   LDG = MOD(M, LDU)
   IF (LDG .NE. 0) M = M + (LDU - LDG)
-#endif
   LDG = M
   LDU = M
   LDV = M
