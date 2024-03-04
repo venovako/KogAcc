@@ -1,4 +1,4 @@
-!>@brief \b DLWSV2 computes the SVD of an upper triangular double precision 2x2 matrix G as G = U S V^T by calling the LAPACK's DLASV2 routine.
+!>@brief \b DLWSV2 computes the SVD of an upper triangular double precision 2x2 matrix G as G = U S V^T by calling a modernized LAPACK's DLASV2 routine.
 !!
 !!@param G [IN]; G is an upper triangular 2x2 double precision matrix.
 !!@param U [OUT]; U is an orthogonal double precision matrix of order two.
@@ -10,12 +10,12 @@ PURE SUBROUTINE DLWSV2(G, U, V, S, INFO)
   IMPLICIT NONE
 
   INTERFACE
-     PURE SUBROUTINE DLASV2(F, G, H, SSMIN, SSMAX, SNR, CSR, SNL, CSL)
+     PURE SUBROUTINE DLMSV2(F, G, H, SSMIN, SSMAX, SNR, CSR, SNL, CSL)
        USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
        IMPLICIT NONE
        REAL(KIND=REAL64), INTENT(IN) :: F, G, H
        REAL(KIND=REAL64), INTENT(OUT) :: SSMIN, SSMAX, SNR, CSR, SNL, CSL
-     END SUBROUTINE DLASV2
+     END SUBROUTINE DLMSV2
   END INTERFACE
 
   INTEGER, PARAMETER :: K = REAL64, IERR = -HUGE(0)
@@ -37,7 +37,7 @@ PURE SUBROUTINE DLWSV2(G, U, V, S, INFO)
   S(2) = ZERO
 
   IF (G(2,1) .EQ. ZERO) THEN
-     CALL DLASV2(G(1,1), G(1,2), G(2,2), S(2), S(1), V(2,1), V(1,1), U(2,1), U(1,1))
+     CALL DLMSV2(G(1,1), G(1,2), G(2,2), S(2), S(1), V(2,1), V(1,1), U(2,1), U(1,1))
      U(1,2) = -U(2,1)
      U(2,2) =  U(1,1)
      V(1,2) = -V(2,1)

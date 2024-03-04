@@ -1,4 +1,4 @@
-!>@brief \b SLWSV2 computes the SVD of an upper triangular single precision 2x2 matrix G as G = U S V^T by calling the LAPACK's SLASV2 routine.
+!>@brief \b SLWSV2 computes the SVD of an upper triangular single precision 2x2 matrix G as G = U S V^T by calling a modernized LAPACK's SLASV2 routine.
 !!
 !!@param G [IN]; G is an upper triangular 2x2 single precision matrix.
 !!@param U [OUT]; U is an orthogonal single precision matrix of order two.
@@ -10,12 +10,12 @@ PURE SUBROUTINE SLWSV2(G, U, V, S, INFO)
   IMPLICIT NONE
 
   INTERFACE
-     PURE SUBROUTINE SLASV2(F, G, H, SSMIN, SSMAX, SNR, CSR, SNL, CSL)
+     PURE SUBROUTINE SLMSV2(F, G, H, SSMIN, SSMAX, SNR, CSR, SNL, CSL)
        USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
        IMPLICIT NONE
        REAL(KIND=REAL32), INTENT(IN) :: F, G, H
        REAL(KIND=REAL32), INTENT(OUT) :: SSMIN, SSMAX, SNR, CSR, SNL, CSL
-     END SUBROUTINE SLASV2
+     END SUBROUTINE SLMSV2
   END INTERFACE
 
   INTEGER, PARAMETER :: K = REAL32, IERR = -HUGE(0)
@@ -37,7 +37,7 @@ PURE SUBROUTINE SLWSV2(G, U, V, S, INFO)
   S(2) = ZERO
 
   IF (G(2,1) .EQ. ZERO) THEN
-     CALL SLASV2(G(1,1), G(1,2), G(2,2), S(2), S(1), V(2,1), V(1,1), U(2,1), U(1,1))
+     CALL SLMSV2(G(1,1), G(1,2), G(2,2), S(2), S(1), V(2,1), V(1,1), U(2,1), U(1,1))
      U(1,2) = -U(2,1)
      U(2,2) =  U(1,1)
      V(1,2) = -V(2,1)
