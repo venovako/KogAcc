@@ -10,7 +10,7 @@ Other 64-bit OSes (e.g., Oracle Solaris) and platforms (e.g., arm64 or ppc64le) 
 
 Intel's `ifx` is *strongly recommended* for testing the `n × n` SVD routines!
 Other compilers might produce unreliable binaries in these cases.
-Several routines and executables require having quadruple precision (`KIND=REAL128`) fully supported by the compiler, and therefore not all popular free compilers have been tested.
+Several routines and executables require having quadruple precision (`KIND=REAL128`) fully supported by the compiler, and therefore not all popular compilers have been tested.
 
 First, clone [libpvn](https://github.com/venovako/libpvn) repository, with the same parent directory as this one has (e.g., `venovako/libpvn` and `venovako/KogAcc`).
 Then, build the `libpvn` library, with the same family of compilers and (no-)debug mode as it is meant to be used here (e.g., with `icx` if `ifx` is desired).
