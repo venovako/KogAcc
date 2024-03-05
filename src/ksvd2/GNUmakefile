@@ -61,11 +61,11 @@
 ../obj/$(PLAT)/xlmsv2.$(OXT): ksvd2/xlmsv2.f90 $(MKFS) ksvd2/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/xlmsv2.f90
 
-../obj/$(PLAT)/slwsv2.$(OXT): ksvd2/slwsv2.f90 $(MKFS) ksvd2/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/slwsv2.f90
+../obj/$(PLAT)/slwsv2.$(OXT): ksvd2/slwsv2.F90 $(MKFS) ksvd2/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/slwsv2.F90
 
-../obj/$(PLAT)/dlwsv2.$(OXT): ksvd2/dlwsv2.f90 $(MKFS) ksvd2/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/dlwsv2.f90
+../obj/$(PLAT)/dlwsv2.$(OXT): ksvd2/dlwsv2.F90 $(MKFS) ksvd2/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/dlwsv2.F90
 
 ../obj/$(PLAT)/qlwsv2.$(OXT): ksvd2/qlwsv2.f90 $(MKFS) ksvd2/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/qlwsv2.f90
