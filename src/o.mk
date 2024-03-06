@@ -183,6 +183,14 @@ EXES_TEST=\
 ../bin/$(PLAT)/zrnd.exe\
 ../bin/$(PLAT)/qrnd.exe\
 ../bin/$(PLAT)/yrnd.exe\
+../bin/$(PLAT)/sran2u.exe\
+../bin/$(PLAT)/sran2g.exe\
+../bin/$(PLAT)/cran2g.exe\
+../bin/$(PLAT)/dran2u.exe\
+../bin/$(PLAT)/dran2g.exe\
+../bin/$(PLAT)/zran2g.exe\
+../bin/$(PLAT)/qran2g.exe\
+../bin/$(PLAT)/yran2g.exe\
 ../bin/$(PLAT)/srnd2u.exe\
 ../bin/$(PLAT)/srnd2g.exe\
 ../bin/$(PLAT)/crnd2g.exe\
@@ -251,6 +259,8 @@ EXES_TEST += \
 ../bin/$(PLAT)/wran.exe\
 ../bin/$(PLAT)/xrnd.exe\
 ../bin/$(PLAT)/wrnd.exe\
+../bin/$(PLAT)/xran2g.exe\
+../bin/$(PLAT)/wran2g.exe\
 ../bin/$(PLAT)/xrnd2g.exe\
 ../bin/$(PLAT)/wrnd2g.exe
 endif # x86

@@ -35,3 +35,4 @@
         WRITE (*,*) ')'
      END DO
   END IF
+  CLOSE(U)

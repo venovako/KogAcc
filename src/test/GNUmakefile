@@ -94,6 +94,36 @@
 ../bin/$(PLAT)/wrnd.exe: test/wrnd.f90 test/hrnd.f90 $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o wrnd.exe ../../../src/test/wrnd.f90
 
+../bin/$(PLAT)/sran2u.exe: test/sran2t.F90 test/gran2t.F90 test/gran2u.F90 ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -DUPPER -o sran2u.exe ../../../src/test/sran2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux -L../../../../libpvn/src -lpvn $(LAPACK_LIBS)
+
+../bin/$(PLAT)/sran2g.exe: test/sran2t.F90 test/gran2t.F90 test/gran2g.F90 ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o sran2g.exe ../../../src/test/sran2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux -L../../../../libpvn/src -lpvn
+
+../bin/$(PLAT)/cran2g.exe: test/cran2t.F90 test/hran2t.F90 ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o cran2g.exe ../../../src/test/cran2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux -L../../../../libpvn/src -lpvn
+
+../bin/$(PLAT)/dran2u.exe: test/dran2t.F90 test/gran2t.F90 test/gran2u.F90 ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -DUPPER -o dran2u.exe ../../../src/test/dran2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux -L../../../../libpvn/src -lpvn $(LAPACK_LIBS)
+
+../bin/$(PLAT)/dran2g.exe: test/dran2t.F90 test/gran2t.F90 test/gran2g.F90 ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o dran2g.exe ../../../src/test/dran2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux -L../../../../libpvn/src -lpvn
+
+../bin/$(PLAT)/zran2g.exe: test/zran2t.F90 test/hran2t.F90 ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o zran2g.exe ../../../src/test/zran2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux -L../../../../libpvn/src -lpvn
+
+../bin/$(PLAT)/qran2g.exe: test/qran2t.F90 test/gran2t.F90 test/gran2g.F90 ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o qran2g.exe ../../../src/test/qran2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux -L../../../../libpvn/src -lpvn
+
+../bin/$(PLAT)/yran2g.exe: test/yran2t.F90 test/hran2t.F90 ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o yran2g.exe ../../../src/test/yran2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux -L../../../../libpvn/src -lpvn
+
+../bin/$(PLAT)/xran2g.exe: test/xran2t.F90 test/gran2t.F90 test/gran2g.F90 ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o xran2g.exe ../../../src/test/xran2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux -L../../../../libpvn/src -lpvn
+
+../bin/$(PLAT)/wran2g.exe: test/wran2t.F90 test/hran2t.F90 ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o wran2g.exe ../../../src/test/wran2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux -L../../../../libpvn/src -lpvn
+
 ../bin/$(PLAT)/srnd2u.exe: test/srnd2t.F90 test/grnd2t.F90 test/grnd2u.F90 ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -DUPPER -o srnd2u.exe ../../../src/test/srnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux -L../../../../libpvn/src -lpvn $(LAPACK_LIBS)
 

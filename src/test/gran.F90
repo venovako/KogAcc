@@ -28,3 +28,4 @@
         WRITE (*,1) ' ', RSAFE(U)
      END DO
   END IF
+  CLOSE(U)
