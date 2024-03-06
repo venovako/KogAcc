@@ -171,6 +171,12 @@ EXES_FAUX=\
 ../bin/$(PLAT)/jsweep.exe
 
 EXES_TEST=\
+../bin/$(PLAT)/sran.exe\
+../bin/$(PLAT)/cran.exe\
+../bin/$(PLAT)/dran.exe\
+../bin/$(PLAT)/zran.exe\
+../bin/$(PLAT)/qran.exe\
+../bin/$(PLAT)/yran.exe\
 ../bin/$(PLAT)/srnd.exe\
 ../bin/$(PLAT)/crnd.exe\
 ../bin/$(PLAT)/drnd.exe\
@@ -241,6 +247,8 @@ EXES_KSVD2 += \
 ../bin/$(PLAT)/wksvd2.exe\
 ../bin/$(PLAT)/xlwsv2.exe
 EXES_TEST += \
+../bin/$(PLAT)/xran.exe\
+../bin/$(PLAT)/wran.exe\
 ../bin/$(PLAT)/xrnd.exe\
 ../bin/$(PLAT)/wrnd.exe\
 ../bin/$(PLAT)/xrnd2g.exe\
