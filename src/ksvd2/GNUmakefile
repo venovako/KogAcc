@@ -49,17 +49,17 @@
 ../obj/$(PLAT)/wcvgpp.$(OXT): ksvd2/wcvgpp.f90 ksvd2/gcvgpp.f90 $(MKFS) ksvd2/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/wcvgpp.f90
 
-../obj/$(PLAT)/slmsv2.$(OXT): ksvd2/slmsv2.f90 $(MKFS) ksvd2/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/slmsv2.f90
+../obj/$(PLAT)/slmsv2.$(OXT): ksvd2/slmsv2.F90 $(MKFS) ksvd2/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/slmsv2.F90
 
-../obj/$(PLAT)/dlmsv2.$(OXT): ksvd2/dlmsv2.f90 $(MKFS) ksvd2/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/dlmsv2.f90
+../obj/$(PLAT)/dlmsv2.$(OXT): ksvd2/dlmsv2.F90 $(MKFS) ksvd2/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/dlmsv2.F90
 
-../obj/$(PLAT)/qlmsv2.$(OXT): ksvd2/qlmsv2.f90 $(MKFS) ksvd2/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/qlmsv2.f90
+../obj/$(PLAT)/qlmsv2.$(OXT): ksvd2/qlmsv2.F90 $(MKFS) ksvd2/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/qlmsv2.F90
 
-../obj/$(PLAT)/xlmsv2.$(OXT): ksvd2/xlmsv2.f90 $(MKFS) ksvd2/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/xlmsv2.f90
+../obj/$(PLAT)/xlmsv2.$(OXT): ksvd2/xlmsv2.F90 $(MKFS) ksvd2/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/xlmsv2.F90
 
 ../obj/$(PLAT)/slwsv2.$(OXT): ksvd2/slwsv2.F90 $(MKFS) ksvd2/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/slwsv2.F90

@@ -1,4 +1,4 @@
-!> \brief \b XLMSV2 computes the singular value decomposition of a 2-by-2 triangular matrix.
+!> \brief \b SLMSV2 computes the singular value decomposition of a 2-by-2 triangular matrix.
 !
 !  =========== DOCUMENTATION ===========
 !
@@ -10,10 +10,10 @@
 !  Definition:
 !  ===========
 !
-!       SUBROUTINE XLMSV2( F, G, H, SSMIN, SSMAX, SNR, CSR, SNL, CSL )
+!       SUBROUTINE SLMSV2( F, G, H, SSMIN, SSMAX, SNR, CSR, SNL, CSL )
 !
 !       .. Scalar Arguments ..
-!       REAL(KIND=10)      CSL, CSR, F, G, H, SNL, SNR, SSMAX, SSMIN
+!       REAL(KIND=REAL32)  CSL, CSR, F, G, H, SNL, SNR, SSMAX, SSMIN
 !       ..
 !
 !
@@ -22,7 +22,7 @@
 !>
 !> \verbatim
 !>
-!> XLMSV2 computes the singular value decomposition of a 2-by-2
+!> SLMSV2 computes the singular value decomposition of a 2-by-2
 !> triangular matrix
 !>    [  F   G  ]
 !>    [  0   H  ].
@@ -124,10 +124,28 @@
 !> \endverbatim
 !>
 !  =====================================================================
-PURE SUBROUTINE XLMSV2(F, G, H, SSMIN, SSMAX, SNR, CSR, SNL, CSL)
+PURE SUBROUTINE SLMSV2(F, G, H, SSMIN, SSMAX, SNR, CSR, SNL, CSL)
+#ifdef USE_IEEE_INTRINSIC
+#if ((USE_IEEE_INTRINSIC & 3) == 0)
+#undef USE_IEEE_INTRINSIC
+#elif ((USE_IEEE_INTRINSIC & 3) == 1)
   USE, INTRINSIC :: IEEE_ARITHMETIC, ONLY: IEEE_FMA
+#endif
+#endif
+  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
   IMPLICIT NONE
-  INTEGER, PARAMETER :: K = 10
+#ifdef USE_IEEE_INTRINSIC
+#if ((USE_IEEE_INTRINSIC & 3) == 2)
+  INTERFACE
+     PURE FUNCTION IEEE_FMA(X, Y, Z) BIND(C,NAME='fmaf')
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_float
+       REAL(KIND=c_float), INTENT(IN), VALUE :: X, Y, Z
+       REAL(KIND=c_float) :: IEEE_FMA
+     END FUNCTION IEEE_FMA
+  END INTERFACE
+#endif
+#endif
+  INTEGER, PARAMETER :: K = REAL32
 !
 !  -- LAPACK auxiliary routine --
 !  -- LAPACK is a software package provided by Univ. of Tennessee,    --
@@ -244,7 +262,11 @@ PURE SUBROUTINE XLMSV2(F, G, H, SSMIN, SSMAX, SNR, CSR, SNL, CSL)
         IF (L .EQ. ZERO) THEN
            R = ABS(M)
         ELSE
+#ifdef USE_IEEE_INTRINSIC
            R = SQRT(IEEE_FMA(L, L, MM))
+#else
+           R = SQRT(L * L + MM)
+#endif
         END IF
 !
 !           Note that 0 .le. R .le. 1 + 1/macheps
@@ -267,10 +289,18 @@ PURE SUBROUTINE XLMSV2(F, G, H, SSMIN, SSMAX, SNR, CSR, SNL, CSL)
         ELSE
            T = (M / (S + T) + M / (R + L)) * (ONE + A)
         END IF
+#ifdef USE_IEEE_INTRINSIC
         L = SQRT(IEEE_FMA(T, T, FOUR))
+#else
+        L = SQRT(T * T + FOUR)
+#endif
         CRT = TWO / L
         SRT = T / L
+#ifdef USE_IEEE_INTRINSIC
         CLT = IEEE_FMA(SRT, M, CRT) / A
+#else
+        CLT = (SRT * M + CRT) / A
+#endif
         SLT = (HT / FT) * SRT / A
      END IF
   END IF
@@ -294,6 +324,6 @@ PURE SUBROUTINE XLMSV2(F, G, H, SSMIN, SSMAX, SNR, CSR, SNL, CSL)
   SSMAX = SIGN(SSMAX, TSIGN)
   SSMIN = SIGN(SSMIN, TSIGN * SIGN(ONE, F) * SIGN(ONE, H))
 !
-!     End of XLMSV2
+!     End of SLMSV2
 !
-END SUBROUTINE XLMSV2
+END SUBROUTINE SLMSV2
