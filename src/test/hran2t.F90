@@ -17,7 +17,7 @@
      I = M * (L + 1) + (K - M) * L + 1
   END IF
   J = MIN(I + (L - 1), N)
-  M = ORFILE()
+  OPEN(NEWUNIT=M,FILE='/dev/random',ACCESS='STREAM',ACTION='READ',STATUS='OLD')
   DO K = I, J
      G(1,1) = CMPLX(RSAFE(M), RSAFE(M), D)
      G(2,1) = CMPLX(RSAFE(M), RSAFE(M), D)

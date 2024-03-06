@@ -12,7 +12,7 @@
   CASE DEFAULT
      ERROR STOP 'the first argument is invalid'
   END SELECT
-  U = ORFILE()
+  OPEN(NEWUNIT=U,FILE='/dev/random',ACCESS='STREAM',ACTION='READ',STATUS='OLD')
   IF (UPPER) THEN
      DO I = 1, N
         WRITE (*,1,ADVANCE='NO') '', RSAFE(U)

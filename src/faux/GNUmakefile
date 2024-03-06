@@ -106,9 +106,6 @@
 ../obj/$(PLAT)/jsweep.$(OXT): faux/jsweep.f90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/jsweep.f90
 
-../obj/$(PLAT)/orfile.$(OXT): faux/orfile.f90 $(MKFS) faux/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/orfile.f90
-
 ../obj/$(PLAT)/srsafe.$(OXT): faux/srsafe.f90 faux/grsafe.f90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/srsafe.f90
 

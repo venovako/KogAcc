@@ -135,7 +135,6 @@ OBJS_FAUX=\
 ../obj/$(PLAT)/yscalg.$(OXT)\
 ../obj/$(PLAT)/jstep.$(OXT)\
 ../obj/$(PLAT)/jsweep.$(OXT)\
-../obj/$(PLAT)/orfile.$(OXT)\
 ../obj/$(PLAT)/srsafe.$(OXT)\
 ../obj/$(PLAT)/drsafe.$(OXT)\
 ../obj/$(PLAT)/qrsafe.$(OXT)
