@@ -26,7 +26,7 @@ else # GCC < 13
 ifeq ($(findstring 86,$(ARCH)),86)
 INTRIN=42
 else # !x86
-# TODO: on non-Intel architectures, assumes that REAL128 == long double, what might not be true!
+# TODO: on non-Intel architectures, assumes that REAL128 == long double, what might not be true for older machines!
 INTRIN=138
 endif # ?x86
 endif # ?GCC
