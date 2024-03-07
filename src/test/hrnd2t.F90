@@ -120,6 +120,7 @@
      IF (INFO .LE. -HUGE(INFO)) CALL STHALT('KSVD2')
      L = -INFO
      CALL KERR2(G, U, V, S, E, INFO)
+     IF (INFO .LE. -HUGE(INFO)) CALL STHALT('KERR2')
      Q = S(1,1)
      IF (L .NE. 0) Q = SCALE(Q, L)
      E(4) = MAX(ABS(QS(1) - Q) / QS(1), QZERO)

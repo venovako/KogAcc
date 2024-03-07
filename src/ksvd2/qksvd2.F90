@@ -12,19 +12,23 @@ SUBROUTINE QKSVD2(G, U, V, S, INFO)
   IMPLICIT NONE
 
   INTEGER, PARAMETER :: K = REAL128
+  REAL(KIND=K), PARAMETER :: ZERO = 0.0_K
   REAL(KIND=K), INTENT(IN) :: G(2,2)
   REAL(KIND=K), INTENT(OUT) :: U(2,2), V(2,2), S(2)
   INTEGER, INTENT(INOUT) :: INFO
   INTEGER(c_int), EXTERNAL :: PVN_QLJSV2
 
-  INTEGER(c_int) :: ES, KND
+  INTEGER(c_int) :: ES(3), KND
 
-  ES = INT(INFO, c_int)
+  ES(1) = INT(INFO, c_int)
   KND = PVN_QLJSV2(G(1,1), G(2,1), G(1,2), G(2,2), &
        U(1,1), U(2,1), U(1,2), U(2,2), V(1,1), V(2,1), V(1,2), V(2,2), S(1), S(2), ES)
-  IF (KND .LT. 0) THEN
+  IF (KND .LT. 0_c_int) THEN
      INFO = -HUGE(INFO)
   ELSE ! all OK
-     INFO = INT(ES)
+     INFO = MAX(0, EXPONENT(TINY(ZERO)) - INT(ES(2) - ES(1)))
+     INFO = MIN(INFO, EXPONENT(HUGE(ZERO)) - INT(ES(3) - ES(1)))
+     S(1) = SCALE(S(1), INT(ES(2) - ES(1)) + INFO)
+     S(2) = SCALE(S(2), INT(ES(3) - ES(1)) + INFO)
   END IF
 END SUBROUTINE QKSVD2

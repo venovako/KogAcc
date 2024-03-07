@@ -29,6 +29,7 @@
      IF (INFO .LE. -HUGE(INFO)) CALL STHALT('KSVD2')
      L = -INFO
      CALL KERR2(G, U, V, S, E(1,1), INFO)
+     IF (INFO .LE. -HUGE(INFO)) CALL STHALT('KERR2')
      Q = S(1)
      IF (L .NE. 0) Q = SCALE(Q, L)
      E(4,1) = MAX(ABS(QS(1) - Q) / QS(1), QZERO)
@@ -49,6 +50,7 @@
      IF (INFO .LE. -HUGE(INFO)) CALL STHALT('LWSV2')
      L = -INFO
      CALL KERR2(G, U, V, S, E(1,2), INFO)
+     IF (INFO .LE. -HUGE(INFO)) CALL STHALT('kerr2')
      ! be extremely cautious
      S(1) = ABS(S(1))
      S(2) = ABS(S(2))
