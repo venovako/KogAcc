@@ -29,9 +29,9 @@
      G(1,2) = RAN_SAFE(O)
      G(2,2) = RAN_SAFE(O)
 #ifdef UPPER
-#include "grnd2u.F90"
+#include "gran2u.F90"
 #else
-#include "grnd2g.F90"
+#include "gran2g.F90"
 #endif
   END DO
 #ifdef UPPER
