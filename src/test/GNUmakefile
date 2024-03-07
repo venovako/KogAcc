@@ -47,28 +47,28 @@
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o xpqsort.exe ../../../src/test/xpqsortx.f90 -L../../../lib/$(PLAT) -ldynord
 
 ../bin/$(PLAT)/sran.exe: test/sran.F90 test/gran.F90 $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o sran.exe ../../../src/test/sran.F90 -L../../../lib/$(PLAT) -lfaux
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o sran.exe ../../../src/test/sran.F90 -L../../../lib/$(PLAT) -lfaux -L../../../../libpvn/src -lpvn
 
 ../bin/$(PLAT)/cran.exe: test/cran.F90 test/hran.F90 $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o cran.exe ../../../src/test/cran.F90 -L../../../lib/$(PLAT) -lfaux
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o cran.exe ../../../src/test/cran.F90 -L../../../lib/$(PLAT) -lfaux -L../../../../libpvn/src -lpvn
 
 ../bin/$(PLAT)/dran.exe: test/dran.F90 test/gran.F90 $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o dran.exe ../../../src/test/dran.F90 -L../../../lib/$(PLAT) -lfaux
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o dran.exe ../../../src/test/dran.F90 -L../../../lib/$(PLAT) -lfaux -L../../../../libpvn/src -lpvn
 
 ../bin/$(PLAT)/zran.exe: test/zran.F90 test/hran.F90 $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o zran.exe ../../../src/test/zran.F90 -L../../../lib/$(PLAT) -lfaux
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o zran.exe ../../../src/test/zran.F90 -L../../../lib/$(PLAT) -lfaux -L../../../../libpvn/src -lpvn
 
 ../bin/$(PLAT)/qran.exe: test/qran.F90 test/gran.F90 $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o qran.exe ../../../src/test/qran.F90 -L../../../lib/$(PLAT) -lfaux
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o qran.exe ../../../src/test/qran.F90 -L../../../lib/$(PLAT) -lfaux -L../../../../libpvn/src -lpvn
 
 ../bin/$(PLAT)/yran.exe: test/yran.F90 test/hran.F90 $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o yran.exe ../../../src/test/yran.F90 -L../../../lib/$(PLAT) -lfaux
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o yran.exe ../../../src/test/yran.F90 -L../../../lib/$(PLAT) -lfaux -L../../../../libpvn/src -lpvn
 
 ../bin/$(PLAT)/xran.exe: test/xran.F90 test/gran.F90 $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o xran.exe ../../../src/test/xran.F90 -L../../../lib/$(PLAT) -lfaux
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o xran.exe ../../../src/test/xran.F90 -L../../../lib/$(PLAT) -lfaux -L../../../../libpvn/src -lpvn
 
 ../bin/$(PLAT)/wran.exe: test/wran.F90 test/hran.F90 $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o wran.exe ../../../src/test/wran.F90 -L../../../lib/$(PLAT) -lfaux
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o wran.exe ../../../src/test/wran.F90 -L../../../lib/$(PLAT) -lfaux -L../../../../libpvn/src -lpvn
 
 ../bin/$(PLAT)/srnd.exe: test/srnd.f90 test/grnd.f90 $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o srnd.exe ../../../src/test/srnd.f90

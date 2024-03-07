@@ -1,7 +1,6 @@
 !>@brief WRND2T tests a set of pseudorandom single precision complex 2x2 matrices.
 PROGRAM WRND2T
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL128, OUTPUT_UNIT, ERROR_UNIT
-  USE, INTRINSIC :: ISO_C_BINDING
   !$ USE OMP_LIB
   IMPLICIT NONE
   INTERFACE

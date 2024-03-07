@@ -134,10 +134,7 @@ OBJS_FAUX=\
 ../obj/$(PLAT)/qscalg.$(OXT)\
 ../obj/$(PLAT)/yscalg.$(OXT)\
 ../obj/$(PLAT)/jstep.$(OXT)\
-../obj/$(PLAT)/jsweep.$(OXT)\
-../obj/$(PLAT)/srsafe.$(OXT)\
-../obj/$(PLAT)/drsafe.$(OXT)\
-../obj/$(PLAT)/qrsafe.$(OXT)
+../obj/$(PLAT)/jsweep.$(OXT)
 
 EXES_BLKSVD=\
 ../bin/$(PLAT)/sksvd0.exe\
@@ -242,8 +239,7 @@ OBJS_FAUX += \
 ../obj/$(PLAT)/xrotr.$(OXT)\
 ../obj/$(PLAT)/wrotr.$(OXT)\
 ../obj/$(PLAT)/xscalg.$(OXT)\
-../obj/$(PLAT)/wscalg.$(OXT)\
-../obj/$(PLAT)/xrsafe.$(OXT)
+../obj/$(PLAT)/wscalg.$(OXT)
 EXES_BLKSVD += \
 ../bin/$(PLAT)/xksvd0.exe\
 ../bin/$(PLAT)/wksvd0.exe

@@ -17,12 +17,13 @@
      I = M * (L + 1) + (K - M) * L + 1
   END IF
   J = MIN(I + (L - 1), N)
-  OPEN(NEWUNIT=M,FILE='/dev/random',ACCESS='STREAM',ACTION='READ',STATUS='OLD')
+  O = PVN_RAN_OPEN()
+  IF (O .LT. 0_c_int) ERROR STOP 'cannot open /dev/random for reading'
   DO K = I, J
-     G(1,1) = CMPLX(RSAFE(M), RSAFE(M), D)
-     G(2,1) = CMPLX(RSAFE(M), RSAFE(M), D)
-     G(1,2) = CMPLX(RSAFE(M), RSAFE(M), D)
-     G(2,2) = CMPLX(RSAFE(M), RSAFE(M), D)
+     G(1,1) = CMPLX(RAN_SAFE(O), RAN_SAFE(O), D)
+     G(2,1) = CMPLX(RAN_SAFE(O), RAN_SAFE(O), D)
+     G(1,2) = CMPLX(RAN_SAFE(O), RAN_SAFE(O), D)
+     G(2,2) = CMPLX(RAN_SAFE(O), RAN_SAFE(O), D)
      INFO = 0
      QG(1,1) = G(1,1)
      QG(2,1) = G(2,1)
@@ -77,4 +78,4 @@
      WRITE (ERROR_UNIT,1,ADVANCE='NO') ',', -F(2,K)
   END DO
   WRITE (ERROR_UNIT,1) ',', -F(2,L)
-  CLOSE(M)
+  O = PVN_RAN_CLOSE(O)

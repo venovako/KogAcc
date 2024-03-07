@@ -1,7 +1,6 @@
 !>@brief ZRND2T tests a set of pseudorandom double precision complex 2x2 matrices.
 PROGRAM ZRND2T
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64, REAL128, OUTPUT_UNIT, ERROR_UNIT
-  USE, INTRINSIC :: ISO_C_BINDING
   !$ USE OMP_LIB
   IMPLICIT NONE
   INTERFACE

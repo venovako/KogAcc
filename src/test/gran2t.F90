@@ -17,16 +17,17 @@
      I = M * (L + 1) + (K - M) * L + 1
   END IF
   J = MIN(I + (L - 1), N)
-  OPEN(NEWUNIT=M,FILE='/dev/random',ACCESS='STREAM',ACTION='READ',STATUS='OLD')
+  O = PVN_RAN_OPEN()
+  IF (O .LT. 0_c_int) ERROR STOP 'cannot open /dev/random for reading'
   DO K = I, J
-     G(1,1) = RSAFE(M)
+     G(1,1) = RAN_SAFE(O)
 #ifdef UPPER
      G(2,1) = ZERO
 #else
-     G(2,1) = RSAFE(M)
+     G(2,1) = RAN_SAFE(O)
 #endif
-     G(1,2) = RSAFE(M)
-     G(2,2) = RSAFE(M)
+     G(1,2) = RAN_SAFE(O)
+     G(2,2) = RAN_SAFE(O)
 #ifdef UPPER
 #include "grnd2u.F90"
 #else
@@ -48,4 +49,4 @@
      WRITE (ERROR_UNIT,1,ADVANCE='NO') ',', -F(2,K)
   END DO
   WRITE (ERROR_UNIT,1) ',', -F(2,L)
-  CLOSE(M)
+  O = PVN_RAN_CLOSE(O)

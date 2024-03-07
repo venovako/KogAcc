@@ -12,27 +12,28 @@
   CASE DEFAULT
      ERROR STOP 'the first argument is invalid'
   END SELECT
-  OPEN(NEWUNIT=U,FILE='/dev/random',ACCESS='STREAM',ACTION='READ',STATUS='OLD')
+  U = PVN_RAN_OPEN()
+  IF (U .LT. 0_c_int) ERROR STOP 'cannot open /dev/random for reading'
   IF (UPPER) THEN
      DO I = 1, N
-        WRITE (*,1,ADVANCE='NO') '(', RSAFE(U)
-        WRITE (*,1,ADVANCE='NO') ',', RSAFE(U)
-        WRITE (*,1,ADVANCE='NO') ') (', RSAFE(U)
-        WRITE (*,1,ADVANCE='NO') ',', RSAFE(U)
+        WRITE (*,1,ADVANCE='NO') '(', RAN_SAFE(U)
+        WRITE (*,1,ADVANCE='NO') ',', RAN_SAFE(U)
+        WRITE (*,1,ADVANCE='NO') ') (', RAN_SAFE(U)
+        WRITE (*,1,ADVANCE='NO') ',', RAN_SAFE(U)
         WRITE (*,*) ')'
         WRITE (*,1,ADVANCE='NO') '(', ZERO
         WRITE (*,1,ADVANCE='NO') ',', ZERO
-        WRITE (*,1,ADVANCE='NO') ') (', RSAFE(U)
-        WRITE (*,1,ADVANCE='NO') ',', RSAFE(U)
+        WRITE (*,1,ADVANCE='NO') ') (', RAN_SAFE(U)
+        WRITE (*,1,ADVANCE='NO') ',', RAN_SAFE(U)
         WRITE (*,*) ')'
      END DO
   ELSE ! general
      DO I = 1, 2*N
-        WRITE (*,1,ADVANCE='NO') '(', RSAFE(U)
-        WRITE (*,1,ADVANCE='NO') ',', RSAFE(U)
-        WRITE (*,1,ADVANCE='NO') ') (', RSAFE(U)
-        WRITE (*,1,ADVANCE='NO') ',', RSAFE(U)
+        WRITE (*,1,ADVANCE='NO') '(', RAN_SAFE(U)
+        WRITE (*,1,ADVANCE='NO') ',', RAN_SAFE(U)
+        WRITE (*,1,ADVANCE='NO') ') (', RAN_SAFE(U)
+        WRITE (*,1,ADVANCE='NO') ',', RAN_SAFE(U)
         WRITE (*,*) ')'
      END DO
   END IF
-  CLOSE(U)
+  U = PVN_RAN_CLOSE(U)
