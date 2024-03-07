@@ -25,8 +25,8 @@ SUBROUTINE XKSVD2(G, U, V, S, INFO)
   IF (KND .LT. 0_c_int) THEN
      INFO = -HUGE(INFO)
   ELSE ! all OK
-     INFO = MAX(0, EXPONENT(TINY(ZERO)) - INT(ES(2) - ES(1)))
-     INFO = MIN(INFO, EXPONENT(HUGE(ZERO)) - INT(ES(3) - ES(1)))
+     INFO = MAX(0, EXPONENT(TINY(ZERO)) - INT(ES(3) - ES(1)))
+     INFO = MIN(INFO, EXPONENT(HUGE(ZERO)) - INT(ES(2) - ES(1)))
      S(1) = SCALE(S(1), INT(ES(2) - ES(1)) + INFO)
      S(2) = SCALE(S(2), INT(ES(3) - ES(1)) + INFO)
   END IF
