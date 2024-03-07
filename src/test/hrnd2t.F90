@@ -118,15 +118,14 @@
      F(2,1) = MAX(-Q, F(2,1))
      CALL KSVD2(G, U, V, S, INFO)
      IF (INFO .LE. -HUGE(INFO)) CALL STHALT('KSVD2')
-     IF (INFO .NE. 0) THEN
-        L = -INFO
-        S(1,1) = SCALE(S(1,1), L)
-        S(2,1) = SCALE(S(2,1), L)
-        INFO = 0
-     END IF
+     L = -INFO
      CALL KERR2(G, U, V, S, E, INFO)
-     E(4) = MAX(ABS(QS(1) - S(1,1)) / QS(1), QZERO)
-     E(5) = MAX(ABS(QS(2) - S(2,1)) / QS(2), QZERO)
+     Q = S(1,1)
+     IF (L .NE. 0) Q = SCALE(Q, L)
+     E(4) = MAX(ABS(QS(1) - Q) / QS(1), QZERO)
+     Q = S(2,1)
+     IF (L .NE. 0) Q = SCALE(Q, L)
+     E(5) = MAX(ABS(QS(2) - Q) / QS(2), QZERO)
      F(1,2) = MAX(E(1), F(1,2))
      F(2,2) = MAX(-E(1), F(2,2))
      F(1,3) = MAX(E(2), F(1,3))
