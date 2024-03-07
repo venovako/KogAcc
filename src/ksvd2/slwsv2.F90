@@ -5,12 +5,12 @@
 !!@param V [OUT]; V is an orthogonal single precision matrix of order two.
 !!@param S [OUT]; S is a single precision array with two elements, s_{11} and s_{22}.
 !!@param INFO [OUT]; On success, 0; else, if G is not upper triangular, -HUGE(INFO) (and U=V=I, s_{11}=s_{22}=0).
-PURE SUBROUTINE SLWSV2(G, U, V, S, INFO)
+SUBROUTINE SLWSV2(G, U, V, S, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
   IMPLICIT NONE
 #ifdef USE_LAPACK
   INTERFACE
-     PURE SUBROUTINE SLASV2(F, G, H, SSMIN, SSMAX, SNR, CSR, SNL, CSL)
+     SUBROUTINE SLASV2(F, G, H, SSMIN, SSMAX, SNR, CSR, SNL, CSL)
        USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
        IMPLICIT NONE
        REAL(KIND=REAL32), INTENT(IN) :: F, G, H
@@ -19,7 +19,7 @@ PURE SUBROUTINE SLWSV2(G, U, V, S, INFO)
   END INTERFACE
 #else
   INTERFACE
-     PURE SUBROUTINE SLMSV2(F, G, H, SSMIN, SSMAX, SNR, CSR, SNL, CSL)
+     SUBROUTINE SLMSV2(F, G, H, SSMIN, SSMAX, SNR, CSR, SNL, CSL)
        USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
        IMPLICIT NONE
        REAL(KIND=REAL32), INTENT(IN) :: F, G, H

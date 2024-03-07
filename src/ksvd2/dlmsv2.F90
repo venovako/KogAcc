@@ -124,7 +124,7 @@
 !> \endverbatim
 !>
 !  =====================================================================
-PURE SUBROUTINE DLMSV2(F, G, H, SSMIN, SSMAX, SNR, CSR, SNL, CSL)
+SUBROUTINE DLMSV2(F, G, H, SSMIN, SSMAX, SNR, CSR, SNL, CSL)
 #ifdef USE_IEEE_INTRINSIC
 #if ((USE_IEEE_INTRINSIC & 12) == 0)
 #undef USE_IEEE_INTRINSIC
@@ -137,7 +137,7 @@ PURE SUBROUTINE DLMSV2(F, G, H, SSMIN, SSMAX, SNR, CSR, SNL, CSL)
 #ifdef USE_IEEE_INTRINSIC
 #if ((USE_IEEE_INTRINSIC & 12) == 8)
   INTERFACE
-     PURE FUNCTION IEEE_FMA(X, Y, Z) BIND(C,NAME='fma')
+     FUNCTION IEEE_FMA(X, Y, Z) BIND(C,NAME='fma')
        USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_double
        REAL(KIND=c_double), INTENT(IN), VALUE :: X, Y, Z
        REAL(KIND=c_double) :: IEEE_FMA

@@ -124,7 +124,7 @@
 !> \endverbatim
 !>
 !  =====================================================================
-PURE SUBROUTINE QLMSV2(F, G, H, SSMIN, SSMAX, SNR, CSR, SNL, CSL)
+SUBROUTINE QLMSV2(F, G, H, SSMIN, SSMAX, SNR, CSR, SNL, CSL)
 #ifdef USE_IEEE_INTRINSIC
 #if ((USE_IEEE_INTRINSIC & 192) == 0)
 #undef USE_IEEE_INTRINSIC
@@ -137,7 +137,7 @@ PURE SUBROUTINE QLMSV2(F, G, H, SSMIN, SSMAX, SNR, CSR, SNL, CSL)
 #ifdef USE_IEEE_INTRINSIC
 #if ((USE_IEEE_INTRINSIC & 192) == 128)
   INTERFACE
-     PURE FUNCTION IEEE_FMA(X, Y, Z) BIND(C,NAME='fmal')
+     FUNCTION IEEE_FMA(X, Y, Z) BIND(C,NAME='fmal')
        USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
        REAL(KIND=c_long_double), INTENT(IN), VALUE :: X, Y, Z
        REAL(KIND=c_long_double) :: IEEE_FMA

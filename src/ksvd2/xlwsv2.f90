@@ -5,11 +5,11 @@
 !!@param V [OUT]; V is an orthogonal extended precision matrix of order two.
 !!@param S [OUT]; S is a extended precision array with two elements, s_{11} and s_{22}.
 !!@param INFO [OUT]; On success, 0; else, if G is not upper triangular, -HUGE(INFO) (and U=V=I, s_{11}=s_{22}=0).
-PURE SUBROUTINE XLWSV2(G, U, V, S, INFO)
+SUBROUTINE XLWSV2(G, U, V, S, INFO)
   IMPLICIT NONE
 
   INTERFACE
-     PURE SUBROUTINE XLMSV2(F, G, H, SSMIN, SSMAX, SNR, CSR, SNL, CSL)
+     SUBROUTINE XLMSV2(F, G, H, SSMIN, SSMAX, SNR, CSR, SNL, CSL)
        IMPLICIT NONE
        REAL(KIND=10), INTENT(IN) :: F, G, H
        REAL(KIND=10), INTENT(OUT) :: SSMIN, SSMAX, SNR, CSR, SNL, CSL
