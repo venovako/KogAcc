@@ -13,9 +13,10 @@
   GX(2,2) = CONJG(UX(2,2))
 
   ! VX = U^H U - I
-  VX = MATMUL(GX, UX)
-  VX(1,1) = VX(1,1) - CONE
-  VX(2,2) = VX(2,2) - CONE
+  VX(1,1) = GX(1,1) * UX(1,1) + GX(1,2) * UX(2,1) - CONE
+  VX(2,1) = GX(2,1) * UX(1,1) + GX(2,2) * UX(2,1)
+  VX(1,2) = GX(1,1) * UX(1,2) + GX(1,2) * UX(2,2)
+  VX(2,2) = GX(2,1) * UX(1,2) + GX(2,2) * UX(2,2) - CONE
   E(1) = HYPOT(HYPOT(HYPOT(REAL(VX(1,1)), AIMAG(VX(1,1))), HYPOT(REAL(VX(2,1)), AIMAG(VX(2,1)))),&
        HYPOT(HYPOT(REAL(VX(1,2)), AIMAG(VX(1,2))), HYPOT(REAL(VX(2,2)), AIMAG(VX(2,2)))))
 
@@ -32,9 +33,10 @@
   VX(2,2) = CONJG(SX(2,2))
 
   ! GX = V^H V - I
-  GX = MATMUL(VX, SX)
-  GX(1,1) = GX(1,1) - CONE
-  GX(2,2) = GX(2,2) - CONE
+  GX(1,1) = VX(1,1) * SX(1,1) + VX(1,2) * SX(2,1) - CONE
+  GX(2,1) = VX(2,1) * SX(1,1) + VX(2,2) * SX(2,1)
+  GX(1,2) = VX(1,1) * SX(1,2) + VX(1,2) * SX(2,2)
+  GX(2,2) = VX(2,1) * SX(1,2) + VX(2,2) * SX(2,2) - CONE
   E(2) = HYPOT(HYPOT(HYPOT(REAL(GX(1,1)), AIMAG(GX(1,1))), HYPOT(REAL(GX(2,1)), AIMAG(GX(2,1)))),&
        HYPOT(HYPOT(REAL(GX(1,2)), AIMAG(GX(1,2))), HYPOT(REAL(GX(2,2)), AIMAG(GX(2,2)))))
 
@@ -64,15 +66,14 @@
   UX(2,2) = UX(2,2) * REAL(SX(2,2))
 
   ! SX = (U \Sigma) V^H - G
-  SX = MATMUL(UX, VX) - GX
+  SX(1,1) = UX(1,1) * VX(1,1) + UX(1,2) * VX(2,1) - GX(1,1)
+  SX(2,1) = UX(2,1) * VX(1,1) + UX(2,2) * VX(2,1) - GX(2,1)
+  SX(1,2) = UX(1,1) * VX(1,2) + UX(1,2) * VX(2,2) - GX(1,2)
+  SX(2,2) = UX(2,1) * VX(1,2) + UX(2,2) * VX(2,2) - GX(2,2)
   IF (E(3) .EQ. ZERO) THEN
      E(3) = HYPOT(HYPOT(HYPOT(REAL(SX(1,1)), AIMAG(SX(1,1))), HYPOT(REAL(SX(2,1)), AIMAG(SX(2,1)))),&
           HYPOT(HYPOT(REAL(SX(1,2)), AIMAG(SX(1,2))), HYPOT(REAL(SX(2,2)), AIMAG(SX(2,2)))))
-     IF (E(3) .EQ. ZERO) THEN
-        E(3) = ONE
-     ELSE ! infinity
-        E(3) = E(3) / ZERO
-     END IF
+     IF (E(3) .NE. ZERO) E(3) = E(3) / ZERO
   ELSE ! || G ||_F > 0
      E(3) = HYPOT(HYPOT(HYPOT(REAL(SX(1,1)), AIMAG(SX(1,1))), HYPOT(REAL(SX(2,1)), AIMAG(SX(2,1)))),&
           HYPOT(HYPOT(REAL(SX(1,2)), AIMAG(SX(1,2))), HYPOT(REAL(SX(2,2)), AIMAG(SX(2,2))))) / E(3)
