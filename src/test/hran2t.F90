@@ -41,6 +41,7 @@
      ! \kappa_2(G)
      F(1,1) = MAX(Q, F(1,1))
      F(2,1) = MAX(-Q, F(2,1))
+     INFO = 0
      CALL KSVD2(G, U, V, S, INFO)
      IF (INFO(1) .LT. -HUGE(0)) CALL STHALT('KSVD2')
      CALL KERR2(G, U, V, S, E, INFO)
