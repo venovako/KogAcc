@@ -1,4 +1,4 @@
-  IF (INFO .LE. -HUGE(INFO)) RETURN
+  IF (INFO(1) .LT. -HUGE(0)) RETURN
 
   ! UX = U
   UX(1,1) = CMPLX(REAL(REAL(U(1,1)),K), REAL(AIMAG(U(1,1)),K), K)
@@ -53,11 +53,8 @@
   ! SX(2,1) = CZERO
   ! SX(1,2) = CZERO
   SX(2,2) = CMPLX(REAL(S(2), K), ZERO, K)
-  IF (INFO .NE. 0) THEN
-     SX(1,1) = CMPLX(SCALE(REAL(SX(1,1)), -INFO), ZERO, K)
-     SX(2,2) = CMPLX(SCALE(REAL(SX(2,2)), -INFO), ZERO, K)
-     INFO = 0
-  END IF
+  SX(1,1) = CMPLX(SCALE(REAL(SX(1,1)), INFO(2) - INFO(1)), ZERO, K)
+  SX(2,2) = CMPLX(SCALE(REAL(SX(2,2)), INFO(3) - INFO(1)), ZERO, K)
 
   ! UX = U \Sigma
   UX(1,1) = UX(1,1) * REAL(SX(1,1))

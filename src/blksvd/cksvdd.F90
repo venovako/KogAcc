@@ -57,7 +57,7 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
        COMPLEX(KIND=REAL32), INTENT(IN) :: G(2,2)
        COMPLEX(KIND=REAL32), INTENT(OUT) :: U(2,2), V(2,2)
        REAL(KIND=REAL32), INTENT(OUT) :: S(2)
-       INTEGER, INTENT(INOUT) :: INFO
+       INTEGER, INTENT(INOUT) :: INFO(3)
      END SUBROUTINE CKSVD2
   END INTERFACE
   INTERFACE
@@ -66,7 +66,7 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
        IMPLICIT NONE
        COMPLEX(KIND=REAL32), INTENT(IN) :: G(2,2), U(2,2), V(2,2)
        REAL(KIND=REAL32), INTENT(INOUT) :: S(2)
-       INTEGER, INTENT(INOUT) :: INFO
+       INTEGER, INTENT(INOUT) :: INFO(3)
      END SUBROUTINE CCVGPP
   END INTERFACE
   INTERFACE
@@ -107,7 +107,7 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
   COMPLEX(KIND=K) :: G2(2,2), U2(2,2), V2(2,2)
   REAL(KIND=K) :: GN, UN, VN
   INTEGER(KIND=INT64) :: TT, TM, SM
-  INTEGER :: MRQSTP, I, J, L, M, P, Q, T, GS, US, VS, WV, WS, STP, XSG, XSU, XSV
+  INTEGER :: MRQSTP, I, J, L, M, P, Q, T, GS, US, VS, WV, WS, STP, XSG, XSU, XSV, ES(3)
   LOGICAL :: LOMP, LUSID, LUACC, LVSID, LVACC
 
   MRQSTP = INFO
@@ -368,7 +368,7 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
      ! compute and apply the transformations
      M = 0
      IF (LOMP .AND. (I .GT. 1)) THEN
-        !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,U,W,R,N,LDG,LDU,I,XSG,LUACC) PRIVATE(G2,U2,V2,P,Q,WV,WS,T,L) REDUCTION(+:M)
+        !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,U,W,R,N,LDG,LDU,I,XSG,LUACC) PRIVATE(G2,U2,V2,P,Q,WV,WS,T,L,ES) REDUCTION(+:M)
         DO J = 1, I
            P = R(1,J)
            Q = R(2,J)
@@ -387,10 +387,11 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
            ELSE ! no inner scaling
               T = -1
            END IF
-           CALL CKSVD2(G2, U2, V2, W(WS), T)
-           R(2,I+J) = T
-           CALL CCVGPP(G2, U2, V2, W(WS), T)
-           R(1,I+J) = T
+           ES(1) = T
+           CALL CKSVD2(G2, U2, V2, W(WS), ES)
+           R(2,I+J) = ES(1)
+           CALL CCVGPP(G2, U2, V2, W(WS), ES)
+           R(1,I+J) = ES(1)
            W(WV) = REAL(V2(1,1))
            W(WV+1) = AIMAG(V2(1,1))
            W(WV+2) = REAL(V2(2,1))
@@ -489,10 +490,11 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
            ELSE ! no inner scaling
               T = -1
            END IF
-           CALL CKSVD2(G2, U2, V2, W(WS), T)
-           R(2,I+J) = T
-           CALL CCVGPP(G2, U2, V2, W(WS), T)
-           R(1,I+J) = T
+           ES(1) = T
+           CALL CKSVD2(G2, U2, V2, W(WS), ES)
+           R(2,I+J) = ES(1)
+           CALL CCVGPP(G2, U2, V2, W(WS), ES)
+           R(1,I+J) = ES(1)
            IF (T .LT. 0) THEN
               INFO = -14
               RETURN

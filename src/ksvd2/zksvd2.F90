@@ -5,72 +5,22 @@
 !!@param V [OUT]; V is a unitary double precision complex matrix of order two.
 !!@param S [OUT]; S' is a double precision real array with two elements, s_{11}' and s_{22}', both non-negative and finite.
 !!@param INFO [INOUT]; do not set to anything but zero on input unless the effects are understood; on output, the scaling parameter s such that 2^{-s} S' = S.
-!!If G has a non-finite component, then s=-HUGE(s).
-#ifdef NDEBUG
-PURE SUBROUTINE ZKSVD2(G, U, V, S, INFO)
-  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
-#else
+!!If G has a non-finite component, then s=-HUGE(s)-1.
 SUBROUTINE ZKSVD2(G, U, V, S, INFO)
-  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: ERROR_UNIT, REAL64
-  !$ USE OMP_LIB
-#endif
-#ifdef USE_IEEE_INTRINSIC
-#if ((USE_IEEE_INTRINSIC & 12) == 0)
-#undef USE_IEEE_INTRINSIC
-#elif ((USE_IEEE_INTRINSIC & 12) == 4)
-  USE, INTRINSIC :: IEEE_ARITHMETIC, ONLY: IEEE_FMA
-#endif
-#endif
+  USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_int
+  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
   IMPLICIT NONE
 
-#ifdef USE_IEEE_INTRINSIC
-#if ((USE_IEEE_INTRINSIC & 12) == 8)
-  INTERFACE
-#ifdef NDEBUG
-     PURE FUNCTION IEEE_FMA(X, Y, Z) BIND(C,NAME='fma')
-#else
-     FUNCTION IEEE_FMA(X, Y, Z) BIND(C,NAME='fma')
-#endif
-       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_double
-       REAL(KIND=c_double), INTENT(IN), VALUE :: X, Y, Z
-       REAL(KIND=c_double) :: IEEE_FMA
-     END FUNCTION IEEE_FMA
-  END INTERFACE
-#endif
-#endif
-#ifdef CR_MATH
-  INTERFACE
-#ifdef NDEBUG
-     PURE FUNCTION CR_HYPOT(X, Y) BIND(C,NAME='cr_hypot')
-#else
-     FUNCTION CR_HYPOT(X, Y) BIND(C,NAME='cr_hypot')
-#endif
-       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_double
-       REAL(KIND=c_double), INTENT(IN), VALUE :: X, Y
-       REAL(KIND=c_double) :: CR_HYPOT
-     END FUNCTION CR_HYPOT
-  END INTERFACE
-#else
-#define CR_HYPOT HYPOT
-#endif
-
-  INTEGER, PARAMETER :: K = REAL64, IERR = -HUGE(0)
-  REAL(KIND=K), PARAMETER :: ZERO = 0.0_K, ONE = 1.0_K, TWO = 2.0_K
-  REAL(KIND=K), PARAMETER :: H = HUGE(ZERO), ROOTH = SQRT(H), ROOT2 = SQRT(TWO)
-  COMPLEX(KIND=K), PARAMETER :: CZERO = (ZERO,ZERO), CONE = (ONE,ZERO)
-
+  INTEGER, PARAMETER :: K = REAL64
   COMPLEX(KIND=K), INTENT(IN) :: G(2,2)
   COMPLEX(KIND=K), INTENT(OUT) :: U(2,2), V(2,2)
   REAL(KIND=K), INTENT(OUT) :: S(2)
-  INTEGER, INTENT(INOUT) :: INFO
+  INTEGER, INTENT(INOUT) :: INFO(3)
+  INTEGER(c_int), EXTERNAL :: PVN_ZLJSV2
 
-  COMPLEX(KIND=K) :: B(2,2), Z
-  REAL(KIND=K) :: A(2,2), T, X, Y, FT, FX, FY
-  REAL(KIND=K) :: TANG, SECG, TANF, SECF, TANP, SECP
-  INTEGER :: I, J, L, ET, EX, EY
-
-#include "hksvd2.F90"
-#ifndef NDEBUG
-9 FORMAT(2(A,ES25.17E3))
-#endif
+  REAL(KIND=K) :: G11R, G11I, G21R, G21I, G12R, G12I, G22R, G22I
+  REAL(KIND=K) :: U11R, U11I, U21R, U21I, U12R, U12I, U22R, U22I
+  REAL(KIND=K) :: V11R, V11I, V21R, V21I, V12R, V12I, V22R, V22I
+  INTEGER(c_int) :: ES(3), KND
+#define LJSV2 PVN_ZLJSV2
 END SUBROUTINE ZKSVD2

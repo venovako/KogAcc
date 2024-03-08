@@ -329,7 +329,7 @@
      ! compute and apply the transformations
      M = 0
      IF (LOMP .AND. (I .GT. 1)) THEN
-        !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,U,W,R,N,LDG,LDU,I,XSG,LUACC) PRIVATE(G2,U2,P,Q,WV,WS,T,L) REDUCTION(+:M)
+        !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,U,W,R,N,LDG,LDU,I,XSG,LUACC) PRIVATE(G2,U2,P,Q,WV,WS,T,L,ES) REDUCTION(+:M)
         DO J = 1, I
            P = R(1,J)
            Q = R(2,J)
@@ -348,10 +348,11 @@
            ELSE ! no inner scaling
               T = -1
            END IF
-           CALL KSVD2(G2, U2, W(WV), W(WS), T)
-           R(2,I+J) = T
-           CALL CVGPP(G2, U2, W(WV), W(WS), T)
-           R(1,I+J) = T
+           ES(1) = T
+           CALL KSVD2(G2, U2, W(WV), W(WS), ES)
+           R(2,I+J) = ES(1)
+           CALL CVGPP(G2, U2, W(WV), W(WS), ES)
+           R(1,I+J) = ES(1)
            IF (T .LT. 0) THEN
               M = M + 1
               CYCLE
@@ -458,10 +459,11 @@
            ELSE ! no inner scaling
               T = -1
            END IF
-           CALL KSVD2(G2, U2, W(WV), W(WS), T)
-           R(2,I+J) = T
-           CALL CVGPP(G2, U2, W(WV), W(WS), T)
-           R(1,I+J) = T
+           ES(1) = T
+           CALL KSVD2(G2, U2, W(WV), W(WS), ES)
+           R(2,I+J) = ES(1)
+           CALL CVGPP(G2, U2, W(WV), W(WS), ES)
+           R(1,I+J) = ES(1)
            IF (T .LT. 0) THEN
               INFO = -14
               RETURN

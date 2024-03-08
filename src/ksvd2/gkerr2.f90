@@ -1,4 +1,4 @@
-  IF (INFO .LE. -HUGE(INFO)) RETURN
+  IF (INFO(1) .LT. -HUGE(0)) RETURN
 
   ! UX = U
   UX(1,1) = REAL(U(1,1), K)
@@ -50,11 +50,8 @@
   ! SX(2,1) = ZERO
   ! SX(1,2) = ZERO
   SX(2,2) = REAL(S(2), K)
-  IF (INFO .NE. 0) THEN
-     SX(1,1) = SCALE(SX(1,1), -INFO)
-     SX(2,2) = SCALE(SX(2,2), -INFO)
-     INFO = 0
-  END IF
+  SX(1,1) = SCALE(SX(1,1), INFO(2) - INFO(1))
+  SX(2,2) = SCALE(SX(2,2), INFO(3) - INFO(1))
 
   ! UX = U \Sigma
   UX(1,1) = UX(1,1) * SX(1,1)

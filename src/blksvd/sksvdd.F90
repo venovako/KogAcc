@@ -41,7 +41,7 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
        IMPLICIT NONE
        REAL(KIND=REAL32), INTENT(IN) :: G(2,2)
        REAL(KIND=REAL32), INTENT(OUT) :: U(2,2), V(2,2), S(2)
-       INTEGER, INTENT(INOUT) :: INFO
+       INTEGER, INTENT(INOUT) :: INFO(3)
      END SUBROUTINE SKSVD2
   END INTERFACE
   INTERFACE
@@ -50,7 +50,7 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
        IMPLICIT NONE
        REAL(KIND=REAL32), INTENT(IN) :: G(2,2), U(2,2), V(2,2)
        REAL(KIND=REAL32), INTENT(INOUT) :: S(2)
-       INTEGER, INTENT(INOUT) :: INFO
+       INTEGER, INTENT(INOUT) :: INFO(3)
      END SUBROUTINE SCVGPP
   END INTERFACE
   INTERFACE
@@ -90,7 +90,7 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
   REAL(KIND=K) :: G2(2,2), U2(2,2)
   REAL(KIND=K) :: GN, UN, VN
   INTEGER(KIND=INT64) :: TT, TM, SM
-  INTEGER :: MRQSTP, I, J, L, M, P, Q, T, GS, US, VS, WV, WS, STP, XSG, XSU, XSV
+  INTEGER :: MRQSTP, I, J, L, M, P, Q, T, GS, US, VS, WV, WS, STP, XSG, XSU, XSV, ES(3)
   LOGICAL :: LOMP, LUSID, LUACC, LVSID, LVACC
 
   MRQSTP = INFO
@@ -343,7 +343,7 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
      ! compute and apply the transformations
      M = 0
      IF (LOMP .AND. (I .GT. 1)) THEN
-        !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,U,W,R,N,LDG,LDU,I,XSG,LUACC) PRIVATE(G2,U2,P,Q,WV,WS,T,L) REDUCTION(+:M)
+        !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,U,W,R,N,LDG,LDU,I,XSG,LUACC) PRIVATE(G2,U2,P,Q,WV,WS,T,L,ES) REDUCTION(+:M)
         DO J = 1, I
            P = R(1,J)
            Q = R(2,J)
@@ -362,10 +362,11 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
            ELSE ! no inner scaling
               T = -1
            END IF
-           CALL SKSVD2(G2, U2, W(WV), W(WS), T)
-           R(2,I+J) = T
-           CALL SCVGPP(G2, U2, W(WV), W(WS), T)
-           R(1,I+J) = T
+           ES(1) = T
+           CALL SKSVD2(G2, U2, W(WV), W(WS), ES)
+           R(2,I+J) = ES(1)
+           CALL SCVGPP(G2, U2, W(WV), W(WS), ES)
+           R(1,I+J) = ES(1)
            IF (T .LT. 0) THEN
               M = M + 1
               CYCLE
@@ -472,10 +473,11 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
            ELSE ! no inner scaling
               T = -1
            END IF
-           CALL SKSVD2(G2, U2, W(WV), W(WS), T)
-           R(2,I+J) = T
-           CALL SCVGPP(G2, U2, W(WV), W(WS), T)
-           R(1,I+J) = T
+           ES(1) = T
+           CALL SKSVD2(G2, U2, W(WV), W(WS), ES)
+           R(2,I+J) = ES(1)
+           CALL SCVGPP(G2, U2, W(WV), W(WS), ES)
+           R(1,I+J) = ES(1)
            IF (T .LT. 0) THEN
               INFO = -14
               RETURN

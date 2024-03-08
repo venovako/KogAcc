@@ -101,13 +101,9 @@
      QG(1,2) = G(1,2)
      QG(2,2) = G(2,2)
      CALL YKSVD2(QG, QU, QV, QS, INFO)
-     IF (INFO .LE. -HUGE(INFO)) CALL STHALT('YKSVD2')
-     IF (INFO .NE. 0) THEN
-        L = -INFO
-        QS(1) = SCALE(QS(1), L)
-        QS(2) = SCALE(QS(2), L)
-        INFO = 0
-     END IF
+     IF (INFO(1) .LT. -HUGE(0)) CALL STHALT('YKSVD2')
+     QS(1) = SCALE(QS(1), INFO(2) - INFO(1))
+     QS(2) = SCALE(QS(2), INFO(3) - INFO(1))
      Q = QS(1) / QS(2)
      IF (Q .NE. Q) THEN
         Q = QZERO
@@ -117,15 +113,13 @@
      F(1,1) = MAX(Q, F(1,1))
      F(2,1) = MAX(-Q, F(2,1))
      CALL KSVD2(G, U, V, S, INFO)
-     IF (INFO .LE. -HUGE(INFO)) CALL STHALT('KSVD2')
-     L = -INFO
+     IF (INFO(1) .LT. -HUGE(0)) CALL STHALT('KSVD2')
      CALL KERR2(G, U, V, S, E, INFO)
-     IF (INFO .LE. -HUGE(INFO)) CALL STHALT('KERR2')
      Q = S(1,1)
-     IF (L .NE. 0) Q = SCALE(Q, L)
+     Q = SCALE(Q, INFO(2) - INFO(1))
      E(4) = MAX(ABS(QS(1) - Q) / QS(1), QZERO)
      Q = S(2,1)
-     IF (L .NE. 0) Q = SCALE(Q, L)
+     Q = SCALE(Q, INFO(3) - INFO(1))
      E(5) = MAX(ABS(QS(2) - Q) / QS(2), QZERO)
      F(1,2) = MAX(E(1), F(1,2))
      F(2,2) = MAX(-E(1), F(2,2))

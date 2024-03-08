@@ -12,36 +12,36 @@
      WRITE (*,'(A)',ADVANCE='NO') 'G(2,2)='
      READ (*,*) G(2,2)
   CASE (1)
-     CALL GET_COMMAND_ARGUMENT(1, CLA, STATUS=INFO)
-     IF ((INFO .NE. 0) .OR. (LEN_TRIM(CLA) .LE. 0))  ERROR STOP 'the input file name is invalid'
+     CALL GET_COMMAND_ARGUMENT(1, CLA, STATUS=I)
+     IF ((I .NE. 0) .OR. (LEN_TRIM(CLA) .LE. 0))  ERROR STOP 'the input file name is invalid'
      IF ((LEN_TRIM(CLA) .EQ. 1) .AND. (CLA(1:1) .EQ. '-')) THEN
         I = INPUT_UNIT
      ELSE ! assume (0,5,6) = (stderr,stdin,stdout)
         I = 1
      END IF
-     IF (I .NE. INPUT_UNIT) OPEN(UNIT=I, FILE=TRIM(CLA), ACTION='READ', STATUS='OLD', IOSTAT=INFO)
-     IF (INFO .NE. 0) ERROR STOP 'cannot open the input file'
+     IF (I .NE. INPUT_UNIT) OPEN(UNIT=I, FILE=TRIM(CLA), ACTION='READ', STATUS='OLD', IOSTAT=J)
+     IF (J .NE. 0) ERROR STOP 'cannot open the input file'
      ONCE = .FALSE.
   CASE (4)
-     CALL GET_COMMAND_ARGUMENT(1, CLA, STATUS=INFO)
-     IF (INFO .NE. 0) ERROR STOP 'the first argument is invalid'
+     CALL GET_COMMAND_ARGUMENT(1, CLA, STATUS=I)
+     IF (I .NE. 0) ERROR STOP 'the first argument is invalid'
      READ (CLA,*) G(1,1)
-     CALL GET_COMMAND_ARGUMENT(2, CLA, STATUS=INFO)
-     IF (INFO .NE. 0) ERROR STOP 'the second argument is invalid'
+     CALL GET_COMMAND_ARGUMENT(2, CLA, STATUS=I)
+     IF (I .NE. 0) ERROR STOP 'the second argument is invalid'
      READ (CLA,*) G(2,1)
-     CALL GET_COMMAND_ARGUMENT(3, CLA, STATUS=INFO)
-     IF (INFO .NE. 0) ERROR STOP 'the third argument is invalid'
+     CALL GET_COMMAND_ARGUMENT(3, CLA, STATUS=I)
+     IF (I .NE. 0) ERROR STOP 'the third argument is invalid'
      READ (CLA,*) G(1,2)
-     CALL GET_COMMAND_ARGUMENT(4, CLA, STATUS=INFO)
-     IF (INFO .NE. 0) ERROR STOP 'the fourth argument is invalid'
+     CALL GET_COMMAND_ARGUMENT(4, CLA, STATUS=I)
+     IF (I .NE. 0) ERROR STOP 'the fourth argument is invalid'
      READ (CLA,*) G(2,2)
   CASE DEFAULT
      ERROR STOP 'zero, one [input file name], or four [G(1,1) G(2,1) G(1,2) G(2,2)] arguments required'
   END SELECT
   DO WHILE (.TRUE.)
      IF (.NOT. ONCE) THEN
-        READ (I,*,IOSTAT=INFO) G(1,1), G(1,2), G(2,1), G(2,2)
-        IF (INFO .NE. 0) EXIT
+        READ (I,*,IOSTAT=J) G(1,1), G(1,2), G(2,1), G(2,2)
+        IF (J .NE. 0) EXIT
      END IF
      WRITE (*,2) 'G(1,1)=', G(1,1)
      WRITE (*,2) 'G(2,1)=', G(2,1)
@@ -59,10 +59,12 @@
      WRITE (*,2) 'V(2,2)=', V(2,2)
      WRITE (*,1) 'S(1)=', S(1)
      WRITE (*,1) 'S(2)=', S(2)
-     IF (INFO .LE. IERR) THEN
-        WRITE (*,'(A,I1)') 'INFO=ERROR', (IERR - INFO)
+     IF (INFO(1) .EQ. IERR) THEN
+        WRITE (*,'(A)') 'INFO=ERROR'
      ELSE ! all OK
-        WRITE (*,3) 'INFO=', INFO
+        WRITE (*,3) 'INFO(1)=', INFO(1)
+        WRITE (*,3) 'INFO(2)=', INFO(2)
+        WRITE (*,3) 'INFO(3)=', INFO(3)
      END IF
      UX(1,1) = U(1,1)
      UX(2,1) = U(2,1)
@@ -104,14 +106,14 @@
      VX(2,2) = CONJG(VX(2,2))
      ! avoid a possible overflow due to the backscaling
      SX(1,1) = S(1)
-     SX(1,1) = SCALE(SX(1,1), -INFO)
+     SX(1,1) = SCALE(SX(1,1), INFO(2) - INFO(1))
      WRITE (*,1,ADVANCE='NO') 'SIGMA(1)=', SX(1,1)
      IF (.NOT. (SX(1,1) .LE. HUGE(S(1)))) WRITE(*,'(A)',ADVANCE='NO') ' !'
      WRITE (*,*)
      SX(2,1) = 0.0_KX
      SX(1,2) = 0.0_KX
      SX(2,2) = S(2)
-     SX(2,2) = SCALE(SX(2,2), -INFO)
+     SX(2,2) = SCALE(SX(2,2), INFO(3) - INFO(1))
      WRITE (*,1,ADVANCE='NO') 'SIGMA(2)=', SX(2,2)
      IF (.NOT. (SX(2,2) .LE. HUGE(S(2)))) WRITE(*,'(A)',ADVANCE='NO') ' !'
      WRITE (*,*)
@@ -130,9 +132,9 @@
   END DO
   IF (.NOT. ONCE) THEN
      IF (I .NE. INPUT_UNIT) THEN
-        CLOSE(UNIT=I, IOSTAT=INFO)
+        CLOSE(UNIT=I, IOSTAT=J)
      ELSE
-        INFO = 0
+        J = 0
      END IF
-     IF (INFO .NE. 0) ERROR STOP 'cannot close the input file'
+     IF (J .NE. 0) ERROR STOP 'cannot close the input file'
   END IF
