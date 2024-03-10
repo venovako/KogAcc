@@ -45,6 +45,7 @@
      CALL LWSV2(G, U, V, S, INFO(1))
      IF (INFO(1) .LT. -HUGE(0)) CALL STHALT('LWSV2')
      IF ((S(1) .LT. ZERO) .OR. (S(2) .LT. ZERO)) THEN
+        !$OMP CRITICAL
         WRITE (ERROR_UNIT,1,ADVANCE='NO') 'G ', G(1,1)
         WRITE (ERROR_UNIT,1) ' ', G(1,2)
         WRITE (ERROR_UNIT,1,ADVANCE='NO') 'G ', G(2,1)
@@ -59,6 +60,35 @@
         WRITE (ERROR_UNIT,1) ' ', V(2,2)
         WRITE (ERROR_UNIT,1) 'S ', S(1)
         WRITE (ERROR_UNIT,1) 'S ', S(2)
+        !$OMP END CRITICAL
+        IF (S(1) .LT. ZERO) THEN
+           U(1,1) = -U(1,1)
+           U(2,1) = -U(2,1)
+           S(1) = -S(1)
+        END IF
+        IF (S(2) .LT. ZERO) THEN
+           U(1,2) = -U(1,2)
+           U(2,2) = -U(2,2)
+           S(2) = -S(2)
+        END IF
+        IF (S(1) .LT. S(2)) THEN
+           G(2,1) = U(1,1)
+           U(1,1) = U(1,2)
+           U(1,2) = G(2,1)
+           G(2,1) = U(2,1)
+           U(2,1) = U(2,2)
+           U(2,2) = G(2,1)
+           G(2,1) = S(1)
+           S(1) = S(2)
+           S(2) = G(2,1)
+           G(2,1) = V(1,1)
+           V(1,1) = V(1,2)
+           V(1,2) = G(2,1)
+           G(2,1) = V(2,1)
+           V(2,1) = V(2,2)
+           V(2,2) = G(2,1)
+           G(2,1) = ZERO
+        END IF
      END IF
      CALL KERR2(G, U, V, S, E(1,2), INFO)
      Q = S(1)
