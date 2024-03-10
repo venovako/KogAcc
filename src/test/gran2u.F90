@@ -39,6 +39,7 @@
      CALL LWSV2(G, U, V, S, INFO(1))
      IF (INFO(1) .LT. -HUGE(0)) CALL STHALT('LWSV2')
      IF ((S(1) .LT. ZERO) .OR. (S(2) .LT. ZERO)) THEN
+#ifndef NDEBUG
         WRITE (ERROR_UNIT,1,ADVANCE='NO') 'G ', G(1,1)
         WRITE (ERROR_UNIT,1) ' ', G(1,2)
         WRITE (ERROR_UNIT,1,ADVANCE='NO') 'G ', G(2,1)
@@ -53,6 +54,7 @@
         WRITE (ERROR_UNIT,1) ' ', V(2,2)
         WRITE (ERROR_UNIT,1) 'S ', S(1)
         WRITE (ERROR_UNIT,1) 'S ', S(2)
+#endif
         IF (S(1) .LT. ZERO) THEN
            U(1,1) = -U(1,1)
            U(2,1) = -U(2,1)
