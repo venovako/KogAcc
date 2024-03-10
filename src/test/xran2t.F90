@@ -54,9 +54,6 @@ PROGRAM XRAN2T
   REAL(KIND=D), PARAMETER :: ZERO = 0.0_D
 #endif
   REAL(KIND=D) :: G(2,2), U(2,2), V(2,2), S(2)
-#ifdef UPPER
-  REAL(KIND=D) :: T
-#endif
   REAL(KIND=REAL128) :: QG(2,2), QU(2,2), QV(2,2), QS(2)
 #ifdef UPPER
   REAL(KIND=REAL128) :: E(5,2), F(2,16), Q

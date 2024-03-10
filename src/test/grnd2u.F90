@@ -44,14 +44,23 @@
      INFO = 0
      CALL LWSV2(G, U, V, S, INFO(1))
      IF (INFO(1) .LT. -HUGE(0)) CALL STHALT('LWSV2')
-     ! be extremely cautious
-     S(1) = ABS(S(1))
-     S(2) = ABS(S(2))
-     IF (S(1) .LT. S(2)) THEN
-        T = S(1)
-        S(1) = S(2)
-        S(2) = T
+     IF ((S(1) .LT. ZERO) .OR. (S(2) .LT. ZERO)) THEN
+        WRITE (ERROR_UNIT,1,ADVANCE='NO') 'G ', G(1,1)
+        WRITE (ERROR_UNIT,1) ' ', G(1,2)
+        WRITE (ERROR_UNIT,1,ADVANCE='NO') 'G ', G(2,1)
+        WRITE (ERROR_UNIT,1) ' ', G(2,2)
+        WRITE (ERROR_UNIT,1,ADVANCE='NO') 'U ', U(1,1)
+        WRITE (ERROR_UNIT,1) ' ', U(1,2)
+        WRITE (ERROR_UNIT,1,ADVANCE='NO') 'U ', U(2,1)
+        WRITE (ERROR_UNIT,1) ' ', U(2,2)
+        WRITE (ERROR_UNIT,1,ADVANCE='NO') 'V ', V(1,1)
+        WRITE (ERROR_UNIT,1) ' ', V(1,2)
+        WRITE (ERROR_UNIT,1,ADVANCE='NO') 'V ', V(2,1)
+        WRITE (ERROR_UNIT,1) ' ', V(2,2)
+        WRITE (ERROR_UNIT,1) 'S ', S(1)
+        WRITE (ERROR_UNIT,1) 'S ', S(2)
      END IF
+     CALL KERR2(G, U, V, S, E(1,2), INFO)
      Q = S(1)
      E(4,2) = MAX(ABS(QS(1) - Q) / QS(1), QZERO)
      Q = S(2)
