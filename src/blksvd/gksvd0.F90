@@ -353,6 +353,7 @@
            R(2,I+J) = ES(1)
            CALL CVGPP(G2, U2, W(WV), W(WS), ES)
            R(1,I+J) = ES(1)
+           T = ES(1)
            IF (T .LT. 0) THEN
               M = M + 1
               CYCLE
@@ -464,6 +465,7 @@
            R(2,I+J) = ES(1)
            CALL CVGPP(G2, U2, W(WV), W(WS), ES)
            R(1,I+J) = ES(1)
+           T = ES(1)
            IF (T .LT. 0) THEN
               INFO = -14
               RETURN

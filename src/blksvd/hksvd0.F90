@@ -369,6 +369,7 @@
            W(WV+5) = AIMAG(V2(1,2))
            W(WV+6) = REAL(V2(2,2))
            W(WV+7) = AIMAG(V2(2,2))
+           T = ES(1)
            IF (T .LT. 0) THEN
               M = M + 1
               CYCLE
@@ -464,6 +465,7 @@
            R(2,I+J) = ES(1)
            CALL CVGPP(G2, U2, V2, W(WS), ES)
            R(1,I+J) = ES(1)
+           T = ES(1)
            IF (T .LT. 0) THEN
               INFO = -14
               RETURN
