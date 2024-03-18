@@ -73,26 +73,26 @@
 ../obj/$(PLAT)/xlwsv2.$(OXT): ksvd2/xlwsv2.f90 $(MKFS) ksvd2/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/xlwsv2.f90
 
-../obj/$(PLAT)/skerr2.$(OXT): ksvd2/skerr2.f90 ksvd2/gkerr2.f90 $(MKFS) ksvd2/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/skerr2.f90
+../obj/$(PLAT)/skerr2.$(OXT): ksvd2/skerr2.F90 ksvd2/gkerr2.F90 $(MKFS) ksvd2/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/skerr2.F90
 
-../obj/$(PLAT)/ckerr2.$(OXT): ksvd2/ckerr2.f90 ksvd2/hkerr2.f90 $(MKFS) ksvd2/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/ckerr2.f90
+../obj/$(PLAT)/ckerr2.$(OXT): ksvd2/ckerr2.F90 ksvd2/hkerr2.F90 $(MKFS) ksvd2/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/ckerr2.F90
 
-../obj/$(PLAT)/dkerr2.$(OXT): ksvd2/dkerr2.f90 ksvd2/gkerr2.f90 $(MKFS) ksvd2/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/dkerr2.f90
+../obj/$(PLAT)/dkerr2.$(OXT): ksvd2/dkerr2.F90 ksvd2/gkerr2.F90 $(MKFS) ksvd2/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/dkerr2.F90
 
-../obj/$(PLAT)/zkerr2.$(OXT): ksvd2/zkerr2.f90 ksvd2/hkerr2.f90 $(MKFS) ksvd2/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/zkerr2.f90
+../obj/$(PLAT)/zkerr2.$(OXT): ksvd2/zkerr2.F90 ksvd2/hkerr2.F90 $(MKFS) ksvd2/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/zkerr2.F90
 
-../obj/$(PLAT)/qkerr2.$(OXT): ksvd2/qkerr2.f90 ksvd2/gkerr2.f90 $(MKFS) ksvd2/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/qkerr2.f90
+../obj/$(PLAT)/qkerr2.$(OXT): ksvd2/qkerr2.F90 $(MKFS) ksvd2/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/qkerr2.F90
 
-../obj/$(PLAT)/ykerr2.$(OXT): ksvd2/ykerr2.f90 ksvd2/hkerr2.f90 $(MKFS) ksvd2/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/ykerr2.f90
+../obj/$(PLAT)/ykerr2.$(OXT): ksvd2/ykerr2.F90 $(MKFS) ksvd2/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/ykerr2.F90
 
-../obj/$(PLAT)/xkerr2.$(OXT): ksvd2/xkerr2.f90 ksvd2/gkerr2.f90 $(MKFS) ksvd2/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/xkerr2.f90
+../obj/$(PLAT)/xkerr2.$(OXT): ksvd2/xkerr2.F90 ksvd2/gkerr2.F90 $(MKFS) ksvd2/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/xkerr2.F90
 
-../obj/$(PLAT)/wkerr2.$(OXT): ksvd2/wkerr2.f90 ksvd2/hkerr2.f90 $(MKFS) ksvd2/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/wkerr2.f90
+../obj/$(PLAT)/wkerr2.$(OXT): ksvd2/wkerr2.F90 ksvd2/hkerr2.F90 $(MKFS) ksvd2/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/wkerr2.F90
