@@ -75,6 +75,6 @@ PROGRAM SKSVD0X
 #include "gksvd0x.F90"
 9 FORMAT(3(ES16.9E2,A))
 CONTAINS
-#include "srdinp.f90"
-#include "swrout.f90"
+#include "srdinp.F90"
+#include "swrout.F90"
 END PROGRAM SKSVD0X

@@ -1,32 +1,32 @@
 ../lib/$(PLAT)/libblksvd.a: $(OBJS_BLKSVD) $(MKFS) blksvd/GNUmakefile
 	$(AR) $(ARFLAGS) $@ $(OBJS_BLKSVD)
 
-../obj/$(PLAT)/nb2m.$(OXT): blksvd/nb2m.f90 $(MKFS) blksvd/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/nb2m.f90
+../obj/$(PLAT)/nb2m.$(OXT): blksvd/nb2m.F90 $(MKFS) blksvd/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/nb2m.F90
 
-../obj/$(PLAT)/sbrdg.$(OXT): blksvd/sbrdg.f90 blksvd/gbrdg.f90 $(MKFS) blksvd/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/sbrdg.f90
+../obj/$(PLAT)/sbrdg.$(OXT): blksvd/sbrdg.F90 blksvd/gbrdg.F90 $(MKFS) blksvd/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/sbrdg.F90
 
-../obj/$(PLAT)/cbrdg.$(OXT): blksvd/cbrdg.f90 blksvd/gbrdg.f90 $(MKFS) blksvd/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/cbrdg.f90
+../obj/$(PLAT)/cbrdg.$(OXT): blksvd/cbrdg.F90 blksvd/gbrdg.F90 $(MKFS) blksvd/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/cbrdg.F90
 
-../obj/$(PLAT)/dbrdg.$(OXT): blksvd/dbrdg.f90 blksvd/gbrdg.f90 $(MKFS) blksvd/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/dbrdg.f90
+../obj/$(PLAT)/dbrdg.$(OXT): blksvd/dbrdg.F90 blksvd/gbrdg.F90 $(MKFS) blksvd/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/dbrdg.F90
 
-../obj/$(PLAT)/zbrdg.$(OXT): blksvd/zbrdg.f90 blksvd/gbrdg.f90 $(MKFS) blksvd/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/zbrdg.f90
+../obj/$(PLAT)/zbrdg.$(OXT): blksvd/zbrdg.F90 blksvd/gbrdg.F90 $(MKFS) blksvd/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/zbrdg.F90
 
-../obj/$(PLAT)/qbrdg.$(OXT): blksvd/qbrdg.f90 blksvd/gbrdg.f90 $(MKFS) blksvd/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/qbrdg.f90
+../obj/$(PLAT)/qbrdg.$(OXT): blksvd/qbrdg.F90 blksvd/gbrdg.F90 $(MKFS) blksvd/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/qbrdg.F90
 
-../obj/$(PLAT)/ybrdg.$(OXT): blksvd/ybrdg.f90 blksvd/gbrdg.f90 $(MKFS) blksvd/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/ybrdg.f90
+../obj/$(PLAT)/ybrdg.$(OXT): blksvd/ybrdg.F90 blksvd/gbrdg.F90 $(MKFS) blksvd/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/ybrdg.F90
 
-../obj/$(PLAT)/xbrdg.$(OXT): blksvd/xbrdg.f90 blksvd/gbrdg.f90 $(MKFS) blksvd/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/xbrdg.f90
+../obj/$(PLAT)/xbrdg.$(OXT): blksvd/xbrdg.F90 blksvd/gbrdg.F90 $(MKFS) blksvd/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/xbrdg.F90
 
-../obj/$(PLAT)/wbrdg.$(OXT): blksvd/wbrdg.f90 blksvd/gbrdg.f90 $(MKFS) blksvd/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/wbrdg.f90
+../obj/$(PLAT)/wbrdg.$(OXT): blksvd/wbrdg.F90 blksvd/gbrdg.F90 $(MKFS) blksvd/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/wbrdg.F90
 
 ../obj/$(PLAT)/sksvd0.$(OXT): blksvd/sksvd0.F90 blksvd/gksvd0.F90 $(MKFS) blksvd/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/sksvd0.F90

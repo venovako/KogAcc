@@ -1,0 +1,14 @@
+!>@brief WRND generates a set of pseudorandom extended precision complex 2x2 matrices.
+PROGRAM WRND
+  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: ERROR_UNIT
+  IMPLICIT NONE
+  REAL(KIND=10), PARAMETER :: ZERO = 0.0_10
+  INTEGER, ALLOCATABLE :: ISEED(:)
+  REAL(KIND=10), ALLOCATABLE :: H(:)
+  CHARACTER(LEN=64) :: CLA
+  INTEGER :: SSIZE, N, I
+  LOGICAL :: UPPER
+  REAL(KIND=10) :: T
+#include "hrnd.F90"
+1 FORMAT(A,ES30.21E4)
+END PROGRAM WRND

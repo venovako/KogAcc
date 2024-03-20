@@ -74,6 +74,6 @@ PROGRAM ZKSVD0X
 #include "hksvd0x.F90"
 9 FORMAT(3(ES25.17E3,A))
 CONTAINS
-#include "zrdinp.f90"
-#include "zwrout.f90"
+#include "zrdinp.F90"
+#include "zwrout.F90"
 END PROGRAM ZKSVD0X

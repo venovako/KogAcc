@@ -73,6 +73,6 @@ PROGRAM DKSVD0X
 #include "gksvd0x.F90"
 9 FORMAT(3(ES25.17E3,A))
 CONTAINS
-#include "drdinp.f90"
-#include "dwrout.f90"
+#include "drdinp.F90"
+#include "dwrout.F90"
 END PROGRAM DKSVD0X

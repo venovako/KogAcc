@@ -69,6 +69,6 @@ PROGRAM WKSVD0X
 #include "hksvd0x.F90"
 9 FORMAT(3(ES30.21E4,A))
 CONTAINS
-#include "wrdinp.f90"
-#include "wwrout.f90"
+#include "wrdinp.F90"
+#include "wwrout.F90"
 END PROGRAM WKSVD0X

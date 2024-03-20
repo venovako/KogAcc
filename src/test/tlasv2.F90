@@ -1,5 +1,5 @@
   ! This is the generic part of the xLASV2 tester routines.
-  ! The output is the same as that of tksvd2.f90, but the interactive input is adapted for upper triangular matrices.
+  ! The output is the same as that of tksvd2.F90, but the interactive input is adapted for upper triangular matrices.
   ONCE = .TRUE.
   I = -1
   SELECT CASE (COMMAND_ARGUMENT_COUNT())

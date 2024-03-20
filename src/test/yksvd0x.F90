@@ -65,6 +65,6 @@ PROGRAM YKSVD0X
 #include "hksvd0x.F90"
 9 FORMAT(3(ES45.36E4,A))
 CONTAINS
-#include "yrdinp.f90"
-#include "ywrout.f90"
+#include "yrdinp.F90"
+#include "ywrout.F90"
 END PROGRAM YKSVD0X

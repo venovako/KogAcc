@@ -158,6 +158,6 @@ PROGRAM CKSVDDX
 
 9 FORMAT(3(ES16.9E2,A))
 CONTAINS
-#include "crdinp.f90"
-#include "cwrout.f90"
+#include "crdinp.F90"
+#include "cwrout.F90"
 END PROGRAM CKSVDDX

@@ -65,6 +65,6 @@ PROGRAM QKSVD0X
 #include "gksvd0x.F90"
 9 FORMAT(3(ES45.36E4,A))
 CONTAINS
-#include "qrdinp.f90"
-#include "qwrout.f90"
+#include "qrdinp.F90"
+#include "qwrout.F90"
 END PROGRAM QKSVD0X

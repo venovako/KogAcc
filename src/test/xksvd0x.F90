@@ -68,6 +68,6 @@ PROGRAM XKSVD0X
 #include "gksvd0x.F90"
 9 FORMAT(3(ES30.21E4,A))
 CONTAINS
-#include "xrdinp.f90"
-#include "xwrout.f90"
+#include "xrdinp.F90"
+#include "xwrout.F90"
 END PROGRAM XKSVD0X
