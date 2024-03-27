@@ -29,4 +29,6 @@ On Linux or macOS, run `make help` (GNU make assumed) in the `src` subdirectory.
 
 On antoher \*nix OS where GNU `make` is not the default one, run `gmake help` instead.
 
+Setting `NDEBUG` to, e.g., `3` is recommened.
+
 This work has been supported in part by Croatian Science Foundation under the project IP-2014-09-3670 ([MFBDA](https://web.math.pmf.unizg.hr/mfbda/)).

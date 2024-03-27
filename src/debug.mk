@@ -24,3 +24,6 @@ else # !NDEBUG
 FCFLAGS += -DCR_MATH=bundled
 endif # ?NDEBUG
 endif # ?CR_MATH
+ifdef PROFILE
+FCFLAGS += -DPVN_PROFILE=$(PROFILE)u -fno-inline -finstrument-functions
+endif # PROFILE
