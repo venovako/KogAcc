@@ -2,7 +2,7 @@
 #  LAPACK make include file for GCC (LP64) with debugging          #
 ####################################################################
 
-SHELL = /bin/bash
+SHELL = /bin/sh
 
 #  CC is the C compiler, normally invoked with options CFLAGS.
 #

@@ -2,7 +2,7 @@
 #  LAPACK make include file, modified for Intel Fortran (ifort).   #
 ####################################################################
 
-SHELL = /bin/bash
+SHELL = /bin/sh
 
 #  CC is the C compiler, normally invoked with options CFLAGS.
 #
