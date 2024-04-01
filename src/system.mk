@@ -1,6 +1,3 @@
-ifndef COMPILER
-COMPILER=ifx
-endif # !COMPILER
 ifndef ARCH
 ARCH=$(shell uname -m)
 endif # !ARCH
@@ -10,6 +7,17 @@ endif # !ABI
 ifndef OS
 OS=$(shell uname)
 endif # !OS
+ifndef COMPILER
+ifeq ($(OS),Linux)
+ifeq ($(ARCH),x86_64)
+COMPILER=ifx
+else # !x86_64
+COMPILER=gfortran
+endif # ?x86_64
+else # !Linux
+COMPILER=gfortran
+endif # ?Linux
+endif # !COMPILER
 ifndef DEL
 DEL=rm -frv
 endif # !DEL
