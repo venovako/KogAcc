@@ -11,7 +11,7 @@ FCFLAGS += -mcpu=native -mtraceback=full
 else # !ppc64le
 FCFLAGS += -march=native
 endif # ?ppc64le
-FCFLAGS += -fopenmp -fPIC -fexceptions -fno-omit-frame-pointer -ffp-contract=fast -ffree-line-length-none -fstack-arrays -rdynamic
+FCFLAGS += -fopenmp -fPIC -fexceptions -fasynchronous-unwind-tables -fno-omit-frame-pointer -ffp-contract=fast -ffree-line-length-none -fstack-arrays -rdynamic
 ifdef NDEBUG
 FCFLAGS += -fvect-cost-model=unlimited -fopt-info-optimized-vec
 else # !NDEBUG
