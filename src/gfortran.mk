@@ -7,7 +7,7 @@ else # !NDEBUG
 FCFLAGS=-Og -ggdb3
 endif # ?NDEBUG
 ifeq ($(ARCH),ppc64le)
-FCFLAGS += -mcpu=native -mtraceback=full
+FCFLAGS += -mcpu=native -mpower8-fusion -mtraceback=full
 else # !ppc64le
 FCFLAGS += -march=native
 endif # ?ppc64le

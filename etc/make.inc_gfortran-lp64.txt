@@ -7,7 +7,7 @@ SHELL = /bin/sh
 #  CC is the C compiler, normally invoked with options CFLAGS.
 #
 CC = gcc
-# for ppc64le: -march=native => -mcpu=native -mtraceback=full
+# for ppc64le: -march=native => -mcpu=native -mpower8-fusion -mtraceback=full
 CFLAGS = -Og -ggdb3 -fPIC -fexceptions -ffp-contract=fast -fno-omit-frame-pointer -fopenmp-simd -pthread -march=native
 
 #  Modify the FC and FFLAGS definitions to the desired compiler
@@ -19,7 +19,7 @@ CFLAGS = -Og -ggdb3 -fPIC -fexceptions -ffp-contract=fast -fno-omit-frame-pointe
 #  should not compile LAPACK with flags such as -ffpe-trap=overflow.
 #
 FC = gfortran
-# for ppc64le: -march=native => -mcpu=native -mtraceback=full
+# for ppc64le: -march=native => -mcpu=native -mpower8-fusion -mtraceback=full
 FFLAGS = -Og -ggdb3 -fPIC -fexceptions -ffp-contract=fast -fno-omit-frame-pointer -fopenmp-simd -pthread -march=native -fprotect-parens -frecursive -fstack-arrays -finit-local-zero -finit-derived
 FFLAGS_DRV = $(FFLAGS)
 FFLAGS_NOOPT = $(FFLAGS)
