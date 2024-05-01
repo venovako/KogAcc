@@ -32,8 +32,12 @@ SUBROUTINE DBRD2(U, M, N, G, LDG, INFO)
   IF (INFO .NE. 0) RETURN
   IF (M .EQ. 0) RETURN
   IF (N .EQ. 0) RETURN
-  DO J = 1, N
-     CALL DBRD1(U, M, G(1,J), INFO)
-     IF (INFO .NE. 0) EXIT
-  END DO
+  IF (LDG .EQ. M) THEN
+     READ (UNIT=U, IOSTAT=INFO) G
+  ELSE ! LDG .GT. M
+     DO J = 1, N
+        CALL DBRD1(U, M, G(1,J), INFO)
+        IF (INFO .NE. 0) EXIT
+     END DO
+  END IF
 END SUBROUTINE DBRD2
