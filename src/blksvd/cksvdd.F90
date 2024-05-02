@@ -1,6 +1,5 @@
 !>@brief \b CKSVDD computes the SVD of G as U S V^H, with S returned in SV and U and V optionally accumulated on either identity for the SVD, or on preset input matrices.
-SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
-  USE, INTRINSIC :: ISO_C_BINDING
+SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: INT64, REAL32, REAL64, REAL128
   !$ USE OMP_LIB
   IMPLICIT NONE
@@ -95,14 +94,11 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
   COMPLEX(KIND=K), PARAMETER :: CZERO = (ZERO,ZERO), CONE = (ONE,ZERO)
   INTEGER, INTENT(IN) :: JOB, N, LDG, LDU, LDV
   COMPLEX(KIND=K), INTENT(INOUT) :: G(LDG,N), U(LDU,N), V(LDV,N)
-  REAL(KIND=REAL128), INTENT(INOUT), TARGET :: SV(N)
-  ! W is assumed to be aligned as a double precision array
-  REAL(KIND=K), INTENT(INOUT), TARGET :: W(*)
-  INTEGER, INTENT(INOUT), TARGET :: O(2,*)
-  INTEGER, INTENT(INOUT) :: INFO
+  REAL(KIND=REAL128), INTENT(INOUT) :: SV(N)
+  REAL(KIND=K), INTENT(INOUT) :: W(*)
+  REAL(KIND=REAL64), INTENT(OUT) :: D(*)
+  INTEGER, INTENT(INOUT) :: O(2,*), INFO
 
-  REAL(KIND=REAL64), POINTER, CONTIGUOUS :: D(:)
-  INTEGER, POINTER, CONTIGUOUS :: R(:,:)
   COMPLEX(KIND=K) :: G2(2,2), U2(2,2), V2(2,2)
   REAL(KIND=K) :: GN, UN, VN
   INTEGER(KIND=INT64) :: TT, TM, SM
@@ -136,8 +132,6 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
   M = N * (N - 1)
   I = N / 2
   J = M / 2
-  CALL C_F_POINTER(C_LOC(W), D, [J])
-  R => O(:,J+1:J+I)
 
   IF (N .EQ. 1) THEN
      W(2) = ABS(REAL(G(1,1)))
@@ -367,10 +361,11 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
      ! compute and apply the transformations
      M = 0
      IF (LOMP .AND. (I .GT. 1)) THEN
-        !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,U,W,R,N,LDG,LDU,I,XSG,LUACC) PRIVATE(G2,U2,V2,P,Q,WV,WS,T,L,ES) REDUCTION(+:M)
+        !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,U,W,O,N,LDG,LDU,I,XSG,LUACC) PRIVATE(G2,U2,V2,P,Q,WV,WS,T,L,ES) REDUCTION(+:M)
         DO J = 1, I
-           P = R(1,J)
-           Q = R(2,J)
+           L = (N * (N - 1)) / 2
+           P = O(1,L+J)
+           Q = O(2,L+J)
            IF ((P .LE. 0) .OR. (Q .LE. P) .OR. (P .GE. N) .OR. (Q .GT. N)) THEN
               M = M + 1
               CYCLE
@@ -388,9 +383,9 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
            END IF
            ES(1) = T
            CALL CKSVD2(G2, U2, V2, W(WS), ES)
-           R(2,I+J) = ES(1)
+           O(2,L+I+J) = ES(1)
            CALL CCVGPP(G2, U2, V2, W(WS), ES)
-           R(1,I+J) = ES(1)
+           O(1,L+I+J) = ES(1)
            W(WV) = REAL(V2(1,1))
            W(WV+1) = AIMAG(V2(1,1))
            W(WV+2) = REAL(V2(2,1))
@@ -431,13 +426,14 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
            INFO = -19
            RETURN
         END IF
-        !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,V,W,R,N,LDG,LDV,I,LVACC) PRIVATE(V2,P,Q,WV,WS,T,L) REDUCTION(+:M)
+        !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,V,W,O,N,LDG,LDV,I,LVACC) PRIVATE(V2,P,Q,WV,WS,T,L) REDUCTION(+:M)
         DO J = 1, I
-           P = R(1,J)
-           Q = R(2,J)
+           L = (N * (N - 1)) / 2
+           P = O(1,L+J)
+           Q = O(2,L+J)
            WV = (J - 1) * 10 + 1
            WS = WV + 8
-           T = R(1,I+J)
+           T = O(1,L+I+J)
            ! transform V and G from the right
            IF (IAND(T, 4) .NE. 0) THEN
               V2(1,1) = CMPLX(W(WV), W(WV+1), K)
@@ -473,8 +469,9 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
         END IF
      ELSE ! sequentially
         DO J = 1, I
-           P = R(1,J)
-           Q = R(2,J)
+           L = (N * (N - 1)) / 2
+           P = O(1,L+J)
+           Q = O(2,L+J)
            IF ((P .LE. 0) .OR. (Q .LE. P) .OR. (P .GE. N) .OR. (Q .GT. N)) THEN
               INFO = -13
               RETURN
@@ -492,9 +489,9 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
            END IF
            ES(1) = T
            CALL CKSVD2(G2, U2, V2, W(WS), ES)
-           R(2,I+J) = ES(1)
+           O(2,L+I+J) = ES(1)
            CALL CCVGPP(G2, U2, V2, W(WS), ES)
-           R(1,I+J) = ES(1)
+           O(1,L+I+J) = ES(1)
            T = ES(1)
            IF (T .LT. 0) THEN
               INFO = -14
@@ -623,8 +620,6 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
 
   ! no convergence if INFO = MRQSTP
   INFO = STP
-  R => NULL()
-  D => NULL()
 
   ! extract SV from G with a safe backscaling
   IF (LOMP) THEN

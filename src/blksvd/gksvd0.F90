@@ -252,12 +252,6 @@
      VS = 0
   END IF
 
-  ! associate R with SV
-  CALL C_F_POINTER(C_LOC(SV), R, [2,2*NP])
-  IF (.NOT. ASSOCIATED(R)) THEN
-     INFO = -9
-     RETURN
-  END IF
   ! initialize the counters
   TT = 0_INT64
   TM = 0_INT64
@@ -632,7 +626,6 @@
 
   ! no convergence if INFO = MRQSTP
   INFO = STP
-  R => NULL()
 #ifndef NDEBUG
   WRITE (OUTPUT_UNIT,*) 'exited after:', TT, ' transformations, of which big:', TM
   FLUSH(OUTPUT_UNIT)

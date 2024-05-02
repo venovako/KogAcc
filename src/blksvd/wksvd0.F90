@@ -1,6 +1,8 @@
 !>@brief \b WKSVD0 computes the SVD of G as U S V^H, with S returned in SV and U and V optionally accumulated on either identity for the SVD, or on preset input matrices.
-SUBROUTINE WKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
+SUBROUTINE WKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, R, INFO)
+#ifdef ANIMATE
   USE, INTRINSIC :: ISO_C_BINDING
+#endif
 #ifdef NDEBUG
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: INT64, REAL128
 #else
@@ -86,11 +88,15 @@ SUBROUTINE WKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
   COMPLEX(KIND=K), PARAMETER :: CZERO = (ZERO,ZERO), CONE = (ONE,ZERO)
   INTEGER, INTENT(IN) :: JOB, N, LDG, LDU, LDV
   COMPLEX(KIND=K), INTENT(INOUT) :: G(LDG,N), U(LDU,N), V(LDV,N)
+#ifdef ANIMATE
   REAL(KIND=REAL128), INTENT(INOUT), TARGET :: SV(N)
+#else
+  REAL(KIND=REAL128), INTENT(OUT) :: SV(N)
+#endif
   REAL(KIND=K), INTENT(INOUT) :: W(MAX(N,5)*N)
   INTEGER, INTENT(INOUT) :: O(2*N*(N-1)), INFO
+  INTEGER, INTENT(OUT) :: R(2,*)
 
-  INTEGER, POINTER, CONTIGUOUS :: R(:,:)
   COMPLEX(KIND=K) :: G2(2,2), U2(2,2), V2(2,2)
   REAL(KIND=K) :: GN, UN, VN
   INTEGER(KIND=INT64) :: TT, TM, SM

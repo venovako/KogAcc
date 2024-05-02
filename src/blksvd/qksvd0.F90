@@ -1,6 +1,5 @@
 !>@brief \b QKSVD0 computes the SVD of G as U S V^T, with S returned in SV and U and V optionally accumulated on either identity for the SVD, or on preset input matrices.
-SUBROUTINE QKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
-  USE, INTRINSIC :: ISO_C_BINDING
+SUBROUTINE QKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, R, INFO)
 #ifdef NDEBUG
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: INT64, REAL128
 #else
@@ -90,11 +89,11 @@ SUBROUTINE QKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, INFO)
   REAL(KIND=K), PARAMETER :: ZERO = 0.0_K, ONE = 1.0_K
   INTEGER, INTENT(IN) :: JOB, N, LDG, LDU, LDV
   REAL(KIND=K), INTENT(INOUT) :: G(LDG,N), U(LDU,N), V(LDV,N)
-  REAL(KIND=REAL128), INTENT(INOUT), TARGET :: SV(N)
+  REAL(KIND=REAL128), INTENT(OUT) :: SV(N)
   REAL(KIND=K), INTENT(INOUT) :: W(MAX(N,3)*N)
   INTEGER, INTENT(INOUT) :: O(2*N*(N-1)), INFO
+  INTEGER, INTENT(OUT) :: R(2,*)
 
-  INTEGER, POINTER, CONTIGUOUS :: R(:,:)
   REAL(KIND=K) :: G2(2,2), U2(2,2)
   REAL(KIND=K) :: GN, UN, VN
   INTEGER(KIND=INT64) :: TT, TM, SM
