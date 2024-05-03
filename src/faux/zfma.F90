@@ -6,7 +6,7 @@ FUNCTION ZFMA(A, B, C)
   COMPLEX(KIND=K) :: ZFMA
   REAL(KIND=K) :: AR, AI, BR, BI, CR, CI, DR, DI
   EXTERNAL :: PVN_ZFMA
-#define KMA ZFMA
-#define PMA PVN_ZFMA
+#define KFMA ZFMA
+#define PFMA PVN_ZFMA
 #include "hfma.F90"
 END FUNCTION ZFMA

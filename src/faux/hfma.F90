@@ -8,5 +8,5 @@
   DR = 0.0_K
   DI = 0.0_K
 #endif
-  CALL PMA(DR, DI, AR, AI, BR, BI, CR, CI)
-  KMA = CMPLX(DR, DI, K)
+  CALL PFMA(DR, DI, AR, AI, BR, BI, CR, CI)
+  KFMA = CMPLX(DR, DI, K)

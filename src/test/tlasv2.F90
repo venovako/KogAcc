@@ -34,6 +34,8 @@
   CASE DEFAULT
      ERROR STOP 'zero, one [input file name], or three [G(1,1) G(1,2) G(2,2)] arguments required'
   END SELECT
+  INFO3(2) = 0
+  INFO3(3) = 0
   DO WHILE (.TRUE.)
      IF (.NOT. ONCE) THEN
         ! read G(2,1) for compatibility with tksvd2 but it has to be zero
@@ -60,39 +62,15 @@
      ELSE ! all OK
         WRITE (*,2) 'INFO=', INFO
      END IF
-     UX(1,1) = U(1,1)
-     UX(2,1) = U(2,1)
-     UX(1,2) = U(1,2)
-     UX(2,2) = U(2,2)
-     SX(1,1) = 1.0_KX
-     SX(2,1) = 0.0_KX
-     SX(1,2) = 0.0_KX
-     SX(2,2) = 1.0_KX
-     VX = MATMUL(TRANSPOSE(UX), UX) - SX
-     WRITE (*,1) '||U^T U - I||_F=', CR_HYPOT(CR_HYPOT(VX(1,1), VX(2,1)), CR_HYPOT(VX(1,2), VX(2,2)))
-     VX(1,1) = V(1,1)
-     VX(2,1) = V(2,1)
-     VX(1,2) = V(1,2)
-     VX(2,2) = V(2,2)
-     GX = MATMUL(TRANSPOSE(VX), VX) - SX
-     WRITE (*,1) '||V^T V - I||_F=', CR_HYPOT(CR_HYPOT(GX(1,1), GX(2,1)), CR_HYPOT(GX(1,2), GX(2,2)))
-     GX(1,1) = G(1,1)
-     GX(2,1) = G(2,1)
-     GX(1,2) = G(1,2)
-     GX(2,2) = G(2,2)
-     SX(1,1) = S(1)
-     WRITE (*,1) 'SIGMA(1)=', SX(1,1)
-     SX(2,2) = S(2)
-     WRITE (*,1) 'SIGMA(2)=', SX(2,2)
-     UX = MATMUL(MATMUL(UX, SX), TRANSPOSE(VX)) - GX
-     SX(2,1) = CR_HYPOT(CR_HYPOT(UX(1,1), UX(2,1)), CR_HYPOT(UX(1,2), UX(2,2)))
-     SX(1,2) = CR_HYPOT(CR_HYPOT(GX(1,1), GX(2,1)), CR_HYPOT(GX(1,2), GX(2,2)))
-     IF ((SX(1,2) .EQ. 0.0_KX) .AND. (SX(2,1) .EQ. 0.0_KX)) THEN
-        SX(2,1) = 0.0_KX
-     ELSE ! the general case
-        SX(2,1) = SX(2,1) / SX(1,2)
-     END IF
-     WRITE (*,1) '||U SIGMA V^T - G||_F / ||G||_F=', SX(2,1)
+     INFO3(1) = INFO
+     CALL KERR2(G, U, V, S, E, INFO3)
+     WRITE (*,1) '||U^T U - I||_F=', E(1)
+     WRITE (*,1) '||V^T V - I||_F=', E(2)
+     E(1) = S(1)
+     WRITE (*,1) 'SIGMA(1)=', E(1)
+     E(2) = S(2)
+     WRITE (*,1) 'SIGMA(2)=', E(2)
+     WRITE (*,1) '||U SIGMA V^T - G||_F / ||G||_F=', E(3)
      IF (ONCE) EXIT
   END DO
   IF (.NOT. ONCE) THEN

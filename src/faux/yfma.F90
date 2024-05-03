@@ -6,7 +6,7 @@ FUNCTION YFMA(A, B, C)
   COMPLEX(KIND=K) :: YFMA
   REAL(KIND=K) :: AR, AI, BR, BI, CR, CI, DR, DI
   EXTERNAL :: PVN_YFMA
-#define KMA YFMA
-#define PMA PVN_YFMA
+#define KFMA YFMA
+#define PFMA PVN_YFMA
 #include "hfma.F90"
 END FUNCTION YFMA

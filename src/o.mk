@@ -109,6 +109,10 @@ OBJS_KSVD2=\
 
 OBJS_FAUX=\
 ../obj/$(PLAT)/sthalt.$(OXT)\
+../obj/$(PLAT)/cmul.$(OXT)\
+../obj/$(PLAT)/zmul.$(OXT)\
+../obj/$(PLAT)/wmul.$(OXT)\
+../obj/$(PLAT)/ymul.$(OXT)\
 ../obj/$(PLAT)/cfma.$(OXT)\
 ../obj/$(PLAT)/zfma.$(OXT)\
 ../obj/$(PLAT)/wfma.$(OXT)\

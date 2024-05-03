@@ -30,7 +30,6 @@ CONTAINS
     REAL(KIND=10) :: G(2,2), U(2,2), V(2,2), S(2)
     INTEGER :: I, J, INFO(3)
     LOGICAL :: ONCE
-    REAL(KIND=KX) :: GX(2,2), UX(2,2), VX(2,2), SX(2,2)
 #define KSVD2 XKSVD2
 #define KERR2 XKERR2
 #include "tksvd2.F90"

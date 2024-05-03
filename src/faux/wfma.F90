@@ -5,7 +5,7 @@ FUNCTION WFMA(A, B, C)
   COMPLEX(KIND=K) :: WFMA
   REAL(KIND=K) :: AR, AI, BR, BI, CR, CI, DR, DI
   EXTERNAL :: PVN_WFMA
-#define KMA WFMA
-#define PMA PVN_WFMA
+#define KFMA WFMA
+#define PFMA PVN_WFMA
 #include "hfma.F90"
 END FUNCTION WFMA

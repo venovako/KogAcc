@@ -4,6 +4,18 @@
 ../obj/$(PLAT)/sthalt.$(OXT): faux/sthalt.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/sthalt.F90
 
+../obj/$(PLAT)/cmul.$(OXT): faux/cmul.F90 faux/hmul.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/cmul.F90
+
+../obj/$(PLAT)/zmul.$(OXT): faux/zmul.F90 faux/hmul.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/zmul.F90
+
+../obj/$(PLAT)/wmul.$(OXT): faux/wmul.F90 faux/hmul.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/wmul.F90
+
+../obj/$(PLAT)/ymul.$(OXT): faux/ymul.F90 faux/hmul.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/ymul.F90
+
 ../obj/$(PLAT)/cfma.$(OXT): faux/cfma.F90 faux/hfma.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/cfma.F90
 

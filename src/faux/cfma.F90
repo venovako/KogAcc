@@ -6,7 +6,7 @@ FUNCTION CFMA(A, B, C)
   COMPLEX(KIND=K) :: CFMA
   REAL(KIND=K) :: AR, AI, BR, BI, CR, CI, DR, DI
   EXTERNAL :: PVN_CFMA
-#define KMA CFMA
-#define PMA PVN_CFMA
+#define KFMA CFMA
+#define PFMA PVN_CFMA
 #include "hfma.F90"
 END FUNCTION CFMA
