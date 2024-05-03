@@ -1,5 +1,5 @@
 !>@brief \b XROTR premultiplies the rows (p,q) of G by W.
-PURE SUBROUTINE XROTR(M, N, G, LDG, P, Q, W, INFO)
+SUBROUTINE XROTR(M, N, G, LDG, P, Q, W, INFO)
   IMPLICIT NONE
   INTEGER, PARAMETER :: K = 10
   INTEGER, INTENT(IN) :: M, N, LDG, P, Q

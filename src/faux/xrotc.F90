@@ -1,5 +1,5 @@
 !>@brief \b XROTC postmultiplies the columns (p,q) of G by W.
-PURE SUBROUTINE XROTC(M, N, G, LDG, P, Q, W, INFO)
+SUBROUTINE XROTC(M, N, G, LDG, P, Q, W, INFO)
   IMPLICIT NONE
   INTEGER, PARAMETER :: K = 10
   INTEGER, INTENT(IN) :: M, N, LDG, P, Q

@@ -4,6 +4,18 @@
 ../obj/$(PLAT)/sthalt.$(OXT): faux/sthalt.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/sthalt.F90
 
+../obj/$(PLAT)/cfma.$(OXT): faux/cfma.F90 faux/hfma.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/cfma.F90
+
+../obj/$(PLAT)/zfma.$(OXT): faux/zfma.F90 faux/hfma.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/zfma.F90
+
+../obj/$(PLAT)/wfma.$(OXT): faux/wfma.F90 faux/hfma.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/wfma.F90
+
+../obj/$(PLAT)/yfma.$(OXT): faux/yfma.F90 faux/hfma.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/yfma.F90
+
 ../obj/$(PLAT)/slango.$(OXT): faux/slango.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/slango.F90
 
