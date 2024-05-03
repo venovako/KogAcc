@@ -111,11 +111,9 @@ OBJS_FAUX=\
 ../obj/$(PLAT)/sthalt.$(OXT)\
 ../obj/$(PLAT)/cmul.$(OXT)\
 ../obj/$(PLAT)/zmul.$(OXT)\
-../obj/$(PLAT)/wmul.$(OXT)\
 ../obj/$(PLAT)/ymul.$(OXT)\
 ../obj/$(PLAT)/cfma.$(OXT)\
 ../obj/$(PLAT)/zfma.$(OXT)\
-../obj/$(PLAT)/wfma.$(OXT)\
 ../obj/$(PLAT)/yfma.$(OXT)\
 ../obj/$(PLAT)/slango.$(OXT)\
 ../obj/$(PLAT)/clango.$(OXT)\
@@ -242,6 +240,8 @@ OBJS_KSVD2 += \
 ../obj/$(PLAT)/xkerr2.$(OXT)\
 ../obj/$(PLAT)/wkerr2.$(OXT)
 OBJS_FAUX += \
+../obj/$(PLAT)/wmul.$(OXT)\
+../obj/$(PLAT)/wfma.$(OXT)\
 ../obj/$(PLAT)/xlango.$(OXT)\
 ../obj/$(PLAT)/wlango.$(OXT)\
 ../obj/$(PLAT)/xrotc.$(OXT)\
