@@ -1,6 +1,7 @@
 !>@brief \b WROTC postmultiplies the columns (p,q) of G by W.
 SUBROUTINE WROTC(M, N, G, LDG, P, Q, W, INFO)
   IMPLICIT NONE
+#define CR_HYPOT HYPOT
   INTERFACE
      FUNCTION WMUL(A, B)
        IMPLICIT NONE
@@ -20,9 +21,7 @@ SUBROUTINE WROTC(M, N, G, LDG, P, Q, W, INFO)
   COMPLEX(KIND=K), INTENT(INOUT) :: G(LDG,N)
   COMPLEX(KIND=K), INTENT(IN) :: W(2,2)
   INTEGER, INTENT(INOUT) :: INFO
-#define VL 1
-  COMPLEX(KIND=K) :: X(VL)
-  COMPLEX(KIND=K) :: Y(VL)
+  COMPLEX(KIND=K) :: X, Y
   INTEGER :: I, J
 #define MUL WMUL
 #define FMA WFMA

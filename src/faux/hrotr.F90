@@ -8,16 +8,46 @@
   IF (M .EQ. 0) RETURN
   IF (N .EQ. 0) RETURN
 
-  !DIR$ ASSUME_ALIGNED G:64, X:64, Y:64
-  DO J = 1, N, VL
-     !DIR$ VECTOR ALWAYS
-     DO I = 1, VL
-        X(I) = G(P,J+I-1)
-        Y(I) = G(Q,J+I-1)
+  I = 0
+  IF (CR_HYPOT(REAL(W(1,1)), AIMAG(W(1,1))) .LT. CR_HYPOT(REAL(W(1,2)), AIMAG(W(1,2)))) I = IOR(I, 1)
+  IF (CR_HYPOT(REAL(W(2,1)), AIMAG(W(2,1))) .LT. CR_HYPOT(REAL(W(2,2)), AIMAG(W(2,2)))) I = IOR(I, 2)
+
+  ! DO J = 1, N
+  !    X = G(P,J)
+  !    Y = G(Q,J)
+  !    G(P,J) = W(1,1) * X + W(1,2) * Y
+  !    G(Q,J) = W(2,1) * X + W(2,2) * Y
+  ! END DO
+
+  SELECT CASE (I)
+  CASE (0)
+     DO J = 1, N
+        X = G(P,J)
+        Y = G(Q,J)
+        G(P,J) = FMA(W(1,1), X, MUL(W(1,2), Y))
+        G(Q,J) = FMA(W(2,1), X, MUL(W(2,2), Y))
      END DO
-     !DIR$ VECTOR ALWAYS
-     DO I = 1, VL
-        G(P,J+I-1) = W(1,1) * X(I) + W(1,2) * Y(I)
-        G(Q,J+I-1) = W(2,1) * X(I) + W(2,2) * Y(I)
+  CASE (1)
+     DO J = 1, N
+        X = G(P,J)
+        Y = G(Q,J)
+        G(P,J) = FMA(W(1,2), Y, MUL(W(1,1), X))
+        G(Q,J) = FMA(W(2,1), X, MUL(W(2,2), Y))
      END DO
-  END DO
+  CASE (2)
+     DO J = 1, N
+        X = G(P,J)
+        Y = G(Q,J)
+        G(P,J) = FMA(W(1,1), X, MUL(W(1,2), Y))
+        G(Q,J) = FMA(W(2,2), Y, MUL(W(2,1), X))
+     END DO
+  CASE (3)
+     DO J = 1, N
+        X = G(P,J)
+        Y = G(Q,J)
+        G(P,J) = FMA(W(1,2), Y, MUL(W(1,1), X))
+        G(Q,J) = FMA(W(2,2), Y, MUL(W(2,1), X))
+     END DO
+  CASE DEFAULT
+     INFO = I
+  END SELECT
