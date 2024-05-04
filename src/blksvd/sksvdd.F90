@@ -5,10 +5,9 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
   IMPLICIT NONE
 
   INTERFACE
-     SUBROUTINE SLANGO(O, N, G, LDG, S, INFO)
+     SUBROUTINE SLANGO(N, G, LDG, S, INFO)
        USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
        IMPLICIT NONE
-       CHARACTER, INTENT(IN) :: O
        INTEGER, INTENT(IN) :: N, LDG
        REAL(KIND=REAL32), INTENT(IN) :: G(N,LDG)
        REAL(KIND=REAL32), INTENT(OUT) :: S
@@ -59,7 +58,7 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
        INTEGER, INTENT(IN) :: M, N, LDG, P, Q
        REAL(KIND=REAL32), INTENT(INOUT) :: G(LDG,N)
        REAL(KIND=REAL32), INTENT(IN) :: W(2,2)
-       INTEGER, INTENT(INOUT) :: INFO
+       INTEGER, INTENT(OUT) :: INFO
      END SUBROUTINE SROTC
   END INTERFACE
   INTERFACE
@@ -69,7 +68,7 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
        INTEGER, INTENT(IN) :: M, N, LDG, P, Q
        REAL(KIND=REAL32), INTENT(INOUT) :: G(LDG,N)
        REAL(KIND=REAL32), INTENT(IN) :: W(2,2)
-       INTEGER, INTENT(INOUT) :: INFO
+       INTEGER, INTENT(OUT) :: INFO
      END SUBROUTINE SROTR
   END INTERFACE
 
@@ -196,7 +195,7 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
   ! scale G
   !$ L = OMP_GET_NUM_THREADS()
   IF (.NOT. LOMP) L = 0
-  CALL SLANGO('N', N, G, LDG, GN, L)
+  CALL SLANGO(N, G, LDG, GN, L)
   IF (L .NE. 0) THEN
      INFO = -3
      RETURN
@@ -235,7 +234,7 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
      ELSE ! scaling of U might be required
         !$ L = OMP_GET_NUM_THREADS()
         IF (.NOT. LOMP) L = 0
-        CALL SLANGO('N', N, U, LDU, UN, L)
+        CALL SLANGO(N, U, LDU, UN, L)
         IF (L .NE. 0) THEN
            INFO = -5
            RETURN
@@ -279,7 +278,7 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
      ELSE ! scaling of V might be required
         !$ L = OMP_GET_NUM_THREADS()
         IF (.NOT. LOMP) L = 0
-        CALL SLANGO('N', N, V, LDV, VN, L)
+        CALL SLANGO(N, V, LDV, VN, L)
         IF (L .NE. 0) THEN
            INFO = -7
            RETURN
@@ -369,12 +368,6 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
            ! transform U from the right, transpose U2, and transform G from the left
            IF (IAND(T, 2) .NE. 0) THEN
               IF (LUACC) THEN
-#ifdef USE_LAPACK
-                 L = 1
-                 !$ L = OMP_GET_NUM_THREADS()
-#else
-                 L = 0
-#endif
                  CALL SROTC(N, N, U, LDU, P, Q, U2, L)
                  IF (L .LT. 0) THEN
                     M = M + 1
@@ -385,12 +378,6 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
               G2(2,1) = U2(1,2)
               G2(1,2) = U2(2,1)
               G2(2,2) = U2(2,2)
-#ifdef USE_LAPACK
-              L = 1
-              !$ L = OMP_GET_NUM_THREADS()
-#else
-              L = 0
-#endif
               CALL SROTR(N, N, G, LDG, P, Q, G2, L)
               IF (L .LT. 0) THEN
                  M = M + 1
@@ -414,24 +401,12 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
            ! transform V and G from the right
            IF (IAND(T, 4) .NE. 0) THEN
               IF (LVACC) THEN
-#ifdef USE_LAPACK
-                 L = 1
-                 !$ L = OMP_GET_NUM_THREADS()
-#else
-                 L = 0
-#endif
                  CALL SROTC(N, N, V, LDV, P, Q, W(WV), L)
                  IF (L .LT. 0) THEN
                     M = M + (I + 1)
                     CYCLE
                  END IF
               END IF
-#ifdef USE_LAPACK
-              L = 1
-              !$ L = OMP_GET_NUM_THREADS()
-#else
-              L = 0
-#endif
               CALL SROTC(N, N, G, LDG, P, Q, W(WV), L)
               IF (L .LT. 0) THEN
                  M = M + (I + 1)
@@ -483,12 +458,6 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
            ! transform U from the right, transpose U2, and transform G from the left
            IF (IAND(T, 2) .NE. 0) THEN
               IF (LUACC) THEN
-#ifdef USE_LAPACK
-                 L = 1
-                 !$ L = OMP_GET_NUM_THREADS()
-#else
-                 L = 0
-#endif
                  CALL SROTC(N, N, U, LDU, P, Q, U2, L)
                  IF (L .LT. 0) THEN
                     INFO = -15
@@ -499,12 +468,6 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
               G2(2,1) = U2(1,2)
               G2(1,2) = U2(2,1)
               G2(2,2) = U2(2,2)
-#ifdef USE_LAPACK
-              L = 1
-              !$ L = OMP_GET_NUM_THREADS()
-#else
-              L = 0
-#endif
               CALL SROTR(N, N, G, LDG, P, Q, G2, L)
               IF (L .LT. 0) THEN
                  INFO = -16
@@ -514,24 +477,12 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
            ! transform V and G from the right
            IF (IAND(T, 4) .NE. 0) THEN
               IF (LVACC) THEN
-#ifdef USE_LAPACK
-                 L = 1
-                 !$ L = OMP_GET_NUM_THREADS()
-#else
-                 L = 0
-#endif
                  CALL SROTC(N, N, V, LDV, P, Q, W(WV), L)
                  IF (L .LT. 0) THEN
                     INFO = -17
                     RETURN
                  END IF
               END IF
-#ifdef USE_LAPACK
-              L = 1
-              !$ L = OMP_GET_NUM_THREADS()
-#else
-              L = 0
-#endif
               CALL SROTC(N, N, G, LDG, P, Q, W(WV), L)
               IF (L .LT. 0) THEN
                  INFO = -18
@@ -554,7 +505,7 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
         IF (XSG .EQ. 0) THEN
            !$ L = OMP_GET_NUM_THREADS()
            IF (.NOT. LOMP) L = 0
-           CALL SLANGO('N', N, G, LDG, GN, L)
+           CALL SLANGO(N, G, LDG, GN, L)
            IF (L .NE. 0) THEN
               INFO = -3
               RETURN
@@ -577,7 +528,7 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
         IF (LUACC .AND. (.NOT. LUSID) .AND. (XSU .EQ. 0)) THEN
            !$ L = OMP_GET_NUM_THREADS()
            IF (.NOT. LOMP) L = 0
-           CALL SLANGO('N', N, U, LDU, UN, L)
+           CALL SLANGO(N, U, LDU, UN, L)
            IF (L .NE. 0) THEN
               INFO = -5
               RETURN
@@ -600,7 +551,7 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
         IF (LVACC .AND. (.NOT. LVSID) .AND. (XSV .EQ. 0)) THEN
            !$ L = OMP_GET_NUM_THREADS()
            IF (.NOT. LOMP) L = 0
-           CALL SLANGO('N', N, V, LDV, VN, L)
+           CALL SLANGO(N, V, LDV, VN, L)
            IF (L .NE. 0) THEN
               INFO = -7
               RETURN

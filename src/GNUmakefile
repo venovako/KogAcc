@@ -1,8 +1,7 @@
 include system.mk
 include $(COMPILER).mk
-include $(OS).mk
 include debug.mk
-MKFS=system.mk $(COMPILER).mk $(OS).mk debug.mk
+MKFS=system.mk $(COMPILER).mk debug.mk
 ifneq ($(ABI),lp64)
 include $(ABI).mk
 MKFS += $(ABI).mk
@@ -26,7 +25,7 @@ asm: dirs $(OBJS)
 	@echo $(CFLG) $(PLAT)
 
 help:
-	@echo $(MAKE) "[COMPILER=ifx|gfortran] [COMPILER_PREFIX=...] [COMPILER_SUFFIX=...] [ABI=lp64|ilp64] [NDEBUG=optimization_level] [INTRIN=...] [CR_MATH=...] [LAPACK=...] [PROFILE=...] [ANIMATE=ppe] [all|asm|clean|dirs|doc|help]"
+	@echo $(MAKE) "[COMPILER=ifx|gfortran] [COMPILER_PREFIX=...] [COMPILER_SUFFIX=...] [ABI=lp64|ilp64] [NDEBUG=optimization_level] [INTRIN=...] [CR_MATH=...] [PROFILE=...] [ANIMATE=ppe] [all|asm|clean|dirs|doc|help]"
 
 dirs:
 	@$(MKD) ../bin/$(PLAT) ../lib/$(PLAT) ../obj/$(PLAT)

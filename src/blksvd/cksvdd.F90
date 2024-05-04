@@ -20,10 +20,9 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
 #define CR_HYPOT HYPOT
 #endif
   INTERFACE
-     SUBROUTINE CLANGO(O, N, G, LDG, S, INFO)
+     SUBROUTINE CLANGO(N, G, LDG, S, INFO)
        USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
        IMPLICIT NONE
-       CHARACTER, INTENT(IN) :: O
        INTEGER, INTENT(IN) :: N, LDG
        COMPLEX(KIND=REAL32), INTENT(IN) :: G(N,LDG)
        REAL(KIND=REAL32), INTENT(OUT) :: S
@@ -75,7 +74,7 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
        INTEGER, INTENT(IN) :: M, N, LDG, P, Q
        COMPLEX(KIND=REAL32), INTENT(INOUT) :: G(LDG,N)
        COMPLEX(KIND=REAL32), INTENT(IN) :: W(2,2)
-       INTEGER, INTENT(INOUT) :: INFO
+       INTEGER, INTENT(OUT) :: INFO
      END SUBROUTINE CROTC
   END INTERFACE
   INTERFACE
@@ -85,7 +84,7 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
        INTEGER, INTENT(IN) :: M, N, LDG, P, Q
        COMPLEX(KIND=REAL32), INTENT(INOUT) :: G(LDG,N)
        COMPLEX(KIND=REAL32), INTENT(IN) :: W(2,2)
-       INTEGER, INTENT(INOUT) :: INFO
+       INTEGER, INTENT(OUT) :: INFO
      END SUBROUTINE CROTR
   END INTERFACE
 
@@ -221,7 +220,7 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
   ! scale G
   !$ L = OMP_GET_NUM_THREADS()
   IF (.NOT. LOMP) L = 0
-  CALL CLANGO('N', N, G, LDG, GN, L)
+  CALL CLANGO(N, G, LDG, GN, L)
   IF (L .NE. 0) THEN
      INFO = -3
      RETURN
@@ -260,7 +259,7 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
      ELSE ! scaling of U might be required
         !$ L = OMP_GET_NUM_THREADS()
         IF (.NOT. LOMP) L = 0
-        CALL CLANGO('N', N, U, LDU, UN, L)
+        CALL CLANGO(N, U, LDU, UN, L)
         IF (L .NE. 0) THEN
            INFO = -5
            RETURN
@@ -304,7 +303,7 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
      ELSE ! scaling of V might be required
         !$ L = OMP_GET_NUM_THREADS()
         IF (.NOT. LOMP) L = 0
-        CALL CLANGO('N', N, V, LDV, VN, L)
+        CALL CLANGO(N, V, LDV, VN, L)
         IF (L .NE. 0) THEN
            INFO = -7
            RETURN
@@ -402,7 +401,6 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
            ! transform U from the right, conjugate-transpose U2, and transform G from the left
            IF (IAND(T, 2) .NE. 0) THEN
               IF (LUACC) THEN
-                 L = 0
                  CALL CROTC(N, N, U, LDU, P, Q, U2, L)
                  IF (L .LT. 0) THEN
                     M = M + 1
@@ -413,7 +411,6 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
               G2(2,1) = CONJG(U2(1,2))
               G2(1,2) = CONJG(U2(2,1))
               G2(2,2) = CONJG(U2(2,2))
-              L = 0
               CALL CROTR(N, N, G, LDG, P, Q, G2, L)
               IF (L .LT. 0) THEN
                  M = M + 1
@@ -441,14 +438,12 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
               V2(1,2) = CMPLX(W(WV+4), W(WV+5), K)
               V2(2,2) = CMPLX(W(WV+6), W(WV+7), K)
               IF (LVACC) THEN
-                 L = 0
                  CALL CROTC(N, N, V, LDV, P, Q, V2, L)
                  IF (L .LT. 0) THEN
                     M = M + (I + 1)
                     CYCLE
                  END IF
               END IF
-              L = 0
               CALL CROTC(N, N, G, LDG, P, Q, V2, L)
               IF (L .LT. 0) THEN
                  M = M + (I + 1)
@@ -500,7 +495,6 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
            ! transform U from the right, conjugate-transpose U2, and transform G from the left
            IF (IAND(T, 2) .NE. 0) THEN
               IF (LUACC) THEN
-                 L = 0
                  CALL CROTC(N, N, U, LDU, P, Q, U2, L)
                  IF (L .LT. 0) THEN
                     INFO = -15
@@ -511,7 +505,6 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
               G2(2,1) = CONJG(U2(1,2))
               G2(1,2) = CONJG(U2(2,1))
               G2(2,2) = CONJG(U2(2,2))
-              L = 0
               CALL CROTR(N, N, G, LDG, P, Q, G2, L)
               IF (L .LT. 0) THEN
                  INFO = -16
@@ -521,14 +514,12 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
            ! transform V and G from the right
            IF (IAND(T, 4) .NE. 0) THEN
               IF (LVACC) THEN
-                 L = 0
                  CALL CROTC(N, N, V, LDV, P, Q, V2, L)
                  IF (L .LT. 0) THEN
                     INFO = -17
                     RETURN
                  END IF
               END IF
-              L = 0
               CALL CROTC(N, N, G, LDG, P, Q, V2, L)
               IF (L .LT. 0) THEN
                  INFO = -18
@@ -551,7 +542,7 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
         IF (XSG .EQ. 0) THEN
            !$ L = OMP_GET_NUM_THREADS()
            IF (.NOT. LOMP) L = 0
-           CALL CLANGO('N', N, G, LDG, GN, L)
+           CALL CLANGO(N, G, LDG, GN, L)
            IF (L .NE. 0) THEN
               INFO = -3
               RETURN
@@ -574,7 +565,7 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
         IF (LUACC .AND. (.NOT. LUSID) .AND. (XSU .EQ. 0)) THEN
            !$ L = OMP_GET_NUM_THREADS()
            IF (.NOT. LOMP) L = 0
-           CALL CLANGO('N', N, U, LDU, UN, L)
+           CALL CLANGO(N, U, LDU, UN, L)
            IF (L .NE. 0) THEN
               INFO = -5
               RETURN
@@ -597,7 +588,7 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
         IF (LVACC .AND. (.NOT. LVSID) .AND. (XSV .EQ. 0)) THEN
            !$ L = OMP_GET_NUM_THREADS()
            IF (.NOT. LOMP) L = 0
-           CALL CLANGO('N', N, V, LDV, VN, L)
+           CALL CLANGO(N, V, LDV, VN, L)
            IF (L .NE. 0) THEN
               INFO = -7
               RETURN

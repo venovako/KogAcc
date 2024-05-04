@@ -1,9 +1,8 @@
-!>@brief \b WLANGO computes approximations of the various norms of G or off(G).
-SUBROUTINE WLANGO(O, N, G, LDG, S, INFO)
+!>@brief \b WLANGO computes an approximation of the norm of G.
+SUBROUTINE WLANGO(N, G, LDG, S, INFO)
   IMPLICIT NONE
 
   REAL(KIND=10), PARAMETER :: ZERO = 0.0_10
-  CHARACTER, INTENT(IN) :: O
   INTEGER, INTENT(IN) :: N, LDG
   COMPLEX(KIND=10), INTENT(IN) :: G(N,LDG)
   REAL(KIND=10), INTENT(OUT) :: S
@@ -14,128 +13,60 @@ SUBROUTINE WLANGO(O, N, G, LDG, S, INFO)
   S = ZERO
   I = INFO
   INFO = 0
-  IF (LDG .LT. N) INFO = -4
-  IF (N .LT. 0) INFO = -2
+  IF (LDG .LT. N) INFO = -3
+  IF (N .LT. 0) INFO = -1
   IF (INFO .NE. 0) RETURN
 
-  SELECT CASE (O)
-  CASE ('F','f')
+  IF (I .EQ. 0) THEN
      DO J = 1, N
         DO I = 1, N
-           S = HYPOT(S, REAL(G(I,J)))
-           S = HYPOT(S, AIMAG(G(I,J)))
+           SC = ABS(REAL(G(I,J)))
+#ifndef NDEBUG
+           IF (.NOT. (SC .LE. HUGE(SC))) THEN
+              S = SC
+              INFO = (J - 1) * N + I
+              RETURN
+           END IF
+#endif
+           SM = ABS(AIMAG(G(I,J)))
+#ifndef NDEBUG
+           IF (.NOT. (SM .LE. HUGE(SM))) THEN
+              S = SM
+              INFO = (J - 1) * N + I
+              RETURN
+           END IF
+#endif
+           S = MAX(S, SC, SM)
         END DO
      END DO
      IF (.NOT. (S .LE. HUGE(S))) INFO = 1
-  CASE ('M','m')
-     IF (I .EQ. 0) THEN
-        DO J = 1, N
-           DO I = 1, N
-              SC = HYPOT(REAL(G(I,J)), AIMAG(G(I,J)))
-#ifndef NDEBUG
-              IF (.NOT. (SC .LE. HUGE(SC))) THEN
-                 S = SC
-                 INFO = (J - 1) * N + I
-                 RETURN
-              END IF
-#endif
-              S = MAX(S, SC)
-           END DO
-        END DO
-        IF (.NOT. (S .LE. HUGE(S))) INFO = 1
-     ELSE ! OpenMP
+  ELSE ! OpenMP
 #ifdef NDEBUG
-        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J,SC) SHARED(G,N) REDUCTION(MAX:S)
-        DO J = 1, N
-           DO I = 1, N
-              SC = HYPOT(REAL(G(I,J)), AIMAG(G(I,J)))
-              S = MAX(S, SC)
-           END DO
-        END DO
-        !$OMP END PARALLEL DO
-        IF (.NOT. (S .LE. HUGE(S))) INFO = 1
-#else
-        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J,SC) SHARED(G,N) REDUCTION(MAX:S,INFO)
-        DO J = 1, N
-           DO I = 1, N
-              SC = HYPOT(REAL(G(I,J)), AIMAG(G(I,J)))
-              IF (.NOT. (SC .LE. HUGE(SC))) THEN
-                 INFO = MAX(INFO, (J - 1) * N + I)
-              ELSE ! SC finite
-                 INFO = MAX(INFO, 0)
-              END IF
-              S = MAX(S, SC)
-           END DO
-        END DO
-        !$OMP END PARALLEL DO
-#endif
-     END IF
-  CASE ('N','n')
-     IF (I .EQ. 0) THEN
-        DO J = 1, N
-           DO I = 1, N
-              SC = ABS(REAL(G(I,J)))
-#ifndef NDEBUG
-              IF (.NOT. (SC .LE. HUGE(SC))) THEN
-                 S = SC
-                 INFO = (J - 1) * N + I
-                 RETURN
-              END IF
-#endif
-              SM = ABS(AIMAG(G(I,J)))
-#ifndef NDEBUG
-              IF (.NOT. (SM .LE. HUGE(SM))) THEN
-                 S = SM
-                 INFO = (J - 1) * N + I
-                 RETURN
-              END IF
-#endif
-              S = MAX(S, SC, SM)
-           END DO
-        END DO
-        IF (.NOT. (S .LE. HUGE(S))) INFO = 1
-     ELSE ! OpenMP
-#ifdef NDEBUG
-        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J,SC,SM) SHARED(G,N) REDUCTION(MAX:S)
-        DO J = 1, N
-           DO I = 1, N
-              SC = ABS(REAL(G(I,J)))
-              SM = ABS(AIMAG(G(I,J)))
-              S = MAX(S, SC, SM)
-           END DO
-        END DO
-        !$OMP END PARALLEL DO
-        IF (.NOT. (S .LE. HUGE(S))) INFO = 1
-#else
-        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J,SC,SM) SHARED(G,N) REDUCTION(MAX:S,INFO)
-        DO J = 1, N
-           DO I = 1, N
-              SC = ABS(REAL(G(I,J)))
-              SM = ABS(AIMAG(G(I,J)))
-              IF ((.NOT. (SC .LE. HUGE(SC))) .OR. (.NOT. (SM .LE. HUGE(SM)))) THEN
-                 INFO = MAX(INFO, (J - 1) * N + I)
-              ELSE ! SC and SM finite
-                 INFO = MAX(INFO, 0)
-              END IF
-              S = MAX(S, SC, SM)
-           END DO
-        END DO
-        !$OMP END PARALLEL DO
-#endif
-     END IF
-  CASE ('O','o')
+     !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J,SC,SM) SHARED(G,N) REDUCTION(MAX:S)
      DO J = 1, N
-        DO I = 1, J-1
-           S = HYPOT(S, REAL(G(I,J)))
-           S = HYPOT(S, AIMAG(G(I,J)))
-        END DO
-        DO I = J+1, N
-           S = HYPOT(S, REAL(G(I,J)))
-           S = HYPOT(S, AIMAG(G(I,J)))
+        DO I = 1, N
+           SC = ABS(REAL(G(I,J)))
+           SM = ABS(AIMAG(G(I,J)))
+           S = MAX(S, SC, SM)
         END DO
      END DO
+     !$OMP END PARALLEL DO
      IF (.NOT. (S .LE. HUGE(S))) INFO = 1
-  CASE DEFAULT
-     INFO = -1
-  END SELECT
+#else
+     !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J,SC,SM) SHARED(G,N) REDUCTION(MAX:S,INFO)
+     DO J = 1, N
+        DO I = 1, N
+           SC = ABS(REAL(G(I,J)))
+           SM = ABS(AIMAG(G(I,J)))
+           IF ((.NOT. (SC .LE. HUGE(SC))) .OR. (.NOT. (SM .LE. HUGE(SM)))) THEN
+              INFO = MAX(INFO, (J - 1) * N + I)
+           ELSE ! SC and SM finite
+              INFO = MAX(INFO, 0)
+           END IF
+           S = MAX(S, SC, SM)
+        END DO
+     END DO
+     !$OMP END PARALLEL DO
+#endif
+  END IF
 END SUBROUTINE WLANGO

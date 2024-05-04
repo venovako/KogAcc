@@ -141,7 +141,7 @@
   ! scale G
   !$ L = OMP_GET_NUM_THREADS()
   IF (.NOT. LOMP) L = 0
-  CALL LANGO('N', N, G, LDG, GN, L)
+  CALL LANGO(N, G, LDG, GN, L)
   IF (L .NE. 0) THEN
      INFO = -3
      RETURN
@@ -180,7 +180,7 @@
      ELSE ! scaling of U might be required
         !$ L = OMP_GET_NUM_THREADS()
         IF (.NOT. LOMP) L = 0
-        CALL LANGO('N', N, U, LDU, UN, L)
+        CALL LANGO(N, U, LDU, UN, L)
         IF (L .NE. 0) THEN
            INFO = -5
            RETURN
@@ -224,7 +224,7 @@
      ELSE ! scaling of V might be required
         !$ L = OMP_GET_NUM_THREADS()
         IF (.NOT. LOMP) L = 0
-        CALL LANGO('N', N, V, LDV, VN, L)
+        CALL LANGO(N, V, LDV, VN, L)
         IF (L .NE. 0) THEN
            INFO = -7
            RETURN
@@ -285,11 +285,7 @@
         END IF
         I = L
      ELSE ! tabular O
-#ifdef NDEBUG
         W(M_2 + 1) = -ONE
-#else
-        CALL LANGO('O', N, G, LDG, W(M_2 + 1), L)
-#endif
         I = NP
      END IF
      IF (I .GT. 0) THEN
@@ -355,12 +351,6 @@
            ! transform U from the right, transpose U2, and transform G from the left
            IF (IAND(T, 2) .NE. 0) THEN
               IF (LUACC) THEN
-#ifdef USE_LAPACK
-                 L = 1
-                 !$ L = OMP_GET_NUM_THREADS()
-#else
-                 L = 0
-#endif
                  CALL ROTC(N, N, U, LDU, P, Q, U2, L)
                  IF (L .LT. 0) THEN
                     M = M + 1
@@ -371,12 +361,6 @@
               G2(2,1) = U2(1,2)
               G2(1,2) = U2(2,1)
               G2(2,2) = U2(2,2)
-#ifdef USE_LAPACK
-              L = 1
-              !$ L = OMP_GET_NUM_THREADS()
-#else
-              L = 0
-#endif
               CALL ROTR(N, N, G, LDG, P, Q, G2, L)
               IF (L .LT. 0) THEN
                  M = M + 1
@@ -399,24 +383,12 @@
            ! transform V and G from the right
            IF (IAND(T, 4) .NE. 0) THEN
               IF (LVACC) THEN
-#ifdef USE_LAPACK
-                 L = 1
-                 !$ L = OMP_GET_NUM_THREADS()
-#else
-                 L = 0
-#endif
                  CALL ROTC(N, N, V, LDV, P, Q, W(WV), L)
                  IF (L .LT. 0) THEN
                     M = M + (I + 1)
                     CYCLE
                  END IF
               END IF
-#ifdef USE_LAPACK
-              L = 1
-              !$ L = OMP_GET_NUM_THREADS()
-#else
-              L = 0
-#endif
               CALL ROTC(N, N, G, LDG, P, Q, W(WV), L)
               IF (L .LT. 0) THEN
                  M = M + (I + 1)
@@ -467,12 +439,6 @@
            ! transform U from the right, transpose U2, and transform G from the left
            IF (IAND(T, 2) .NE. 0) THEN
               IF (LUACC) THEN
-#ifdef USE_LAPACK
-                 L = 1
-                 !$ L = OMP_GET_NUM_THREADS()
-#else
-                 L = 0
-#endif
                  CALL ROTC(N, N, U, LDU, P, Q, U2, L)
                  IF (L .LT. 0) THEN
                     INFO = -15
@@ -483,12 +449,6 @@
               G2(2,1) = U2(1,2)
               G2(1,2) = U2(2,1)
               G2(2,2) = U2(2,2)
-#ifdef USE_LAPACK
-              L = 1
-              !$ L = OMP_GET_NUM_THREADS()
-#else
-              L = 0
-#endif
               CALL ROTR(N, N, G, LDG, P, Q, G2, L)
               IF (L .LT. 0) THEN
                  INFO = -16
@@ -498,24 +458,12 @@
            ! transform V and G from the right
            IF (IAND(T, 4) .NE. 0) THEN
               IF (LVACC) THEN
-#ifdef USE_LAPACK
-                 L = 1
-                 !$ L = OMP_GET_NUM_THREADS()
-#else
-                 L = 0
-#endif
                  CALL ROTC(N, N, V, LDV, P, Q, W(WV), L)
                  IF (L .LT. 0) THEN
                     INFO = -17
                     RETURN
                  END IF
               END IF
-#ifdef USE_LAPACK
-              L = 1
-              !$ L = OMP_GET_NUM_THREADS()
-#else
-              L = 0
-#endif
               CALL ROTC(N, N, G, LDG, P, Q, W(WV), L)
               IF (L .LT. 0) THEN
                  INFO = -18
@@ -542,7 +490,7 @@
         IF (XSG .EQ. 0) THEN
            !$ L = OMP_GET_NUM_THREADS()
            IF (.NOT. LOMP) L = 0
-           CALL LANGO('N', N, G, LDG, GN, L)
+           CALL LANGO(N, G, LDG, GN, L)
            IF (L .NE. 0) THEN
               INFO = -3
               RETURN
@@ -565,7 +513,7 @@
         IF (LUACC .AND. (.NOT. LUSID) .AND. (XSU .EQ. 0)) THEN
            !$ L = OMP_GET_NUM_THREADS()
            IF (.NOT. LOMP) L = 0
-           CALL LANGO('N', N, U, LDU, UN, L)
+           CALL LANGO(N, U, LDU, UN, L)
            IF (L .NE. 0) THEN
               INFO = -5
               RETURN
@@ -588,7 +536,7 @@
         IF (LVACC .AND. (.NOT. LVSID) .AND. (XSV .EQ. 0)) THEN
            !$ L = OMP_GET_NUM_THREADS()
            IF (.NOT. LOMP) L = 0
-           CALL LANGO('N', N, V, LDV, VN, L)
+           CALL LANGO(N, V, LDV, VN, L)
            IF (L .NE. 0) THEN
               INFO = -7
               RETURN

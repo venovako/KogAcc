@@ -9,7 +9,7 @@
   IF (N .EQ. 0) RETURN
 
   J = 0
-  IF (CR_HYPOT(REAL(W(1,1)), AIMAG(W(1,1))) .LT. CR_HYPOT(REAL(W(2,1)), AIMAG(W(2,1)))) J = IOR(J, 1)
+  IF (CR_HYPOT(REAL(W(1,1)), AIMAG(W(1,1))) .LT. CR_HYPOT(REAL(W(2,1)), AIMAG(W(2,1)))) J = 1
   IF (CR_HYPOT(REAL(W(1,2)), AIMAG(W(1,2))) .LT. CR_HYPOT(REAL(W(2,2)), AIMAG(W(2,2)))) J = IOR(J, 2)
 
   ! DO I = 1, M

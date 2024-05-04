@@ -5,9 +5,6 @@ A Kogbetliantz-type SVD for general matrices.
 
 ## Prerequisites
 
-The oneAPI Intel Math Kernel Library (MKL) is assumed to be installed on Linux or macOS x86_64 platforms when the Intel or the GNU compilers are used.
-Other 64-bit OSes (e.g., FreeBSD and Oracle Solaris) and platforms (e.g., arm64 and ppc64le) might also be supported to a certain extent, if the reference BLAS and LAPACK libraries have been built.
-
 Intel's `ifx` is *strongly recommended* for testing the `n × n` SVD routines!
 Other compilers might produce unreliable binaries in these cases.
 Several routines and executables require having quadruple precision (`KIND=REAL128`) fully supported by the compiler, and therefore not all popular compilers have been tested.
