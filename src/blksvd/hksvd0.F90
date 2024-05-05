@@ -367,6 +367,7 @@
            ! transform U from the right, conjugate-transpose U2, and transform G from the left
            IF (IAND(T, 2) .NE. 0) THEN
               IF (LUACC) THEN
+                 L = 0
                  CALL ROTC(N, N, U, LDU, P, Q, U2, L)
                  IF (L .LT. 0) THEN
                     M = M + 1
@@ -377,6 +378,7 @@
               G2(2,1) = CONJG(U2(1,2))
               G2(1,2) = CONJG(U2(2,1))
               G2(2,2) = CONJG(U2(2,2))
+              L = 0
               CALL ROTR(N, N, G, LDG, P, Q, G2, L)
               IF (L .LT. 0) THEN
                  M = M + 1
@@ -403,12 +405,14 @@
               V2(1,2) = CMPLX(W(WV+4), W(WV+5), K)
               V2(2,2) = CMPLX(W(WV+6), W(WV+7), K)
               IF (LVACC) THEN
+                 L = 0
                  CALL ROTC(N, N, V, LDV, P, Q, V2, L)
                  IF (L .LT. 0) THEN
                     M = M + (I + 1)
                     CYCLE
                  END IF
               END IF
+              L = 0
               CALL ROTC(N, N, G, LDG, P, Q, V2, L)
               IF (L .LT. 0) THEN
                  M = M + (I + 1)
@@ -459,6 +463,7 @@
            ! transform U from the right, conjugate-transpose U2, and transform G from the left
            IF (IAND(T, 2) .NE. 0) THEN
               IF (LUACC) THEN
+                 L = 0
                  CALL ROTC(N, N, U, LDU, P, Q, U2, L)
                  IF (L .LT. 0) THEN
                     INFO = -15
@@ -469,6 +474,7 @@
               G2(2,1) = CONJG(U2(1,2))
               G2(1,2) = CONJG(U2(2,1))
               G2(2,2) = CONJG(U2(2,2))
+              L = 0
               CALL ROTR(N, N, G, LDG, P, Q, G2, L)
               IF (L .LT. 0) THEN
                  INFO = -16
@@ -478,12 +484,14 @@
            ! transform V and G from the right
            IF (IAND(T, 4) .NE. 0) THEN
               IF (LVACC) THEN
+                 L = 0
                  CALL ROTC(N, N, V, LDV, P, Q, V2, L)
                  IF (L .LT. 0) THEN
                     INFO = -17
                     RETURN
                  END IF
               END IF
+              L = 0
               CALL ROTC(N, N, G, LDG, P, Q, V2, L)
               IF (L .LT. 0) THEN
                  INFO = -18

@@ -74,7 +74,7 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
        INTEGER, INTENT(IN) :: M, N, LDG, P, Q
        COMPLEX(KIND=REAL32), INTENT(INOUT) :: G(LDG,N)
        COMPLEX(KIND=REAL32), INTENT(IN) :: W(2,2)
-       INTEGER, INTENT(OUT) :: INFO
+       INTEGER, INTENT(INOUT) :: INFO
      END SUBROUTINE CROTC
   END INTERFACE
   INTERFACE
@@ -84,7 +84,7 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
        INTEGER, INTENT(IN) :: M, N, LDG, P, Q
        COMPLEX(KIND=REAL32), INTENT(INOUT) :: G(LDG,N)
        COMPLEX(KIND=REAL32), INTENT(IN) :: W(2,2)
-       INTEGER, INTENT(OUT) :: INFO
+       INTEGER, INTENT(INOUT) :: INFO
      END SUBROUTINE CROTR
   END INTERFACE
 
@@ -401,6 +401,7 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
            ! transform U from the right, conjugate-transpose U2, and transform G from the left
            IF (IAND(T, 2) .NE. 0) THEN
               IF (LUACC) THEN
+                 L = 0
                  CALL CROTC(N, N, U, LDU, P, Q, U2, L)
                  IF (L .LT. 0) THEN
                     M = M + 1
@@ -411,6 +412,7 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
               G2(2,1) = CONJG(U2(1,2))
               G2(1,2) = CONJG(U2(2,1))
               G2(2,2) = CONJG(U2(2,2))
+              L = 0
               CALL CROTR(N, N, G, LDG, P, Q, G2, L)
               IF (L .LT. 0) THEN
                  M = M + 1
@@ -438,12 +440,14 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
               V2(1,2) = CMPLX(W(WV+4), W(WV+5), K)
               V2(2,2) = CMPLX(W(WV+6), W(WV+7), K)
               IF (LVACC) THEN
+                 L = 0
                  CALL CROTC(N, N, V, LDV, P, Q, V2, L)
                  IF (L .LT. 0) THEN
                     M = M + (I + 1)
                     CYCLE
                  END IF
               END IF
+              L = 0
               CALL CROTC(N, N, G, LDG, P, Q, V2, L)
               IF (L .LT. 0) THEN
                  M = M + (I + 1)
@@ -495,6 +499,7 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
            ! transform U from the right, conjugate-transpose U2, and transform G from the left
            IF (IAND(T, 2) .NE. 0) THEN
               IF (LUACC) THEN
+                 L = 0
                  CALL CROTC(N, N, U, LDU, P, Q, U2, L)
                  IF (L .LT. 0) THEN
                     INFO = -15
@@ -505,6 +510,7 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
               G2(2,1) = CONJG(U2(1,2))
               G2(1,2) = CONJG(U2(2,1))
               G2(2,2) = CONJG(U2(2,2))
+              L = 0
               CALL CROTR(N, N, G, LDG, P, Q, G2, L)
               IF (L .LT. 0) THEN
                  INFO = -16
@@ -514,12 +520,14 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
            ! transform V and G from the right
            IF (IAND(T, 4) .NE. 0) THEN
               IF (LVACC) THEN
+                 L = 0
                  CALL CROTC(N, N, V, LDV, P, Q, V2, L)
                  IF (L .LT. 0) THEN
                     INFO = -17
                     RETURN
                  END IF
               END IF
+              L = 0
               CALL CROTC(N, N, G, LDG, P, Q, V2, L)
               IF (L .LT. 0) THEN
                  INFO = -18

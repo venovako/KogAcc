@@ -1,4 +1,5 @@
   !DIR$ ASSUME_ALIGNED G:64, X:64, Y:64, Z:64
+  I = INFO
   INFO = 0
   IF ((Q .LE. P) .OR. (Q .GT. M)) INFO = -6
   IF ((P .LE. 0) .OR. (P .GE. M)) INFO = -5
