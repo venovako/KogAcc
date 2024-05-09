@@ -5,9 +5,7 @@ A Kogbetliantz-type SVD for general matrices.
 
 ## Prerequisites
 
-Intel's `ifx` is *strongly recommended* for testing the `n × n` SVD routines!
-Other compilers might produce unreliable binaries in these cases.
-Several routines and executables require having quadruple precision (`KIND=REAL128`) fully supported by the compiler, and therefore not all popular compilers have been tested.
+Several routines and executables require having quadruple precision (`KIND=REAL128`) fully supported by the compiler.
 
 First, clone [libpvn](https://github.com/venovako/libpvn) repository, with the same parent directory as this one has (e.g., `venovako/libpvn` and `venovako/KogAcc`).
 Then, build the `libpvn` library, with the same family of compilers and (no-)debug mode as it is meant to be used here (e.g., with `icx` if `ifx` is desired).
@@ -22,9 +20,7 @@ It is strongly recommended to use them whenever possible.
 
 ## Building
 
-On Linux or macOS, run `make help` (GNU make assumed) in the `src` subdirectory.
-
-On antoher \*nix OS where GNU `make` is not the default one, run `gmake help` instead.
+Run `make help` (GNU make assumed) in the `src` subdirectory.
 
 Setting `NDEBUG` to, e.g., `3` is recommened.
 
