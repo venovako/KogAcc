@@ -11,10 +11,4 @@ FCFLAGS += -qinit=f90ptr -qsclk=micro -qpic -qarch=auto -qsimd=auto -qsmp=omp -q
 ifndef NDEBUG
 FCFLAGS += -qcheck -qdbg
 endif # !NDEBUG
-ifndef INTRIN
-INTRIN=138
-endif # !INTRIN
-ifdef INTRIN
-FCFLAGS += -DUSE_IEEE_INTRINSIC=$(INTRIN)
-endif # INTRIN
 FCFLAGS += -Wl,-E # --export-dynamic

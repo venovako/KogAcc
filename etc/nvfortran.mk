@@ -10,9 +10,3 @@ FCFLAGS += -mp -KPIC -Mframe -Meh_frame -Minfo -Mdclchk -Mlarge_arrays -Mrecursi
 ifndef NDEBUG
 FCFLAGS += -Mbounds -Mchkstk
 endif # !NDEBUG
-ifndef INTRIN
-INTRIN=42
-endif # !INTRIN
-ifdef INTRIN
-FCFLAGS += -DUSE_IEEE_INTRINSIC=$(INTRIN)
-endif # INTRIN

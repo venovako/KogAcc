@@ -125,26 +125,8 @@
 !>
 !  =====================================================================
 SUBROUTINE QLMSV2(F, G, H, SSMIN, SSMAX, SNR, CSR, SNL, CSL)
-#ifdef USE_IEEE_INTRINSIC
-#if ((USE_IEEE_INTRINSIC & 192) == 0)
-#undef USE_IEEE_INTRINSIC
-#elif ((USE_IEEE_INTRINSIC & 192) == 64)
-  USE, INTRINSIC :: IEEE_ARITHMETIC, ONLY: IEEE_FMA
-#endif
-#endif
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL128
   IMPLICIT NONE
-#ifdef USE_IEEE_INTRINSIC
-#if ((USE_IEEE_INTRINSIC & 192) == 128)
-  INTERFACE
-     FUNCTION IEEE_FMA(X, Y, Z) BIND(C,NAME='fmal')
-       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
-       REAL(KIND=c_long_double), INTENT(IN), VALUE :: X, Y, Z
-       REAL(KIND=c_long_double) :: IEEE_FMA
-     END FUNCTION IEEE_FMA
-  END INTERFACE
-#endif
-#endif
   INTEGER, PARAMETER :: K = REAL128
 !
 !  -- LAPACK auxiliary routine --
@@ -262,11 +244,7 @@ SUBROUTINE QLMSV2(F, G, H, SSMIN, SSMAX, SNR, CSR, SNL, CSL)
         IF (L .EQ. ZERO) THEN
            R = ABS(M)
         ELSE
-#ifdef USE_IEEE_INTRINSIC
-           R = SQRT(IEEE_FMA(L, L, MM))
-#else
            R = SQRT(L * L + MM)
-#endif
         END IF
 !
 !           Note that 0 .le. R .le. 1 + 1/macheps
@@ -289,18 +267,10 @@ SUBROUTINE QLMSV2(F, G, H, SSMIN, SSMAX, SNR, CSR, SNL, CSL)
         ELSE
            T = (M / (S + T) + M / (R + L)) * (ONE + A)
         END IF
-#ifdef USE_IEEE_INTRINSIC
-        L = SQRT(IEEE_FMA(T, T, FOUR))
-#else
         L = SQRT(T * T + FOUR)
-#endif
         CRT = TWO / L
         SRT = T / L
-#ifdef USE_IEEE_INTRINSIC
-        CLT = IEEE_FMA(SRT, M, CRT) / A
-#else
         CLT = (SRT * M + CRT) / A
-#endif
         SLT = (HT / FT) * SRT / A
      END IF
   END IF

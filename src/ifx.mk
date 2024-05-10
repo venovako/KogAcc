@@ -12,12 +12,6 @@ FCFLAGS += -inline-level=2 -qopt-report=3
 else # !NDEBUG
 FCFLAGS += -debug emit_column -debug extended -debug inline-debug-info -debug pubnames -check all
 endif # ?NDEBUG
-ifndef INTRIN
-INTRIN=69
-endif # !INTRIN
-ifdef INTRIN
-FCFLAGS += -DUSE_IEEE_INTRINSIC=$(INTRIN)
-endif # INTRIN
 ifeq ($(OS),Linux)
 ifndef NDEBUG
 FCFLAGS += -debug parallel
