@@ -1,5 +1,11 @@
   I = COMMAND_ARGUMENT_COUNT()
-  IF (I .LT. 1) ERROR STOP 'args: N'
+  IF ((I .LT. 1) .OR. (I .GT. 2)) ERROR STOP 'args: N [P]'
+  IF (I .EQ. 2) THEN
+     CALL GET_COMMAND_ARGUMENT(2, CLA)
+     READ (CLA,*) P
+  ELSE ! I = 1
+     P = 0
+  END IF
   CALL GET_COMMAND_ARGUMENT(1, CLA)
   READ (CLA,*) N
   IF (N .LE. 0) ERROR STOP 'N <= 0'
@@ -20,14 +26,14 @@
   O = PVN_RAN_OPEN()
   IF (O .LT. 0_c_int) ERROR STOP 'cannot open /dev/random for reading'
   DO K = I, J
-     G(1,1) = RAN_SAFE(O)
+     G(1,1) = RAN_SAFE(O, P)
 #ifdef UPPER
      G(2,1) = ZERO
 #else
-     G(2,1) = RAN_SAFE(O)
+     G(2,1) = RAN_SAFE(O, P)
 #endif
-     G(1,2) = RAN_SAFE(O)
-     G(2,2) = RAN_SAFE(O)
+     G(1,2) = RAN_SAFE(O, P)
+     G(2,2) = RAN_SAFE(O, P)
 #ifdef UPPER
 #include "gran2u.F90"
 #else
