@@ -7,6 +7,6 @@ do
 	else
 		P=113
 	fi
-	./relerr.wls $p 113 $P 9 # > relerr-$p-$P.txt
+	./relerr.wls $p 113 $P 9 > relerr-$p-$P.txt
 done
 unset P p
