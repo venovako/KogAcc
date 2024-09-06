@@ -17,10 +17,10 @@ Please set the option `SAFE=sv2`.
 Building the documentation requires a recent version of [Doxygen](https://doxygen.nl) and [Graphviz](https://graphviz.org).
 Many routines are documented only rudimentary for now.
 
-The correctly-rounded `cr_hypot` and `cr_hypotf` functions might optionally be used if provided by, e.g., the [CORE-MATH](https://core-math.gitlabpages.inria.fr) project.
+The correctly-rounded `cr_hypot` and `cr_hypotf` functions are expected to be provided by the [CORE-MATH](https://core-math.gitlabpages.inria.fr) project.
 Please consult the description of `libpvn` for more information.
 All testing has been performed with the correctly rounded functions.
-It is strongly recommended to use them whenever possible.
+Even though it is technically feasible not to use them, this should be attempted only if necessary.
 
 ## Building
 
