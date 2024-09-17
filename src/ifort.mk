@@ -1,4 +1,4 @@
-# ifort has been deprecated
+# ifort has been DEPRECATED
 AR=xiar
 ARFLAGS=-qnoipo -lib rsv
 FC=$(COMPILER_PREFIX)ifort$(COMPILER_SUFFIX)
@@ -13,7 +13,7 @@ CPU=Host
 endif # !CPU
 FCFLAGS += -diag-disable=10397,10448,10441 -x$(CPU) -fPIC -fexceptions -fasynchronous-unwind-tables -fno-omit-frame-pointer -qopt-multi-version-aggressive -qopt-zmm-usage=high -fp-model precise -fma -fprotect-parens -no-ftz -no-complex-limited-range -no-fast-transcendentals -prec-div -prec-sqrt -qopenmp -qsimd-honor-fp-model -qsimd-serialize-fp-reduction -standard-semantics -traceback -vec-threshold0 -rdynamic
 ifdef NDEBUG
-FCFLAGS += -qopt-report=5
+FCFLAGS += -fno-math-errno -qopt-report=5
 ifndef PROFILE
 FCFLAGS += -inline-level=2
 endif # !PROFILE
