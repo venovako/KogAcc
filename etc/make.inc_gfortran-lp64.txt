@@ -20,7 +20,7 @@ CFLAGS = -Og -ggdb3 -fPIC -fexceptions -fasynchronous-unwind-tables -ffp-contrac
 #
 FC = gfortran
 # for ppc64le: -march=native => -mcpu=native -mpower8-fusion -mtraceback=full
-FFLAGS = -Og -ggdb3 -fPIC -fasynchronous-unwind-tables -fexceptions -ffp-contract=fast -fno-omit-frame-pointer -fopenmp-simd -pthread -march=native -fprotect-parens -frecursive -fstack-arrays -finit-local-zero -finit-derived
+FFLAGS = -Og -ggdb3 -fPIC -fexceptions -fasynchronous-unwind-tables -ffp-contract=fast -fno-omit-frame-pointer -fopenmp-simd -pthread -march=native -fprotect-parens -frecursive -fstack-arrays -finit-local-zero -finit-derived
 FFLAGS_DRV = $(FFLAGS)
 FFLAGS_NOOPT = $(FFLAGS)
 
