@@ -16,7 +16,7 @@ FCFLAGS += -march=$(CPU)
 endif # ?ppc64le
 FCFLAGS += -fopenmp -fPIC -fexceptions -fasynchronous-unwind-tables -fno-omit-frame-pointer -ffp-contract=fast -ffree-line-length-none -fstack-arrays -rdynamic
 ifdef NDEBUG
-FCFLAGS += -fvect-cost-model=unlimited -fopt-info-optimized-vec
+FCFLAGS += -fvect-cost-model=unlimited #-fopt-info-optimized-vec
 else # !NDEBUG
 FCFLAGS += -fcheck=all,no-recursion -finit-local-zero -finit-real=snan -finit-derived -Wcharacter-truncation -Wimplicit-procedure -Wfunction-elimination -Wrealloc-lhs-all
 endif # ?NDEBUG

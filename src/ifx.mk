@@ -12,7 +12,10 @@ CPU=Host
 endif # !CPU
 FCFLAGS += -x$(CPU) -fPIC -fexceptions -fasynchronous-unwind-tables -fno-omit-frame-pointer -fp-model=precise -fp-speculation=safe -fimf-precision=high -fma -fprotect-parens -no-ftz -mprefer-vector-width=512 -qopenmp -standard-semantics -traceback -vec-threshold0 -rdynamic -static-libgcc
 ifdef NDEBUG
-FCFLAGS += -inline-level=2 -qopt-report=3
+FCFLAGS += -qopt-report=3
+ifndef PROFILE
+FCFLAGS += -inline-level=2
+endif # !PROFILE
 else # !NDEBUG
 FCFLAGS += -debug emit_column -debug extended -debug inline-debug-info -debug pubnames -check all
 endif # ?NDEBUG

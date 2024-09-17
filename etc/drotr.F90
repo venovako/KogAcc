@@ -1,13 +1,13 @@
-!>@brief \b SROTR premultiplies the rows (p,q) of G by W using an imperfect emulation of an accurate a*b+c*d operation.
-SUBROUTINE SROTR(M, N, G, LDG, P, Q, W, INFO)
-  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32, REAL64
+!>@brief \b DROTR premultiplies the rows (p,q) of G by W using an imperfect emulation of an accurate a*b+c*d operation.
+SUBROUTINE DROTR(M, N, G, LDG, P, Q, W, INFO)
+  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64, REAL128
   IMPLICIT NONE
-  INTEGER, PARAMETER :: K = REAL32, L = REAL64
+  INTEGER, PARAMETER :: K = REAL64, L = REAL128
   INTEGER, INTENT(IN) :: M, N, LDG, P, Q
   REAL(KIND=K), INTENT(INOUT) :: G(LDG,N)
   REAL(KIND=K), INTENT(IN) :: W(2,2)
   INTEGER, INTENT(INOUT) :: INFO
-#define VL 16
+#define VL 8
   REAL(KIND=K) :: X(VL)
   !DIR$ ATTRIBUTES ALIGN: 64:: X
   REAL(KIND=K) :: Y(VL)
@@ -20,7 +20,7 @@ SUBROUTINE SROTR(M, N, G, LDG, P, Q, W, INFO)
   !DIR$ ATTRIBUTES ALIGN: 64:: WW
   INTEGER :: I, J
   !DIR$ ASSUME_ALIGNED G:64, X:64, Y:64, XX:64, YY:64, WW:64
-#define HL 8
+#define HL 4
   I = INFO
   INFO = 0
   IF ((Q .LE. P) .OR. (Q .GT. M)) INFO = -6
@@ -90,4 +90,4 @@ SUBROUTINE SROTR(M, N, G, LDG, P, Q, W, INFO)
         G(Q,J+I-1) = REAL(YY(I), K)
      END DO
   END DO
-END SUBROUTINE SROTR
+END SUBROUTINE DROTR
