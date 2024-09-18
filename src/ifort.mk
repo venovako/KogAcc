@@ -7,11 +7,11 @@ FCFLAGS=-O$(NDEBUG)
 else # !NDEBUG
 FCFLAGS=-O0 -g
 endif # ?NDEBUG
-ifndef CPU
-CPU=Host
+ifndef MARCH
+MARCH=Host
 # COMMON-AVX512 for KNLs
-endif # !CPU
-FCFLAGS += -diag-disable=10397,10448,10441 -x$(CPU) -fPIC -fexceptions -fasynchronous-unwind-tables -fno-omit-frame-pointer -qopt-multi-version-aggressive -qopt-zmm-usage=high -fp-model precise -fma -fprotect-parens -no-ftz -no-complex-limited-range -no-fast-transcendentals -prec-div -prec-sqrt -qopenmp -qsimd-honor-fp-model -qsimd-serialize-fp-reduction -standard-semantics -traceback -vec-threshold0 -rdynamic
+endif # !MARCH
+FCFLAGS += -diag-disable=10397,10448,10441 -x$(MARCH) -fPIC -fexceptions -fasynchronous-unwind-tables -fno-omit-frame-pointer -qopt-multi-version-aggressive -qopt-zmm-usage=high -fp-model precise -fma -fprotect-parens -no-ftz -no-complex-limited-range -no-fast-transcendentals -prec-div -prec-sqrt -qopenmp -qsimd-honor-fp-model -qsimd-serialize-fp-reduction -standard-semantics -traceback -vec-threshold0 -rdynamic
 ifdef NDEBUG
 FCFLAGS += -fno-math-errno -qopt-report=5
 ifndef PROFILE

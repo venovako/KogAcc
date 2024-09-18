@@ -6,17 +6,17 @@ FCFLAGS=-O$(NDEBUG)
 else # !NDEBUG
 FCFLAGS=-Og -ggdb3
 endif # ?NDEBUG
-ifndef CPU
-CPU=native
-endif # !CPU
+ifndef MARCH
+MARCH=native
+endif # !MARCH
 ifeq ($(ARCH),ppc64le)
-FCFLAGS += -mcpu=$(CPU) -mpower8-fusion -mtraceback=full
+FCFLAGS += -mcpu=$(MARCH) -mpower8-fusion -mtraceback=full
 else # !ppc64le
-FCFLAGS += -march=$(CPU)
+FCFLAGS += -march=$(MARCH)
 endif # ?ppc64le
 FCFLAGS += -fopenmp -fPIC -fexceptions -fasynchronous-unwind-tables -fno-omit-frame-pointer -ffp-contract=fast -ffree-line-length-none -fstack-arrays -rdynamic
 ifdef NDEBUG
-FCFLAGS += -fvect-cost-model=unlimited #-fopt-info-optimized-vec
+FCFLAGS += -fno-math-errno -fvect-cost-model=unlimited
 else # !NDEBUG
 FCFLAGS += -fcheck=all,no-recursion -finit-local-zero -finit-real=snan -finit-derived -Wcharacter-truncation -Wimplicit-procedure -Wfunction-elimination -Wrealloc-lhs-all
 endif # ?NDEBUG
