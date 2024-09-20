@@ -1,3 +1,4 @@
+# crashes on some REAL128 code
 AR=ar
 ARFLAGS=rsv
 # XLF 17.1.1.2
