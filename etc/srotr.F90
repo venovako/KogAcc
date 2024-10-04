@@ -1,4 +1,4 @@
-!>@brief \b SROTR premultiplies the rows (p,q) of G by W using an imperfect emulation of an accurate a*b+c*d operation.
+!>@brief \b SROTR premultiplies the rows (p,q) of G by W using an emulation of an accurate a*b+c*d operation.
 SUBROUTINE SROTR(M, N, G, LDG, P, Q, W, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32, REAL64
   IMPLICIT NONE
