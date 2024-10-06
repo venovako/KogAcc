@@ -61,8 +61,8 @@ SUBROUTINE SROTR(M, N, G, LDG, P, Q, W, INFO)
      END DO
      !DIR$ VECTOR ALIGNED ALWAYS
      DO I = 1, HL
-        XX(I+HL) = (WW(1,1) * XX(I)) + (WW(1,2) * YY(I))
-        YY(I+HL) = (WW(2,1) * XX(I)) + (WW(2,2) * YY(I))
+        XX(I+HL) = WW(1,1) * XX(I) + WW(1,2) * YY(I)
+        YY(I+HL) = WW(2,1) * XX(I) + WW(2,2) * YY(I)
      END DO
      DO I = 1, HL
         G(P,J+I-1) = REAL(XX(I+HL), K)
@@ -80,8 +80,8 @@ SUBROUTINE SROTR(M, N, G, LDG, P, Q, W, INFO)
      END DO
      !DIR$ VECTOR ALIGNED ALWAYS
      DO I = 1, HL
-        XX(I+HL) = (WW(1,1) * XX(I)) + (WW(1,2) * YY(I))
-        YY(I+HL) = (WW(2,1) * XX(I)) + (WW(2,2) * YY(I))
+        XX(I+HL) = WW(1,1) * XX(I) + WW(1,2) * YY(I)
+        YY(I+HL) = WW(2,1) * XX(I) + WW(2,2) * YY(I)
      END DO
      DO I = HL+1, VL
         G(P,J+I-1) = REAL(XX(I), K)

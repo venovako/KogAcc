@@ -63,8 +63,8 @@ SUBROUTINE SROTC(M, N, G, LDG, P, Q, W, INFO)
      END DO
      !DIR$ VECTOR ALIGNED ALWAYS
      DO J = 1, HL
-        XX(J+HL) = (XX(J) * WW(1,1)) + (YY(J) * WW(2,1))
-        YY(J+HL) = (XX(J) * WW(1,2)) + (YY(J) * WW(2,2))
+        XX(J+HL) = XX(J) * WW(1,1) + YY(J) * WW(2,1)
+        YY(J+HL) = XX(J) * WW(1,2) + YY(J) * WW(2,2)
      END DO
      !DIR$ VECTOR ALIGNED ALWAYS
      DO J = 1, HL
@@ -84,8 +84,8 @@ SUBROUTINE SROTC(M, N, G, LDG, P, Q, W, INFO)
      END DO
      !DIR$ VECTOR ALIGNED ALWAYS
      DO J = 1, HL
-        XX(J+HL) = (XX(J) * WW(1,1)) + (YY(J) * WW(2,1))
-        YY(J+HL) = (XX(J) * WW(1,2)) + (YY(J) * WW(2,2))
+        XX(J+HL) = XX(J) * WW(1,1) + YY(J) * WW(2,1)
+        YY(J+HL) = XX(J) * WW(1,2) + YY(J) * WW(2,2)
      END DO
      !DIR$ VECTOR ALIGNED ALWAYS
      DO J = HL+1, VL
