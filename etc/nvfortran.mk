@@ -16,4 +16,4 @@ FCFLAGS += -O$(NDEBUG)
 else # !NDEBUG
 FCFLAGS += -O0 -g -Mbounds -Mchkstk
 endif # ?NDEBUG
-FCFLAGS += -Wl,-E
+FCFLAGS += -Wl,-E -static-nvidia -pgf90libs
