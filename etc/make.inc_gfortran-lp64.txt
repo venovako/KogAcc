@@ -20,13 +20,13 @@ CFLAGS = -Og -ggdb3 -fPIC -fexceptions -fasynchronous-unwind-tables -ffp-contrac
 #
 FC = gfortran
 # for ppc64le: -march=native => -mcpu=native -mpower8-fusion -mtraceback=full
-FFLAGS = -Og -ggdb3 -fPIC -fexceptions -fasynchronous-unwind-tables -ffp-contract=fast -fno-omit-frame-pointer -fopenmp-simd -pthread -march=native -fprotect-parens -frecursive -fstack-arrays -finit-local-zero -finit-derived
+FFLAGS = -cpp -Og -ggdb3 -fPIC -fexceptions -fasynchronous-unwind-tables -ffp-contract=fast -fno-omit-frame-pointer -fopenmp-simd -pthread -march=native -fprotect-parens -frecursive -fstack-arrays -finit-local-zero -finit-derived
 FFLAGS_DRV = $(FFLAGS)
 FFLAGS_NOOPT = $(FFLAGS)
 
 #  Define LDFLAGS to the desired linker options for your machine.
 #
-LDFLAGS = -rdynamic
+LDFLAGS = -rdynamic -static-libgcc -static-libgfortran -static-libquadmath
 
 #  The archiver and the flag(s) to use when building an archive
 #  (library).  If your system has no ranlib, set RANLIB = echo.

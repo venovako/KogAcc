@@ -1,13 +1,14 @@
 ####################################################################
-#  LAPACK make include file, modified for Intel Fortran (ifort).   #
+#  LAPACK make include file for GCC (LP64) with debugging          #
 ####################################################################
 
 SHELL = /bin/sh
 
 #  CC is the C compiler, normally invoked with options CFLAGS.
 #
-CC = icc
-CFLAGS = -O0 -DNDEBUG -std=c18 -xHost -fPIC -fexceptions -fasynchronous-unwind-tables -fno-omit-frame-pointer -fp-model precise -fprotect-parens -fma -no-ftz -no-complex-limited-range -no-fast-transcendentals -prec-div -prec-sqrt -qopt-multi-version-aggressive -qopenmp-simd -qsimd-honor-fp-model -qsimd-serialize-fp-reduction -traceback -qopt-report=5 -diag-disable=10397,10441
+CC = gcc
+# for ppc64le: -march=native => -mcpu=native -mpower8-fusion -mtraceback=full
+CFLAGS = -DUSE_IEEE_INTRINSIC -DWeirdNEC -DLAPACK_ILP64 -Og -ggdb3 -fPIC -fexceptions -fasynchronous-unwind-tables -ffp-contract=fast -fno-omit-frame-pointer -fopenmp-simd -pthread -march=native
 
 #  Modify the FC and FFLAGS definitions to the desired compiler
 #  and desired compiler options for your machine.  NOOPT refers to
@@ -17,19 +18,20 @@ CFLAGS = -O0 -DNDEBUG -std=c18 -xHost -fPIC -fexceptions -fasynchronous-unwind-t
 #  and handle these quantities appropriately. As a consequence, one
 #  should not compile LAPACK with flags such as -ffpe-trap=overflow.
 #
-FC = ifort
-FFLAGS = -fpp -O0 -xHost -fPIC -fexceptions -fasynchronous-unwind-tables -fno-omit-frame-pointer -fp-model precise -fprotect-parens -fma -no-ftz -no-complex-limited-range -no-fast-transcendentals -prec-div -prec-sqrt -qopt-multi-version-aggressive -qopenmp-simd -qsimd-honor-fp-model -qsimd-serialize-fp-reduction -traceback -qopt-report=5 -diag-disable=10397,10441 -standard-semantics -threads
+FC = gfortran
+# for ppc64le: -march=native => -mcpu=native -mpower8-fusion -mtraceback=full
+FFLAGS = -cpp -DUSE_IEEE_INTRINSIC -DWeirdNEC -DLAPACK_ILP64 -fdefault-integer-8 -Og -ggdb3 -fPIC -fexceptions -fasynchronous-unwind-tables -ffp-contract=fast -fno-omit-frame-pointer -fopenmp-simd -pthread -march=native -fprotect-parens -frecursive -fstack-arrays -finit-local-zero -finit-derived
 FFLAGS_DRV = $(FFLAGS)
 FFLAGS_NOOPT = $(FFLAGS)
 
 #  Define LDFLAGS to the desired linker options for your machine.
 #
-LDFLAGS = -rdynamic -static-libgcc
+LDFLAGS = -rdynamic -static-libgcc -static-libgfortran -static-libquadmath
 
 #  The archiver and the flag(s) to use when building an archive
 #  (library).  If your system has no ranlib, set RANLIB = echo.
 #
-AR = xiar
+AR = ar
 ARFLAGS = cr
 RANLIB = ranlib
 
@@ -55,12 +57,12 @@ TIMER = INT_CPU_TIME
 #  Uncomment the following line to include deprecated routines in
 #  the LAPACK library.
 #
-BUILD_DEPRECATED=Yes
+BUILD_DEPRECATED = Yes
 
 #  LAPACKE has the interface to some routines from tmglib.
 #  If LAPACKE_WITH_TMG is defined, add those routines to LAPACKE.
 #
-LAPACKE_WITH_TMG=Yes
+LAPACKE_WITH_TMG = Yes
 
 #  Location of the extended-precision BLAS (XBLAS) Fortran library
 #  used for building and testing extended-precision routines.  The
