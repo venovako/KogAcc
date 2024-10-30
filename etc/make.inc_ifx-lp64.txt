@@ -29,7 +29,7 @@ LDFLAGS = -rdynamic -static-libgcc
 #  The archiver and the flag(s) to use when building an archive
 #  (library).  If your system has no ranlib, set RANLIB = echo.
 #
-AR = xiar
+AR = ar
 ARFLAGS = cr
 RANLIB = ranlib
 
