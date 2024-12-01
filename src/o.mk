@@ -205,6 +205,15 @@ EXES_TEST=\
 ../bin/$(PLAT)/yrnd2g.exe
 
 ifeq ($(COMPILER),gfortran)
+OBJS_BLKSVD += \
+../obj/$(PLAT)/dksvdd.$(OXT)\
+../obj/$(PLAT)/zksvdd.$(OXT)
+OBJS_DYNORD += \
+../obj/$(PLAT)/dmkdpq.$(OXT)\
+../obj/$(PLAT)/zmkdpq.$(OXT)
+EXES_BLKSVD += \
+../bin/$(PLAT)/dksvdd.exe\
+../bin/$(PLAT)/zksvdd.exe
 ifeq ($(findstring 86,$(ARCH)),86)
 OBJS_ARRBIO += \
 ../obj/$(PLAT)/xbrd1.$(OXT)\
