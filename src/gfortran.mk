@@ -1,3 +1,4 @@
+$(warning GNU Fortran is NOT supported, use it at your own risk!)
 AR=ar
 ARFLAGS=rsv
 FC=$(COMPILER_PREFIX)gfortran$(COMPILER_SUFFIX)

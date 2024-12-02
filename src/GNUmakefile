@@ -25,7 +25,7 @@ asm: dirs $(OBJS)
 	@echo $(CFLG) $(PLAT)
 
 help:
-	@echo $(MAKE) "[COMPILER=ifx|ifort|gfortran] [COMPILER_PREFIX=...] [COMPILER_SUFFIX=...] [MARCH=...] [ABI=lp64|ilp64] [NDEBUG=optimization_level] [PROFILE=...] [ANIMATE=ppe] [ROTACC=SsDdXxCcZzWw] [all|asm|clean|dirs|doc|help]"
+	@echo $(MAKE) "[MARCH=...] [ABI=lp64|ilp64] [NDEBUG=optimization_level] [PROFILE=...] [ANIMATE=ppe] [ROTACC=SsDdXxCcZzWw] [all|asm|clean|dirs|doc|help]"
 
 dirs:
 	@$(MKD) ../bin/$(PLAT) ../lib/$(PLAT) ../obj/$(PLAT)

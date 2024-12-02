@@ -1,4 +1,4 @@
-# ifort has been DEPRECATED
+$(warning Intel's ifort has been DEPRECATED, use ifx instead!)
 AR=xiar
 ARFLAGS=-qnoipo -lib rsv
 FC=$(COMPILER_PREFIX)ifort$(COMPILER_SUFFIX)
