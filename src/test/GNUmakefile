@@ -202,8 +202,14 @@
 ../bin/$(PLAT)/dksvdd.exe: test/dksvddx.F90 test/drdinp.F90 test/dwrout.F90 ../lib/$(PLAT)/libblksvd.a ../lib/$(PLAT)/libdynord.a ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libarrbio.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o dksvdd.exe ../../../src/test/dksvddx.F90 -L../../../lib/$(PLAT) -lblksvd -ldynord -lksvd2 -larrbio -lfaux -L../../../../libpvn/src -lpvn $(GNU) -ldl -lm
 
+../bin/$(PLAT)/xksvdd.exe: test/xksvddx.F90 test/drdinp.F90 test/dwrout.F90 ../lib/$(PLAT)/libblksvd.a ../lib/$(PLAT)/libdynord.a ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libarrbio.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o xksvdd.exe ../../../src/test/xksvddx.F90 -L../../../lib/$(PLAT) -lblksvd -ldynord -lksvd2 -larrbio -lfaux -L../../../../libpvn/src -lpvn $(GNU) -ldl -lm
+
 ../bin/$(PLAT)/cksvdd.exe: test/cksvddx.F90 test/crdinp.F90 test/cwrout.F90 ../lib/$(PLAT)/libblksvd.a ../lib/$(PLAT)/libdynord.a ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libarrbio.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o cksvdd.exe ../../../src/test/cksvddx.F90 -L../../../lib/$(PLAT) -lblksvd -ldynord -lksvd2 -larrbio -lfaux -L../../../../libpvn/src -lpvn $(GNU) -ldl -lm
 
 ../bin/$(PLAT)/zksvdd.exe: test/zksvddx.F90 test/zrdinp.F90 test/zwrout.F90 ../lib/$(PLAT)/libblksvd.a ../lib/$(PLAT)/libdynord.a ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libarrbio.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o zksvdd.exe ../../../src/test/zksvddx.F90 -L../../../lib/$(PLAT) -lblksvd -ldynord -lksvd2 -larrbio -lfaux -L../../../../libpvn/src -lpvn $(GNU) -ldl -lm
+
+../bin/$(PLAT)/wksvdd.exe: test/wksvddx.F90 test/zrdinp.F90 test/zwrout.F90 ../lib/$(PLAT)/libblksvd.a ../lib/$(PLAT)/libdynord.a ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libarrbio.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o wksvdd.exe ../../../src/test/wksvddx.F90 -L../../../lib/$(PLAT) -lblksvd -ldynord -lksvd2 -larrbio -lfaux -L../../../../libpvn/src -lpvn $(GNU) -ldl -lm

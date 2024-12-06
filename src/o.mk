@@ -210,8 +210,8 @@ EXES_TEST=\
 ../bin/$(PLAT)/qrnd2g.exe\
 ../bin/$(PLAT)/yrnd2g.exe
 
-ifeq ($(COMPILER),gfortran)
 ifeq ($(findstring 86,$(ARCH)),86)
+ifeq ($(COMPILER),gfortran)
 OBJS_ARRBIO += \
 ../obj/$(PLAT)/xbrd1.$(OXT)\
 ../obj/$(PLAT)/wbrd1.$(OXT)\
@@ -225,7 +225,9 @@ OBJS_BLKSVD += \
 ../obj/$(PLAT)/xbrdg.$(OXT)\
 ../obj/$(PLAT)/wbrdg.$(OXT)\
 ../obj/$(PLAT)/xksvd0.$(OXT)\
-../obj/$(PLAT)/wksvd0.$(OXT)
+../obj/$(PLAT)/wksvd0.$(OXT)\
+../obj/$(PLAT)/xksvdd.$(OXT)\
+../obj/$(PLAT)/wksvdd.$(OXT)
 OBJS_DYNORD += \
 ../obj/$(PLAT)/xabsg.$(OXT)\
 ../obj/$(PLAT)/wabsg.$(OXT)\
@@ -233,6 +235,8 @@ OBJS_DYNORD += \
 ../obj/$(PLAT)/wmkwpq.$(OXT)\
 ../obj/$(PLAT)/xmk3pq.$(OXT)\
 ../obj/$(PLAT)/wmk3pq.$(OXT)\
+../obj/$(PLAT)/xmkdpq.$(OXT)\
+../obj/$(PLAT)/wmkdpq.$(OXT)\
 ../obj/$(PLAT)/xpqcmp.$(OXT)\
 ../obj/$(PLAT)/xpqmrg.$(OXT)\
 ../obj/$(PLAT)/xpqsrt.$(OXT)
@@ -258,7 +262,9 @@ OBJS_FAUX += \
 ../obj/$(PLAT)/wscalg.$(OXT)
 EXES_BLKSVD += \
 ../bin/$(PLAT)/xksvd0.exe\
-../bin/$(PLAT)/wksvd0.exe
+../bin/$(PLAT)/wksvd0.exe\
+../bin/$(PLAT)/xksvdd.exe\
+../bin/$(PLAT)/wksvdd.exe
 EXES_DYNORD += \
 ../bin/$(PLAT)/xpqsort.exe
 EXES_KSVD2 += \
@@ -276,8 +282,8 @@ EXES_TEST += \
 ../bin/$(PLAT)/xrnd2u.exe\
 ../bin/$(PLAT)/xrnd2g.exe\
 ../bin/$(PLAT)/wrnd2g.exe
-endif # x86
 endif # gfortran
+endif # x86
 
 OBJS=$(OBJS_ARRBIO) $(OBJS_BLKSVD) $(OBJS_DYNORD) $(OBJS_KSVD2) $(OBJS_FAUX)
 
