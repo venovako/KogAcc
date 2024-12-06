@@ -48,7 +48,9 @@ OBJS_BLKSVD=\
 ../obj/$(PLAT)/qksvd0.$(OXT)\
 ../obj/$(PLAT)/yksvd0.$(OXT)\
 ../obj/$(PLAT)/sksvdd.$(OXT)\
-../obj/$(PLAT)/cksvdd.$(OXT)
+../obj/$(PLAT)/dksvdd.$(OXT)\
+../obj/$(PLAT)/cksvdd.$(OXT)\
+../obj/$(PLAT)/zksvdd.$(OXT)
 
 OBJS_DYNORD=\
 ../obj/$(PLAT)/sabsg.$(OXT)\
@@ -70,7 +72,9 @@ OBJS_DYNORD=\
 ../obj/$(PLAT)/qmk3pq.$(OXT)\
 ../obj/$(PLAT)/ymk3pq.$(OXT)\
 ../obj/$(PLAT)/smkdpq.$(OXT)\
+../obj/$(PLAT)/dmkdpq.$(OXT)\
 ../obj/$(PLAT)/cmkdpq.$(OXT)\
+../obj/$(PLAT)/zmkdpq.$(OXT)\
 ../obj/$(PLAT)/spqcmp.$(OXT)\
 ../obj/$(PLAT)/dpqcmp.$(OXT)\
 ../obj/$(PLAT)/qpqcmp.$(OXT)\
@@ -150,7 +154,9 @@ EXES_BLKSVD=\
 ../bin/$(PLAT)/qksvd0.exe\
 ../bin/$(PLAT)/yksvd0.exe\
 ../bin/$(PLAT)/sksvdd.exe\
-../bin/$(PLAT)/cksvdd.exe
+../bin/$(PLAT)/cksvdd.exe\
+../bin/$(PLAT)/dksvdd.exe\
+../bin/$(PLAT)/zksvdd.exe
 
 EXES_DYNORD=\
 ../bin/$(PLAT)/spqsort.exe\
@@ -205,15 +211,6 @@ EXES_TEST=\
 ../bin/$(PLAT)/yrnd2g.exe
 
 ifeq ($(COMPILER),gfortran)
-OBJS_BLKSVD += \
-../obj/$(PLAT)/dksvdd.$(OXT)\
-../obj/$(PLAT)/zksvdd.$(OXT)
-OBJS_DYNORD += \
-../obj/$(PLAT)/dmkdpq.$(OXT)\
-../obj/$(PLAT)/zmkdpq.$(OXT)
-EXES_BLKSVD += \
-../bin/$(PLAT)/dksvdd.exe\
-../bin/$(PLAT)/zksvdd.exe
 ifeq ($(findstring 86,$(ARCH)),86)
 OBJS_ARRBIO += \
 ../obj/$(PLAT)/xbrd1.$(OXT)\
