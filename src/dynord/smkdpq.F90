@@ -18,6 +18,22 @@ SUBROUTINE SMKDPQ(N, G, LDG, D, O, INFO)
 #else
 #define CR_HYPOT HYPOT
 #endif
+  INTERFACE
+     PURE SUBROUTINE DENC(E, S, P, Q) BIND(C,NAME='pvn_djs_denc_')
+       USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32, REAL64
+       REAL(KIND=REAL64), INTENT(OUT) :: E
+       REAL(KIND=REAL32), INTENT(IN) :: S
+       INTEGER, INTENT(IN) :: P, Q
+     END SUBROUTINE DENC
+  END INTERFACE
+  INTERFACE
+     PURE SUBROUTINE DDEC(E, P, Q) BIND(C,NAME='pvn_djs_ddec_')
+       USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
+       REAL(KIND=REAL64), INTENT(IN) :: E
+       INTEGER, INTENT(OUT) :: P, Q
+     END SUBROUTINE DDEC
+  END INTERFACE
+
   REAL(KIND=REAL64), PARAMETER :: WZERO = 0.0_REAL64, MONE = -1.0_REAL64
   REAL(KIND=REAL32), PARAMETER :: ZERO = 0.0_REAL32, ONE = 1.0_REAL32
 
@@ -53,8 +69,7 @@ SUBROUTINE SMKDPQ(N, G, LDG, D, O, INFO)
            H = CR_HYPOT(G(Q,P), G(P,Q))
         END IF
         IF ((H .NE. ZERO) .OR. (SIGN(ONE,G(P,P)) .NE. ONE) .OR. (SIGN(ONE,G(Q,Q)) .NE. ONE) .OR. (G(P,P) .LT. G(Q,Q))) THEN
-           !DIR$ FORCEINLINE
-           D(K) = DENC(H, P, Q)
+           CALL DENC(D(K), H, P, Q)
            W = MAX(W, D(K))
         ELSE ! no transformation
            D(K) = MONE
@@ -73,8 +88,7 @@ SUBROUTINE SMKDPQ(N, G, LDG, D, O, INFO)
            H = CR_HYPOT(G(Q,P), G(P,Q))
         END IF
         IF ((H .NE. ZERO) .OR. (SIGN(ONE,G(P,P)) .NE. ONE) .OR. (SIGN(ONE,G(Q,Q)) .NE. ONE) .OR. (G(P,P) .LT. G(Q,Q))) THEN
-           !DIR$ FORCEINLINE
-           D(K) = DENC(H, P, Q)
+           CALL DENC(D(K), H, P, Q)
            W = MAX(W, D(K))
         ELSE ! no transformation
            D(K) = MONE
@@ -88,7 +102,7 @@ SUBROUTINE SMKDPQ(N, G, LDG, D, O, INFO)
   IF (L .EQ. 0) THEN
      L = N / 2
      DO INFO = 1, L
-        !DIR$ FORCEINLINE
+        P = 0; Q = 0
         CALL DDEC(W, P, Q)
         K = M + INFO
         O(1,K) = P
@@ -97,7 +111,7 @@ SUBROUTINE SMKDPQ(N, G, LDG, D, O, INFO)
         W = MONE
         DO K = 1, M
            IF (D(K) .GT. WZERO) THEN
-              !DIR$ FORCEINLINE
+              I = 0; J = 0
               CALL DDEC(D(K), I, J)
               IF ((I .NE. P) .AND. (I .NE. Q) .AND. (J .NE. P) .AND. (J .NE. Q)) THEN
                  W = MAX(W, D(K))
@@ -111,7 +125,7 @@ SUBROUTINE SMKDPQ(N, G, LDG, D, O, INFO)
   ELSE ! OpenMP
      L = N / 2
      DO INFO = 1, L
-        !DIR$ FORCEINLINE
+        P = 0; Q = 0
         CALL DDEC(W, P, Q)
         K = M + INFO
         O(1,K) = P
@@ -121,7 +135,7 @@ SUBROUTINE SMKDPQ(N, G, LDG, D, O, INFO)
         !$OMP PARALLEL DO DEFAULT(NONE) SHARED(D,M,P,Q) PRIVATE(I,J,K) REDUCTION(MAX:W)
         DO K = 1, M
            IF (D(K) .GT. WZERO) THEN
-              !DIR$ FORCEINLINE
+              I = 0; J = 0
               CALL DDEC(D(K), I, J)
               IF ((I .NE. P) .AND. (I .NE. Q) .AND. (J .NE. P) .AND. (J .NE. Q)) THEN
                  W = MAX(W, D(K))
@@ -134,7 +148,4 @@ SUBROUTINE SMKDPQ(N, G, LDG, D, O, INFO)
         IF (W .LE. WZERO) EXIT
      END DO
   END IF
-
-CONTAINS
-#include "encdec.F90"
 END SUBROUTINE SMKDPQ

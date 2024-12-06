@@ -18,6 +18,22 @@ SUBROUTINE ZMKDPQ(N, G, LDG, D, O, INFO)
 #else
 #define CR_HYPOT HYPOT
 #endif
+  INTERFACE
+     PURE SUBROUTINE QENC(E, S, P, Q) BIND(C,NAME='pvn_djs_qenc_')
+       USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64, REAL128
+       REAL(KIND=REAL128), INTENT(OUT) :: E
+       REAL(KIND=REAL64), INTENT(IN) :: S
+       INTEGER, INTENT(IN) :: P, Q
+     END SUBROUTINE QENC
+  END INTERFACE
+  INTERFACE
+     PURE SUBROUTINE QDEC(E, P, Q) BIND(C,NAME='pvn_djs_qdec_')
+       USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL128
+       REAL(KIND=REAL128), INTENT(IN) :: E
+       INTEGER, INTENT(OUT) :: P, Q
+     END SUBROUTINE QDEC
+  END INTERFACE
+
   REAL(KIND=REAL128), PARAMETER :: WZERO = 0.0_REAL128, MONE = -1.0_REAL128
   REAL(KIND=REAL64), PARAMETER :: ZERO = 0.0_REAL64, ONE = 1.0_REAL64
 
@@ -49,8 +65,7 @@ SUBROUTINE ZMKDPQ(N, G, LDG, D, O, INFO)
         IF ((H .NE. ZERO) .OR. (AIMAG(G(P,P)) .NE. ZERO) .OR. (SIGN(ONE,REAL(G(P,P))) .NE. ONE) .OR. &
              (AIMAG(G(Q,Q)) .NE. ZERO) .OR. (SIGN(ONE,REAL(G(Q,Q))) .NE. ONE) .OR. &
              (REAL(G(P,P)) .LT. REAL(G(Q,Q)))) THEN
-           !DIR$ FORCEINLINE
-           D(K) = QENC(H, P, Q)
+           CALL QENC(D(K), H, P, Q)
            W = MAX(W, D(K))
         ELSE ! no transformation
            D(K) = MONE
@@ -65,8 +80,7 @@ SUBROUTINE ZMKDPQ(N, G, LDG, D, O, INFO)
         IF ((H .NE. ZERO) .OR. (AIMAG(G(P,P)) .NE. ZERO) .OR. (SIGN(ONE,REAL(G(P,P))) .NE. ONE) .OR. &
              (AIMAG(G(Q,Q)) .NE. ZERO) .OR. (SIGN(ONE,REAL(G(Q,Q))) .NE. ONE) .OR. &
              (REAL(G(P,P)) .LT. REAL(G(Q,Q)))) THEN
-           !DIR$ FORCEINLINE
-           D(K) = QENC(H, P, Q)
+           CALL QENC(D(K), H, P, Q)
            W = MAX(W, D(K))
         ELSE ! no transformation
            D(K) = MONE
@@ -80,7 +94,7 @@ SUBROUTINE ZMKDPQ(N, G, LDG, D, O, INFO)
   IF (L .EQ. 0) THEN
      L = N / 2
      DO INFO = 1, L
-        !DIR$ FORCEINLINE
+        P = 0; Q = 0
         CALL QDEC(W, P, Q)
         K = M + INFO
         O(1,K) = P
@@ -89,7 +103,7 @@ SUBROUTINE ZMKDPQ(N, G, LDG, D, O, INFO)
         W = MONE
         DO K = 1, M
            IF (D(K) .GT. WZERO) THEN
-              !DIR$ FORCEINLINE
+              I = 0; J = 0
               CALL QDEC(D(K), I, J)
               IF ((I .NE. P) .AND. (I .NE. Q) .AND. (J .NE. P) .AND. (J .NE. Q)) THEN
                  W = MAX(W, D(K))
@@ -103,7 +117,7 @@ SUBROUTINE ZMKDPQ(N, G, LDG, D, O, INFO)
   ELSE ! OpenMP
      L = N / 2
      DO INFO = 1, L
-        !DIR$ FORCEINLINE
+        P = 0; Q = 0
         CALL QDEC(W, P, Q)
         K = M + INFO
         O(1,K) = P
@@ -113,7 +127,7 @@ SUBROUTINE ZMKDPQ(N, G, LDG, D, O, INFO)
         !$OMP PARALLEL DO DEFAULT(NONE) SHARED(D,M,P,Q) PRIVATE(I,J,K) REDUCTION(MAX:W)
         DO K = 1, M
            IF (D(K) .GT. WZERO) THEN
-              !DIR$ FORCEINLINE
+              I = 0; J = 0
               CALL QDEC(D(K), I, J)
               IF ((I .NE. P) .AND. (I .NE. Q) .AND. (J .NE. P) .AND. (J .NE. Q)) THEN
                  W = MAX(W, D(K))
@@ -126,7 +140,4 @@ SUBROUTINE ZMKDPQ(N, G, LDG, D, O, INFO)
         IF (W .LE. WZERO) EXIT
      END DO
   END IF
-
-CONTAINS
-#include "encdec.F90"
 END SUBROUTINE ZMKDPQ
