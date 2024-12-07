@@ -49,7 +49,7 @@ SUBROUTINE XMKDPQ(N, G, LDG, D, O, INFO)
   INFO = 0
   IF (LDG .LT. N) INFO = -3
   IF (N .LT. 0) INFO = -1
-  IF (N .GT. 1073741824) INFO = -1
+  IF (N .GT. 32) INFO = -1
   IF (INFO .NE. 0) RETURN
   IF (N .EQ. 0) RETURN
 
