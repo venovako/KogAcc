@@ -70,6 +70,9 @@
         W(1) = GN
         W(2) = ONE
         W(3) = ONE
+        W(4) = ZERO
+        W(5) = ZERO
+        W(6) = ZERO
      END IF
 #ifdef ANIMATE
      IF (C_ASSOCIATED(CTX)) L = INT(PVN_RVIS_FRAME(CTX, G, LDF))

@@ -5,23 +5,26 @@ PROGRAM WKSVD2X
 CONTAINS
   !>@brief \b WTEST calls WKSVD2.
   SUBROUTINE WTEST
+    USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
     USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: INPUT_UNIT, REAL128
     IMPLICIT NONE
     INTERFACE
        SUBROUTINE WKSVD2(G, U, V, S, INFO)
+         USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
          IMPLICIT NONE
-         COMPLEX(KIND=10), INTENT(IN) :: G(2,2)
-         COMPLEX(KIND=10), INTENT(OUT) :: U(2,2), V(2,2)
-         REAL(KIND=10), INTENT(OUT) :: S(2)
+         COMPLEX(KIND=c_long_double), INTENT(IN) :: G(2,2)
+         COMPLEX(KIND=c_long_double), INTENT(OUT) :: U(2,2), V(2,2)
+         REAL(KIND=c_long_double), INTENT(OUT) :: S(2)
          INTEGER, INTENT(INOUT) :: INFO(3)
        END SUBROUTINE WKSVD2
     END INTERFACE
     INTERFACE
        SUBROUTINE WKERR2(G, U, V, S, E, INFO)
+         USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
          USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL128
          IMPLICIT NONE
-         COMPLEX(KIND=10), INTENT(IN) :: G(2,2), U(2,2), V(2,2)
-         REAL(KIND=10), INTENT(IN) :: S(2)
+         COMPLEX(KIND=c_long_double), INTENT(IN) :: G(2,2), U(2,2), V(2,2)
+         REAL(KIND=c_long_double), INTENT(IN) :: S(2)
          REAL(KIND=REAL128), INTENT(OUT) :: E(3)
          INTEGER, INTENT(IN) :: INFO(3)
        END SUBROUTINE WKERR2
@@ -29,8 +32,8 @@ CONTAINS
     INTEGER, PARAMETER :: KX = REAL128, IERR = -HUGE(0)-1, CLAL = 132
     CHARACTER(LEN=CLAL) :: CLA
     REAL(KIND=KX) :: E(3)
-    COMPLEX(KIND=10) :: G(2,2), U(2,2), V(2,2)
-    REAL(KIND=10) :: S(2)
+    COMPLEX(KIND=c_long_double) :: G(2,2), U(2,2), V(2,2)
+    REAL(KIND=c_long_double) :: S(2)
     INTEGER :: I, J, INFO(3)
     LOGICAL :: ONCE
 #define KSVD2 WKSVD2

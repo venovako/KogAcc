@@ -115,8 +115,15 @@ PROGRAM ZKSVDDX
   W(1) = REAL(I, K)
   W(2) = 0.0_K
   W(3) = 0.0_K
+  W(4) = 0.0_K
+  W(5) = 0.0_K
+  W(6) = 0.0_K
+  W(7) = 0.0_K
+  W(8) = 0.0_K
+  W(9) = 0.0_K
+  W(10) = 0.0_K
 
-  ALLOCATE(D((M*(M-1))/2))
+  ALLOCATE(D(MAX(M,(M*(M-1))/2)))
 
   ALLOCATE(O(2,M*(M/2)))
   JOB = 1

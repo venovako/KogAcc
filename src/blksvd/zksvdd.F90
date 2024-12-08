@@ -152,6 +152,9 @@ SUBROUTINE ZKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
         W(1) = MAX(W(2), W(3))
         W(2) = MAX(ABS(REAL(U(1,1))), ABS(AIMAG(U(1,1))))
         W(3) = ONE
+        W(4) = ZERO
+        W(5) = ZERO
+        W(6) = ZERO
      END IF
      RETURN
   END IF

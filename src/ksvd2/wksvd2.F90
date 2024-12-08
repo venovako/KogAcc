@@ -7,10 +7,10 @@
 !!@param INFO [INOUT]; do not set to anything but zero on input unless the effects are understood; on output, the scaling parameter s such that 2^{-s} S' = S.
 !!If G has a non-finite component, then s=-HUGE(s)-1.
 SUBROUTINE WKSVD2(G, U, V, S, INFO)
-  USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_int
+  USE, INTRINSIC :: ISO_C_BINDING
   IMPLICIT NONE
 
-  INTEGER, PARAMETER :: K = 10
+  INTEGER, PARAMETER :: K = c_long_double
   COMPLEX(KIND=K), INTENT(IN) :: G(2,2)
   COMPLEX(KIND=K), INTENT(OUT) :: U(2,2), V(2,2)
   REAL(KIND=K), INTENT(OUT) :: S(2)

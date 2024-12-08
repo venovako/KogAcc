@@ -13,7 +13,7 @@
 !       SUBROUTINE XLMSV2( F, G, H, SSMIN, SSMAX, SNR, CSR, SNL, CSL )
 !
 !       .. Scalar Arguments ..
-!       REAL(KIND=10)      CSL, CSR, F, G, H, SNL, SNR, SSMAX, SSMIN
+!       REAL(KIND=c_long_double)      CSL, CSR, F, G, H, SNL, SNR, SSMAX, SSMIN
 !       ..
 !
 !
@@ -125,8 +125,9 @@
 !>
 !  =====================================================================
 SUBROUTINE XLMSV2(F, G, H, SSMIN, SSMAX, SNR, CSR, SNL, CSL)
+  USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
   IMPLICIT NONE
-  INTEGER, PARAMETER :: K = 10
+  INTEGER, PARAMETER :: K = c_long_double
 !
 !  -- LAPACK auxiliary routine --
 !  -- LAPACK is a software package provided by Univ. of Tennessee,    --

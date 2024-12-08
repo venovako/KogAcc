@@ -6,17 +6,19 @@
 !!@param S [OUT]; S is a extended precision array with two elements, s_{11} and s_{22}.
 !!@param INFO [OUT]; On success, 0; else, if G is not upper triangular, -HUGE(INFO)-1 (and U=V=I, s_{11}=s_{22}=0).
 SUBROUTINE XLWSV2(G, U, V, S, INFO)
+  USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
   IMPLICIT NONE
 
   INTERFACE
      SUBROUTINE XLMSV2(F, G, H, SSMIN, SSMAX, SNR, CSR, SNL, CSL)
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
        IMPLICIT NONE
-       REAL(KIND=10), INTENT(IN) :: F, G, H
-       REAL(KIND=10), INTENT(OUT) :: SSMIN, SSMAX, SNR, CSR, SNL, CSL
+       REAL(KIND=c_long_double), INTENT(IN) :: F, G, H
+       REAL(KIND=c_long_double), INTENT(OUT) :: SSMIN, SSMAX, SNR, CSR, SNL, CSL
      END SUBROUTINE XLMSV2
   END INTERFACE
 
-  INTEGER, PARAMETER :: K = 10, IERR = -HUGE(0)-1
+  INTEGER, PARAMETER :: K = c_long_double, IERR = -HUGE(0)-1
   REAL(KIND=K), PARAMETER :: ZERO = 0.0_K, ONE = 1.0_K
 
   REAL(KIND=K), INTENT(IN) :: G(2,2)

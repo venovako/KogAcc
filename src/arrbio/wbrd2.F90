@@ -7,19 +7,21 @@
 !!@param LDG [IN]; the leading dimension of G.
 !!@param INFO [OUT]; zero on success, -i if the i-th argument had an illegal value, or a positive I/O error code.
 SUBROUTINE WBRD2(U, M, N, G, LDG, INFO)
+  USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
   IMPLICIT NONE
 
   INTERFACE
      SUBROUTINE WBRD1(U, M, G, INFO)
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
        IMPLICIT NONE
        INTEGER, INTENT(IN) :: U, M
-       COMPLEX(KIND=10), INTENT(OUT) :: G(M)
+       COMPLEX(KIND=c_long_double), INTENT(OUT) :: G(M)
        INTEGER, INTENT(OUT) :: INFO
      END SUBROUTINE WBRD1
   END INTERFACE
 
   INTEGER, INTENT(IN) :: U, M, N, LDG
-  COMPLEX(KIND=10), INTENT(OUT) :: G(LDG,N)
+  COMPLEX(KIND=c_long_double), INTENT(OUT) :: G(LDG,N)
   INTEGER, INTENT(OUT) :: INFO
   INTEGER :: J
 

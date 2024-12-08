@@ -1,13 +1,14 @@
 !>@brief \b WLANGO computes an approximation of the norm of G.
 SUBROUTINE WLANGO(N, G, LDG, S, INFO)
+  USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
   IMPLICIT NONE
 
-  REAL(KIND=10), PARAMETER :: ZERO = 0.0_10
+  REAL(KIND=c_long_double), PARAMETER :: ZERO = 0.0_c_long_double
   INTEGER, INTENT(IN) :: N, LDG
-  COMPLEX(KIND=10), INTENT(IN) :: G(N,LDG)
-  REAL(KIND=10), INTENT(OUT) :: S
+  COMPLEX(KIND=c_long_double), INTENT(IN) :: G(N,LDG)
+  REAL(KIND=c_long_double), INTENT(OUT) :: S
   INTEGER, INTENT(INOUT) :: INFO
-  REAL(KIND=10) :: SC, SM
+  REAL(KIND=c_long_double) :: SC, SM
   INTEGER :: I, J
 
   S = ZERO

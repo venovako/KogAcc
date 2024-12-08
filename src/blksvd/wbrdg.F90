@@ -6,10 +6,11 @@
 !!@param LDG [IN]; the leading dimension of G.
 !!@param INFO [INOUT]; on input, non-zero for parallel execution; on output, zero on success or -i if the i-th argument had an illegal value.
 SUBROUTINE WBRDG(M, N, G, LDG, INFO)
+  USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
   IMPLICIT NONE
-  COMPLEX(KIND=10), PARAMETER :: ZERO = (0.0_10,0.0_10)
+  COMPLEX(KIND=c_long_double), PARAMETER :: ZERO = (0.0_c_long_double,0.0_c_long_double)
   INTEGER, INTENT(IN) :: M, N, LDG
-  COMPLEX(KIND=10), INTENT(OUT) :: G(LDG,M)
+  COMPLEX(KIND=c_long_double), INTENT(OUT) :: G(LDG,M)
   INTEGER, INTENT(INOUT) :: INFO
   INTEGER :: I, J
 #include "gbrdg.F90"

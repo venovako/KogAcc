@@ -1,8 +1,6 @@
 !>@brief \b XKSVD0 computes the SVD of G as U S V^T, with S returned in SV and U and V optionally accumulated on either identity for the SVD, or on preset input matrices.
 SUBROUTINE XKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, R, INFO)
-#ifdef ANIMATE
   USE, INTRINSIC :: ISO_C_BINDING
-#endif
 #ifdef NDEBUG
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: INT64, REAL128
 #else
@@ -13,62 +11,69 @@ SUBROUTINE XKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, R, INFO)
 
   INTERFACE
      SUBROUTINE XLANGO(N, G, LDG, S, INFO)
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
        IMPLICIT NONE
        INTEGER, INTENT(IN) :: N, LDG
-       REAL(KIND=10), INTENT(IN) :: G(N,LDG)
-       REAL(KIND=10), INTENT(OUT) :: S
+       REAL(KIND=c_long_double), INTENT(IN) :: G(N,LDG)
+       REAL(KIND=c_long_double), INTENT(OUT) :: S
        INTEGER, INTENT(INOUT) :: INFO
      END SUBROUTINE XLANGO
   END INTERFACE
   INTERFACE
      SUBROUTINE XSCALG(M, N, G, LDG, S, INFO)
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
        IMPLICIT NONE
        INTEGER, INTENT(IN) :: M, N, LDG, S
-       REAL(KIND=10), INTENT(INOUT) :: G(LDG,N)
+       REAL(KIND=c_long_double), INTENT(INOUT) :: G(LDG,N)
        INTEGER, INTENT(INOUT) :: INFO
      END SUBROUTINE XSCALG
   END INTERFACE
   INTERFACE
      SUBROUTINE XMK3PQ(K, N, G, LDG, W, O, INFO)
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
        IMPLICIT NONE
        INTEGER, INTENT(IN) :: K, N, LDG
-       REAL(KIND=10), INTENT(IN) :: G(LDG,N)
-       REAL(KIND=10), INTENT(OUT) :: W(N*N)
+       REAL(KIND=c_long_double), INTENT(IN) :: G(LDG,N)
+       REAL(KIND=c_long_double), INTENT(OUT) :: W(N*N)
        INTEGER, INTENT(OUT) :: O(2*N*(N-1))
        INTEGER, INTENT(INOUT) :: INFO
      END SUBROUTINE XMK3PQ
   END INTERFACE
   INTERFACE
      SUBROUTINE XKSVD2(G, U, V, S, INFO)
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
        IMPLICIT NONE
-       REAL(KIND=10), INTENT(IN) :: G(2,2)
-       REAL(KIND=10), INTENT(OUT) :: U(2,2), V(2,2), S(2)
+       REAL(KIND=c_long_double), INTENT(IN) :: G(2,2)
+       REAL(KIND=c_long_double), INTENT(OUT) :: U(2,2), V(2,2), S(2)
        INTEGER, INTENT(INOUT) :: INFO(3)
      END SUBROUTINE XKSVD2
   END INTERFACE
   INTERFACE
      PURE SUBROUTINE XCVGPP(G, U, V, S, INFO)
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
        IMPLICIT NONE
-       REAL(KIND=10), INTENT(IN) :: G(2,2), U(2,2), V(2,2)
-       REAL(KIND=10), INTENT(INOUT) :: S(2)
+       REAL(KIND=c_long_double), INTENT(IN) :: G(2,2), U(2,2), V(2,2)
+       REAL(KIND=c_long_double), INTENT(INOUT) :: S(2)
        INTEGER, INTENT(INOUT) :: INFO(3)
      END SUBROUTINE XCVGPP
   END INTERFACE
   INTERFACE
      SUBROUTINE XROTC(M, N, G, LDG, P, Q, W, INFO)
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
        IMPLICIT NONE
        INTEGER, INTENT(IN) :: M, N, LDG, P, Q
-       REAL(KIND=10), INTENT(INOUT) :: G(LDG,N)
-       REAL(KIND=10), INTENT(IN) :: W(2,2)
+       REAL(KIND=c_long_double), INTENT(INOUT) :: G(LDG,N)
+       REAL(KIND=c_long_double), INTENT(IN) :: W(2,2)
        INTEGER, INTENT(INOUT) :: INFO
      END SUBROUTINE XROTC
   END INTERFACE
   INTERFACE
      SUBROUTINE XROTR(M, N, G, LDG, P, Q, W, INFO)
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
        IMPLICIT NONE
        INTEGER, INTENT(IN) :: M, N, LDG, P, Q
-       REAL(KIND=10), INTENT(INOUT) :: G(LDG,N)
-       REAL(KIND=10), INTENT(IN) :: W(2,2)
+       REAL(KIND=c_long_double), INTENT(INOUT) :: G(LDG,N)
+       REAL(KIND=c_long_double), INTENT(IN) :: W(2,2)
        INTEGER, INTENT(INOUT) :: INFO
      END SUBROUTINE XROTR
   END INTERFACE
@@ -80,7 +85,7 @@ SUBROUTINE XKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, R, INFO)
      END SUBROUTINE JSTEP
   END INTERFACE
 
-  INTEGER, PARAMETER :: K = 10, USID = 8, UACC = 16, VSID = 32, VACC = 64
+  INTEGER, PARAMETER :: K = c_long_double, USID = 8, UACC = 16, VSID = 32, VACC = 64
   REAL(KIND=K), PARAMETER :: ZERO = 0.0_K, ONE = 1.0_K
   INTEGER, INTENT(IN) :: JOB, N, LDG, LDU, LDV
   REAL(KIND=K), INTENT(INOUT) :: G(LDG,N), U(LDU,N), V(LDV,N)

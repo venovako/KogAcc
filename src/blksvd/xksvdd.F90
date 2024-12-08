@@ -1,9 +1,7 @@
 !>@brief \b XKSVDD computes the SVD of G as U S V^T, with S returned in SV and U and V optionally accumulated on either identity for the SVD, or on preset input matrices.
 SUBROUTINE XKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
-#ifndef __GFORTRAN__
   USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
-#endif
-  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: INT64, REAL64, REAL128
+  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: INT64, REAL64
   !$ USE OMP_LIB
   IMPLICIT NONE
 
@@ -31,17 +29,13 @@ SUBROUTINE XKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
      SUBROUTINE XMKDPQ(N, G, LDG, D, O, INFO)
 #else
      SUBROUTINE XMKDPQ(N, G, LDG, D, O, INFO) BIND(C,NAME='pvn_djs_xmkdpq_')
-       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
 #endif
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
        USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
        IMPLICIT NONE
        INTEGER, INTENT(IN) :: N, LDG
        REAL(KIND=REAL64), INTENT(IN) :: G(LDG,N)
-#ifdef __GFORTRAN__
-       REAL(KIND=10), INTENT(OUT) :: D(*)
-#else
        REAL(KIND=c_long_double), INTENT(OUT) :: D(*)
-#endif
        INTEGER, INTENT(INOUT) :: O(2,*), INFO
      END SUBROUTINE XMKDPQ
   END INTERFACE
@@ -87,14 +81,8 @@ SUBROUTINE XKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
   INTEGER, PARAMETER :: K = REAL64, USID = 8, UACC = 16, VSID = 32, VACC = 64
   REAL(KIND=K), PARAMETER :: ZERO = 0.0_K, ONE = 1.0_K
   INTEGER, INTENT(IN) :: JOB, N, LDG, LDU, LDV
-  REAL(KIND=K), INTENT(INOUT) :: G(LDG,N), U(LDU,N), V(LDV,N)
-  REAL(KIND=REAL128), INTENT(INOUT) :: SV(N)
-  REAL(KIND=K), INTENT(INOUT) :: W(*)
-#ifdef __GFORTRAN__
-  REAL(KIND=10), INTENT(OUT) :: D(*)
-#else
+  REAL(KIND=K), INTENT(INOUT) :: G(LDG,N), U(LDU,N), V(LDV,N), SV(N), W(*)
   REAL(KIND=c_long_double), INTENT(OUT) :: D(*)
-#endif
   INTEGER, INTENT(INOUT) :: O(2,*), INFO
 
   REAL(KIND=K) :: G2(2,2), U2(2,2)
@@ -139,10 +127,13 @@ SUBROUTINE XKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
         IF (LUSID) U(1,1) = SIGN(ONE, G(1,1))
         IF (LVSID) V(1,1) = ONE
         G(1,1) = GN
-        SV(1) = REAL(GN, REAL128)
+        SV(1) = GN
         W(1) = GN
         W(2) = ONE
         W(3) = ONE
+        W(4) = ZERO
+        W(5) = ZERO
+        W(6) = ZERO
      END IF
      RETURN
   END IF
@@ -599,12 +590,12 @@ SUBROUTINE XKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
   ! no convergence if INFO = MRQSTP
   INFO = STP
 
-  ! extract SV from G with a safe backscaling
+  ! extract SV from G
   IF (LOMP) THEN
      I = 0
      !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,SV,N,GS) REDUCTION(MAX:I)
      DO J = 1, N
-        SV(J) = SCALE(REAL(G(J,J), REAL128), -GS)
+        SV(J) = G(J,J)
         IF (.NOT. (SV(J) .LE. HUGE(SV(J)))) THEN
            I = MAX(I, J)
         ELSE ! SV(J) finite
@@ -618,7 +609,7 @@ SUBROUTINE XKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
      END IF
   ELSE ! sequentially
      DO J = 1, N
-        SV(J) = SCALE(REAL(G(J,J), REAL128), -GS)
+        SV(J) = G(J,J)
         IF (.NOT. (SV(J) .LE. HUGE(SV(J)))) THEN
            INFO = -9
            RETURN

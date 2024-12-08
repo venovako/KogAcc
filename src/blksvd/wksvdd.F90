@@ -1,9 +1,7 @@
 !>@brief \b WKSVDD computes the SVD of G as U S V^H, with S returned in SV and U and V optionally accumulated on either identity for the SVD, or on preset input matrices.
 SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
-#ifndef __GFORTRAN__
   USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
-#endif
-  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: INT64, REAL64, REAL128
+  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: INT64, REAL64
   !$ USE OMP_LIB
   IMPLICIT NONE
 
@@ -46,17 +44,13 @@ SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
      SUBROUTINE WMKDPQ(N, G, LDG, D, O, INFO)
 #else
      SUBROUTINE WMKDPQ(N, G, LDG, D, O, INFO) BIND(C,NAME='pvn_djs_wmkdpq_')
-       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
 #endif
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
        USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
        IMPLICIT NONE
        INTEGER, INTENT(IN) :: N, LDG
        COMPLEX(KIND=REAL64), INTENT(IN) :: G(LDG,N)
-#ifdef __GFORTRAN__
-       REAL(KIND=10), INTENT(OUT) :: D(*)
-#else
        REAL(KIND=c_long_double), INTENT(OUT) :: D(*)
-#endif
        INTEGER, INTENT(INOUT) :: O(2,*), INFO
      END SUBROUTINE WMKDPQ
   END INTERFACE
@@ -105,13 +99,8 @@ SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
   COMPLEX(KIND=K), PARAMETER :: CZERO = (ZERO,ZERO), CONE = (ONE,ZERO)
   INTEGER, INTENT(IN) :: JOB, N, LDG, LDU, LDV
   COMPLEX(KIND=K), INTENT(INOUT) :: G(LDG,N), U(LDU,N), V(LDV,N)
-  REAL(KIND=REAL128), INTENT(INOUT) :: SV(N)
-  REAL(KIND=K), INTENT(INOUT) :: W(*)
-#ifdef __GFORTRAN__
-  REAL(KIND=10), INTENT(OUT) :: D(*)
-#else
-  REAL(KIND=REAL128), INTENT(OUT) :: D(*)
-#endif
+  REAL(KIND=K), INTENT(INOUT) :: SV(N), W(*)
+  REAL(KIND=c_long_double), INTENT(OUT) :: D(*)
   INTEGER, INTENT(INOUT) :: O(2,*), INFO
 
   COMPLEX(KIND=K) :: G2(2,2), U2(2,2), V2(2,2)
@@ -164,10 +153,13 @@ SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
         END IF
         IF (LVSID) V(1,1) = CONE
         G(1,1) = GN
-        SV(1) = REAL(GN, REAL128)
+        SV(1) = GN
         W(1) = MAX(W(2), W(3))
         W(2) = MAX(ABS(REAL(U(1,1))), ABS(AIMAG(U(1,1))))
         W(3) = ONE
+        W(4) = ZERO
+        W(5) = ZERO
+        W(6) = ZERO
      END IF
      RETURN
   END IF
@@ -641,7 +633,7 @@ SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
      I = 0
      !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,SV,N,GS) REDUCTION(MAX:I)
      DO J = 1, N
-        SV(J) = SCALE(REAL(REAL(G(J,J)), REAL128), -GS)
+        SV(J) = REAL(G(J,J))
         IF (.NOT. (SV(J) .LE. HUGE(SV(J)))) THEN
            I = MAX(I, J)
         ELSE ! SV(J) finite
@@ -655,7 +647,7 @@ SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
      END IF
   ELSE ! sequentially
      DO J = 1, N
-        SV(J) = SCALE(REAL(REAL(G(J,J)), REAL128), -GS)
+        SV(J) = REAL(G(J,J))
         IF (.NOT. (SV(J) .LE. HUGE(SV(J)))) THEN
            INFO = -9
            RETURN

@@ -1,5 +1,6 @@
 !>@brief \b XMKDPQ builds N/2 pivot index pairs for the next transformation of G.
 SUBROUTINE XMKDPQ(N, G, LDG, D, O, INFO)
+  USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
   IMPLICIT NONE
 
@@ -20,28 +21,30 @@ SUBROUTINE XMKDPQ(N, G, LDG, D, O, INFO)
 #endif
   INTERFACE
      PURE SUBROUTINE XENC(E, S, P, Q) BIND(C,NAME='pvn_djs_xenc_')
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
        USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
-       REAL(KIND=10), INTENT(OUT) :: E
+       REAL(KIND=c_long_double), INTENT(OUT) :: E
        REAL(KIND=REAL64), INTENT(IN) :: S
        INTEGER, INTENT(IN) :: P, Q
      END SUBROUTINE XENC
   END INTERFACE
   INTERFACE
      PURE SUBROUTINE XDEC(E, P, Q) BIND(C,NAME='pvn_djs_xdec_')
-       REAL(KIND=10), INTENT(IN) :: E
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
+       REAL(KIND=c_long_double), INTENT(IN) :: E
        INTEGER, INTENT(OUT) :: P, Q
      END SUBROUTINE XDEC
   END INTERFACE
 
-  REAL(KIND=10), PARAMETER :: WZERO = 0.0_10, MONE = -1.0_10
+  REAL(KIND=c_long_double), PARAMETER :: WZERO = 0.0_c_long_double, MONE = -1.0_c_long_double
   REAL(KIND=REAL64), PARAMETER :: ZERO = 0.0_REAL64, ONE = 1.0_REAL64
 
   INTEGER, INTENT(IN) :: N, LDG
   REAL(KIND=REAL64), INTENT(IN) :: G(LDG,N)
-  REAL(KIND=10), INTENT(OUT) :: D(*)
+  REAL(KIND=c_long_double), INTENT(OUT) :: D(*)
   INTEGER, INTENT(INOUT) :: O(2,*), INFO
 
-  REAL(KIND=10) :: W
+  REAL(KIND=c_long_double) :: W
   REAL(KIND=REAL64) :: H
   INTEGER :: I, J, K, L, M, P, Q
 

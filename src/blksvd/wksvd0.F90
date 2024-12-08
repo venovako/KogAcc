@@ -1,8 +1,6 @@
 !>@brief \b WKSVD0 computes the SVD of G as U S V^H, with S returned in SV and U and V optionally accumulated on either identity for the SVD, or on preset input matrices.
 SUBROUTINE WKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, R, INFO)
-#ifdef ANIMATE
   USE, INTRINSIC :: ISO_C_BINDING
-#endif
 #ifdef NDEBUG
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: INT64, REAL128
 #else
@@ -14,63 +12,70 @@ SUBROUTINE WKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, R, INFO)
 #define CR_HYPOT HYPOT
   INTERFACE
      SUBROUTINE WLANGO(N, G, LDG, S, INFO)
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
        IMPLICIT NONE
        INTEGER, INTENT(IN) :: N, LDG
-       COMPLEX(KIND=10), INTENT(IN) :: G(N,LDG)
-       REAL(KIND=10), INTENT(OUT) :: S
+       COMPLEX(KIND=c_long_double), INTENT(IN) :: G(N,LDG)
+       REAL(KIND=c_long_double), INTENT(OUT) :: S
        INTEGER, INTENT(INOUT) :: INFO
      END SUBROUTINE WLANGO
   END INTERFACE
   INTERFACE
      SUBROUTINE WSCALG(M, N, G, LDG, S, INFO)
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
        IMPLICIT NONE
        INTEGER, INTENT(IN) :: M, N, LDG, S
-       COMPLEX(KIND=10), INTENT(INOUT) :: G(LDG,N)
+       COMPLEX(KIND=c_long_double), INTENT(INOUT) :: G(LDG,N)
        INTEGER, INTENT(INOUT) :: INFO
      END SUBROUTINE WSCALG
   END INTERFACE
   INTERFACE
      SUBROUTINE WMK3PQ(K, N, G, LDG, W, O, INFO)
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
        IMPLICIT NONE
        INTEGER, INTENT(IN) :: K, N, LDG
-       COMPLEX(KIND=10), INTENT(IN) :: G(LDG,N)
-       REAL(KIND=10), INTENT(OUT) :: W(N*N)
+       COMPLEX(KIND=c_long_double), INTENT(IN) :: G(LDG,N)
+       REAL(KIND=c_long_double), INTENT(OUT) :: W(N*N)
        INTEGER, INTENT(OUT) :: O(2*N*(N-1))
        INTEGER, INTENT(INOUT) :: INFO
      END SUBROUTINE WMK3PQ
   END INTERFACE
   INTERFACE
      SUBROUTINE WKSVD2(G, U, V, S, INFO)
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
        IMPLICIT NONE
-       COMPLEX(KIND=10), INTENT(IN) :: G(2,2)
-       COMPLEX(KIND=10), INTENT(OUT) :: U(2,2), V(2,2)
-       REAL(KIND=10), INTENT(OUT) :: S(2)
+       COMPLEX(KIND=c_long_double), INTENT(IN) :: G(2,2)
+       COMPLEX(KIND=c_long_double), INTENT(OUT) :: U(2,2), V(2,2)
+       REAL(KIND=c_long_double), INTENT(OUT) :: S(2)
        INTEGER, INTENT(INOUT) :: INFO(3)
      END SUBROUTINE WKSVD2
   END INTERFACE
   INTERFACE
      PURE SUBROUTINE WCVGPP(G, U, V, S, INFO)
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
        IMPLICIT NONE
-       COMPLEX(KIND=10), INTENT(IN) :: G(2,2), U(2,2), V(2,2)
-       REAL(KIND=10), INTENT(INOUT) :: S(2)
+       COMPLEX(KIND=c_long_double), INTENT(IN) :: G(2,2), U(2,2), V(2,2)
+       REAL(KIND=c_long_double), INTENT(INOUT) :: S(2)
        INTEGER, INTENT(INOUT) :: INFO(3)
      END SUBROUTINE WCVGPP
   END INTERFACE
   INTERFACE
      SUBROUTINE WROTC(M, N, G, LDG, P, Q, W, INFO)
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
        IMPLICIT NONE
        INTEGER, INTENT(IN) :: M, N, LDG, P, Q
-       COMPLEX(KIND=10), INTENT(INOUT) :: G(LDG,N)
-       COMPLEX(KIND=10), INTENT(IN) :: W(2,2)
+       COMPLEX(KIND=c_long_double), INTENT(INOUT) :: G(LDG,N)
+       COMPLEX(KIND=c_long_double), INTENT(IN) :: W(2,2)
        INTEGER, INTENT(INOUT) :: INFO
      END SUBROUTINE WROTC
   END INTERFACE
   INTERFACE
      SUBROUTINE WROTR(M, N, G, LDG, P, Q, W, INFO)
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
        IMPLICIT NONE
        INTEGER, INTENT(IN) :: M, N, LDG, P, Q
-       COMPLEX(KIND=10), INTENT(INOUT) :: G(LDG,N)
-       COMPLEX(KIND=10), INTENT(IN) :: W(2,2)
+       COMPLEX(KIND=c_long_double), INTENT(INOUT) :: G(LDG,N)
+       COMPLEX(KIND=c_long_double), INTENT(IN) :: W(2,2)
        INTEGER, INTENT(INOUT) :: INFO
      END SUBROUTINE WROTR
   END INTERFACE
@@ -82,7 +87,7 @@ SUBROUTINE WKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, R, INFO)
      END SUBROUTINE JSTEP
   END INTERFACE
 
-  INTEGER, PARAMETER :: K = 10, USID = 8, UACC = 16, VSID = 32, VACC = 64
+  INTEGER, PARAMETER :: K = c_long_double, USID = 8, UACC = 16, VSID = 32, VACC = 64
   REAL(KIND=K), PARAMETER :: ZERO = 0.0_K, ONE = 1.0_K
   COMPLEX(KIND=K), PARAMETER :: CZERO = (ZERO,ZERO), CONE = (ONE,ZERO)
   INTEGER, INTENT(IN) :: JOB, N, LDG, LDU, LDV

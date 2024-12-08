@@ -5,9 +5,10 @@
 !!@param G [IN]; an extended precision complex array to be written.
 !!@param INFO [OUT]; zero on success, -i if the i-th argument had an illegal value, or a positive I/O error code.
 SUBROUTINE WBWR1(U, M, G, INFO)
+  USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
   IMPLICIT NONE
   INTEGER, INTENT(IN) :: U, M
-  COMPLEX(KIND=10), INTENT(IN) :: G(M)
+  COMPLEX(KIND=c_long_double), INTENT(IN) :: G(M)
   INTEGER, INTENT(OUT) :: INFO
   INFO = 0
   IF (M .LT. 0) INFO = -2

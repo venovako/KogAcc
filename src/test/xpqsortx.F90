@@ -1,38 +1,42 @@
 !>@brief \b XPQSORTX tests the XPQSRT subroutine with parallel execution if N>0 or sequentially N<0.
 PROGRAM XPQSORTX
+  USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: OUTPUT_UNIT
   !$ USE OMP_LIB
   IMPLICIT NONE
 
   INTERFACE
      PURE SUBROUTINE XPQCMP(XW, XP, XQ, YW, YP, YQ, INFO)
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
        IMPLICIT NONE
        INTEGER, INTENT(IN) :: XP, XQ, YP, YQ
-       REAL(KIND=10), INTENT(IN) :: XW, YW
+       REAL(KIND=c_long_double), INTENT(IN) :: XW, YW
        INTEGER, INTENT(OUT) :: INFO
      END SUBROUTINE XPQCMP
   END INTERFACE
   INTERFACE
      SUBROUTINE XPQSRT(WPQCMP, N, AW, AP, AQ, BW, BP, BQ, INFO)
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
        IMPLICIT NONE
        ABSTRACT INTERFACE
           PURE SUBROUTINE PQCMP(XW, XP, XQ, YW, YP, YQ, INFO)
+            USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
             IMPLICIT NONE
             INTEGER, INTENT(IN) :: XP, XQ, YP, YQ
-            REAL(KIND=10), INTENT(IN) :: XW, YW
+            REAL(KIND=c_long_double), INTENT(IN) :: XW, YW
             INTEGER, INTENT(OUT) :: INFO
           END SUBROUTINE PQCMP
        END INTERFACE
        INTEGER, INTENT(IN) :: N
-       REAL(KIND=10), INTENT(INOUT) :: AW(N)
+       REAL(KIND=c_long_double), INTENT(INOUT) :: AW(N)
        INTEGER, INTENT(INOUT) :: AP(N), AQ(N), INFO
-       REAL(KIND=10), INTENT(OUT) :: BW(N)
+       REAL(KIND=c_long_double), INTENT(OUT) :: BW(N)
        INTEGER, INTENT(OUT) :: BP(N), BQ(N)
        PROCEDURE(PQCMP) :: WPQCMP
      END SUBROUTINE XPQSRT
   END INTERFACE
 
-  REAL(KIND=10), ALLOCATABLE :: W(:)
+  REAL(KIND=c_long_double), ALLOCATABLE :: W(:)
   INTEGER, ALLOCATABLE :: P(:), Q(:)
   INTEGER :: I, M, N, INFO
 

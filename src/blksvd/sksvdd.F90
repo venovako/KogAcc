@@ -127,6 +127,9 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
         W(1) = GN
         W(2) = ONE
         W(3) = ONE
+        W(4) = ZERO
+        W(5) = ZERO
+        W(6) = ZERO
      END IF
      RETURN
   END IF

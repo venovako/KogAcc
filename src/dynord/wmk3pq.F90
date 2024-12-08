@@ -1,58 +1,64 @@
 !>@brief \b WMK3PQ builds at most K pivot index pairs for the next transformation of G.
 SUBROUTINE WMK3PQ(K, N, G, LDG, W, O, INFO)
+  USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
   IMPLICIT NONE
 
 #define CR_HYPOT HYPOT
   INTERFACE
      SUBROUTINE WABSG(M, N, G, LDG, W, LDW, INFO)
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
        IMPLICIT NONE
        INTEGER, INTENT(IN) :: M, N, LDG, LDW
-       COMPLEX(KIND=10), INTENT(IN) :: G(LDG,N)
-       REAL(KIND=10), INTENT(OUT) :: W(LDW,N)
+       COMPLEX(KIND=c_long_double), INTENT(IN) :: G(LDG,N)
+       REAL(KIND=c_long_double), INTENT(OUT) :: W(LDW,N)
        INTEGER, INTENT(INOUT) :: INFO
      END SUBROUTINE WABSG
   END INTERFACE
   INTERFACE
      PURE SUBROUTINE WMKWPQ(N, G, LDG, W, O, INFO)
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
        IMPLICIT NONE
        INTEGER, INTENT(IN) :: N, LDG
-       COMPLEX(KIND=10), INTENT(IN) :: G(LDG,N)
-       REAL(KIND=10), INTENT(INOUT) :: W(N,N)
+       COMPLEX(KIND=c_long_double), INTENT(IN) :: G(LDG,N)
+       REAL(KIND=c_long_double), INTENT(INOUT) :: W(N,N)
        INTEGER, INTENT(OUT) :: O(N*(N-1)), INFO
      END SUBROUTINE WMKWPQ
   END INTERFACE
   INTERFACE
      PURE SUBROUTINE XPQCMP(XW, XP, XQ, YW, YP, YQ, INFO)
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
        IMPLICIT NONE
        INTEGER, INTENT(IN) :: XP, XQ, YP, YQ
-       REAL(KIND=10), INTENT(IN) :: XW, YW
+       REAL(KIND=c_long_double), INTENT(IN) :: XW, YW
        INTEGER, INTENT(OUT) :: INFO
      END SUBROUTINE XPQCMP
   END INTERFACE
   INTERFACE
      SUBROUTINE XPQSRT(WPQCMP, N, AW, AP, AQ, BW, BP, BQ, INFO)
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
        IMPLICIT NONE
        ABSTRACT INTERFACE
           PURE SUBROUTINE PQCMP(XW, XP, XQ, YW, YP, YQ, INFO)
+            USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
             IMPLICIT NONE
             INTEGER, INTENT(IN) :: XP, XQ, YP, YQ
-            REAL(KIND=10), INTENT(IN) :: XW, YW
+            REAL(KIND=c_long_double), INTENT(IN) :: XW, YW
             INTEGER, INTENT(OUT) :: INFO
           END SUBROUTINE PQCMP
        END INTERFACE
        INTEGER, INTENT(IN) :: N
-       REAL(KIND=10), INTENT(INOUT) :: AW(N)
+       REAL(KIND=c_long_double), INTENT(INOUT) :: AW(N)
        INTEGER, INTENT(INOUT) :: AP(N), AQ(N), INFO
-       REAL(KIND=10), INTENT(OUT) :: BW(N)
+       REAL(KIND=c_long_double), INTENT(OUT) :: BW(N)
        INTEGER, INTENT(OUT) :: BP(N), BQ(N)
        PROCEDURE(PQCMP) :: WPQCMP
      END SUBROUTINE XPQSRT
   END INTERFACE
 
-  REAL(KIND=10), PARAMETER :: ZERO = 0.0_10, MONE = -1.0_10
+  REAL(KIND=c_long_double), PARAMETER :: ZERO = 0.0_c_long_double, MONE = -1.0_c_long_double
   INTEGER, INTENT(IN) :: K, N, LDG
-  COMPLEX(KIND=10), INTENT(IN) :: G(LDG,N)
-  REAL(KIND=10), INTENT(OUT) :: W(N*N)
+  COMPLEX(KIND=c_long_double), INTENT(IN) :: G(LDG,N)
+  REAL(KIND=c_long_double), INTENT(OUT) :: W(N*N)
   INTEGER, INTENT(OUT) :: O(2*N*(N-1))
   INTEGER, INTENT(INOUT) :: INFO
   INTEGER :: I, J, L, M, M_2

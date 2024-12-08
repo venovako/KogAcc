@@ -7,19 +7,21 @@
 !!@param LDG [IN]; the leading dimension of G.
 !!@param INFO [OUT]; zero on success, -i if the i-th argument had an illegal value, or a positive I/O error code.
 SUBROUTINE XBWR2(U, M, N, G, LDG, INFO)
+  USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
   IMPLICIT NONE
 
   INTERFACE
      SUBROUTINE XBWR1(U, M, G, INFO)
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
        IMPLICIT NONE
        INTEGER, INTENT(IN) :: U, M
-       REAL(KIND=10), INTENT(IN) :: G(M)
+       REAL(KIND=c_long_double), INTENT(IN) :: G(M)
        INTEGER, INTENT(OUT) :: INFO
      END SUBROUTINE XBWR1
   END INTERFACE
 
   INTEGER, INTENT(IN) :: U, M, N, LDG
-  REAL(KIND=10), INTENT(IN) :: G(LDG,N)
+  REAL(KIND=c_long_double), INTENT(IN) :: G(LDG,N)
   INTEGER, INTENT(OUT) :: INFO
   INTEGER :: J
 

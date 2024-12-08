@@ -78,6 +78,9 @@
         W(1) = MAX(W(2), W(3))
         W(2) = MAX(ABS(REAL(U(1,1))), ABS(AIMAG(U(1,1))))
         W(3) = ONE
+        W(4) = ZERO
+        W(5) = ZERO
+        W(6) = ZERO
      END IF
 #ifdef ANIMATE
      IF (C_ASSOCIATED(CTX)) L = INT(PVN_CVIS_FRAME(CTX, G, LDF))

@@ -78,6 +78,9 @@
   W(1) = REAL(I, K)
   W(2) = 0.0_K
   W(3) = 0.0_K
+  W(4) = 0.0_K
+  W(5) = 0.0_K
+  W(6) = 0.0_K
 
   ALLOCATE(O(2*M*(M-1)))
   IF ((J .GE. 0) .AND. (J .NE. 3)) THEN

@@ -1,8 +1,9 @@
 !>@brief \b XROTC postmultiplies the columns (p,q) of G by W using an imperfect emulation of an accurate a*b+c*d operation.
 SUBROUTINE XROTC(M, N, G, LDG, P, Q, W, INFO)
+  USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL128
   IMPLICIT NONE
-  INTEGER, PARAMETER :: K = 10, L = REAL128
+  INTEGER, PARAMETER :: K = c_long_double, L = REAL128
   INTEGER, INTENT(IN) :: M, N, LDG, P, Q
   REAL(KIND=K), INTENT(INOUT) :: G(LDG,N)
   REAL(KIND=K), INTENT(IN) :: W(2,2)
