@@ -336,12 +336,7 @@
            G2(2,2) = G(Q,Q)
            WV = (J - 1) * 6 + 1
            WS = WV + 4
-           IF (XSG .EQ. 0) THEN
-              T = 0
-           ELSE ! no inner scaling
-              T = -1
-           END IF
-           ES(1) = T
+           ES(1) = 0
            CALL KSVD2(G2, U2, W(WV), W(WS), ES)
            R(2,I+J) = ES(1)
            CALL CVGPP(G2, U2, W(WV), W(WS), ES)
@@ -428,12 +423,7 @@
            G2(2,2) = G(Q,Q)
            WV = (J - 1) * 6 + 1
            WS = WV + 4
-           IF (XSG .EQ. 0) THEN
-              T = 0
-           ELSE ! no inner scaling
-              T = -1
-           END IF
-           ES(1) = T
+           ES(1) = 0
            CALL KSVD2(G2, U2, W(WV), W(WS), ES)
            R(2,I+J) = ES(1)
            CALL CVGPP(G2, U2, W(WV), W(WS), ES)

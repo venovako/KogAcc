@@ -353,12 +353,7 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
            G2(2,2) = G(Q,Q)
            WV = (J - 1) * 6 + 1
            WS = WV + 4
-           IF (XSG .EQ. 0) THEN
-              T = 0
-           ELSE ! no inner scaling
-              T = -1
-           END IF
-           ES(1) = T
+           ES(1) = 0
            CALL SKSVD2(G2, U2, W(WV), W(WS), ES)
            O(2,L+I+J) = ES(1)
            CALL SCVGPP(G2, U2, W(WV), W(WS), ES)
@@ -447,12 +442,7 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
            G2(2,2) = G(Q,Q)
            WV = (J - 1) * 6 + 1
            WS = WV + 4
-           IF (XSG .EQ. 0) THEN
-              T = 0
-           ELSE ! no inner scaling
-              T = -1
-           END IF
-           ES(1) = T
+           ES(1) = 0
            CALL SKSVD2(G2, U2, W(WV), W(WS), ES)
            O(2,L+I+J) = ES(1)
            CALL SCVGPP(G2, U2, W(WV), W(WS), ES)
