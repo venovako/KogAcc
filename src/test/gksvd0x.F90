@@ -23,13 +23,7 @@
      ERROR STOP 'J'
   END IF
 
-  IF (N .EQ. 0) ERROR STOP 'N'
-  IF (N .LT. 0) THEN
-     N = -N
-     I = -1
-  ELSE ! the default mode is "slow"
-     I = 0
-  END IF
+  IF (N .LE. 0) ERROR STOP 'N'
 
   IF ((J .EQ. 2) .OR. (J .EQ. 4)) THEN
      INFO = L
@@ -72,15 +66,9 @@
   IF (INFO .NE. 0) ERROR STOP 'RDINP'
 
   ALLOCATE(SV(M))
-  ALLOCATE(W(MAX(M,3)*M))
+  ALLOCATE(W(MAX(6,MAX(M,3)*M)))
   ! if, e.g., ||G||_F is known to be numerically finite and reasonably below HUGE,
   ! the dynamic scaling can be turned off for speed
-  W(1) = REAL(I, K)
-  W(2) = 0.0_K
-  W(3) = 0.0_K
-  W(4) = 0.0_K
-  W(5) = 0.0_K
-  W(6) = 0.0_K
 
   ALLOCATE(O(2*M*(M-1)))
   IF ((J .GE. 0) .AND. (J .NE. 3)) THEN

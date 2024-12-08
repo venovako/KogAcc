@@ -40,7 +40,7 @@ PROGRAM WKSVD0X
 #else
        REAL(KIND=REAL128), INTENT(OUT) :: SV(N)
 #endif
-       REAL(KIND=c_long_double), INTENT(INOUT) :: W(MAX(N,5)*N)
+       REAL(KIND=c_long_double), INTENT(OUT) :: W(*)
        INTEGER, INTENT(INOUT) :: O(2*N*(N-1)), INFO
        INTEGER, INTENT(OUT) :: R(2,*)
      END SUBROUTINE WKSVD0

@@ -27,7 +27,7 @@ PROGRAM SKSVDDX
        INTEGER, INTENT(IN) :: JOB, N, LDG, LDU, LDV
        REAL(KIND=REAL32), INTENT(INOUT) :: G(LDG,N), U(LDU,N), V(LDV,N)
        REAL(KIND=REAL128), INTENT(OUT) :: SV(N)
-       REAL(KIND=REAL32), INTENT(INOUT) :: W(*)
+       REAL(KIND=REAL32), INTENT(OUT) :: W(*)
        REAL(KIND=REAL64), INTENT(OUT) :: D(*)
        INTEGER, INTENT(INOUT) :: O(2,*), INFO
      END SUBROUTINE SKSVDD
@@ -67,13 +67,7 @@ PROGRAM SKSVDDX
 
   L = 0
   !$ L = 1
-  IF (N .EQ. 0) ERROR STOP 'N'
-  IF (N .LT. 0) THEN
-     N = -N
-     I = -1
-  ELSE ! the default mode is "slow"
-     I = 0
-  END IF
+  IF (N .LE. 0) ERROR STOP 'N'
   M = N + MOD(N, 2)
   LDV = 64
   LDU = LDV / INT(SIZEOF(0.0_K))
@@ -109,15 +103,9 @@ PROGRAM SKSVDDX
   IF (INFO .NE. 0) ERROR STOP 'SRDINP'
 
   ALLOCATE(SV(M))
-  ALLOCATE(W(MAX((M-1),3)*M))
+  ALLOCATE(W(MAX(6,MAX((M-1),3)*M)))
   ! if, e.g., ||G||_F is known to be numerically finite and reasonably below HUGE,
   ! the dynamic scaling can be turned off for speed
-  W(1) = REAL(I, K)
-  W(2) = 0.0_K
-  W(3) = 0.0_K
-  W(4) = 0.0_K
-  W(5) = 0.0_K
-  W(6) = 0.0_K
 
   ALLOCATE(D(MAX(M,(M*(M-1))/2)))
 
