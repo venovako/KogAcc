@@ -49,8 +49,10 @@ OBJS_BLKSVD=\
 ../obj/$(PLAT)/yksvd0.$(OXT)\
 ../obj/$(PLAT)/sksvdd.$(OXT)\
 ../obj/$(PLAT)/dksvdd.$(OXT)\
+../obj/$(PLAT)/xksvdd.$(OXT)\
 ../obj/$(PLAT)/cksvdd.$(OXT)\
-../obj/$(PLAT)/zksvdd.$(OXT)
+../obj/$(PLAT)/zksvdd.$(OXT)\
+../obj/$(PLAT)/wksvdd.$(OXT)
 
 OBJS_DYNORD=\
 ../obj/$(PLAT)/sabsg.$(OXT)\
@@ -73,8 +75,10 @@ OBJS_DYNORD=\
 ../obj/$(PLAT)/ymk3pq.$(OXT)\
 ../obj/$(PLAT)/smkdpq.$(OXT)\
 ../obj/$(PLAT)/dmkdpq.$(OXT)\
+../obj/$(PLAT)/xmkdpq.$(OXT)\
 ../obj/$(PLAT)/cmkdpq.$(OXT)\
 ../obj/$(PLAT)/zmkdpq.$(OXT)\
+../obj/$(PLAT)/wmkdpq.$(OXT)\
 ../obj/$(PLAT)/spqcmp.$(OXT)\
 ../obj/$(PLAT)/dpqcmp.$(OXT)\
 ../obj/$(PLAT)/qpqcmp.$(OXT)\
@@ -154,9 +158,11 @@ EXES_BLKSVD=\
 ../bin/$(PLAT)/qksvd0.exe\
 ../bin/$(PLAT)/yksvd0.exe\
 ../bin/$(PLAT)/sksvdd.exe\
-../bin/$(PLAT)/cksvdd.exe\
 ../bin/$(PLAT)/dksvdd.exe\
-../bin/$(PLAT)/zksvdd.exe
+../bin/$(PLAT)/xksvdd.exe\
+../bin/$(PLAT)/cksvdd.exe\
+../bin/$(PLAT)/zksvdd.exe\
+../bin/$(PLAT)/wksvdd.exe
 
 EXES_DYNORD=\
 ../bin/$(PLAT)/spqsort.exe\
@@ -225,9 +231,7 @@ OBJS_BLKSVD += \
 ../obj/$(PLAT)/xbrdg.$(OXT)\
 ../obj/$(PLAT)/wbrdg.$(OXT)\
 ../obj/$(PLAT)/xksvd0.$(OXT)\
-../obj/$(PLAT)/wksvd0.$(OXT)\
-../obj/$(PLAT)/xksvdd.$(OXT)\
-../obj/$(PLAT)/wksvdd.$(OXT)
+../obj/$(PLAT)/wksvd0.$(OXT)
 OBJS_DYNORD += \
 ../obj/$(PLAT)/xabsg.$(OXT)\
 ../obj/$(PLAT)/wabsg.$(OXT)\
@@ -235,8 +239,6 @@ OBJS_DYNORD += \
 ../obj/$(PLAT)/wmkwpq.$(OXT)\
 ../obj/$(PLAT)/xmk3pq.$(OXT)\
 ../obj/$(PLAT)/wmk3pq.$(OXT)\
-../obj/$(PLAT)/xmkdpq.$(OXT)\
-../obj/$(PLAT)/wmkdpq.$(OXT)\
 ../obj/$(PLAT)/xpqcmp.$(OXT)\
 ../obj/$(PLAT)/xpqmrg.$(OXT)\
 ../obj/$(PLAT)/xpqsrt.$(OXT)
@@ -262,9 +264,7 @@ OBJS_FAUX += \
 ../obj/$(PLAT)/wscalg.$(OXT)
 EXES_BLKSVD += \
 ../bin/$(PLAT)/xksvd0.exe\
-../bin/$(PLAT)/wksvd0.exe\
-../bin/$(PLAT)/xksvdd.exe\
-../bin/$(PLAT)/wksvdd.exe
+../bin/$(PLAT)/wksvd0.exe
 EXES_DYNORD += \
 ../bin/$(PLAT)/xpqsort.exe
 EXES_KSVD2 += \

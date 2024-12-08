@@ -1,5 +1,8 @@
 !>@brief \b XKSVDD computes the SVD of G as U S V^T, with S returned in SV and U and V optionally accumulated on either identity for the SVD, or on preset input matrices.
 SUBROUTINE XKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
+#ifndef __GFORTRAN__
+  USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
+#endif
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: INT64, REAL64, REAL128
   !$ USE OMP_LIB
   IMPLICIT NONE
@@ -26,23 +29,21 @@ SUBROUTINE XKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
   INTERFACE
 #ifdef __GFORTRAN__
      SUBROUTINE XMKDPQ(N, G, LDG, D, O, INFO)
+#else
+     SUBROUTINE XMKDPQ(N, G, LDG, D, O, INFO) BIND(C,NAME='pvn_djs_xmkdpq_')
+       USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
+#endif
        USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
        IMPLICIT NONE
        INTEGER, INTENT(IN) :: N, LDG
        REAL(KIND=REAL64), INTENT(IN) :: G(LDG,N)
+#ifdef __GFORTRAN__
        REAL(KIND=10), INTENT(OUT) :: D(*)
-       INTEGER, INTENT(INOUT) :: O(2,*), INFO
-     END SUBROUTINE XMKDPQ
 #else
-     SUBROUTINE XMKDPQ(N, G, LDG, D, O, INFO)
-       USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64, REAL128
-       IMPLICIT NONE
-       INTEGER, INTENT(IN) :: N, LDG
-       REAL(KIND=REAL64), INTENT(IN) :: G(LDG,N)
-       REAL(KIND=REAL128), INTENT(OUT) :: D(*)
+       REAL(KIND=c_long_double), INTENT(OUT) :: D(*)
+#endif
        INTEGER, INTENT(INOUT) :: O(2,*), INFO
      END SUBROUTINE XMKDPQ
-#endif
   END INTERFACE
   INTERFACE
      SUBROUTINE DKSVD2(G, U, V, S, INFO)
@@ -92,7 +93,7 @@ SUBROUTINE XKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
 #ifdef __GFORTRAN__
   REAL(KIND=10), INTENT(OUT) :: D(*)
 #else
-  REAL(KIND=REAL128), INTENT(OUT) :: D(*)
+  REAL(KIND=c_long_double), INTENT(OUT) :: D(*)
 #endif
   INTEGER, INTENT(INOUT) :: O(2,*), INFO
 
