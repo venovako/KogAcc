@@ -75,10 +75,8 @@ OBJS_DYNORD=\
 ../obj/$(PLAT)/ymk3pq.$(OXT)\
 ../obj/$(PLAT)/smkdpq.$(OXT)\
 ../obj/$(PLAT)/dmkdpq.$(OXT)\
-../obj/$(PLAT)/xmkdpq.$(OXT)\
 ../obj/$(PLAT)/cmkdpq.$(OXT)\
 ../obj/$(PLAT)/zmkdpq.$(OXT)\
-../obj/$(PLAT)/wmkdpq.$(OXT)\
 ../obj/$(PLAT)/spqcmp.$(OXT)\
 ../obj/$(PLAT)/dpqcmp.$(OXT)\
 ../obj/$(PLAT)/qpqcmp.$(OXT)\
@@ -239,6 +237,8 @@ OBJS_DYNORD += \
 ../obj/$(PLAT)/wmkwpq.$(OXT)\
 ../obj/$(PLAT)/xmk3pq.$(OXT)\
 ../obj/$(PLAT)/wmk3pq.$(OXT)\
+../obj/$(PLAT)/xmkdpq.$(OXT)\
+../obj/$(PLAT)/wmkdpq.$(OXT)\
 ../obj/$(PLAT)/xpqcmp.$(OXT)\
 ../obj/$(PLAT)/xpqmrg.$(OXT)\
 ../obj/$(PLAT)/xpqsrt.$(OXT)
