@@ -105,7 +105,7 @@ SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
 
   COMPLEX(KIND=K) :: G2(2,2), U2(2,2), V2(2,2)
   REAL(KIND=K) :: GN, UN, VN
-  INTEGER(KIND=INT64) :: TT, TM, SM
+  INTEGER(KIND=INT64) :: TT, TM
   INTEGER :: MRQSTP, I, J, L, M, P, Q, T, GS, US, VS, WV, WS, STP, ES(3)
   LOGICAL :: LOMP, LUSID, LUACC, LVSID, LVACC
 
@@ -141,8 +141,6 @@ SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
   LVACC = (IAND(JOB, VACC) .NE. 0)
 
   M = N * (N - 1)
-  I = N / 2
-  J = M / 2
 
   IF (N .EQ. 1) THEN
      W(2) = ABS(REAL(G(1,1)))
@@ -303,7 +301,6 @@ SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
   ! initialize the counters
   TT = 0_INT64
   TM = 0_INT64
-  SM = 0_INT64
 
   DO STP = 0, MRQSTP-1
      T = STP + 1

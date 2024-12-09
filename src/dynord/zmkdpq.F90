@@ -62,7 +62,7 @@ SUBROUTINE ZMKDPQ(N, G, LDG, D, O, INFO)
         P = O(1,K)
         Q = O(2,K)
         H = CR_HYPOT(CR_HYPOT(REAL(G(Q,P)), AIMAG(G(Q,P))), CR_HYPOT(REAL(G(P,Q)), AIMAG(G(P,Q))))
-        IF ((H .NE. ZERO) .OR. (AIMAG(G(P,P)) .NE. ZERO) .OR. (SIGN(ONE,REAL(G(P,P))) .NE. ONE) .OR. &
+        IF ((H .GT. ZERO) .OR. (AIMAG(G(P,P)) .NE. ZERO) .OR. (SIGN(ONE,REAL(G(P,P))) .NE. ONE) .OR. &
              (AIMAG(G(Q,Q)) .NE. ZERO) .OR. (SIGN(ONE,REAL(G(Q,Q))) .NE. ONE) .OR. &
              (REAL(G(P,P)) .LT. REAL(G(Q,Q)))) THEN
            CALL QENC(D(K), H, P, Q)
@@ -77,7 +77,7 @@ SUBROUTINE ZMKDPQ(N, G, LDG, D, O, INFO)
         P = O(1,K)
         Q = O(2,K)
         H = CR_HYPOT(CR_HYPOT(REAL(G(Q,P)), AIMAG(G(Q,P))), CR_HYPOT(REAL(G(P,Q)), AIMAG(G(P,Q))))
-        IF ((H .NE. ZERO) .OR. (AIMAG(G(P,P)) .NE. ZERO) .OR. (SIGN(ONE,REAL(G(P,P))) .NE. ONE) .OR. &
+        IF ((H .GT. ZERO) .OR. (AIMAG(G(P,P)) .NE. ZERO) .OR. (SIGN(ONE,REAL(G(P,P))) .NE. ONE) .OR. &
              (AIMAG(G(Q,Q)) .NE. ZERO) .OR. (SIGN(ONE,REAL(G(Q,Q))) .NE. ONE) .OR. &
              (REAL(G(P,P)) .LT. REAL(G(Q,Q)))) THEN
            CALL QENC(D(K), H, P, Q)

@@ -1,6 +1,6 @@
 !>@brief \b SKSVDD computes the SVD of G as U S V^T, with S returned in SV and U and V optionally accumulated on either identity for the SVD, or on preset input matrices.
 SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
-  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: INT64, REAL32, REAL64, REAL128
+  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: INT64, REAL32, REAL64
   !$ USE OMP_LIB
   IMPLICIT NONE
 
@@ -76,14 +76,13 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
   REAL(KIND=K), PARAMETER :: ZERO = 0.0_K, ONE = 1.0_K
   INTEGER, INTENT(IN) :: JOB, N, LDG, LDU, LDV
   REAL(KIND=K), INTENT(INOUT) :: G(LDG,N), U(LDU,N), V(LDV,N)
-  REAL(KIND=REAL128), INTENT(OUT) :: SV(N)
-  REAL(KIND=K), INTENT(OUT) :: W(*)
+  REAL(KIND=K), INTENT(OUT) :: SV(N), W(*)
   REAL(KIND=REAL64), INTENT(OUT) :: D(*)
   INTEGER, INTENT(INOUT) :: O(2,*), INFO
 
   REAL(KIND=K) :: G2(2,2), U2(2,2)
   REAL(KIND=K) :: GN, UN, VN
-  INTEGER(KIND=INT64) :: TT, TM, SM
+  INTEGER(KIND=INT64) :: TT, TM
   INTEGER :: MRQSTP, I, J, L, M, P, Q, T, GS, US, VS, WV, WS, STP, ES(3)
   LOGICAL :: LOMP, LUSID, LUACC, LVSID, LVACC
 
@@ -119,8 +118,6 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
   LVACC = (IAND(JOB, VACC) .NE. 0)
 
   M = N * (N - 1)
-  I = N / 2
-  J = M / 2
 
   IF (N .EQ. 1) THEN
      GN = ABS(G(1,1))
@@ -130,7 +127,7 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
         IF (LUSID) U(1,1) = SIGN(ONE, G(1,1))
         IF (LVSID) V(1,1) = ONE
         G(1,1) = GN
-        SV(1) = REAL(GN, REAL128)
+        SV(1) = GN
         W(1) = GN
      END IF
      RETURN
@@ -272,7 +269,6 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
   ! initialize the counters
   TT = 0_INT64
   TM = 0_INT64
-  SM = 0_INT64
 
   DO STP = 0, MRQSTP-1
      T = STP + 1
@@ -539,7 +535,7 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
      I = 0
      !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,SV,N,GS) REDUCTION(MAX:I)
      DO J = 1, N
-        SV(J) = SCALE(REAL(G(J,J), REAL128), -GS)
+        SV(J) = G(J,J)
         IF (.NOT. (SV(J) .LE. HUGE(SV(J)))) THEN
            I = MAX(I, J)
         ELSE ! SV(J) finite
@@ -553,7 +549,7 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
      END IF
   ELSE ! sequentially
      DO J = 1, N
-        SV(J) = SCALE(REAL(G(J,J), REAL128), -GS)
+        SV(J) = G(J,J)
         IF (.NOT. (SV(J) .LE. HUGE(SV(J)))) THEN
            INFO = -9
            RETURN

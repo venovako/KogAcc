@@ -68,7 +68,7 @@ SUBROUTINE SMKDPQ(N, G, LDG, D, O, INFO)
         ELSE ! none are 0
            H = CR_HYPOT(G(Q,P), G(P,Q))
         END IF
-        IF ((H .NE. ZERO) .OR. (SIGN(ONE,G(P,P)) .NE. ONE) .OR. (SIGN(ONE,G(Q,Q)) .NE. ONE) .OR. (G(P,P) .LT. G(Q,Q))) THEN
+        IF ((H .GT. ZERO) .OR. (SIGN(ONE,G(P,P)) .NE. ONE) .OR. (SIGN(ONE,G(Q,Q)) .NE. ONE) .OR. (G(P,P) .LT. G(Q,Q))) THEN
            CALL DENC(D(K), H, P, Q)
            W = MAX(W, D(K))
         ELSE ! no transformation
@@ -87,7 +87,7 @@ SUBROUTINE SMKDPQ(N, G, LDG, D, O, INFO)
         ELSE ! none are 0
            H = CR_HYPOT(G(Q,P), G(P,Q))
         END IF
-        IF ((H .NE. ZERO) .OR. (SIGN(ONE,G(P,P)) .NE. ONE) .OR. (SIGN(ONE,G(Q,Q)) .NE. ONE) .OR. (G(P,P) .LT. G(Q,Q))) THEN
+        IF ((H .GT. ZERO) .OR. (SIGN(ONE,G(P,P)) .NE. ONE) .OR. (SIGN(ONE,G(Q,Q)) .NE. ONE) .OR. (G(P,P) .LT. G(Q,Q))) THEN
            CALL DENC(D(K), H, P, Q)
            W = MAX(W, D(K))
         ELSE ! no transformation
