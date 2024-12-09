@@ -52,37 +52,29 @@
 ../obj/$(PLAT)/wlango.$(OXT): faux/wlango.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/wlango.F90
 
-ifeq ($(findstring s,$(ROTACC)),s)
-../obj/$(PLAT)/srotc.$(OXT): ../etc/srotc.F90 $(MKFS) faux/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../etc/srotc.F90
-else # !s
 ../obj/$(PLAT)/srotc.$(OXT): faux/srotc.F90 faux/grotc.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/srotc.F90
-endif # ?s
 
-ifeq ($(findstring c,$(ROTACC)),c)
-../obj/$(PLAT)/crotc.$(OXT): ../etc/crotc.F90 $(MKFS) faux/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../etc/crotc.F90
-else # !c
+../obj/$(PLAT)/srotca.$(OXT): faux/srotca.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/srotca.F90
+
 ../obj/$(PLAT)/crotc.$(OXT): faux/crotc.F90 faux/hrotc.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/crotc.F90
-endif # ?c
 
-ifeq ($(findstring d,$(ROTACC)),d)
-../obj/$(PLAT)/drotc.$(OXT): ../etc/drotc.F90 $(MKFS) faux/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../etc/drotc.F90
-else # !d
+../obj/$(PLAT)/crotca.$(OXT): faux/crotca.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/crotca.F90
+
 ../obj/$(PLAT)/drotc.$(OXT): faux/drotc.F90 faux/grotc.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/drotc.F90
-endif # ?d
 
-ifeq ($(findstring z,$(ROTACC)),z)
-../obj/$(PLAT)/zrotc.$(OXT): ../etc/zrotc.F90 $(MKFS) faux/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../etc/zrotc.F90
-else # !z
+../obj/$(PLAT)/drotca.$(OXT): faux/drotca.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/drotca.F90
+
 ../obj/$(PLAT)/zrotc.$(OXT): faux/zrotc.F90 faux/hrotc.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/zrotc.F90
-endif # ?z
+
+../obj/$(PLAT)/zrotca.$(OXT): faux/zrotca.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/zrotca.F90
 
 ../obj/$(PLAT)/qrotc.$(OXT): faux/qrotc.F90 faux/grotc.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/qrotc.F90
@@ -90,53 +82,41 @@ endif # ?z
 ../obj/$(PLAT)/yrotc.$(OXT): faux/yrotc.F90 faux/hrotc.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/yrotc.F90
 
-ifeq ($(findstring x,$(ROTACC)),x)
-../obj/$(PLAT)/xrotc.$(OXT): ../etc/xrotc.F90 $(MKFS) faux/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../etc/xrotc.F90
-else # !x
 ../obj/$(PLAT)/xrotc.$(OXT): faux/xrotc.F90 faux/grotc.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/xrotc.F90
-endif # ?x
 
-ifeq ($(findstring w,$(ROTACC)),w)
-../obj/$(PLAT)/wrotc.$(OXT): ../etc/wrotc.F90 $(MKFS) faux/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../etc/wrotc.F90
-else # !w
+../obj/$(PLAT)/xrotca.$(OXT): faux/xrotca.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/xrotca.F90
+
 ../obj/$(PLAT)/wrotc.$(OXT): faux/wrotc.F90 faux/hrotc.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/wrotc.F90
-endif # ?w
 
-ifeq ($(findstring S,$(ROTACC)),S)
-../obj/$(PLAT)/srotr.$(OXT): ../etc/srotr.F90 $(MKFS) faux/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../etc/srotr.F90
-else # !S
+../obj/$(PLAT)/wrotca.$(OXT): faux/wrotca.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/wrotca.F90
+
 ../obj/$(PLAT)/srotr.$(OXT): faux/srotr.F90 faux/grotr.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/srotr.F90
-endif # ?S
 
-ifeq ($(findstring C,$(ROTACC)),C)
-../obj/$(PLAT)/crotr.$(OXT): ../etc/crotr.F90 $(MKFS) faux/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../etc/crotr.F90
-else # !C
+../obj/$(PLAT)/srotra.$(OXT): faux/srotra.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/srotra.F90
+
 ../obj/$(PLAT)/crotr.$(OXT): faux/crotr.F90 faux/hrotr.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/crotr.F90
-endif # ?C
 
-ifeq ($(findstring D,$(ROTACC)),D)
-../obj/$(PLAT)/drotr.$(OXT): ../etc/drotr.F90 $(MKFS) faux/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../etc/drotr.F90
-else # !D
+../obj/$(PLAT)/crotra.$(OXT): faux/crotra.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/crotra.F90
+
 ../obj/$(PLAT)/drotr.$(OXT): faux/drotr.F90 faux/grotr.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/drotr.F90
-endif # ?D
 
-ifeq ($(findstring Z,$(ROTACC)),Z)
-../obj/$(PLAT)/zrotr.$(OXT): ../etc/zrotr.F90 $(MKFS) faux/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../etc/zrotr.F90
-else # !Z
+../obj/$(PLAT)/drotra.$(OXT): faux/drotra.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/drotra.F90
+
 ../obj/$(PLAT)/zrotr.$(OXT): faux/zrotr.F90 faux/hrotr.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/zrotr.F90
-endif # ?Z
+
+../obj/$(PLAT)/zrotra.$(OXT): faux/zrotra.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/zrotra.F90
 
 ../obj/$(PLAT)/qrotr.$(OXT): faux/qrotr.F90 faux/grotr.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/qrotr.F90
@@ -144,21 +124,17 @@ endif # ?Z
 ../obj/$(PLAT)/yrotr.$(OXT): faux/yrotr.F90 faux/hrotr.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/yrotr.F90
 
-ifeq ($(findstring X,$(ROTACC)),X)
-../obj/$(PLAT)/xrotr.$(OXT): ../etc/xrotr.F90 $(MKFS) faux/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../etc/xrotr.F90
-else # !X
 ../obj/$(PLAT)/xrotr.$(OXT): faux/xrotr.F90 faux/grotr.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/xrotr.F90
-endif # ?X
 
-ifeq ($(findstring W,$(ROTACC)),W)
-../obj/$(PLAT)/wrotr.$(OXT): ../etc/wrotr.F90 $(MKFS) faux/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../etc/wrotr.F90
-else # !W
+../obj/$(PLAT)/xrotra.$(OXT): faux/xrotra.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/xrotra.F90
+
 ../obj/$(PLAT)/wrotr.$(OXT): faux/wrotr.F90 faux/hrotr.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/wrotr.F90
-endif # ?W
+
+../obj/$(PLAT)/wrotra.$(OXT): faux/wrotra.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/wrotra.F90
 
 ../obj/$(PLAT)/sscalg.$(OXT): faux/sscalg.F90 faux/gscalg.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/sscalg.F90

@@ -1,13 +1,14 @@
-!>@brief \b CROTC postmultiplies the columns (p,q) of G by W using an imperfect emulation of an accurate a*b+c*d operation.
-SUBROUTINE CROTC(M, N, G, LDG, P, Q, W, INFO)
-  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32, REAL64
+!>@brief \b WROTCA postmultiplies the columns (p,q) of G by W using an imperfect emulation of an accurate a*b+c*d operation.
+SUBROUTINE WROTCA(M, N, G, LDG, P, Q, W, INFO)
+  USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
+  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL128
   IMPLICIT NONE
-  INTEGER, PARAMETER :: K = REAL32, L = REAL64
+  INTEGER, PARAMETER :: K = c_long_double, L = REAL128
   INTEGER, INTENT(IN) :: M, N, LDG, P, Q
   COMPLEX(KIND=K), INTENT(INOUT) :: G(LDG,N)
   COMPLEX(KIND=K), INTENT(IN) :: W(2,2)
   INTEGER, INTENT(INOUT) :: INFO
-#define VL 8
+#define VL 2
   COMPLEX(KIND=K) :: X(VL)
   !DIR$ ATTRIBUTES ALIGN: 64:: X
   COMPLEX(KIND=K) :: Y(VL)
@@ -20,7 +21,7 @@ SUBROUTINE CROTC(M, N, G, LDG, P, Q, W, INFO)
   !DIR$ ATTRIBUTES ALIGN: 64:: WW
   INTEGER :: I, J
   !DIR$ ASSUME_ALIGNED G:64, X:64, Y:64, XX:64, YY:64, WW:64
-#define HL 4
+#define HL 1
   J = INFO
   INFO = 0
   IF ((Q .LE. P) .OR. (Q .GT. N)) INFO = -6
@@ -100,4 +101,4 @@ SUBROUTINE CROTC(M, N, G, LDG, P, Q, W, INFO)
         G(I+J-1,Q) = CMPLX(REAL(YY(J)), AIMAG(YY(J)), K)
      END DO
   END DO
-END SUBROUTINE CROTC
+END SUBROUTINE WROTCA

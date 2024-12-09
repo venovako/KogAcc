@@ -52,24 +52,24 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
      END SUBROUTINE SCVGPP
   END INTERFACE
   INTERFACE
-     SUBROUTINE SROTC(M, N, G, LDG, P, Q, W, INFO)
+     SUBROUTINE SROTCA(M, N, G, LDG, P, Q, W, INFO)
        USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
        IMPLICIT NONE
        INTEGER, INTENT(IN) :: M, N, LDG, P, Q
        REAL(KIND=REAL32), INTENT(INOUT) :: G(LDG,N)
        REAL(KIND=REAL32), INTENT(IN) :: W(2,2)
        INTEGER, INTENT(INOUT) :: INFO
-     END SUBROUTINE SROTC
+     END SUBROUTINE SROTCA
   END INTERFACE
   INTERFACE
-     SUBROUTINE SROTR(M, N, G, LDG, P, Q, W, INFO)
+     SUBROUTINE SROTRA(M, N, G, LDG, P, Q, W, INFO)
        USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
        IMPLICIT NONE
        INTEGER, INTENT(IN) :: M, N, LDG, P, Q
        REAL(KIND=REAL32), INTENT(INOUT) :: G(LDG,N)
        REAL(KIND=REAL32), INTENT(IN) :: W(2,2)
        INTEGER, INTENT(INOUT) :: INFO
-     END SUBROUTINE SROTR
+     END SUBROUTINE SROTRA
   END INTERFACE
 
   INTEGER, PARAMETER :: K = REAL32, USID = 8, UACC = 16, VSID = 32, VACC = 64
@@ -323,7 +323,7 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
            IF (IAND(T, 2) .NE. 0) THEN
               IF (LUACC) THEN
                  L = 0
-                 CALL SROTC(N, N, U, LDU, P, Q, U2, L)
+                 CALL SROTCA(N, N, U, LDU, P, Q, U2, L)
                  IF (L .LT. 0) THEN
                     M = M + 1
                     CYCLE
@@ -334,7 +334,7 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
               G2(1,2) = U2(2,1)
               G2(2,2) = U2(2,2)
               L = 0
-              CALL SROTR(N, N, G, LDG, P, Q, G2, L)
+              CALL SROTRA(N, N, G, LDG, P, Q, G2, L)
               IF (L .LT. 0) THEN
                  M = M + 1
                  CYCLE
@@ -358,14 +358,14 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
            IF (IAND(T, 4) .NE. 0) THEN
               IF (LVACC) THEN
                  L = 0
-                 CALL SROTC(N, N, V, LDV, P, Q, W(WV), L)
+                 CALL SROTCA(N, N, V, LDV, P, Q, W(WV), L)
                  IF (L .LT. 0) THEN
                     M = M + (I + 1)
                     CYCLE
                  END IF
               END IF
               L = 0
-              CALL SROTC(N, N, G, LDG, P, Q, W(WV), L)
+              CALL SROTCA(N, N, G, LDG, P, Q, W(WV), L)
               IF (L .LT. 0) THEN
                  M = M + (I + 1)
                  CYCLE
@@ -412,7 +412,7 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
            IF (IAND(T, 2) .NE. 0) THEN
               IF (LUACC) THEN
                  L = 0
-                 CALL SROTC(N, N, U, LDU, P, Q, U2, L)
+                 CALL SROTCA(N, N, U, LDU, P, Q, U2, L)
                  IF (L .LT. 0) THEN
                     INFO = -15
                     RETURN
@@ -423,7 +423,7 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
               G2(1,2) = U2(2,1)
               G2(2,2) = U2(2,2)
               L = 0
-              CALL SROTR(N, N, G, LDG, P, Q, G2, L)
+              CALL SROTRA(N, N, G, LDG, P, Q, G2, L)
               IF (L .LT. 0) THEN
                  INFO = -16
                  RETURN
@@ -433,14 +433,14 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
            IF (IAND(T, 4) .NE. 0) THEN
               IF (LVACC) THEN
                  L = 0
-                 CALL SROTC(N, N, V, LDV, P, Q, W(WV), L)
+                 CALL SROTCA(N, N, V, LDV, P, Q, W(WV), L)
                  IF (L .LT. 0) THEN
                     INFO = -17
                     RETURN
                  END IF
               END IF
               L = 0
-              CALL SROTC(N, N, G, LDG, P, Q, W(WV), L)
+              CALL SROTCA(N, N, G, LDG, P, Q, W(WV), L)
               IF (L .LT. 0) THEN
                  INFO = -18
                  RETURN

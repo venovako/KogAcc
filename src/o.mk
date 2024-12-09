@@ -49,10 +49,8 @@ OBJS_BLKSVD=\
 ../obj/$(PLAT)/yksvd0.$(OXT)\
 ../obj/$(PLAT)/sksvdd.$(OXT)\
 ../obj/$(PLAT)/dksvdd.$(OXT)\
-../obj/$(PLAT)/xksvdd.$(OXT)\
 ../obj/$(PLAT)/cksvdd.$(OXT)\
-../obj/$(PLAT)/zksvdd.$(OXT)\
-../obj/$(PLAT)/wksvdd.$(OXT)
+../obj/$(PLAT)/zksvdd.$(OXT)
 
 OBJS_DYNORD=\
 ../obj/$(PLAT)/sabsg.$(OXT)\
@@ -128,15 +126,23 @@ OBJS_FAUX=\
 ../obj/$(PLAT)/qlango.$(OXT)\
 ../obj/$(PLAT)/ylango.$(OXT)\
 ../obj/$(PLAT)/srotc.$(OXT)\
+../obj/$(PLAT)/srotca.$(OXT)\
 ../obj/$(PLAT)/crotc.$(OXT)\
+../obj/$(PLAT)/crotca.$(OXT)\
 ../obj/$(PLAT)/drotc.$(OXT)\
+../obj/$(PLAT)/drotca.$(OXT)\
 ../obj/$(PLAT)/zrotc.$(OXT)\
+../obj/$(PLAT)/zrotca.$(OXT)\
 ../obj/$(PLAT)/qrotc.$(OXT)\
 ../obj/$(PLAT)/yrotc.$(OXT)\
 ../obj/$(PLAT)/srotr.$(OXT)\
+../obj/$(PLAT)/srotra.$(OXT)\
 ../obj/$(PLAT)/crotr.$(OXT)\
+../obj/$(PLAT)/crotra.$(OXT)\
 ../obj/$(PLAT)/drotr.$(OXT)\
+../obj/$(PLAT)/drotra.$(OXT)\
 ../obj/$(PLAT)/zrotr.$(OXT)\
+../obj/$(PLAT)/zrotra.$(OXT)\
 ../obj/$(PLAT)/qrotr.$(OXT)\
 ../obj/$(PLAT)/yrotr.$(OXT)\
 ../obj/$(PLAT)/sscalg.$(OXT)\
@@ -157,10 +163,8 @@ EXES_BLKSVD=\
 ../bin/$(PLAT)/yksvd0.exe\
 ../bin/$(PLAT)/sksvdd.exe\
 ../bin/$(PLAT)/dksvdd.exe\
-../bin/$(PLAT)/xksvdd.exe\
 ../bin/$(PLAT)/cksvdd.exe\
-../bin/$(PLAT)/zksvdd.exe\
-../bin/$(PLAT)/wksvdd.exe
+../bin/$(PLAT)/zksvdd.exe
 
 EXES_DYNORD=\
 ../bin/$(PLAT)/spqsort.exe\
@@ -215,6 +219,12 @@ EXES_TEST=\
 ../bin/$(PLAT)/yrnd2g.exe
 
 ifeq ($(findstring 86,$(ARCH)),86)
+OBJS_BLKSVD += \
+../obj/$(PLAT)/xksvdd.$(OXT)\
+../obj/$(PLAT)/wksvdd.$(OXT)
+EXES_BLKSVD += \
+../bin/$(PLAT)/xksvdd.exe\
+../bin/$(PLAT)/wksvdd.exe
 ifeq ($(COMPILER),gfortran)
 OBJS_ARRBIO += \
 ../obj/$(PLAT)/xbrd1.$(OXT)\
@@ -257,9 +267,13 @@ OBJS_FAUX += \
 ../obj/$(PLAT)/xlango.$(OXT)\
 ../obj/$(PLAT)/wlango.$(OXT)\
 ../obj/$(PLAT)/xrotc.$(OXT)\
+../obj/$(PLAT)/xrotca.$(OXT)\
 ../obj/$(PLAT)/wrotc.$(OXT)\
+../obj/$(PLAT)/wrotca.$(OXT)\
 ../obj/$(PLAT)/xrotr.$(OXT)\
+../obj/$(PLAT)/xrotra.$(OXT)\
 ../obj/$(PLAT)/wrotr.$(OXT)\
+../obj/$(PLAT)/wrotra.$(OXT)\
 ../obj/$(PLAT)/xscalg.$(OXT)\
 ../obj/$(PLAT)/wscalg.$(OXT)
 EXES_BLKSVD += \

@@ -25,7 +25,7 @@ asm: dirs $(OBJS)
 	@echo $(CFLG) $(PLAT)
 
 help:
-	@echo $(MAKE) "[MARCH=...] [NDEBUG=optimization_level] [PROFILE=...] [ANIMATE=ppe] [ROTACC=SsDdXxCcZzWw] [all|asm|clean|dirs|doc|help]"
+	@echo $(MAKE) "[NDEBUG=optimization_level] [MARCH=...] [PROFILE=...] [ANIMATE=ppe] [all|asm|clean|dirs|doc|help]"
 
 dirs:
 	@$(MKD) ../bin/$(PLAT) ../lib/$(PLAT) ../obj/$(PLAT)

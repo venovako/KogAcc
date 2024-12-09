@@ -1,5 +1,5 @@
-!>@brief \b XROTR premultiplies the rows (p,q) of G by W using an imperfect emulation of an accurate a*b+c*d operation.
-SUBROUTINE XROTR(M, N, G, LDG, P, Q, W, INFO)
+!>@brief \b XROTCA postmultiplies the columns (p,q) of G by W using an imperfect emulation of an accurate a*b+c*d operation.
+SUBROUTINE XROTCA(M, N, G, LDG, P, Q, W, INFO)
   USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL128
   IMPLICIT NONE
@@ -22,10 +22,10 @@ SUBROUTINE XROTR(M, N, G, LDG, P, Q, W, INFO)
   INTEGER :: I, J
   !DIR$ ASSUME_ALIGNED G:64, X:64, Y:64, XX:64, YY:64, WW:64
 #define HL 2
-  I = INFO
+  J = INFO
   INFO = 0
-  IF ((Q .LE. P) .OR. (Q .GT. M)) INFO = -6
-  IF ((P .LE. 0) .OR. (P .GE. M)) INFO = -5
+  IF ((Q .LE. P) .OR. (Q .GT. N)) INFO = -6
+  IF ((P .LE. 0) .OR. (P .GE. N)) INFO = -5
   IF (LDG .LT. M) INFO = -4
   IF (N .LT. 0) INFO = -2
   IF (M .LT. 0) INFO = -1
@@ -45,50 +45,56 @@ SUBROUTINE XROTR(M, N, G, LDG, P, Q, W, INFO)
      END DO
   END DO
 
-  DO J = 1, N, VL
-     DO I = 1, VL
-        X(I) = G(P,J+I-1)
-     END DO
-     DO I = 1, VL
-        Y(I) = G(Q,J+I-1)
+  DO I = 1, M, VL
+     !DIR$ VECTOR ALIGNED ALWAYS
+     DO J = 1, VL
+        X(J) = G(I+J-1,P)
      END DO
      !DIR$ VECTOR ALIGNED ALWAYS
-     DO I = 1, HL
-        XX(I) = REAL(X(I), L)
+     DO J = 1, VL
+        Y(J) = G(I+J-1,Q)
      END DO
      !DIR$ VECTOR ALIGNED ALWAYS
-     DO I = 1, HL
-        YY(I) = REAL(Y(I), L)
+     DO J = 1, HL
+        XX(J) = REAL(X(J), L)
      END DO
      !DIR$ VECTOR ALIGNED ALWAYS
-     DO I = 1, HL
-        XX(I+HL) = WW(1,1) * XX(I) + WW(1,2) * YY(I)
-        YY(I+HL) = WW(2,1) * XX(I) + WW(2,2) * YY(I)
-     END DO
-     DO I = 1, HL
-        G(P,J+I-1) = REAL(XX(I+HL), K)
-     END DO
-     DO I = 1, HL
-        G(Q,J+I-1) = REAL(YY(I+HL), K)
+     DO J = 1, HL
+        YY(J) = REAL(Y(J), L)
      END DO
      !DIR$ VECTOR ALIGNED ALWAYS
-     DO I = 1, HL
-        XX(I) = REAL(X(I+HL), L)
+     DO J = 1, HL
+        XX(J+HL) = XX(J) * WW(1,1) + YY(J) * WW(2,1)
+        YY(J+HL) = XX(J) * WW(1,2) + YY(J) * WW(2,2)
      END DO
      !DIR$ VECTOR ALIGNED ALWAYS
-     DO I = 1, HL
-        YY(I) = REAL(Y(I+HL), L)
+     DO J = 1, HL
+        G(I+J-1,P) = REAL(XX(J+HL), K)
      END DO
      !DIR$ VECTOR ALIGNED ALWAYS
-     DO I = 1, HL
-        XX(I+HL) = WW(1,1) * XX(I) + WW(1,2) * YY(I)
-        YY(I+HL) = WW(2,1) * XX(I) + WW(2,2) * YY(I)
+     DO J = 1, HL
+        G(I+J-1,Q) = REAL(YY(J+HL), K)
      END DO
-     DO I = HL+1, VL
-        G(P,J+I-1) = REAL(XX(I), K)
+     !DIR$ VECTOR ALIGNED ALWAYS
+     DO J = 1, HL
+        XX(J) = REAL(X(J+HL), L)
      END DO
-     DO I = HL+1, VL
-        G(Q,J+I-1) = REAL(YY(I), K)
+     !DIR$ VECTOR ALIGNED ALWAYS
+     DO J = 1, HL
+        YY(J) = REAL(Y(J+HL), L)
+     END DO
+     !DIR$ VECTOR ALIGNED ALWAYS
+     DO J = 1, HL
+        XX(J+HL) = XX(J) * WW(1,1) + YY(J) * WW(2,1)
+        YY(J+HL) = XX(J) * WW(1,2) + YY(J) * WW(2,2)
+     END DO
+     !DIR$ VECTOR ALIGNED ALWAYS
+     DO J = HL+1, VL
+        G(I+J-1,P) = REAL(XX(J), K)
+     END DO
+     !DIR$ VECTOR ALIGNED ALWAYS
+     DO J = HL+1, VL
+        G(I+J-1,Q) = REAL(YY(J), K)
      END DO
   END DO
-END SUBROUTINE XROTR
+END SUBROUTINE XROTCA

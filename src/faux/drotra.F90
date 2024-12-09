@@ -1,5 +1,5 @@
-!>@brief \b DROTR premultiplies the rows (p,q) of G by W using an emulation of an accurate a*b+c*d operation.
-SUBROUTINE DROTR(M, N, G, LDG, P, Q, W, INFO)
+!>@brief \b DROTRA premultiplies the rows (p,q) of G by W using an emulation of an accurate a*b+c*d operation.
+SUBROUTINE DROTRA(M, N, G, LDG, P, Q, W, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64, REAL128
   IMPLICIT NONE
   INTEGER, PARAMETER :: K = REAL64, L = REAL128
@@ -90,4 +90,4 @@ SUBROUTINE DROTR(M, N, G, LDG, P, Q, W, INFO)
         G(Q,J+I-1) = REAL(YY(I), K)
      END DO
   END DO
-END SUBROUTINE DROTR
+END SUBROUTINE DROTRA

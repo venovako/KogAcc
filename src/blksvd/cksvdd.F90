@@ -68,24 +68,24 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
      END SUBROUTINE CCVGPP
   END INTERFACE
   INTERFACE
-     SUBROUTINE CROTC(M, N, G, LDG, P, Q, W, INFO)
+     SUBROUTINE CROTCA(M, N, G, LDG, P, Q, W, INFO)
        USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
        IMPLICIT NONE
        INTEGER, INTENT(IN) :: M, N, LDG, P, Q
        COMPLEX(KIND=REAL32), INTENT(INOUT) :: G(LDG,N)
        COMPLEX(KIND=REAL32), INTENT(IN) :: W(2,2)
        INTEGER, INTENT(INOUT) :: INFO
-     END SUBROUTINE CROTC
+     END SUBROUTINE CROTCA
   END INTERFACE
   INTERFACE
-     SUBROUTINE CROTR(M, N, G, LDG, P, Q, W, INFO)
+     SUBROUTINE CROTRA(M, N, G, LDG, P, Q, W, INFO)
        USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
        IMPLICIT NONE
        INTEGER, INTENT(IN) :: M, N, LDG, P, Q
        COMPLEX(KIND=REAL32), INTENT(INOUT) :: G(LDG,N)
        COMPLEX(KIND=REAL32), INTENT(IN) :: W(2,2)
        INTEGER, INTENT(INOUT) :: INFO
-     END SUBROUTINE CROTR
+     END SUBROUTINE CROTRA
   END INTERFACE
 
   INTEGER, PARAMETER :: K = REAL32, USID = 8, UACC = 16, VSID = 32, VACC = 64
@@ -357,7 +357,7 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
            IF (IAND(T, 2) .NE. 0) THEN
               IF (LUACC) THEN
                  L = 0
-                 CALL CROTC(N, N, U, LDU, P, Q, U2, L)
+                 CALL CROTCA(N, N, U, LDU, P, Q, U2, L)
                  IF (L .LT. 0) THEN
                     M = M + 1
                     CYCLE
@@ -368,7 +368,7 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
               G2(1,2) = CONJG(U2(2,1))
               G2(2,2) = CONJG(U2(2,2))
               L = 0
-              CALL CROTR(N, N, G, LDG, P, Q, G2, L)
+              CALL CROTRA(N, N, G, LDG, P, Q, G2, L)
               IF (L .LT. 0) THEN
                  M = M + 1
                  CYCLE
@@ -396,14 +396,14 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
               V2(2,2) = CMPLX(W(WV+6), W(WV+7), K)
               IF (LVACC) THEN
                  L = 0
-                 CALL CROTC(N, N, V, LDV, P, Q, V2, L)
+                 CALL CROTCA(N, N, V, LDV, P, Q, V2, L)
                  IF (L .LT. 0) THEN
                     M = M + (I + 1)
                     CYCLE
                  END IF
               END IF
               L = 0
-              CALL CROTC(N, N, G, LDG, P, Q, V2, L)
+              CALL CROTCA(N, N, G, LDG, P, Q, V2, L)
               IF (L .LT. 0) THEN
                  M = M + (I + 1)
                  CYCLE
@@ -450,7 +450,7 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
            IF (IAND(T, 2) .NE. 0) THEN
               IF (LUACC) THEN
                  L = 0
-                 CALL CROTC(N, N, U, LDU, P, Q, U2, L)
+                 CALL CROTCA(N, N, U, LDU, P, Q, U2, L)
                  IF (L .LT. 0) THEN
                     INFO = -15
                     RETURN
@@ -461,7 +461,7 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
               G2(1,2) = CONJG(U2(2,1))
               G2(2,2) = CONJG(U2(2,2))
               L = 0
-              CALL CROTR(N, N, G, LDG, P, Q, G2, L)
+              CALL CROTRA(N, N, G, LDG, P, Q, G2, L)
               IF (L .LT. 0) THEN
                  INFO = -16
                  RETURN
@@ -471,14 +471,14 @@ SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
            IF (IAND(T, 4) .NE. 0) THEN
               IF (LVACC) THEN
                  L = 0
-                 CALL CROTC(N, N, V, LDV, P, Q, V2, L)
+                 CALL CROTCA(N, N, V, LDV, P, Q, V2, L)
                  IF (L .LT. 0) THEN
                     INFO = -17
                     RETURN
                  END IF
               END IF
               L = 0
-              CALL CROTC(N, N, G, LDG, P, Q, V2, L)
+              CALL CROTCA(N, N, G, LDG, P, Q, V2, L)
               IF (L .LT. 0) THEN
                  INFO = -18
                  RETURN

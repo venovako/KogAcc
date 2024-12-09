@@ -1,5 +1,5 @@
-!>@brief \b ZROTR premultiplies the rows (p,q) of G by W using an imperfect emulation of an accurate a*b+c*d operation.
-SUBROUTINE ZROTR(M, N, G, LDG, P, Q, W, INFO)
+!>@brief \b ZROTCA postmultiplies the columns (p,q) of G by W using an imperfect emulation of an accurate a*b+c*d operation.
+SUBROUTINE ZROTCA(M, N, G, LDG, P, Q, W, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64, REAL128
   IMPLICIT NONE
   INTEGER, PARAMETER :: K = REAL64, L = REAL128
@@ -21,10 +21,10 @@ SUBROUTINE ZROTR(M, N, G, LDG, P, Q, W, INFO)
   INTEGER :: I, J
   !DIR$ ASSUME_ALIGNED G:64, X:64, Y:64, XX:64, YY:64, WW:64
 #define HL 2
-  I = INFO
+  J = INFO
   INFO = 0
-  IF ((Q .LE. P) .OR. (Q .GT. M)) INFO = -6
-  IF ((P .LE. 0) .OR. (P .GE. M)) INFO = -5
+  IF ((Q .LE. P) .OR. (Q .GT. N)) INFO = -6
+  IF ((P .LE. 0) .OR. (P .GE. N)) INFO = -5
   IF (LDG .LT. M) INFO = -4
   IF (N .LT. 0) INFO = -2
   IF (M .LT. 0) INFO = -1
@@ -48,50 +48,56 @@ SUBROUTINE ZROTR(M, N, G, LDG, P, Q, W, INFO)
      END DO
   END DO
 
-  DO J = 1, N, VL
-     DO I = 1, VL
-        X(I) = G(P,J+I-1)
-     END DO
-     DO I = 1, VL
-        Y(I) = G(Q,J+I-1)
+  DO I = 1, M, VL
+     !DIR$ VECTOR ALIGNED ALWAYS
+     DO J = 1, VL
+        X(J) = G(I+J-1,P)
      END DO
      !DIR$ VECTOR ALIGNED ALWAYS
-     DO I = 1, HL
-        XX(I) = CMPLX(REAL(X(I)), AIMAG(X(I)), L)
+     DO J = 1, VL
+        Y(J) = G(I+J-1,Q)
      END DO
      !DIR$ VECTOR ALIGNED ALWAYS
-     DO I = 1, HL
-        YY(I) = CMPLX(REAL(Y(I)), AIMAG(Y(I)), L)
+     DO J = 1, HL
+        XX(J) = CMPLX(REAL(X(J)), AIMAG(X(J)), L)
      END DO
      !DIR$ VECTOR ALIGNED ALWAYS
-     DO I = 1, HL
-        XX(I+HL) = WW(1,1) * XX(I) + WW(1,2) * YY(I)
-        YY(I+HL) = WW(2,1) * XX(I) + WW(2,2) * YY(I)
-     END DO
-     DO I = 1, HL
-        G(P,J+I-1) = CMPLX(REAL(XX(I+HL)), AIMAG(XX(I+HL)), K)
-     END DO
-     DO I = 1, HL
-        G(Q,J+I-1) = CMPLX(REAL(YY(I+HL)), AIMAG(YY(I+HL)), K)
+     DO J = 1, HL
+        YY(J) = CMPLX(REAL(Y(J)), AIMAG(Y(J)), L)
      END DO
      !DIR$ VECTOR ALIGNED ALWAYS
-     DO I = 1, HL
-        XX(I) = CMPLX(REAL(X(I+HL)), AIMAG(X(I+HL)), L)
+     DO J = 1, HL
+        XX(J+HL) = XX(J) * WW(1,1) + YY(J) * WW(2,1)
+        YY(J+HL) = XX(J) * WW(1,2) + YY(J) * WW(2,2)
      END DO
      !DIR$ VECTOR ALIGNED ALWAYS
-     DO I = 1, HL
-        YY(I) = CMPLX(REAL(Y(I+HL)), AIMAG(Y(I+HL)), L)
+     DO J = 1, HL
+        G(I+J-1,P) = CMPLX(REAL(XX(J+HL)), AIMAG(XX(J+HL)), K)
      END DO
      !DIR$ VECTOR ALIGNED ALWAYS
-     DO I = 1, HL
-        XX(I+HL) = WW(1,1) * XX(I) + WW(1,2) * YY(I)
-        YY(I+HL) = WW(2,1) * XX(I) + WW(2,2) * YY(I)
+     DO J = 1, HL
+        G(I+J-1,Q) = CMPLX(REAL(YY(J+HL)), AIMAG(YY(J+HL)), K)
      END DO
-     DO I = HL+1, VL
-        G(P,J+I-1) = CMPLX(REAL(XX(I)), AIMAG(XX(I)), K)
+     !DIR$ VECTOR ALIGNED ALWAYS
+     DO J = 1, HL
+        XX(J) = CMPLX(REAL(X(J+HL)), AIMAG(X(J+HL)), L)
      END DO
-     DO I = HL+1, VL
-        G(Q,J+I-1) = CMPLX(REAL(YY(I)), AIMAG(YY(I)), K)
+     !DIR$ VECTOR ALIGNED ALWAYS
+     DO J = 1, HL
+        YY(J) = CMPLX(REAL(Y(J+HL)), AIMAG(Y(J+HL)), L)
+     END DO
+     !DIR$ VECTOR ALIGNED ALWAYS
+     DO J = 1, HL
+        XX(J+HL) = XX(J) * WW(1,1) + YY(J) * WW(2,1)
+        YY(J+HL) = XX(J) * WW(1,2) + YY(J) * WW(2,2)
+     END DO
+     !DIR$ VECTOR ALIGNED ALWAYS
+     DO J = HL+1, VL
+        G(I+J-1,P) = CMPLX(REAL(XX(J)), AIMAG(XX(J)), K)
+     END DO
+     !DIR$ VECTOR ALIGNED ALWAYS
+     DO J = HL+1, VL
+        G(I+J-1,Q) = CMPLX(REAL(YY(J)), AIMAG(YY(J)), K)
      END DO
   END DO
-END SUBROUTINE ZROTR
+END SUBROUTINE ZROTCA

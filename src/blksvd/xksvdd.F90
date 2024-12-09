@@ -58,24 +58,24 @@ SUBROUTINE XKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
      END SUBROUTINE DCVGPP
   END INTERFACE
   INTERFACE
-     SUBROUTINE DROTC(M, N, G, LDG, P, Q, W, INFO)
+     SUBROUTINE DROTCA(M, N, G, LDG, P, Q, W, INFO)
        USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
        IMPLICIT NONE
        INTEGER, INTENT(IN) :: M, N, LDG, P, Q
        REAL(KIND=REAL64), INTENT(INOUT) :: G(LDG,N)
        REAL(KIND=REAL64), INTENT(IN) :: W(2,2)
        INTEGER, INTENT(INOUT) :: INFO
-     END SUBROUTINE DROTC
+     END SUBROUTINE DROTCA
   END INTERFACE
   INTERFACE
-     SUBROUTINE DROTR(M, N, G, LDG, P, Q, W, INFO)
+     SUBROUTINE DROTRA(M, N, G, LDG, P, Q, W, INFO)
        USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
        IMPLICIT NONE
        INTEGER, INTENT(IN) :: M, N, LDG, P, Q
        REAL(KIND=REAL64), INTENT(INOUT) :: G(LDG,N)
        REAL(KIND=REAL64), INTENT(IN) :: W(2,2)
        INTEGER, INTENT(INOUT) :: INFO
-     END SUBROUTINE DROTR
+     END SUBROUTINE DROTRA
   END INTERFACE
 
   INTEGER, PARAMETER :: K = REAL64, USID = 8, UACC = 16, VSID = 32, VACC = 64
@@ -329,7 +329,7 @@ SUBROUTINE XKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
            IF (IAND(T, 2) .NE. 0) THEN
               IF (LUACC) THEN
                  L = 0
-                 CALL DROTC(N, N, U, LDU, P, Q, U2, L)
+                 CALL DROTCA(N, N, U, LDU, P, Q, U2, L)
                  IF (L .LT. 0) THEN
                     M = M + 1
                     CYCLE
@@ -340,7 +340,7 @@ SUBROUTINE XKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
               G2(1,2) = U2(2,1)
               G2(2,2) = U2(2,2)
               L = 0
-              CALL DROTR(N, N, G, LDG, P, Q, G2, L)
+              CALL DROTRA(N, N, G, LDG, P, Q, G2, L)
               IF (L .LT. 0) THEN
                  M = M + 1
                  CYCLE
@@ -364,14 +364,14 @@ SUBROUTINE XKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
            IF (IAND(T, 4) .NE. 0) THEN
               IF (LVACC) THEN
                  L = 0
-                 CALL DROTC(N, N, V, LDV, P, Q, W(WV), L)
+                 CALL DROTCA(N, N, V, LDV, P, Q, W(WV), L)
                  IF (L .LT. 0) THEN
                     M = M + (I + 1)
                     CYCLE
                  END IF
               END IF
               L = 0
-              CALL DROTC(N, N, G, LDG, P, Q, W(WV), L)
+              CALL DROTCA(N, N, G, LDG, P, Q, W(WV), L)
               IF (L .LT. 0) THEN
                  M = M + (I + 1)
                  CYCLE
@@ -418,7 +418,7 @@ SUBROUTINE XKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
            IF (IAND(T, 2) .NE. 0) THEN
               IF (LUACC) THEN
                  L = 0
-                 CALL DROTC(N, N, U, LDU, P, Q, U2, L)
+                 CALL DROTCA(N, N, U, LDU, P, Q, U2, L)
                  IF (L .LT. 0) THEN
                     INFO = -15
                     RETURN
@@ -429,7 +429,7 @@ SUBROUTINE XKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
               G2(1,2) = U2(2,1)
               G2(2,2) = U2(2,2)
               L = 0
-              CALL DROTR(N, N, G, LDG, P, Q, G2, L)
+              CALL DROTRA(N, N, G, LDG, P, Q, G2, L)
               IF (L .LT. 0) THEN
                  INFO = -16
                  RETURN
@@ -439,14 +439,14 @@ SUBROUTINE XKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
            IF (IAND(T, 4) .NE. 0) THEN
               IF (LVACC) THEN
                  L = 0
-                 CALL DROTC(N, N, V, LDV, P, Q, W(WV), L)
+                 CALL DROTCA(N, N, V, LDV, P, Q, W(WV), L)
                  IF (L .LT. 0) THEN
                     INFO = -17
                     RETURN
                  END IF
               END IF
               L = 0
-              CALL DROTC(N, N, G, LDG, P, Q, W(WV), L)
+              CALL DROTCA(N, N, G, LDG, P, Q, W(WV), L)
               IF (L .LT. 0) THEN
                  INFO = -18
                  RETURN
