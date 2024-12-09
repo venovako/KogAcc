@@ -74,24 +74,24 @@ SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
      END SUBROUTINE ZCVGPP
   END INTERFACE
   INTERFACE
-     SUBROUTINE ZROTCA(M, N, G, LDG, P, Q, W, INFO)
+     SUBROUTINE ZROTCX(M, N, G, LDG, P, Q, W, INFO)
        USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
        IMPLICIT NONE
        INTEGER, INTENT(IN) :: M, N, LDG, P, Q
        COMPLEX(KIND=REAL64), INTENT(INOUT) :: G(LDG,N)
        COMPLEX(KIND=REAL64), INTENT(IN) :: W(2,2)
        INTEGER, INTENT(INOUT) :: INFO
-     END SUBROUTINE ZROTCA
+     END SUBROUTINE ZROTCX
   END INTERFACE
   INTERFACE
-     SUBROUTINE ZROTRA(M, N, G, LDG, P, Q, W, INFO)
+     SUBROUTINE ZROTRX(M, N, G, LDG, P, Q, W, INFO)
        USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
        IMPLICIT NONE
        INTEGER, INTENT(IN) :: M, N, LDG, P, Q
        COMPLEX(KIND=REAL64), INTENT(INOUT) :: G(LDG,N)
        COMPLEX(KIND=REAL64), INTENT(IN) :: W(2,2)
        INTEGER, INTENT(INOUT) :: INFO
-     END SUBROUTINE ZROTRA
+     END SUBROUTINE ZROTRX
   END INTERFACE
 
   INTEGER, PARAMETER :: K = REAL64, USID = 8, UACC = 16, VSID = 32, VACC = 64
@@ -363,7 +363,7 @@ SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
            IF (IAND(T, 2) .NE. 0) THEN
               IF (LUACC) THEN
                  L = 0
-                 CALL ZROTCA(N, N, U, LDU, P, Q, U2, L)
+                 CALL ZROTCX(N, N, U, LDU, P, Q, U2, L)
                  IF (L .LT. 0) THEN
                     M = M + 1
                     CYCLE
@@ -374,7 +374,7 @@ SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
               G2(1,2) = CONJG(U2(2,1))
               G2(2,2) = CONJG(U2(2,2))
               L = 0
-              CALL ZROTRA(N, N, G, LDG, P, Q, G2, L)
+              CALL ZROTRX(N, N, G, LDG, P, Q, G2, L)
               IF (L .LT. 0) THEN
                  M = M + 1
                  CYCLE
@@ -402,14 +402,14 @@ SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
               V2(2,2) = CMPLX(W(WV+6), W(WV+7), K)
               IF (LVACC) THEN
                  L = 0
-                 CALL ZROTCA(N, N, V, LDV, P, Q, V2, L)
+                 CALL ZROTCX(N, N, V, LDV, P, Q, V2, L)
                  IF (L .LT. 0) THEN
                     M = M + (I + 1)
                     CYCLE
                  END IF
               END IF
               L = 0
-              CALL ZROTCA(N, N, G, LDG, P, Q, V2, L)
+              CALL ZROTCX(N, N, G, LDG, P, Q, V2, L)
               IF (L .LT. 0) THEN
                  M = M + (I + 1)
                  CYCLE
@@ -456,7 +456,7 @@ SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
            IF (IAND(T, 2) .NE. 0) THEN
               IF (LUACC) THEN
                  L = 0
-                 CALL ZROTCA(N, N, U, LDU, P, Q, U2, L)
+                 CALL ZROTCX(N, N, U, LDU, P, Q, U2, L)
                  IF (L .LT. 0) THEN
                     INFO = -15
                     RETURN
@@ -467,7 +467,7 @@ SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
               G2(1,2) = CONJG(U2(2,1))
               G2(2,2) = CONJG(U2(2,2))
               L = 0
-              CALL ZROTRA(N, N, G, LDG, P, Q, G2, L)
+              CALL ZROTRX(N, N, G, LDG, P, Q, G2, L)
               IF (L .LT. 0) THEN
                  INFO = -16
                  RETURN
@@ -477,14 +477,14 @@ SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
            IF (IAND(T, 4) .NE. 0) THEN
               IF (LVACC) THEN
                  L = 0
-                 CALL ZROTCA(N, N, V, LDV, P, Q, V2, L)
+                 CALL ZROTCX(N, N, V, LDV, P, Q, V2, L)
                  IF (L .LT. 0) THEN
                     INFO = -17
                     RETURN
                  END IF
               END IF
               L = 0
-              CALL ZROTCA(N, N, G, LDG, P, Q, V2, L)
+              CALL ZROTCX(N, N, G, LDG, P, Q, V2, L)
               IF (L .LT. 0) THEN
                  INFO = -18
                  RETURN
