@@ -2,7 +2,6 @@
 SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
   USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: INT64, REAL64
-  !$ USE OMP_LIB
   IMPLICIT NONE
 
 #ifdef CR_MATH
@@ -107,17 +106,7 @@ SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
   REAL(KIND=K) :: GN, UN, VN
   INTEGER(KIND=INT64) :: TT, TM
   INTEGER :: MRQSTP, I, J, L, M, P, Q, T, GS, US, VS, WV, WS, STP, ES(3)
-  LOGICAL :: LOMP, LUSID, LUACC, LVSID, LVACC
-
-  MRQSTP = INFO
-  INFO = 0
-  LOMP = .FALSE.
-  IF (MRQSTP .LT. 0) THEN
-     MRQSTP = -(MRQSTP + 1)
-  ELSE ! MRQSTP >= 0
-     !$ LOMP = .TRUE.
-     CONTINUE
-  END IF
+  LOGICAL :: LUSID, LUACC, LVSID, LVACC
 
   W(1) = ONE
   W(2) = ONE
@@ -125,6 +114,13 @@ SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
   W(4) = ZERO
   W(5) = ZERO
   W(6) = ZERO
+
+  IF (INFO .LT. 0) THEN
+     INFO = -13
+     RETURN
+  END IF
+  MRQSTP = INFO
+  INFO = 0
 
   IF (LDV .LT. N) INFO = -8
   IF (LDU .LT. N) INFO = -6
@@ -166,61 +162,31 @@ SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
   END IF
 
   ! optionally set U and V to I
-  IF (LOMP) THEN
-     IF (LUSID) THEN
-        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J) SHARED(U,N)
-        DO J = 1, N
-           DO I = 1, J-1
-              U(I,J) = CZERO
-           END DO
-           U(J,J) = CONE
-           DO I = J+1, N
-              U(I,J) = CZERO
-           END DO
+  IF (LUSID) THEN
+     DO J = 1, N
+        DO I = 1, J-1
+           U(I,J) = CZERO
         END DO
-        !$OMP END PARALLEL DO
-     END IF
-     IF (LVSID) THEN
-        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J) SHARED(V,N)
-        DO J = 1, N
-           DO I = 1, J-1
-              V(I,J) = CZERO
-           END DO
-           V(J,J) = CONE
-           DO I = J+1, N
-              V(I,J) = CZERO
-           END DO
+        U(J,J) = CONE
+        DO I = J+1, N
+           U(I,J) = CZERO
         END DO
-        !$OMP END PARALLEL DO
-     END IF
-  ELSE ! sequentially
-     IF (LUSID) THEN
-        DO J = 1, N
-           DO I = 1, J-1
-              U(I,J) = CZERO
-           END DO
-           U(J,J) = CONE
-           DO I = J+1, N
-              U(I,J) = CZERO
-           END DO
+     END DO
+  END IF
+  IF (LVSID) THEN
+     DO J = 1, N
+        DO I = 1, J-1
+           V(I,J) = CZERO
         END DO
-     END IF
-     IF (LVSID) THEN
-        DO J = 1, N
-           DO I = 1, J-1
-              V(I,J) = CZERO
-           END DO
-           V(J,J) = CONE
-           DO I = J+1, N
-              V(I,J) = CZERO
-           END DO
+        V(J,J) = CONE
+        DO I = J+1, N
+           V(I,J) = CZERO
         END DO
-     END IF
+     END DO
   END IF
 
   ! scale G
-  !$ L = OMP_GET_NUM_THREADS()
-  IF (.NOT. LOMP) L = 0
+  L = 0
   CALL ZLANGO(N, G, LDG, GN, L)
   IF (L .NE. 0) THEN
      INFO = -3
@@ -228,8 +194,7 @@ SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
   END IF
   GS = EXPONENT(HUGE(GN)) - EXPONENT(GN) - 9
   IF (GS .NE. 0) THEN
-     !$ L = OMP_GET_NUM_THREADS()
-     IF (.NOT. LOMP) L = 0
+     L = 0
      CALL ZSCALG(N, N, G, LDG, GS, L)
      IF (L .NE. 0) THEN
         INFO = -3
@@ -244,8 +209,7 @@ SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
         UN = ONE
         US = 0
      ELSE ! scaling of U might be required
-        !$ L = OMP_GET_NUM_THREADS()
-        IF (.NOT. LOMP) L = 0
+        L = 0
         CALL ZLANGO(N, U, LDU, UN, L)
         IF (L .NE. 0) THEN
            INFO = -5
@@ -254,8 +218,7 @@ SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
         US = EXPONENT(HUGE(UN)) - EXPONENT(UN) - 4
      END IF
      IF (US .NE. 0) THEN
-        !$ L = OMP_GET_NUM_THREADS()
-        IF (.NOT. LOMP) L = 0
+        L = 0
         CALL ZSCALG(N, N, U, LDU, US, L)
         IF (L .NE. 0) THEN
            INFO = -5
@@ -274,8 +237,7 @@ SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
         VN = ONE
         VS = 0
      ELSE ! scaling of V might be required
-        !$ L = OMP_GET_NUM_THREADS()
-        IF (.NOT. LOMP) L = 0
+        L = 0
         CALL ZLANGO(N, V, LDV, VN, L)
         IF (L .NE. 0) THEN
            INFO = -7
@@ -284,8 +246,7 @@ SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
         VS = EXPONENT(HUGE(VN)) - EXPONENT(VN) - 4
      END IF
      IF (VS .NE. 0) THEN
-        !$ L = OMP_GET_NUM_THREADS()
-        IF (.NOT. LOMP) L = 0
+        L = 0
         CALL ZSCALG(N, N, V, LDV, VS, L)
         IF (L .NE. 0) THEN
            INFO = -7
@@ -306,8 +267,7 @@ SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
      T = STP + 1
 
      ! build the current step's pairs
-     !$ L = OMP_GET_NUM_THREADS()
-     IF (.NOT. LOMP) L = 0
+     L = 0
      CALL WMKDPQ(N, G, LDG, D, O, L)
      IF (L .LT. 0) THEN
         INFO = -10
@@ -325,186 +285,109 @@ SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
 
      ! compute and apply the transformations
      M = 0
-     IF (LOMP .AND. (I .GT. 1)) THEN
-        !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,U,W,O,N,LDG,LDU,I,LUACC) PRIVATE(G2,U2,V2,P,Q,WV,WS,T,L,ES) REDUCTION(+:M)
-        DO J = 1, I
-           L = (N * (N - 1)) / 2
-           P = O(1,L+J)
-           Q = O(2,L+J)
-           IF ((P .LE. 0) .OR. (Q .LE. P) .OR. (P .GE. N) .OR. (Q .GT. N)) THEN
-              M = M + 1
-              CYCLE
-           END IF
-           G2(1,1) = G(P,P)
-           G2(2,1) = G(Q,P)
-           G2(1,2) = G(P,Q)
-           G2(2,2) = G(Q,Q)
-           WV = (J - 1) * 10 + 1
-           WS = WV + 8
-           ES(1) = 0
-           CALL ZKSVD2(G2, U2, V2, W(WS), ES)
-           O(2,L+I+J) = ES(1)
-           CALL ZCVGPP(G2, U2, V2, W(WS), ES)
-           O(1,L+I+J) = ES(1)
-           W(WV) = REAL(V2(1,1))
-           W(WV+1) = AIMAG(V2(1,1))
-           W(WV+2) = REAL(V2(2,1))
-           W(WV+3) = AIMAG(V2(2,1))
-           W(WV+4) = REAL(V2(1,2))
-           W(WV+5) = AIMAG(V2(1,2))
-           W(WV+6) = REAL(V2(2,2))
-           W(WV+7) = AIMAG(V2(2,2))
-           T = ES(1)
-           IF (T .LT. 0) THEN
-              M = M + 1
-              CYCLE
-           END IF
-           ! transform U from the right, conjugate-transpose U2, and transform G from the left
-           IF (IAND(T, 2) .NE. 0) THEN
-              IF (LUACC) THEN
-                 L = 0
-                 CALL ZROTCX(N, N, U, LDU, P, Q, U2, L)
-                 IF (L .LT. 0) THEN
-                    M = M + 1
-                    CYCLE
-                 END IF
-              END IF
-              G2(1,1) = CONJG(U2(1,1))
-              G2(2,1) = CONJG(U2(1,2))
-              G2(1,2) = CONJG(U2(2,1))
-              G2(2,2) = CONJG(U2(2,2))
+     DO J = 1, I
+        L = (N * (N - 1)) / 2
+        P = O(1,L+J)
+        Q = O(2,L+J)
+        IF ((P .LE. 0) .OR. (Q .LE. P) .OR. (P .GE. N) .OR. (Q .GT. N)) THEN
+           M = M + 1
+           CYCLE
+        END IF
+        G2(1,1) = G(P,P)
+        G2(2,1) = G(Q,P)
+        G2(1,2) = G(P,Q)
+        G2(2,2) = G(Q,Q)
+        WV = (J - 1) * 10 + 1
+        WS = WV + 8
+        ES(1) = 0
+        CALL ZKSVD2(G2, U2, V2, W(WS), ES)
+        O(2,L+I+J) = ES(1)
+        CALL ZCVGPP(G2, U2, V2, W(WS), ES)
+        O(1,L+I+J) = ES(1)
+        W(WV) = REAL(V2(1,1))
+        W(WV+1) = AIMAG(V2(1,1))
+        W(WV+2) = REAL(V2(2,1))
+        W(WV+3) = AIMAG(V2(2,1))
+        W(WV+4) = REAL(V2(1,2))
+        W(WV+5) = AIMAG(V2(1,2))
+        W(WV+6) = REAL(V2(2,2))
+        W(WV+7) = AIMAG(V2(2,2))
+        T = ES(1)
+        IF (T .LT. 0) THEN
+           M = M + 1
+           CYCLE
+        END IF
+        ! transform U from the right, conjugate-transpose U2, and transform G from the left
+        IF (IAND(T, 2) .NE. 0) THEN
+           IF (LUACC) THEN
               L = 0
-              CALL ZROTRX(N, N, G, LDG, P, Q, G2, L)
+              CALL ZROTCX(N, N, U, LDU, P, Q, U2, L)
               IF (L .LT. 0) THEN
                  M = M + 1
                  CYCLE
               END IF
            END IF
-        END DO
-        !$OMP END PARALLEL DO
-        IF (M .NE. 0) THEN
-           INFO = -19
-           RETURN
+           G2(1,1) = CONJG(U2(1,1))
+           G2(2,1) = CONJG(U2(1,2))
+           G2(1,2) = CONJG(U2(2,1))
+           G2(2,2) = CONJG(U2(2,2))
+           L = 0
+           CALL ZROTRX(N, N, G, LDG, P, Q, G2, L)
+           IF (L .LT. 0) THEN
+              M = M + 1
+              CYCLE
+           END IF
         END IF
-        !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,V,W,O,N,LDG,LDV,I,LVACC) PRIVATE(V2,P,Q,WV,WS,T,L) REDUCTION(+:M)
-        DO J = 1, I
-           L = (N * (N - 1)) / 2
-           P = O(1,L+J)
-           Q = O(2,L+J)
-           WV = (J - 1) * 10 + 1
-           WS = WV + 8
-           T = O(1,L+I+J)
-           ! transform V and G from the right
-           IF (IAND(T, 4) .NE. 0) THEN
-              V2(1,1) = CMPLX(W(WV), W(WV+1), K)
-              V2(2,1) = CMPLX(W(WV+2), W(WV+3), K)
-              V2(1,2) = CMPLX(W(WV+4), W(WV+5), K)
-              V2(2,2) = CMPLX(W(WV+6), W(WV+7), K)
-              IF (LVACC) THEN
-                 L = 0
-                 CALL ZROTCX(N, N, V, LDV, P, Q, V2, L)
-                 IF (L .LT. 0) THEN
-                    M = M + (I + 1)
-                    CYCLE
-                 END IF
-              END IF
+     END DO
+     IF (M .NE. 0) THEN
+        INFO = -19
+        RETURN
+     END IF
+     DO J = 1, I
+        L = (N * (N - 1)) / 2
+        P = O(1,L+J)
+        Q = O(2,L+J)
+        WV = (J - 1) * 10 + 1
+        WS = WV + 8
+        T = O(1,L+I+J)
+        ! transform V and G from the right
+        IF (IAND(T, 4) .NE. 0) THEN
+           V2(1,1) = CMPLX(W(WV), W(WV+1), K)
+           V2(2,1) = CMPLX(W(WV+2), W(WV+3), K)
+           V2(1,2) = CMPLX(W(WV+4), W(WV+5), K)
+           V2(2,2) = CMPLX(W(WV+6), W(WV+7), K)
+           IF (LVACC) THEN
               L = 0
-              CALL ZROTCX(N, N, G, LDG, P, Q, V2, L)
+              CALL ZROTCX(N, N, V, LDV, P, Q, V2, L)
               IF (L .LT. 0) THEN
                  M = M + (I + 1)
                  CYCLE
               END IF
            END IF
-           ! set the new values
-           G(P,P) = CMPLX(W(WS), ZERO, K)
-           G(Q,P) = CZERO
-           G(P,Q) = CZERO
-           G(Q,Q) = CMPLX(W(WS+1), ZERO, K)
-           IF (IAND(T, 8) .NE. 0) M = M + 1
-        END DO
-        !$OMP END PARALLEL DO
-        IF ((M .LT. 0) .OR. (M .GT. I)) THEN
-           INFO = -20
-           RETURN
+           L = 0
+           CALL ZROTCX(N, N, G, LDG, P, Q, V2, L)
+           IF (L .LT. 0) THEN
+              M = M + (I + 1)
+              CYCLE
+           END IF
         END IF
-     ELSE ! sequentially
-        DO J = 1, I
-           L = (N * (N - 1)) / 2
-           P = O(1,L+J)
-           Q = O(2,L+J)
-           IF ((P .LE. 0) .OR. (Q .LE. P) .OR. (P .GE. N) .OR. (Q .GT. N)) THEN
-              INFO = -13
-              RETURN
-           END IF
-           G2(1,1) = G(P,P)
-           G2(2,1) = G(Q,P)
-           G2(1,2) = G(P,Q)
-           G2(2,2) = G(Q,Q)
-           WV = (J - 1) * 10 + 1
-           WS = WV + 8
-           ES(1) = 0
-           CALL ZKSVD2(G2, U2, V2, W(WS), ES)
-           O(2,L+I+J) = ES(1)
-           CALL ZCVGPP(G2, U2, V2, W(WS), ES)
-           O(1,L+I+J) = ES(1)
-           T = ES(1)
-           IF (T .LT. 0) THEN
-              INFO = -14
-              RETURN
-           END IF
-           ! transform U from the right, conjugate-transpose U2, and transform G from the left
-           IF (IAND(T, 2) .NE. 0) THEN
-              IF (LUACC) THEN
-                 L = 0
-                 CALL ZROTCX(N, N, U, LDU, P, Q, U2, L)
-                 IF (L .LT. 0) THEN
-                    INFO = -15
-                    RETURN
-                 END IF
-              END IF
-              G2(1,1) = CONJG(U2(1,1))
-              G2(2,1) = CONJG(U2(1,2))
-              G2(1,2) = CONJG(U2(2,1))
-              G2(2,2) = CONJG(U2(2,2))
-              L = 0
-              CALL ZROTRX(N, N, G, LDG, P, Q, G2, L)
-              IF (L .LT. 0) THEN
-                 INFO = -16
-                 RETURN
-              END IF
-           END IF
-           ! transform V and G from the right
-           IF (IAND(T, 4) .NE. 0) THEN
-              IF (LVACC) THEN
-                 L = 0
-                 CALL ZROTCX(N, N, V, LDV, P, Q, V2, L)
-                 IF (L .LT. 0) THEN
-                    INFO = -17
-                    RETURN
-                 END IF
-              END IF
-              L = 0
-              CALL ZROTCX(N, N, G, LDG, P, Q, V2, L)
-              IF (L .LT. 0) THEN
-                 INFO = -18
-                 RETURN
-              END IF
-           END IF
-           ! set the new values
-           G(P,P) = CMPLX(W(WS), ZERO, K)
-           G(Q,P) = CZERO
-           G(P,Q) = CZERO
-           G(Q,Q) = CMPLX(W(WS+1), ZERO, K)
-           IF (IAND(T, 8) .NE. 0) M = M + 1
-        END DO
+        ! set the new values
+        G(P,P) = CMPLX(W(WS), ZERO, K)
+        G(Q,P) = CZERO
+        G(P,Q) = CZERO
+        G(Q,Q) = CMPLX(W(WS+1), ZERO, K)
+        IF (IAND(T, 8) .NE. 0) M = M + 1
+     END DO
+     IF ((M .LT. 0) .OR. (M .GT. I)) THEN
+        INFO = -20
+        RETURN
      END IF
 
      IF (M .GT. 0) THEN
         TM = TM + M
 
         ! optionally scale G
-        !$ L = OMP_GET_NUM_THREADS()
-        IF (.NOT. LOMP) L = 0
+        L = 0
         CALL ZLANGO(N, G, LDG, GN, L)
         IF (L .NE. 0) THEN
            INFO = -3
@@ -512,8 +395,7 @@ SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
         END IF
         T = EXPONENT(HUGE(GN)) - EXPONENT(GN) - 9
         IF (T .LT. 0) THEN
-           !$ L = OMP_GET_NUM_THREADS()
-           IF (.NOT. LOMP) L = 0
+           L = 0
            CALL ZSCALG(N, N, G, LDG, T, L)
            IF (L .NE. 0) THEN
               INFO = -3
@@ -525,8 +407,7 @@ SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
 
         ! optionally scale U
         IF (LUACC .AND. (.NOT. LUSID)) THEN
-           !$ L = OMP_GET_NUM_THREADS()
-           IF (.NOT. LOMP) L = 0
+           L = 0
            CALL ZLANGO(N, U, LDU, UN, L)
            IF (L .NE. 0) THEN
               INFO = -5
@@ -534,8 +415,7 @@ SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
            END IF
            T = EXPONENT(HUGE(UN)) - EXPONENT(UN) - 4
            IF (T .LT. 0) THEN
-              !$ L = OMP_GET_NUM_THREADS()
-              IF (.NOT. LOMP) L = 0
+              L = 0
               CALL ZSCALG(N, N, U, LDU, T, L)
               IF (L .NE. 0) THEN
                  INFO = -5
@@ -548,8 +428,7 @@ SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
 
         ! optionally scale V
         IF (LVACC .AND. (.NOT. LVSID)) THEN
-           !$ L = OMP_GET_NUM_THREADS()
-           IF (.NOT. LOMP) L = 0
+           L = 0
            CALL ZLANGO(N, V, LDV, VN, L)
            IF (L .NE. 0) THEN
               INFO = -7
@@ -557,8 +436,7 @@ SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
            END IF
            T = EXPONENT(HUGE(VN)) - EXPONENT(VN) - 4
            IF (T .LT. 0) THEN
-              !$ L = OMP_GET_NUM_THREADS()
-              IF (.NOT. LOMP) L = 0
+              L = 0
               CALL ZSCALG(N, N, V, LDV, T, L)
               IF (L .NE. 0) THEN
                  INFO = -7
@@ -575,36 +453,23 @@ SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
   INFO = STP
 
   ! extract SV from G with a safe backscaling
-  IF (LOMP) THEN
-     I = 0
-     !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,SV,N,GS) REDUCTION(MAX:I)
-     DO J = 1, N
-        SV(J) = REAL(G(J,J))
-        IF (.NOT. (SV(J) .LE. HUGE(SV(J)))) THEN
-           I = MAX(I, J)
-        ELSE ! SV(J) finite
-           I = MAX(I, 0)
-        END IF
-     END DO
-     !$OMP END PARALLEL DO
-     IF (I .NE. 0) THEN
-        INFO = -9
-        RETURN
+  I = 0
+  DO J = 1, N
+     SV(J) = REAL(G(J,J))
+     IF (.NOT. (SV(J) .LE. HUGE(SV(J)))) THEN
+        I = MAX(I, J)
+     ELSE ! SV(J) finite
+        I = MAX(I, 0)
      END IF
-  ELSE ! sequentially
-     DO J = 1, N
-        SV(J) = REAL(G(J,J))
-        IF (.NOT. (SV(J) .LE. HUGE(SV(J)))) THEN
-           INFO = -9
-           RETURN
-        END IF
-     END DO
+  END DO
+  IF (I .NE. 0) THEN
+     INFO = -9
+     RETURN
   END IF
 
   ! backscale G, U, V
   IF (GS .NE. 0) THEN
-     !$ L = OMP_GET_NUM_THREADS()
-     IF (.NOT. LOMP) L = 0
+     L = 0
      CALL ZSCALG(N, N, G, LDG, -GS, L)
      IF (L .NE. 0) THEN
         INFO = -3
@@ -613,8 +478,7 @@ SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
      GN = SCALE(GN, -GS)
   END IF
   IF (US .NE. 0) THEN
-     !$ L = OMP_GET_NUM_THREADS()
-     IF (.NOT. LOMP) L = 0
+     L = 0
      CALL ZSCALG(N, N, U, LDU, -US, L)
      IF (L .NE. 0) THEN
         INFO = -5
@@ -623,8 +487,7 @@ SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
      UN = SCALE(UN, -US)
   END IF
   IF (VS .NE. 0) THEN
-     !$ L = OMP_GET_NUM_THREADS()
-     IF (.NOT. LOMP) L = 0
+     L = 0
      CALL ZSCALG(N, N, V, LDV, -VS, L)
      IF (L .NE. 0) THEN
         INFO = -7

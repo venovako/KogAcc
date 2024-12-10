@@ -134,61 +134,36 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
   END IF
 
   ! optionally set U and V to I
-  IF (LOMP) THEN
-     IF (LUSID) THEN
-        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J) SHARED(U,N)
-        DO J = 1, N
-           DO I = 1, J-1
-              U(I,J) = ZERO
-           END DO
-           U(J,J) = ONE
-           DO I = J+1, N
-              U(I,J) = ZERO
-           END DO
+  IF (LUSID) THEN
+     !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J) SHARED(U,N) IF(LOMP)
+     DO J = 1, N
+        DO I = 1, J-1
+           U(I,J) = ZERO
         END DO
-        !$OMP END PARALLEL DO
-     END IF
-     IF (LVSID) THEN
-        !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J) SHARED(V,N)
-        DO J = 1, N
-           DO I = 1, J-1
-              V(I,J) = ZERO
-           END DO
-           V(J,J) = ONE
-           DO I = J+1, N
-              V(I,J) = ZERO
-           END DO
+        U(J,J) = ONE
+        DO I = J+1, N
+           U(I,J) = ZERO
         END DO
-        !$OMP END PARALLEL DO
-     END IF
-  ELSE ! sequentially
-     IF (LUSID) THEN
-        DO J = 1, N
-           DO I = 1, J-1
-              U(I,J) = ZERO
-           END DO
-           U(J,J) = ONE
-           DO I = J+1, N
-              U(I,J) = ZERO
-           END DO
+     END DO
+     !$OMP END PARALLEL DO
+  END IF
+  IF (LVSID) THEN
+     !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J) SHARED(V,N) IF(LOMP)
+     DO J = 1, N
+        DO I = 1, J-1
+           V(I,J) = ZERO
         END DO
-     END IF
-     IF (LVSID) THEN
-        DO J = 1, N
-           DO I = 1, J-1
-              V(I,J) = ZERO
-           END DO
-           V(J,J) = ONE
-           DO I = J+1, N
-              V(I,J) = ZERO
-           END DO
+        V(J,J) = ONE
+        DO I = J+1, N
+           V(I,J) = ZERO
         END DO
-     END IF
+     END DO
+     !$OMP END PARALLEL DO
   END IF
 
   ! scale G
-  !$ L = OMP_GET_NUM_THREADS()
-  IF (.NOT. LOMP) L = 0
+  L = 0
+  !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
   CALL SLANGO(N, G, LDG, GN, L)
   IF (L .NE. 0) THEN
      INFO = -3
@@ -196,8 +171,8 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
   END IF
   GS = EXPONENT(HUGE(GN)) - EXPONENT(GN) - 3
   IF (GS .NE. 0) THEN
-     !$ L = OMP_GET_NUM_THREADS()
-     IF (.NOT. LOMP) L = 0
+     L = 0
+     !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
      CALL SSCALG(N, N, G, LDG, GS, L)
      IF (L .NE. 0) THEN
         INFO = -3
@@ -212,8 +187,8 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
         UN = ONE
         US = 0
      ELSE ! scaling of U might be required
-        !$ L = OMP_GET_NUM_THREADS()
-        IF (.NOT. LOMP) L = 0
+        L = 0
+        !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
         CALL SLANGO(N, U, LDU, UN, L)
         IF (L .NE. 0) THEN
            INFO = -5
@@ -222,8 +197,8 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
         US = EXPONENT(HUGE(UN)) - EXPONENT(UN) - 2
      END IF
      IF (US .NE. 0) THEN
-        !$ L = OMP_GET_NUM_THREADS()
-        IF (.NOT. LOMP) L = 0
+        L = 0
+        !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
         CALL SSCALG(N, N, U, LDU, US, L)
         IF (L .NE. 0) THEN
            INFO = -5
@@ -242,8 +217,8 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
         VN = ONE
         VS = 0
      ELSE ! scaling of V might be required
-        !$ L = OMP_GET_NUM_THREADS()
-        IF (.NOT. LOMP) L = 0
+        L = 0
+        !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
         CALL SLANGO(N, V, LDV, VN, L)
         IF (L .NE. 0) THEN
            INFO = -7
@@ -252,8 +227,8 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
         VS = EXPONENT(HUGE(VN)) - EXPONENT(VN) - 2
      END IF
      IF (VS .NE. 0) THEN
-        !$ L = OMP_GET_NUM_THREADS()
-        IF (.NOT. LOMP) L = 0
+        L = 0
+        !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
         CALL SSCALG(N, N, V, LDV, VS, L)
         IF (L .NE. 0) THEN
            INFO = -7
@@ -274,8 +249,8 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
      T = STP + 1
 
      ! build the current step's pairs
-     !$ L = OMP_GET_NUM_THREADS()
-     IF (.NOT. LOMP) L = 0
+     L = 0
+     !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
      CALL SMKDPQ(N, G, LDG, D, O, L)
      IF (L .LT. 0) THEN
         INFO = -10
@@ -293,174 +268,102 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
 
      ! compute and apply the transformations
      M = 0
-     IF (LOMP .AND. (I .GT. 1)) THEN
-        !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,U,W,O,N,LDG,LDU,I,LUACC) PRIVATE(G2,U2,P,Q,WV,WS,T,L,ES) REDUCTION(+:M)
-        DO J = 1, I
-           L = (N * (N - 1)) / 2
-           P = O(1,L+J)
-           Q = O(2,L+J)
-           IF ((P .LE. 0) .OR. (Q .LE. P) .OR. (P .GE. N) .OR. (Q .GT. N)) THEN
-              M = M + 1
-              CYCLE
-           END IF
-           G2(1,1) = G(P,P)
-           G2(2,1) = G(Q,P)
-           G2(1,2) = G(P,Q)
-           G2(2,2) = G(Q,Q)
-           WV = (J - 1) * 6 + 1
-           WS = WV + 4
-           ES(1) = 0
-           CALL SKSVD2(G2, U2, W(WV), W(WS), ES)
-           O(2,L+I+J) = ES(1)
-           CALL SCVGPP(G2, U2, W(WV), W(WS), ES)
-           O(1,L+I+J) = ES(1)
-           T = ES(1)
-           IF (T .LT. 0) THEN
-              M = M + 1
-              CYCLE
-           END IF
-           ! transform U from the right, transpose U2, and transform G from the left
-           IF (IAND(T, 2) .NE. 0) THEN
-              IF (LUACC) THEN
-                 L = 0
-                 CALL SROTCA(N, N, U, LDU, P, Q, U2, L)
-                 IF (L .LT. 0) THEN
-                    M = M + 1
-                    CYCLE
-                 END IF
-              END IF
-              G2(1,1) = U2(1,1)
-              G2(2,1) = U2(1,2)
-              G2(1,2) = U2(2,1)
-              G2(2,2) = U2(2,2)
+!$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,U,W,O,N,LDG,LDU,I,LUACC) PRIVATE(G2,U2,P,Q,WV,WS,T,L,ES) REDUCTION(+:M) IF(LOMP)
+     DO J = 1, I
+        L = (N * (N - 1)) / 2
+        P = O(1,L+J)
+        Q = O(2,L+J)
+        IF ((P .LE. 0) .OR. (Q .LE. P) .OR. (P .GE. N) .OR. (Q .GT. N)) THEN
+           M = M + 1
+           CYCLE
+        END IF
+        G2(1,1) = G(P,P)
+        G2(2,1) = G(Q,P)
+        G2(1,2) = G(P,Q)
+        G2(2,2) = G(Q,Q)
+        WV = (J - 1) * 6 + 1
+        WS = WV + 4
+        ES(1) = 0
+        CALL SKSVD2(G2, U2, W(WV), W(WS), ES)
+        O(2,L+I+J) = ES(1)
+        CALL SCVGPP(G2, U2, W(WV), W(WS), ES)
+        O(1,L+I+J) = ES(1)
+        T = ES(1)
+        IF (T .LT. 0) THEN
+           M = M + 1
+           CYCLE
+        END IF
+        ! transform U from the right, transpose U2, and transform G from the left
+        IF (IAND(T, 2) .NE. 0) THEN
+           IF (LUACC) THEN
               L = 0
-              CALL SROTRA(N, N, G, LDG, P, Q, G2, L)
+              CALL SROTCA(N, N, U, LDU, P, Q, U2, L)
               IF (L .LT. 0) THEN
                  M = M + 1
                  CYCLE
               END IF
            END IF
-        END DO
-        !$OMP END PARALLEL DO
-        IF (M .NE. 0) THEN
-           INFO = -19
-           RETURN
+           G2(1,1) = U2(1,1)
+           G2(2,1) = U2(1,2)
+           G2(1,2) = U2(2,1)
+           G2(2,2) = U2(2,2)
+           L = 0
+           CALL SROTRA(N, N, G, LDG, P, Q, G2, L)
+           IF (L .LT. 0) THEN
+              M = M + 1
+              CYCLE
+           END IF
         END IF
-        !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,V,W,O,N,LDG,LDV,I,LVACC) PRIVATE(P,Q,WV,WS,T,L) REDUCTION(+:M)
-        DO J = 1, I
-           L = (N * (N - 1)) / 2
-           P = O(1,L+J)
-           Q = O(2,L+J)
-           WV = (J - 1) * 6 + 1
-           WS = WV + 4
-           T = O(1,L+I+J)
-           ! transform V and G from the right
-           IF (IAND(T, 4) .NE. 0) THEN
-              IF (LVACC) THEN
-                 L = 0
-                 CALL SROTCA(N, N, V, LDV, P, Q, W(WV), L)
-                 IF (L .LT. 0) THEN
-                    M = M + (I + 1)
-                    CYCLE
-                 END IF
-              END IF
+     END DO
+!$OMP END PARALLEL DO
+     IF (M .NE. 0) THEN
+        INFO = -19
+        RETURN
+     END IF
+!$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,V,W,O,N,LDG,LDV,I,LVACC) PRIVATE(P,Q,WV,WS,T,L) REDUCTION(+:M) IF(LOMP)
+     DO J = 1, I
+        L = (N * (N - 1)) / 2
+        P = O(1,L+J)
+        Q = O(2,L+J)
+        WV = (J - 1) * 6 + 1
+        WS = WV + 4
+        T = O(1,L+I+J)
+        ! transform V and G from the right
+        IF (IAND(T, 4) .NE. 0) THEN
+           IF (LVACC) THEN
               L = 0
-              CALL SROTCA(N, N, G, LDG, P, Q, W(WV), L)
+              CALL SROTCA(N, N, V, LDV, P, Q, W(WV), L)
               IF (L .LT. 0) THEN
                  M = M + (I + 1)
                  CYCLE
               END IF
            END IF
-           ! set the new values
-           G(P,P) = W(WS)
-           G(Q,P) = ZERO
-           G(P,Q) = ZERO
-           G(Q,Q) = W(WS+1)
-           IF (IAND(T, 8) .NE. 0) M = M + 1
-        END DO
-        !$OMP END PARALLEL DO
-        IF ((M .LT. 0) .OR. (M .GT. I)) THEN
-           INFO = -20
-           RETURN
+           L = 0
+           CALL SROTCA(N, N, G, LDG, P, Q, W(WV), L)
+           IF (L .LT. 0) THEN
+              M = M + (I + 1)
+              CYCLE
+           END IF
         END IF
-     ELSE ! sequentially
-        DO J = 1, I
-           L = (N * (N - 1)) / 2
-           P = O(1,L+J)
-           Q = O(2,L+J)
-           IF ((P .LE. 0) .OR. (Q .LE. P) .OR. (P .GE. N) .OR. (Q .GT. N)) THEN
-              INFO = -13
-              RETURN
-           END IF
-           G2(1,1) = G(P,P)
-           G2(2,1) = G(Q,P)
-           G2(1,2) = G(P,Q)
-           G2(2,2) = G(Q,Q)
-           WV = (J - 1) * 6 + 1
-           WS = WV + 4
-           ES(1) = 0
-           CALL SKSVD2(G2, U2, W(WV), W(WS), ES)
-           O(2,L+I+J) = ES(1)
-           CALL SCVGPP(G2, U2, W(WV), W(WS), ES)
-           O(1,L+I+J) = ES(1)
-           T = ES(1)
-           IF (T .LT. 0) THEN
-              INFO = -14
-              RETURN
-           END IF
-           ! transform U from the right, transpose U2, and transform G from the left
-           IF (IAND(T, 2) .NE. 0) THEN
-              IF (LUACC) THEN
-                 L = 0
-                 CALL SROTCA(N, N, U, LDU, P, Q, U2, L)
-                 IF (L .LT. 0) THEN
-                    INFO = -15
-                    RETURN
-                 END IF
-              END IF
-              G2(1,1) = U2(1,1)
-              G2(2,1) = U2(1,2)
-              G2(1,2) = U2(2,1)
-              G2(2,2) = U2(2,2)
-              L = 0
-              CALL SROTRA(N, N, G, LDG, P, Q, G2, L)
-              IF (L .LT. 0) THEN
-                 INFO = -16
-                 RETURN
-              END IF
-           END IF
-           ! transform V and G from the right
-           IF (IAND(T, 4) .NE. 0) THEN
-              IF (LVACC) THEN
-                 L = 0
-                 CALL SROTCA(N, N, V, LDV, P, Q, W(WV), L)
-                 IF (L .LT. 0) THEN
-                    INFO = -17
-                    RETURN
-                 END IF
-              END IF
-              L = 0
-              CALL SROTCA(N, N, G, LDG, P, Q, W(WV), L)
-              IF (L .LT. 0) THEN
-                 INFO = -18
-                 RETURN
-              END IF
-           END IF
-           ! set the new values
-           G(P,P) = W(WS)
-           G(Q,P) = ZERO
-           G(P,Q) = ZERO
-           G(Q,Q) = W(WS+1)
-           IF (IAND(T, 8) .NE. 0) M = M + 1
-        END DO
+        ! set the new values
+        G(P,P) = W(WS)
+        G(Q,P) = ZERO
+        G(P,Q) = ZERO
+        G(Q,Q) = W(WS+1)
+        IF (IAND(T, 8) .NE. 0) M = M + 1
+     END DO
+!$OMP END PARALLEL DO
+     IF ((M .LT. 0) .OR. (M .GT. I)) THEN
+        INFO = -20
+        RETURN
      END IF
 
      IF (M .GT. 0) THEN
         TM = TM + M
 
         ! optionally scale G
-        !$ L = OMP_GET_NUM_THREADS()
-        IF (.NOT. LOMP) L = 0
+        L = 0
+        !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
         CALL SLANGO(N, G, LDG, GN, L)
         IF (L .NE. 0) THEN
            INFO = -3
@@ -468,8 +371,8 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
         END IF
         T = EXPONENT(HUGE(GN)) - EXPONENT(GN) - 3
         IF (T .LT. 0) THEN
-           !$ L = OMP_GET_NUM_THREADS()
-           IF (.NOT. LOMP) L = 0
+           L = 0
+           !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
            CALL SSCALG(N, N, G, LDG, T, L)
            IF (L .NE. 0) THEN
               INFO = -3
@@ -481,8 +384,8 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
 
         ! optionally scale U
         IF (LUACC .AND. (.NOT. LUSID)) THEN
-           !$ L = OMP_GET_NUM_THREADS()
-           IF (.NOT. LOMP) L = 0
+           L = 0
+           !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
            CALL SLANGO(N, U, LDU, UN, L)
            IF (L .NE. 0) THEN
               INFO = -5
@@ -490,8 +393,8 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
            END IF
            T = EXPONENT(HUGE(UN)) - EXPONENT(UN) - 2
            IF (T .LT. 0) THEN
-              !$ L = OMP_GET_NUM_THREADS()
-              IF (.NOT. LOMP) L = 0
+              L = 0
+              !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
               CALL SSCALG(N, N, U, LDU, T, L)
               IF (L .NE. 0) THEN
                  INFO = -5
@@ -504,8 +407,8 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
 
         ! optionally scale V
         IF (LVACC .AND. (.NOT. LVSID)) THEN
-           !$ L = OMP_GET_NUM_THREADS()
-           IF (.NOT. LOMP) L = 0
+           L = 0
+           !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
            CALL SLANGO(N, V, LDV, VN, L)
            IF (L .NE. 0) THEN
               INFO = -7
@@ -513,8 +416,8 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
            END IF
            T = EXPONENT(HUGE(VN)) - EXPONENT(VN) - 2
            IF (T .LT. 0) THEN
-              !$ L = OMP_GET_NUM_THREADS()
-              IF (.NOT. LOMP) L = 0
+              L = 0
+              !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
               CALL SSCALG(N, N, V, LDV, T, L)
               IF (L .NE. 0) THEN
                  INFO = -7
@@ -531,36 +434,26 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
   INFO = STP
 
   ! extract SV from G with a safe backscaling
-  IF (LOMP) THEN
-     I = 0
-     !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,SV,N,GS) REDUCTION(MAX:I)
-     DO J = 1, N
-        SV(J) = G(J,J)
-        IF (.NOT. (SV(J) .LE. HUGE(SV(J)))) THEN
-           I = MAX(I, J)
-        ELSE ! SV(J) finite
-           I = MAX(I, 0)
-        END IF
-     END DO
-     !$OMP END PARALLEL DO
-     IF (I .NE. 0) THEN
-        INFO = -9
-        RETURN
+  I = 0
+  !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,SV,N,GS) REDUCTION(MAX:I) IF(LOMP)
+  DO J = 1, N
+     SV(J) = G(J,J)
+     IF (.NOT. (SV(J) .LE. HUGE(SV(J)))) THEN
+        I = MAX(I, J)
+     ELSE ! SV(J) finite
+        I = MAX(I, 0)
      END IF
-  ELSE ! sequentially
-     DO J = 1, N
-        SV(J) = G(J,J)
-        IF (.NOT. (SV(J) .LE. HUGE(SV(J)))) THEN
-           INFO = -9
-           RETURN
-        END IF
-     END DO
+  END DO
+  !$OMP END PARALLEL DO
+  IF (I .NE. 0) THEN
+     INFO = -9
+     RETURN
   END IF
 
   ! backscale G, U, V
   IF (GS .NE. 0) THEN
-     !$ L = OMP_GET_NUM_THREADS()
-     IF (.NOT. LOMP) L = 0
+     L = 0
+     !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
      CALL SSCALG(N, N, G, LDG, -GS, L)
      IF (L .NE. 0) THEN
         INFO = -3
@@ -569,8 +462,8 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
      GN = SCALE(GN, -GS)
   END IF
   IF (US .NE. 0) THEN
-     !$ L = OMP_GET_NUM_THREADS()
-     IF (.NOT. LOMP) L = 0
+     L = 0
+     !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
      CALL SSCALG(N, N, U, LDU, -US, L)
      IF (L .NE. 0) THEN
         INFO = -5
@@ -579,8 +472,8 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
      UN = SCALE(UN, -US)
   END IF
   IF (VS .NE. 0) THEN
-     !$ L = OMP_GET_NUM_THREADS()
-     IF (.NOT. LOMP) L = 0
+     L = 0
+     !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
      CALL SSCALG(N, N, V, LDV, -VS, L)
      IF (L .NE. 0) THEN
         INFO = -7
