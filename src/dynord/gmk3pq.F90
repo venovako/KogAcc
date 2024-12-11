@@ -67,11 +67,10 @@
      W(J) = CR_HYPOT(W(J), W(I))
      I = I - 1
   END DO
-  ! with the scaling of G this might be expected to overflow
-  ! IF (.NOT. (W(J) .LE. HUGE(W(J)))) THEN
-  !    INFO = -7
-  !    RETURN
-  ! END IF
+  IF (.NOT. (W(J) .LE. HUGE(W(J)))) THEN
+     INFO = -7
+     RETURN
+  END IF
 #endif
 
   DO I = M+1, N*N

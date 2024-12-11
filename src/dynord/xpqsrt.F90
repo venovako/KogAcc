@@ -39,7 +39,7 @@ SUBROUTINE XPQSRT(WPQCMP, N, AW, AP, AQ, BW, BP, BQ, INFO)
   REAL(KIND=c_long_double), INTENT(OUT) :: BW(N)
   INTEGER, INTENT(OUT) :: BP(N), BQ(N)
   PROCEDURE(PQCMP) :: WPQCMP
-  INTEGER :: I, J, K, L, M, X, Y
+  INTEGER :: I, J, K, L, M, X, Y, Z
   LOGICAL :: FLIP
 #define WPQMRG XPQMRG
 #include "gpqsrt.F90"
