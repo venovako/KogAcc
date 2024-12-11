@@ -131,10 +131,8 @@ OBJS_FAUX=\
 ../obj/$(PLAT)/crotca.$(OXT)\
 ../obj/$(PLAT)/drotc.$(OXT)\
 ../obj/$(PLAT)/drotca.$(OXT)\
-../obj/$(PLAT)/drotcx.$(OXT)\
 ../obj/$(PLAT)/zrotc.$(OXT)\
 ../obj/$(PLAT)/zrotca.$(OXT)\
-../obj/$(PLAT)/zrotcx.$(OXT)\
 ../obj/$(PLAT)/qrotc.$(OXT)\
 ../obj/$(PLAT)/yrotc.$(OXT)\
 ../obj/$(PLAT)/srotr.$(OXT)\
@@ -143,10 +141,8 @@ OBJS_FAUX=\
 ../obj/$(PLAT)/crotra.$(OXT)\
 ../obj/$(PLAT)/drotr.$(OXT)\
 ../obj/$(PLAT)/drotra.$(OXT)\
-../obj/$(PLAT)/drotrx.$(OXT)\
 ../obj/$(PLAT)/zrotr.$(OXT)\
 ../obj/$(PLAT)/zrotra.$(OXT)\
-../obj/$(PLAT)/zrotrx.$(OXT)\
 ../obj/$(PLAT)/qrotr.$(OXT)\
 ../obj/$(PLAT)/yrotr.$(OXT)\
 ../obj/$(PLAT)/sscalg.$(OXT)\

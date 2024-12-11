@@ -8,19 +8,13 @@
   IF (M .EQ. 0) RETURN
   IF (N .EQ. 0) RETURN
   IF (S .EQ. 0) RETURN
+  INFO = I
 
-  IF (I .EQ. 0) THEN
-     DO J = 1, N
-        DO I = 1, M
-           G(I,J) = CMPLX(SCALE(REAL(G(I,J)), S), SCALE(AIMAG(G(I,J)), S), K)
-        END DO
+  !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J) SHARED(G,M,N,S) IF(INFO .NE. 0)
+  DO J = 1, N
+     DO I = 1, M
+        G(I,J) = CMPLX(SCALE(REAL(G(I,J)), S), SCALE(AIMAG(G(I,J)), S), K)
      END DO
-  ELSE ! OpenMP
-     !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J) SHARED(G,M,N,S)
-     DO J = 1, N
-        DO I = 1, M
-           G(I,J) = CMPLX(SCALE(REAL(G(I,J)), S), SCALE(AIMAG(G(I,J)), S), K)
-        END DO
-     END DO
-     !$OMP END PARALLEL DO
-  END IF
+  END DO
+  !$OMP END PARALLEL DO
+  INFO = 0
