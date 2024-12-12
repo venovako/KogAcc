@@ -64,8 +64,8 @@
 ../obj/$(PLAT)/zksvdd.$(OXT): blksvd/zksvdd.F90 blksvd/hksvdd.F90 $(MKFS) blksvd/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/zksvdd.F90
 
-../obj/$(PLAT)/xksvdd.$(OXT): blksvd/xksvdd.F90 $(MKFS) blksvd/GNUmakefile
+../obj/$(PLAT)/xksvdd.$(OXT): blksvd/xksvdd.F90 blksvd/gksvdd.F90 $(MKFS) blksvd/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/xksvdd.F90
 
-../obj/$(PLAT)/wksvdd.$(OXT): blksvd/wksvdd.F90 $(MKFS) blksvd/GNUmakefile
+../obj/$(PLAT)/wksvdd.$(OXT): blksvd/wksvdd.F90 blksvd/hksvdd.F90 $(MKFS) blksvd/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/wksvdd.F90
