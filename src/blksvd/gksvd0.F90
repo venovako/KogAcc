@@ -73,7 +73,7 @@
         IF (LUSID) U(1,1) = SIGN(ONE, G(1,1))
         IF (LVSID) V(1,1) = ONE
         G(1,1) = GN
-        SV(1) = REAL(GN, REAL128)
+        SV(1) = GN
         W(1) = GN
      END IF
 #ifdef ANIMATE
@@ -445,11 +445,11 @@
   IF (C_ASSOCIATED(CTX)) L = INT(PVN_RVIS_FRAME(CTX, G, LDF))
 #endif
 
-  ! extract SV from G with a safe backscaling
+  ! extract SV from G
   I = 0
   !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,SV,N,GS) REDUCTION(MAX:I) IF(LOMP)
   DO J = 1, N
-     SV(J) = SCALE(REAL(G(J,J), REAL128), -GS)
+     SV(J) = G(J,J)
      IF (.NOT. (SV(J) .LE. HUGE(SV(J)))) THEN
         I = MAX(I, J)
      ELSE ! SV(J) finite

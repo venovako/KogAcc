@@ -1,83 +1,81 @@
-!>@brief \b WKSVD0 computes the SVD of G as U S V^H, with S returned in SV and U and V optionally accumulated on either identity for the SVD, or on preset input matrices.
-SUBROUTINE WKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, R, INFO)
+!>@brief \b XKSVD0 computes the SVD of G as U S V^T, with S returned in SV and U and V optionally accumulated on either identity for the SVD, or on preset input matrices.
+SUBROUTINE XKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, R, INFO)
   USE, INTRINSIC :: ISO_C_BINDING
 #ifdef NDEBUG
-  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: INT64, REAL128
+  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: INT64
 #else
-  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: INT64, REAL128, OUTPUT_UNIT
+  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: INT64, OUTPUT_UNIT
 #endif
   !$ USE OMP_LIB
   IMPLICIT NONE
 
-#define CR_HYPOT HYPOT
   INTERFACE
-     SUBROUTINE WLANGO(N, G, LDG, S, INFO)
+     SUBROUTINE XLANGO(N, G, LDG, S, INFO)
        USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
        IMPLICIT NONE
        INTEGER, INTENT(IN) :: N, LDG
-       COMPLEX(KIND=c_long_double), INTENT(IN) :: G(N,LDG)
+       REAL(KIND=c_long_double), INTENT(IN) :: G(N,LDG)
        REAL(KIND=c_long_double), INTENT(OUT) :: S
        INTEGER, INTENT(INOUT) :: INFO
-     END SUBROUTINE WLANGO
+     END SUBROUTINE XLANGO
   END INTERFACE
   INTERFACE
-     SUBROUTINE WSCALG(M, N, G, LDG, S, INFO)
+     SUBROUTINE XSCALG(M, N, G, LDG, S, INFO)
        USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
        IMPLICIT NONE
        INTEGER, INTENT(IN) :: M, N, LDG, S
-       COMPLEX(KIND=c_long_double), INTENT(INOUT) :: G(LDG,N)
+       REAL(KIND=c_long_double), INTENT(INOUT) :: G(LDG,N)
        INTEGER, INTENT(INOUT) :: INFO
-     END SUBROUTINE WSCALG
+     END SUBROUTINE XSCALG
   END INTERFACE
   INTERFACE
-     SUBROUTINE WMK3PQ(K, N, G, LDG, W, O, INFO)
+     SUBROUTINE XMK3PQ(K, N, G, LDG, W, O, INFO)
        USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
        IMPLICIT NONE
        INTEGER, INTENT(IN) :: K, N, LDG
-       COMPLEX(KIND=c_long_double), INTENT(IN) :: G(LDG,N)
+       REAL(KIND=c_long_double), INTENT(IN) :: G(LDG,N)
        REAL(KIND=c_long_double), INTENT(OUT) :: W(N*N)
        INTEGER, INTENT(OUT) :: O(2*N*(N-1))
        INTEGER, INTENT(INOUT) :: INFO
-     END SUBROUTINE WMK3PQ
+     END SUBROUTINE XMK3PQ
   END INTERFACE
   INTERFACE
-     SUBROUTINE WKSVD2(G, U, V, S, INFO)
+     SUBROUTINE XKSVD2(G, U, V, S, INFO)
        USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
        IMPLICIT NONE
-       COMPLEX(KIND=c_long_double), INTENT(IN) :: G(2,2)
-       COMPLEX(KIND=c_long_double), INTENT(OUT) :: U(2,2), V(2,2)
-       REAL(KIND=c_long_double), INTENT(OUT) :: S(2)
+       REAL(KIND=c_long_double), INTENT(IN) :: G(2,2)
+       REAL(KIND=c_long_double), INTENT(OUT) :: U(2,2), V(2,2), S(2)
        INTEGER, INTENT(INOUT) :: INFO(3)
-     END SUBROUTINE WKSVD2
+     END SUBROUTINE XKSVD2
   END INTERFACE
   INTERFACE
-     PURE SUBROUTINE WCVGPP(G, U, V, S, INFO)
+     PURE SUBROUTINE XCVGPP(G, U, V, S, INFO)
        USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
        IMPLICIT NONE
-       COMPLEX(KIND=c_long_double), INTENT(IN) :: G(2,2), U(2,2), V(2,2)
+       REAL(KIND=c_long_double), INTENT(IN) :: G(2,2), U(2,2), V(2,2)
        REAL(KIND=c_long_double), INTENT(INOUT) :: S(2)
        INTEGER, INTENT(INOUT) :: INFO(3)
-     END SUBROUTINE WCVGPP
+     END SUBROUTINE XCVGPP
   END INTERFACE
   INTERFACE
-     SUBROUTINE WROTC(M, N, G, LDG, P, Q, W, INFO)
+     SUBROUTINE XROTC(M, N, G, LDG, P, Q, W, INFO)
        USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
        IMPLICIT NONE
        INTEGER, INTENT(IN) :: M, N, LDG, P, Q
-       COMPLEX(KIND=c_long_double), INTENT(INOUT) :: G(LDG,N)
-       COMPLEX(KIND=c_long_double), INTENT(IN) :: W(2,2)
+       REAL(KIND=c_long_double), INTENT(INOUT) :: G(LDG,N)
+       REAL(KIND=c_long_double), INTENT(IN) :: W(2,2)
        INTEGER, INTENT(INOUT) :: INFO
-     END SUBROUTINE WROTC
+     END SUBROUTINE XROTC
   END INTERFACE
   INTERFACE
-     SUBROUTINE WROTR(M, N, G, LDG, P, Q, W, INFO)
+     SUBROUTINE XROTR(M, N, G, LDG, P, Q, W, INFO)
        USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
        IMPLICIT NONE
        INTEGER, INTENT(IN) :: M, N, LDG, P, Q
-       COMPLEX(KIND=c_long_double), INTENT(INOUT) :: G(LDG,N)
-       COMPLEX(KIND=c_long_double), INTENT(IN) :: W(2,2)
+       REAL(KIND=c_long_double), INTENT(INOUT) :: G(LDG,N)
+       REAL(KIND=c_long_double), INTENT(IN) :: W(2,2)
        INTEGER, INTENT(INOUT) :: INFO
-     END SUBROUTINE WROTR
+     END SUBROUTINE XROTR
   END INTERFACE
   INTERFACE
      PURE SUBROUTINE JSTEP(J, N, S, T, P, O, R, INFO)
@@ -89,19 +87,18 @@ SUBROUTINE WKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, R, INFO)
 
   INTEGER, PARAMETER :: K = c_long_double, USID = 8, UACC = 16, VSID = 32, VACC = 64
   REAL(KIND=K), PARAMETER :: ZERO = 0.0_K, ONE = 1.0_K
-  COMPLEX(KIND=K), PARAMETER :: CZERO = (ZERO,ZERO), CONE = (ONE,ZERO)
   INTEGER, INTENT(IN) :: JOB, N, LDG, LDU, LDV
-  COMPLEX(KIND=K), INTENT(INOUT) :: G(LDG,N), U(LDU,N), V(LDV,N)
+  REAL(KIND=K), INTENT(INOUT) :: G(LDG,N), U(LDU,N), V(LDV,N)
 #ifdef ANIMATE
-  REAL(KIND=REAL128), INTENT(INOUT), TARGET :: SV(N)
+  REAL(KIND=K), INTENT(INOUT), TARGET :: SV(N)
 #else
-  REAL(KIND=REAL128), INTENT(OUT) :: SV(N)
+  REAL(KIND=K), INTENT(OUT) :: SV(N)
 #endif
   REAL(KIND=K), INTENT(OUT) :: W(*)
   INTEGER, INTENT(INOUT) :: O(2*N*(N-1)), INFO
   INTEGER, INTENT(OUT) :: R(2,*)
 
-  COMPLEX(KIND=K) :: G2(2,2), U2(2,2), V2(2,2)
+  REAL(KIND=K) :: G2(2,2), U2(2,2)
   REAL(KIND=K) :: GN, UN, VN
   INTEGER(KIND=INT64) :: TT, TM, SM
   INTEGER :: MRQSTP, I, J, L, M, M_2, NP, NS, P, Q, T, JS, GS, US, VS, WV, WS, STP, ES(3)
@@ -110,19 +107,19 @@ SUBROUTINE WKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, R, INFO)
   TYPE(c_ptr) :: CTX
   TYPE(c_ptr), POINTER :: CP
   INTEGER(KIND=c_size_t) :: LDF
-  INTEGER(KIND=c_int), EXTERNAL :: PVN_CVIS_FRAME_L
-#define PVN_CVIS_FRAME PVN_CVIS_FRAME_L
+  INTEGER(KIND=c_int), EXTERNAL :: PVN_RVIS_FRAME_L
+#define PVN_RVIS_FRAME PVN_RVIS_FRAME_L
 #endif
 
-#define LANGO WLANGO
-#define SCALG WSCALG
-#define MK3PQ WMK3PQ
-#define KSVD2 WKSVD2
-#define CVGPP WCVGPP
-#define ROTC WROTC
-#define ROTR WROTR
-#include "hksvd0.F90"
+#define LANGO XLANGO
+#define SCALG XSCALG
+#define MK3PQ XMK3PQ
+#define KSVD2 XKSVD2
+#define CVGPP XCVGPP
+#define ROTC XROTC
+#define ROTR XROTR
+#include "gksvd0.F90"
 #ifndef NDEBUG
 9 FORMAT(A,ES30.21E4)
 #endif
-END SUBROUTINE WKSVD0
+END SUBROUTINE XKSVD0

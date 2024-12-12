@@ -65,11 +65,12 @@
   CALL RDINP(BN, M, N, G, LDG, INFO)
   IF (INFO .NE. 0) ERROR STOP 'RDINP'
 
+#ifdef ANIMATE
+  ALLOCATE(SV(MAX(2,M)))
+#else
   ALLOCATE(SV(M))
+#endif
   ALLOCATE(W(MAX(6,MAX(M,3)*M)))
-  ! if, e.g., ||G||_F is known to be numerically finite and reasonably below HUGE,
-  ! the dynamic scaling can be turned off for speed
-
   ALLOCATE(O(2*M*(M-1)))
   IF ((J .GE. 0) .AND. (J .NE. 3)) THEN
      INFO = L
@@ -120,16 +121,15 @@
      WRITE (ERROR_UNIT,*) 'SUCCESS'
   END IF
 
-  DEALLOCATE(R)
-  DEALLOCATE(O)
-  DEALLOCATE(W)
-  DEALLOCATE(G)
-
-  INFO = L
+  INFO = -INT(W(4))
   CALL WROUT(BN, J, N, U, LDU, V, LDV, SV, INFO)
   IF (INFO .NE. 0) ERROR STOP 'WROUT'
 
+  DEALLOCATE(R)
+  DEALLOCATE(O)
+  DEALLOCATE(W)
   DEALLOCATE(SV)
+  DEALLOCATE(G)
   DEALLOCATE(V)
   DEALLOCATE(U)
 

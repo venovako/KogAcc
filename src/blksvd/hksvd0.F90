@@ -81,7 +81,7 @@
         END IF
         IF (LVSID) V(1,1) = CONE
         G(1,1) = GN
-        SV(1) = REAL(GN, REAL128)
+        SV(1) = GN
         W(1) = MAX(W(2), W(3))
         W(2) = MAX(ABS(REAL(U(1,1))), ABS(AIMAG(U(1,1))))
      END IF
@@ -463,11 +463,11 @@
   IF (C_ASSOCIATED(CTX)) L = INT(PVN_CVIS_FRAME(CTX, G, LDF))
 #endif
 
-  ! extract SV from G with a safe backscaling
+  ! extract SV from G
   I = 0
   !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,SV,N,GS) REDUCTION(MAX:I) IF(LOMP)
   DO J = 1, N
-     SV(J) = SCALE(REAL(REAL(G(J,J)), REAL128), -GS)
+     SV(J) = REAL(G(J,J))
      IF (.NOT. (SV(J) .LE. HUGE(SV(J)))) THEN
         I = MAX(I, J)
      ELSE ! SV(J) finite

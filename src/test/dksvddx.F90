@@ -103,11 +103,7 @@ PROGRAM DKSVDDX
 
   ALLOCATE(SV(M))
   ALLOCATE(W(MAX(6,MAX((M-1),3)*M)))
-  ! if, e.g., ||G||_F is known to be numerically finite and reasonably below HUGE,
-  ! the dynamic scaling can be turned off for speed
-
-  ALLOCATE(D(MAX(M,(M*(M-1))/2)))
-
+  ALLOCATE(D((M*(M-1))/2))
   ALLOCATE(O(2,M*(M/2)))
   JOB = 1
   DO I = 1, M-1
@@ -139,23 +135,16 @@ PROGRAM DKSVDDX
   END IF
 
   INFO = -INT(W(4))
-  !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I) SHARED(N,D,SV,INFO) IF(L .NE. 0)
-  DO I = 1, N
-     D(I) = SCALE(REAL(SV(I), REAL128), INFO)
-  END DO
-  !$OMP END PARALLEL DO
-
-  INFO = L
-  CALL DWROUT(BN, J, N, U, LDU, V, LDV, D, INFO)
+  CALL DWROUT(BN, J, N, U, LDU, V, LDV, SV, INFO)
   IF (INFO .NE. 0) ERROR STOP 'DWROUT'
 
   DEALLOCATE(O)
-  DEALLOCATE(SV)
   DEALLOCATE(D)
   DEALLOCATE(W)
+  DEALLOCATE(SV)
+  DEALLOCATE(G)
   DEALLOCATE(V)
   DEALLOCATE(U)
-  DEALLOCATE(G)
 
 9 FORMAT(3(ES25.17E3,A))
 CONTAINS
