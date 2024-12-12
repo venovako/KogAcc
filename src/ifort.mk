@@ -8,8 +8,8 @@ else # !NDEBUG
 FCFLAGS=-O0 -g
 endif # ?NDEBUG
 ifndef MARCH
-MARCH=Host
 # COMMON-AVX512 for KNLs
+MARCH=Host
 endif # !MARCH
 ifeq ($(ABI),ilp64)
 FCFLAGS += -qmkl-$(ABI)=sequential
