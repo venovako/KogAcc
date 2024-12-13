@@ -1,3 +1,4 @@
+# YMMV
 $(warning Flang is NOT supported, use it at your own risk!)
 AR=ar
 ARFLAGS=rsv

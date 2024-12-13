@@ -153,19 +153,7 @@ EXES_TEST=\
 ../bin/$(PLAT)/srnd.exe\
 ../bin/$(PLAT)/crnd.exe\
 ../bin/$(PLAT)/drnd.exe\
-../bin/$(PLAT)/zrnd.exe\
-../bin/$(PLAT)/sran2u.exe\
-../bin/$(PLAT)/sran2g.exe\
-../bin/$(PLAT)/cran2g.exe\
-../bin/$(PLAT)/dran2u.exe\
-../bin/$(PLAT)/dran2g.exe\
-../bin/$(PLAT)/zran2g.exe\
-../bin/$(PLAT)/srnd2u.exe\
-../bin/$(PLAT)/srnd2g.exe\
-../bin/$(PLAT)/crnd2g.exe\
-../bin/$(PLAT)/drnd2u.exe\
-../bin/$(PLAT)/drnd2g.exe\
-../bin/$(PLAT)/zrnd2g.exe
+../bin/$(PLAT)/zrnd.exe
 
 ifneq ($(COMPILER),xlf)
 OBJS_BLKSVD += \
@@ -184,6 +172,20 @@ EXES_KSVD2 += \
 ../bin/$(PLAT)/qksvd2.exe\
 ../bin/$(PLAT)/yksvd2.exe\
 ../bin/$(PLAT)/qlwsv2.exe
+
+EXES_TEST += \
+../bin/$(PLAT)/sran2u.exe\
+../bin/$(PLAT)/sran2g.exe\
+../bin/$(PLAT)/cran2g.exe\
+../bin/$(PLAT)/dran2u.exe\
+../bin/$(PLAT)/dran2g.exe\
+../bin/$(PLAT)/zran2g.exe\
+../bin/$(PLAT)/srnd2u.exe\
+../bin/$(PLAT)/srnd2g.exe\
+../bin/$(PLAT)/crnd2g.exe\
+../bin/$(PLAT)/drnd2u.exe\
+../bin/$(PLAT)/drnd2g.exe\
+../bin/$(PLAT)/zrnd2g.exe
 endif # !xlf
 
 OBJS=$(OBJS_ARRBIO) $(OBJS_BLKSVD) $(OBJS_DYNORD) $(OBJS_KSVD2) $(OBJS_FAUX)
