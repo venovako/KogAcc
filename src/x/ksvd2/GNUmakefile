@@ -4,6 +4,12 @@
 ../obj/$(PLAT)/wksvd2.$(OXT): ksvd2/wksvd2.F90 ksvd2/hksvd2.F90 $(MKFS) ksvd2/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/wksvd2.F90
 
+../obj/$(PLAT)/qcvgpp.$(OXT): ksvd2/qcvgpp.F90 ksvd2/gcvgpp.F90 $(MKFS) ksvd2/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/qcvgpp.F90
+
+../obj/$(PLAT)/ycvgpp.$(OXT): ksvd2/ycvgpp.F90 ksvd2/hcvgpp.F90 $(MKFS) ksvd2/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/ycvgpp.F90
+
 ../obj/$(PLAT)/xcvgpp.$(OXT): ksvd2/xcvgpp.F90 ksvd2/gcvgpp.F90 $(MKFS) ksvd2/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/ksvd2/xcvgpp.F90
 

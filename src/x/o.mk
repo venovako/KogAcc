@@ -25,6 +25,10 @@ OBJS_DYNORD=\
 ../obj/$(PLAT)/qpqmrg.$(OXT)\
 ../obj/$(PLAT)/qpqsrt.$(OXT)
 
+OBJS_KSVD2=\
+../obj/$(PLAT)/qcvgpp.$(OXT)\
+../obj/$(PLAT)/ycvgpp.$(OXT)
+
 OBJS_FAUX=\
 ../obj/$(PLAT)/ymul.$(OXT)\
 ../obj/$(PLAT)/yfma.$(OXT)\

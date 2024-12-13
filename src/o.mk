@@ -77,8 +77,6 @@ OBJS_KSVD2=\
 ../obj/$(PLAT)/ccvgpp.$(OXT)\
 ../obj/$(PLAT)/dcvgpp.$(OXT)\
 ../obj/$(PLAT)/zcvgpp.$(OXT)\
-../obj/$(PLAT)/qcvgpp.$(OXT)\
-../obj/$(PLAT)/ycvgpp.$(OXT)\
 ../obj/$(PLAT)/slmsv2.$(OXT)\
 ../obj/$(PLAT)/dlmsv2.$(OXT)\
 ../obj/$(PLAT)/qlmsv2.$(OXT)\
