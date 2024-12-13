@@ -8,7 +8,7 @@ FCFLAGS=-O$(NDEBUG)
 else # !NDEBUG
 FCFLAGS=-O0
 endif # ?NDEBUG
-FCFLAGS += -qinit=f90ptr -qsclk=micro -qpic -qarch=auto -qsimd=auto -qstacktemp=-1 -qstrict -qstrict_induction #-qsmp=omp
+FCFLAGS += -qinit=f90ptr -qsclk=micro -qpic -qarch=auto -qextname -qsimd=auto -qstacktemp=-1 -qstrict -qstrict_induction #-qsmp=omp
 ifndef NDEBUG
 FCFLAGS += -qcheck -qdbg
 endif # !NDEBUG

@@ -15,7 +15,7 @@ FCFLAGS += -mcpu=$(MARCH) -mpower8-fusion -mtraceback=full
 else # !ppc64le
 FCFLAGS += -march=$(MARCH)
 endif # ?ppc64le
-FCFLAGS += -fopenmp -fPIC -fexceptions -fasynchronous-unwind-tables -fno-omit-frame-pointer -ffp-contract=fast -ffree-line-length-none -fstack-arrays
+FCFLAGS += -frecursive -fPIC -fexceptions -fasynchronous-unwind-tables -fno-omit-frame-pointer -ffp-contract=fast -ffree-line-length-none -fstack-arrays #-fopenmp
 ifdef NDEBUG
 FCFLAGS += -fno-math-errno -fvect-cost-model=unlimited
 else # !NDEBUG

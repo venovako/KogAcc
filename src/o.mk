@@ -36,9 +36,7 @@ OBJS_BLKSVD=\
 ../obj/$(PLAT)/dksvd0.$(OXT)\
 ../obj/$(PLAT)/zksvd0.$(OXT)\
 ../obj/$(PLAT)/sksvdd.$(OXT)\
-../obj/$(PLAT)/dksvdd.$(OXT)\
 ../obj/$(PLAT)/cksvdd.$(OXT)\
-../obj/$(PLAT)/zksvdd.$(OXT)\
 ../obj/$(PLAT)/xksvdd.$(OXT)\
 ../obj/$(PLAT)/wksvdd.$(OXT)
 
@@ -56,9 +54,7 @@ OBJS_DYNORD=\
 ../obj/$(PLAT)/dmk3pq.$(OXT)\
 ../obj/$(PLAT)/zmk3pq.$(OXT)\
 ../obj/$(PLAT)/smkdpq.$(OXT)\
-../obj/$(PLAT)/dmkdpq.$(OXT)\
 ../obj/$(PLAT)/cmkdpq.$(OXT)\
-../obj/$(PLAT)/zmkdpq.$(OXT)\
 ../obj/$(PLAT)/spqcmp.$(OXT)\
 ../obj/$(PLAT)/dpqcmp.$(OXT)\
 ../obj/$(PLAT)/spqmrg.$(OXT)\
@@ -129,9 +125,7 @@ EXES_BLKSVD=\
 ../bin/$(PLAT)/dksvd0.exe\
 ../bin/$(PLAT)/zksvd0.exe\
 ../bin/$(PLAT)/sksvdd.exe\
-../bin/$(PLAT)/dksvdd.exe\
 ../bin/$(PLAT)/cksvdd.exe\
-../bin/$(PLAT)/zksvdd.exe\
 ../bin/$(PLAT)/xksvdd.exe\
 ../bin/$(PLAT)/wksvdd.exe
 
@@ -175,6 +169,20 @@ EXES_TEST=\
 ../bin/$(PLAT)/drnd2u.exe\
 ../bin/$(PLAT)/drnd2g.exe\
 ../bin/$(PLAT)/zrnd2g.exe
+
+ifneq ($(COMPILER),xlf)
+OBJS_BLKSVD += \
+../obj/$(PLAT)/dksvdd.$(OXT)\
+../obj/$(PLAT)/zksvdd.$(OXT)
+
+OBJS_DYNORD += \
+../obj/$(PLAT)/dmkdpq.$(OXT)\
+../obj/$(PLAT)/zmkdpq.$(OXT)
+
+EXES_BLKSVD += \
+../bin/$(PLAT)/dksvdd.exe\
+../bin/$(PLAT)/zksvdd.exe
+endif # !xlf
 
 OBJS=$(OBJS_ARRBIO) $(OBJS_BLKSVD) $(OBJS_DYNORD) $(OBJS_KSVD2) $(OBJS_FAUX)
 
