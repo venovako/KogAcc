@@ -1,4 +1,4 @@
-# crashes on some REAL128 code
+# OpenMP and REAL128 not fully supported yet
 AR=ar
 ARFLAGS=rsv
 # XLF 17.1.1.2
