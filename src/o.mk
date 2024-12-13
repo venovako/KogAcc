@@ -138,11 +138,8 @@ EXES_KSVD2=\
 ../bin/$(PLAT)/cksvd2.exe\
 ../bin/$(PLAT)/dksvd2.exe\
 ../bin/$(PLAT)/zksvd2.exe\
-../bin/$(PLAT)/qksvd2.exe\
-../bin/$(PLAT)/yksvd2.exe\
 ../bin/$(PLAT)/slwsv2.exe\
-../bin/$(PLAT)/dlwsv2.exe\
-../bin/$(PLAT)/qlwsv2.exe
+../bin/$(PLAT)/dlwsv2.exe
 
 EXES_FAUX=\
 ../bin/$(PLAT)/sthalt.exe\
@@ -182,6 +179,11 @@ OBJS_DYNORD += \
 EXES_BLKSVD += \
 ../bin/$(PLAT)/dksvdd.exe\
 ../bin/$(PLAT)/zksvdd.exe
+
+EXES_KSVD2 += \
+../bin/$(PLAT)/qksvd2.exe\
+../bin/$(PLAT)/yksvd2.exe\
+../bin/$(PLAT)/qlwsv2.exe
 endif # !xlf
 
 OBJS=$(OBJS_ARRBIO) $(OBJS_BLKSVD) $(OBJS_DYNORD) $(OBJS_KSVD2) $(OBJS_FAUX)
