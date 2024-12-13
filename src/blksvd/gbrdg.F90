@@ -8,18 +8,24 @@
   IF (N .EQ. M) RETURN
   INFO = I
 
+#ifdef __INTEL_COMPILER
   !$OMP PARALLEL DO DEFAULT(NONE) SHARED(M,N,G) PRIVATE(I,J) IF(INFO .NE. 0)
+#endif
   DO J = 1, N
      DO I = N+1, M
         G(I,J) = ZERO
      END DO
   END DO
+#ifdef __INTEL_COMPILER
   !$OMP END PARALLEL DO
   !$OMP PARALLEL DO DEFAULT(NONE) SHARED(M,N,G) PRIVATE(I,J) IF(INFO .NE. 0)
+#endif
   DO J = N+1, M
      DO I = 1, M
         G(I,J) = ZERO
      END DO
   END DO
+#ifdef __INTEL_COMPILER
   !$OMP END PARALLEL DO
+#endif
   INFO = 0
