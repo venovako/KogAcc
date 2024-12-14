@@ -15,6 +15,9 @@ ifeq ($(ARCH),ppc64le)
 FCFLAGS += -mcpu=$(MARCH) -mpower8-fusion -mtraceback=full
 else # !ppc64le
 FCFLAGS += -march=$(MARCH)
+ifeq ($(OS),Darwin)
+FCFLAGS += -Wa,-q
+endif # Darwin
 endif # ?ppc64le
 # -frecursive if not -fopenmp
 FCFLAGS += -fopenmp -fPIC -fexceptions -fasynchronous-unwind-tables -fno-omit-frame-pointer -ffp-contract=fast -ffree-line-length-none -fstack-arrays
