@@ -45,7 +45,7 @@
      CALL LWSV2(G, U, V, S, INFO(1))
      IF (INFO(1) .LT. -HUGE(0)) CALL STHALT('LWSV2')
      IF ((S(1) .LT. ZERO) .OR. (S(2) .LT. ZERO)) THEN
-#include "gr2ud.F90"
+!#include "gr2ud.F90"
         IF (S(1) .LT. ZERO) THEN
            U(1,1) = -U(1,1)
            U(2,1) = -U(2,1)
