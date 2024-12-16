@@ -11,7 +11,6 @@
   IF (N .EQ. 0) RETURN
 
   Z = ABS(W)
-#ifndef NDEBUG
   DO J = 1, 2
      DO I = 1, 2
         IF (.NOT. (Z(I,J) .LE. HUGE(Z(I,J)))) THEN
@@ -20,7 +19,6 @@
         END IF
      END DO
   END DO
-#endif
   IF (Z(1,1) .LT. Z(2,1)) INFO = 1
   IF (Z(2,2) .LT. Z(1,2)) INFO = IOR(INFO, 2)
 

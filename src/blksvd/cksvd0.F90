@@ -12,11 +12,7 @@ SUBROUTINE CKSVD0(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, O, R, INFO)
   IMPLICIT NONE
 #ifdef CR_MATH
   INTERFACE
-#ifdef NDEBUG
      PURE FUNCTION CR_HYPOT(X, Y) BIND(C,NAME='cr_hypotf')
-#else
-     FUNCTION CR_HYPOT(X, Y) BIND(C,NAME='cr_hypotf')
-#endif
        USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_float
        REAL(KIND=c_float), INTENT(IN), VALUE :: X, Y
        REAL(KIND=c_float) :: CR_HYPOT

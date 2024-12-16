@@ -34,12 +34,10 @@ SUBROUTINE DROTRA(M, N, G, LDG, P, Q, W, INFO)
 
   DO J = 1, 2
      DO I = 1, 2
-#ifndef NDEBUG
         IF (.NOT. (ABS(W(I,J)) .LE. HUGE(W(I,J)))) THEN
            INFO = -7
            RETURN
         END IF
-#endif
         WW(I,J) = REAL(W(I,J), L)
      END DO
   END DO

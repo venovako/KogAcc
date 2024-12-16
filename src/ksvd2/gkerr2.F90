@@ -1,7 +1,3 @@
-#ifndef NDEBUG
-  E = ZERO
-  EX = ZERO
-#endif
   IF (INFO(1) .LT. -HUGE(0)) RETURN
   CALL QLJR2(G(1,1), G(2,1), G(1,2), G(2,2), &
        U(1,1), U(2,1), U(1,2), U(2,2), &

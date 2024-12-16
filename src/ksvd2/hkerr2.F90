@@ -1,7 +1,3 @@
-#ifndef NDEBUG
-  E = ZERO
-  EX = ZERO
-#endif
   IF (INFO(1) .LT. -HUGE(0)) RETURN
   CALL YLJR2(REAL(G(1,1)),AIMAG(G(1,1)), REAL(G(2,1)),AIMAG(G(2,1)), REAL(G(1,2)),AIMAG(G(1,2)), REAL(G(2,2)),AIMAG(G(2,2)), &
        REAL(U(1,1)),AIMAG(U(1,1)), REAL(U(2,1)),AIMAG(U(2,1)), REAL(U(1,2)),AIMAG(U(1,2)), REAL(U(2,2)),AIMAG(U(2,2)), &

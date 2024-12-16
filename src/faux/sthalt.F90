@@ -16,11 +16,7 @@ SUBROUTINE STHALT(MSG)
 #ifdef _OPENMP
   WRITE (THR,'(A,I3,A)') '[', OMP_GET_THREAD_NUM(), '] '
 #else
-#ifdef NDEBUG
   THR = '[!!!] '
-#else
-  THR = '[???] '
-#endif
 #endif
 #ifdef __GFORTRAN__
   WRITE (ERROR_UNIT,'(A)') NEW_LINE(MSG)//THR//TRIM(MSG)

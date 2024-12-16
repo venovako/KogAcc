@@ -34,7 +34,6 @@ SUBROUTINE CROTRA(M, N, G, LDG, P, Q, W, INFO)
 
   DO J = 1, 2
      DO I = 1, 2
-#ifndef NDEBUG
         IF (.NOT. (ABS(REAL(W(I,J))) .LE. HUGE(REAL(W(I,J))))) THEN
            INFO = -7
            RETURN
@@ -43,7 +42,6 @@ SUBROUTINE CROTRA(M, N, G, LDG, P, Q, W, INFO)
            INFO = -7
            RETURN
         END IF
-#endif
         WW(I,J) = CMPLX(REAL(W(I,J)), AIMAG(W(I,J)), L)
      END DO
   END DO

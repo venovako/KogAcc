@@ -51,9 +51,6 @@
 
   ! W(J) = || off(G) ||_F
   J = M_2 + 1
-#ifdef NDEBUG
-  W(J) = MONE
-#else
   W(J) = ZERO
   DO WHILE (I .GE. 1)
      IF (W(I) .GT. ZERO) THEN
@@ -71,7 +68,6 @@
      INFO = -7
      RETURN
   END IF
-#endif
 
   DO I = M+1, N*N
      W(I) = MONE

@@ -1,18 +1,10 @@
 !>@brief \b CMKWPQ builds the weights W and the corresponding indexes O from the NxN single precision matrix W.
-#ifdef NDEBUG
 PURE SUBROUTINE CMKWPQ(N, G, LDG, W, O, INFO)
-#else
-SUBROUTINE CMKWPQ(N, G, LDG, W, O, INFO)
-#endif
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
   IMPLICIT NONE
 #ifdef CR_MATH
   INTERFACE
-#ifdef NDEBUG
      PURE FUNCTION CR_HYPOT(X, Y) BIND(C,NAME='cr_hypotf')
-#else
-     FUNCTION CR_HYPOT(X, Y) BIND(C,NAME='cr_hypotf')
-#endif
        USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_float
        REAL(KIND=c_float), INTENT(IN), VALUE :: X, Y
        REAL(KIND=c_float) :: CR_HYPOT
