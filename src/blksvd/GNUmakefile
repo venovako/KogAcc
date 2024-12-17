@@ -16,6 +16,12 @@
 ../obj/$(PLAT)/zbrdg.$(OXT): blksvd/zbrdg.F90 blksvd/gbrdg.F90 $(MKFS) blksvd/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/zbrdg.F90
 
+../obj/$(PLAT)/dbpack.$(OXT): blksvd/dbpack.F90 $(MKFS) blksvd/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/dbpack.F90
+
+../obj/$(PLAT)/dbunpack.$(OXT): blksvd/dbunpack.F90 $(MKFS) blksvd/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/dbunpack.F90
+
 ../obj/$(PLAT)/sksvd0.$(OXT): blksvd/sksvd0.F90 blksvd/gksvd0.F90 $(MKFS) blksvd/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/sksvd0.F90
 
