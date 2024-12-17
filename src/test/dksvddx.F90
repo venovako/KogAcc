@@ -1,7 +1,9 @@
 !>@brief \b DKSVDDX tests the DKSVDD routine.
 PROGRAM DKSVDDX
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: INT64, REAL64, REAL128, ERROR_UNIT, OUTPUT_UNIT
+#ifndef __GFORTRAN__
   !$ USE OMP_LIB
+#endif
   IMPLICIT NONE
 #ifndef __GFORTRAN__
   INTERFACE
@@ -67,7 +69,9 @@ PROGRAM DKSVDDX
   IF (INFO .NE. 0) ERROR STOP 'BN'
 
   L = 0
+#ifndef __GFORTRAN__
   !$ L = 1
+#endif
   IF (N .LE. 0) ERROR STOP 'N'
   M = N + MOD(N, 2)
   LDV = 64
@@ -119,7 +123,9 @@ PROGRAM DKSVDDX
   JOB = 123
   INFO = -HUGE(INFO)
   INFO = INFO - 1
+#ifndef __GFORTRAN__
   !$ IF (L .NE. 0) INFO = -(INFO + 1)
+#endif
   CALL SYSTEM_CLOCK(C0)
   CALL DKSVDD(JOB, M, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
   CALL SYSTEM_CLOCK(C1, CR)

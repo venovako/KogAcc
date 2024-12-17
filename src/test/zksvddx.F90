@@ -1,7 +1,9 @@
 !>@brief \b ZKSVDDX tests the ZKSVDD routine.
 PROGRAM ZKSVDDX
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: INT64, REAL64, REAL128, ERROR_UNIT, OUTPUT_UNIT
+#ifndef __GFORTRAN__
   !$ USE OMP_LIB
+#endif
   IMPLICIT NONE
 #ifndef __GFORTRAN__
   INTERFACE
@@ -67,7 +69,9 @@ PROGRAM ZKSVDDX
   IF (INFO .NE. 0) ERROR STOP 'BN'
 
   L = 0
+#ifndef __GFORTRAN__
   !$ L = 1
+#endif
   IF (N .LE. 0) ERROR STOP 'N'
   M = N + MOD(N, 2)
   LDV = 32
@@ -105,11 +109,7 @@ PROGRAM ZKSVDDX
 
   ALLOCATE(SV(M))
   ALLOCATE(W(MAX(6,MAX((M-1),5)*M)))
-  ! if, e.g., ||G||_F is known to be numerically finite and reasonably below HUGE,
-  ! the dynamic scaling can be turned off for speed
-
   ALLOCATE(D(MAX(M,(M*(M-1))/2)))
-
   ALLOCATE(O(2,M*(M/2)))
   JOB = 1
   DO I = 1, M-1
@@ -123,7 +123,9 @@ PROGRAM ZKSVDDX
   JOB = 123
   INFO = -HUGE(INFO)
   INFO = INFO - 1
+#ifndef __GFORTRAN__
   !$ IF (L .NE. 0) INFO = -(INFO + 1)
+#endif
   CALL SYSTEM_CLOCK(C0)
   CALL ZKSVDD(JOB, M, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
   CALL SYSTEM_CLOCK(C1, CR)
