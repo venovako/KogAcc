@@ -1,7 +1,9 @@
 !>@brief \b SKSVDD computes the SVD of G as U S V^T, with S returned in SV and U and V optionally accumulated on either identity for the SVD, or on preset input matrices.
 SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: INT64, REAL32, REAL64
+#ifndef __GFORTRAN__
   !$ USE OMP_LIB
+#endif
   IMPLICIT NONE
 #ifndef __GFORTRAN__
   INTERFACE

@@ -1,7 +1,9 @@
 !>@brief \b CKSVDD computes the SVD of G as U S V^H, with S returned in SV and U and V optionally accumulated on either identity for the SVD, or on preset input matrices.
 SUBROUTINE CKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: INT64, REAL32, REAL64
+#ifndef __GFORTRAN__
   !$ USE OMP_LIB
+#endif
   IMPLICIT NONE
 #ifdef CR_MATH
   INTERFACE

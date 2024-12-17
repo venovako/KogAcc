@@ -12,7 +12,11 @@ Several routines and executables require having quadruple precision (`KIND=REAL1
 
 First, clone [libpvn](https://github.com/venovako/libpvn) repository, with the same parent directory as this one has (e.g., `venovako/libpvn` and `venovako/KogAcc`).
 Then, build the `libpvn` library, with the same family of compilers and (no-)debug mode as it is meant to be used here (e.g., with `icx` if `ifx` is desired).
-Please set the option `SAFE=sv2` for `libpvn`, and avoid using `gfortran` compiler for `KogAcc` until some issues are resolved.
+Please set the option `SAFE=sv2` for `libpvn`.
+
+Additionaly, if using `gfortran` (and `gcc` for `libpvn`), what is not recommended if avoidable, please keep the optimization level for `libpvn` low (e.g., `NDEBUG=g`).
+Otherwise, certain functions in `libpvn` might be miscompiled.
+Also, in `KogAcc`, some OpenMP parts of the `?KSVDD` routines behave errorneously with `gfortran`, and therefore will be executed sequentially in that setting.
 
 Building the documentation requires a recent version of [Doxygen](https://doxygen.nl) and [Graphviz](https://graphviz.org).
 Many routines are documented only rudimentary for now.
