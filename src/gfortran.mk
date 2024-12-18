@@ -28,3 +28,5 @@ FCFLAGS += -fcheck=all,no-recursion -finit-local-zero -finit-real=snan -finit-de
 endif # ?NDEBUG
 FCFLAGS += -pedantic -Wall -Wextra -Wno-array-temporaries -Wno-compare-reals -Wno-c-binding-type
 FCFLAGS += -rdynamic -static-libgcc -static-libgfortran -static-libquadmath
+GFC=$(FC)
+GFCFLAGS=$(FCFLAGS)

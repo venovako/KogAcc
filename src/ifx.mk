@@ -29,3 +29,18 @@ ifndef NDEBUG
 FCFLAGS += -debug parallel
 endif # !NDEBUG
 endif # Linux
+GFC=gfortran$(GNU)
+ifdef NDEBUG
+GFCFLAGS=-O$(NDEBUG)
+else # !NDEBUG
+GFCFLAGS=-Og -ggdb3
+endif # ?NDEBUG
+# -frecursive if not -fopenmp
+GFCFLAGS += -march=native -fopenmp -fPIC -fexceptions -fasynchronous-unwind-tables -fno-omit-frame-pointer -ffp-contract=fast -ffree-line-length-none -fstack-arrays
+ifdef NDEBUG
+GFCFLAGS += -fno-math-errno -fvect-cost-model=unlimited
+else # !NDEBUG
+GFCFLAGS += -fcheck=all,no-recursion -finit-local-zero -finit-real=snan -finit-derived -Wcharacter-truncation -Wimplicit-procedure -Wfunction-elimination -Wrealloc-lhs-all
+endif # ?NDEBUG
+GFCFLAGS += -pedantic -Wall -Wextra -Wno-array-temporaries -Wno-compare-reals -Wno-c-binding-type
+GFCFLAGS += -rdynamic -static-libgcc -static-libgfortran -static-libquadmath
