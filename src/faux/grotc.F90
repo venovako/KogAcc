@@ -1,4 +1,3 @@
-  !DIR$ ASSUME_ALIGNED G:64, X:64, Y:64, Z:64
   J = INFO
   INFO = 0
   IF ((Q .LE. P) .OR. (Q .GT. N)) INFO = -6
@@ -29,12 +28,12 @@
      Z(2,1) = Z(2,1) / Z(1,1)
      Z(1,2) = Z(1,2) / Z(2,2)
      DO I = 1, M, VL
-        !DIR$ VECTOR ALIGNED ALWAYS
+        !DIR$ VECTOR ALWAYS
         DO J = 1, VL
            X(J) = G(I+J-1,P)
            Y(J) = G(I+J-1,Q)
         END DO
-        !DIR$ VECTOR ALIGNED ALWAYS
+        !DIR$ VECTOR ALWAYS
         DO J = 1, VL
            G(I+J-1,P) = (X(J) + Y(J) * Z(2,1)) * Z(1,1)
            G(I+J-1,Q) = (X(J) * Z(1,2) + Y(J)) * Z(2,2)
@@ -45,12 +44,12 @@
      Z(1,1) = Z(1,1) / Z(2,1)
      Z(1,2) = Z(1,2) / Z(2,2)
      DO I = 1, M, VL
-        !DIR$ VECTOR ALIGNED ALWAYS
+        !DIR$ VECTOR ALWAYS
         DO J = 1, VL
            X(J) = G(I+J-1,P)
            Y(J) = G(I+J-1,Q)
         END DO
-        !DIR$ VECTOR ALIGNED ALWAYS
+        !DIR$ VECTOR ALWAYS
         DO J = 1, VL
            G(I+J-1,P) = (X(J) * Z(1,1) + Y(J)) * Z(2,1)
            G(I+J-1,Q) = (X(J) * Z(1,2) + Y(J)) * Z(2,2)
@@ -61,12 +60,12 @@
      Z(2,1) = Z(2,1) / Z(1,1)
      Z(2,2) = Z(2,2) / Z(1,2)
      DO I = 1, M, VL
-        !DIR$ VECTOR ALIGNED ALWAYS
+        !DIR$ VECTOR ALWAYS
         DO J = 1, VL
            X(J) = G(I+J-1,P)
            Y(J) = G(I+J-1,Q)
         END DO
-        !DIR$ VECTOR ALIGNED ALWAYS
+        !DIR$ VECTOR ALWAYS
         DO J = 1, VL
            G(I+J-1,P) = (X(J) + Y(J) * Z(2,1)) * Z(1,1)
            G(I+J-1,Q) = (X(J) + Y(J) * Z(2,2)) * Z(1,2)
@@ -77,12 +76,12 @@
      Z(1,1) = Z(1,1) / Z(2,1)
      Z(2,2) = Z(2,2) / Z(1,2)
      DO I = 1, M, VL
-        !DIR$ VECTOR ALIGNED ALWAYS
+        !DIR$ VECTOR ALWAYS
         DO J = 1, VL
            X(J) = G(I+J-1,P)
            Y(J) = G(I+J-1,Q)
         END DO
-        !DIR$ VECTOR ALIGNED ALWAYS
+        !DIR$ VECTOR ALWAYS
         DO J = 1, VL
            G(I+J-1,P) = (X(J) * Z(1,1) + Y(J)) * Z(2,1)
            G(I+J-1,Q) = (X(J) + Y(J) * Z(2,2)) * Z(1,2)
@@ -95,12 +94,12 @@
   GOTO 2
 
 1 DO I = 1, M, VL
-     !DIR$ VECTOR ALIGNED ALWAYS
+     !DIR$ VECTOR ALWAYS
      DO J = 1, VL
         X(J) = G(I+J-1,P)
         Y(J) = G(I+J-1,Q)
      END DO
-     !DIR$ VECTOR ALIGNED ALWAYS
+     !DIR$ VECTOR ALWAYS
      DO J = 1, VL
         G(I+J-1,P) = X(J) * Z(1,1) + Y(J) * Z(2,1)
         G(I+J-1,Q) = X(J) * Z(1,2) + Y(J) * Z(2,2)

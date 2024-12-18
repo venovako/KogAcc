@@ -1,4 +1,3 @@
-  !DIR$ ASSUME_ALIGNED G:64, X:64, Y:64, XX:64, YY:64, WW:64
   I = INFO
   INFO = 0
   IF ((Q .LE. P) .OR. (Q .GT. M)) INFO = -6
@@ -27,15 +26,15 @@
      DO I = 1, VL
         Y(I) = G(Q,J+I-1)
      END DO
-     !DIR$ VECTOR ALIGNED ALWAYS
+     !DIR$ VECTOR ALWAYS
      DO I = 1, HL
         XX(I) = REAL(X(I), L)
      END DO
-     !DIR$ VECTOR ALIGNED ALWAYS
+     !DIR$ VECTOR ALWAYS
      DO I = 1, HL
         YY(I) = REAL(Y(I), L)
      END DO
-     !DIR$ VECTOR ALIGNED ALWAYS
+     !DIR$ VECTOR ALWAYS
      DO I = 1, HL
         XX(I+HL) = WW(1,1) * XX(I) + WW(1,2) * YY(I)
         YY(I+HL) = WW(2,1) * XX(I) + WW(2,2) * YY(I)
@@ -46,15 +45,15 @@
      DO I = 1, HL
         G(Q,J+I-1) = REAL(YY(I+HL), K)
      END DO
-     !DIR$ VECTOR ALIGNED ALWAYS
+     !DIR$ VECTOR ALWAYS
      DO I = 1, HL
         XX(I) = REAL(X(I+HL), L)
      END DO
-     !DIR$ VECTOR ALIGNED ALWAYS
+     !DIR$ VECTOR ALWAYS
      DO I = 1, HL
         YY(I) = REAL(Y(I+HL), L)
      END DO
-     !DIR$ VECTOR ALIGNED ALWAYS
+     !DIR$ VECTOR ALWAYS
      DO I = 1, HL
         XX(I+HL) = WW(1,1) * XX(I) + WW(1,2) * YY(I)
         YY(I+HL) = WW(2,1) * XX(I) + WW(2,2) * YY(I)

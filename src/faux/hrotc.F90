@@ -10,14 +10,13 @@
   IF (N .EQ. 0) RETURN
 
   IF (J .EQ. 0) THEN
-     !DIR$ ASSUME_ALIGNED G:64, X:64, Y:64
      DO I = 1, M, VL
-        !DIR$ VECTOR ALIGNED ALWAYS
+        !DIR$ VECTOR ALWAYS
         DO J = 1, VL
            X(J) = G(I+J-1,P)
            Y(J) = G(I+J-1,Q)
         END DO
-        !DIR$ VECTOR ALIGNED ALWAYS
+        !DIR$ VECTOR ALWAYS
         DO J = 1, VL
            G(I+J-1,P) = X(J) * W(1,1) + Y(J) * W(2,1)
            G(I+J-1,Q) = X(J) * W(1,2) + Y(J) * W(2,2)

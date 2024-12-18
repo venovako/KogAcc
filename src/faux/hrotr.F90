@@ -10,7 +10,6 @@
   IF (N .EQ. 0) RETURN
 
   IF (I .EQ. 0) THEN
-     !DIR$ ASSUME_ALIGNED G:64, X:64, Y:64
      DO J = 1, N, VL
         !DIR$ VECTOR ALWAYS
         DO I = 1, VL
