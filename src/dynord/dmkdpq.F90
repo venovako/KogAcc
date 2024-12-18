@@ -48,54 +48,7 @@ SUBROUTINE DMKDPQ(N, G, LDG, D, O, INFO)
   IF (N .GT. 1073741824) INFO = -1
   IF (INFO .NE. 0) RETURN
   IF (N .EQ. 0) RETURN
-
-  M = (N * (N - 1)) / 2
-  ! build D and determine its largest element
-  W = MONE
-  !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,D,M,O) PRIVATE(H,K,P,Q) REDUCTION(MAX:W) IF(L .NE. 0)
-  DO K = 1, M
-     P = O(1,K)
-     Q = O(2,K)
-     IF (G(Q,P) .EQ. ZERO) THEN
-        H = ABS(G(P,Q))
-     ELSE IF (G(P,Q) .EQ. ZERO) THEN
-        H = ABS(G(Q,P))
-     ELSE ! none are 0
-        H = CR_HYPOT(G(Q,P), G(P,Q))
-     END IF
-     IF ((H .GT. ZERO) .OR. (SIGN(ONE,G(P,P)) .NE. ONE) .OR. (SIGN(ONE,G(Q,Q)) .NE. ONE) .OR. (G(P,P) .LT. G(Q,Q))) THEN
-        CALL QENC(D(K), H, P, Q)
-        W = MAX(W, D(K))
-     ELSE ! no transformation
-        D(K) = MONE
-     END IF
-  END DO
-  !$OMP END PARALLEL DO
-  IF (W .LE. WZERO) RETURN
-
-  ! find the remaining pivots
-  L = N / 2
-  DO INFO = 1, L
-     P = 0; Q = 0
-     CALL QDEC(W, P, Q)
-     K = M + INFO
-     O(1,K) = P
-     O(2,K) = Q
-     IF (INFO .GE. L) EXIT
-     W = MONE
-     !$OMP PARALLEL DO DEFAULT(NONE) SHARED(D,M,P,Q) PRIVATE(I,J,K) REDUCTION(MAX:W) IF(L .NE. 0)
-     DO K = 1, M
-        IF (D(K) .GT. WZERO) THEN
-           I = 0; J = 0
-           CALL QDEC(D(K), I, J)
-           IF ((I .NE. P) .AND. (I .NE. Q) .AND. (J .NE. P) .AND. (J .NE. Q)) THEN
-              W = MAX(W, D(K))
-           ELSE ! colliding
-              D(K) = MONE
-           END IF
-        END IF
-     END DO
-     !$OMP END PARALLEL DO
-     IF (W .LE. WZERO) EXIT
-  END DO
+#define XENC QENC
+#define XDEC QDEC
+#include "gmkdpq.F90"
 END SUBROUTINE DMKDPQ
