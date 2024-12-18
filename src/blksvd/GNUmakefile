@@ -16,11 +16,29 @@
 ../obj/$(PLAT)/zbrdg.$(OXT): blksvd/zbrdg.F90 blksvd/gbrdg.F90 $(MKFS) blksvd/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/zbrdg.F90
 
-../obj/$(PLAT)/dbpack.$(OXT): blksvd/dbpack.F90 $(MKFS) blksvd/GNUmakefile
+../obj/$(PLAT)/sbpack.$(OXT): blksvd/sbpack.F90 blksvd/gbpack.F90 $(MKFS) blksvd/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/sbpack.F90
+
+../obj/$(PLAT)/cbpack.$(OXT): blksvd/cbpack.F90 blksvd/gbpack.F90 $(MKFS) blksvd/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/cbpack.F90
+
+../obj/$(PLAT)/dbpack.$(OXT): blksvd/dbpack.F90 blksvd/gbpack.F90 $(MKFS) blksvd/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/dbpack.F90
 
-../obj/$(PLAT)/dbunpack.$(OXT): blksvd/dbunpack.F90 $(MKFS) blksvd/GNUmakefile
+../obj/$(PLAT)/zbpack.$(OXT): blksvd/zbpack.F90 blksvd/gbpack.F90 $(MKFS) blksvd/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/zbpack.F90
+
+../obj/$(PLAT)/sbunpack.$(OXT): blksvd/sbunpack.F90 blksvd/gbunpack.F90 $(MKFS) blksvd/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/sbunpack.F90
+
+../obj/$(PLAT)/cbunpack.$(OXT): blksvd/cbunpack.F90 blksvd/gbunpack.F90 $(MKFS) blksvd/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/cbunpack.F90
+
+../obj/$(PLAT)/dbunpack.$(OXT): blksvd/dbunpack.F90 blksvd/gbunpack.F90 $(MKFS) blksvd/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/dbunpack.F90
+
+../obj/$(PLAT)/zbunpack.$(OXT): blksvd/zbunpack.F90 blksvd/gbunpack.F90 $(MKFS) blksvd/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/zbunpack.F90
 
 ../obj/$(PLAT)/sksvd0.$(OXT): blksvd/sksvd0.F90 blksvd/gksvd0.F90 $(MKFS) blksvd/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/sksvd0.F90
