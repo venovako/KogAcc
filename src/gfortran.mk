@@ -1,5 +1,3 @@
-# some code that runs correctly when compiled with ifx behaves errorneously with gfortran
-$(warning GNU Fortran is NOT supported, use it at your own risk!)
 AR=ar
 ARFLAGS=rsv
 FC=$(COMPILER_PREFIX)gfortran$(COMPILER_SUFFIX)
