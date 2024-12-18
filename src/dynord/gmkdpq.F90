@@ -1,4 +1,12 @@
-  M = (N * (N - 1)) / 2
+  IF (MOD(N, 2) .EQ. 0) THEN
+     R = N / 2
+     M = N - 1
+  ELSE ! N odd
+     R = (N - 1) / 2
+     M = N
+  END IF
+  M = M * R
+
   ! build D and determine its largest element
   W = MONE
   !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,D,M,O) PRIVATE(H,K,P,Q) REDUCTION(MAX:W) IF(L .NE. 0)
@@ -23,13 +31,14 @@
   IF (W .LE. WZERO) RETURN
 
   ! find the remaining pivots
-  DO INFO = 1, N/2
+  R = N / 2
+  DO INFO = 1, R
      P = 0; Q = 0
      CALL XDEC(W, P, Q)
      K = M + INFO
      O(1,K) = P
      O(2,K) = Q
-     IF (INFO .GE. (N / 2)) EXIT
+     IF (INFO .GE. R) EXIT
      W = MONE
      !$OMP PARALLEL DO DEFAULT(NONE) SHARED(D,M,P,Q) PRIVATE(I,J,K) REDUCTION(MAX:W) IF(L .NE. 0)
      DO K = 1, M

@@ -39,7 +39,7 @@ SUBROUTINE SMKDPQ(N, G, LDG, D, O, INFO)
 
   REAL(KIND=REAL64) :: W
   REAL(KIND=REAL32) :: H
-  INTEGER :: I, J, K, L, M, P, Q
+  INTEGER :: I, J, K, L, M, P, Q, R
 
   L = INFO
   INFO = 0
