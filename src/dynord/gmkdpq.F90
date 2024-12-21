@@ -10,12 +10,8 @@
   W = MONE
   IF (L .LT. 0) THEN
      ! D already computed
-     S = -L
-     !$OMP PARALLEL DO DEFAULT(NONE) SHARED(D,S) PRIVATE(K) REDUCTION(MAX:W)
-     DO K = 1, S
-        W = MAX(W, D(K))
-     END DO
-     !$OMP END PARALLEL DO
+     S = -(L + 1)
+     W = D(S + 1)
   ELSE ! build D and determine its largest element
      !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,D,M,O) PRIVATE(H,K,P,Q) REDUCTION(MAX:W) IF(L .NE. 0)
      DO K = 1, M
