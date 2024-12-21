@@ -25,6 +25,18 @@
 ../obj/$(PLAT)/znrm2o.$(OXT): dynord/znrm2o.F90 dynord/hnrm2o.F90 $(MKFS) dynord/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/dynord/znrm2o.F90
 
+../obj/$(PLAT)/snrm2b.$(OXT): dynord/snrm2b.F90 dynord/gnrm2b.F90 $(MKFS) dynord/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/dynord/snrm2b.F90
+
+../obj/$(PLAT)/cnrm2b.$(OXT): dynord/cnrm2b.F90 dynord/gnrm2b.F90 $(MKFS) dynord/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/dynord/cnrm2b.F90
+
+../obj/$(PLAT)/dnrm2b.$(OXT): dynord/dnrm2b.F90 dynord/gnrm2b.F90 $(MKFS) dynord/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/dynord/dnrm2b.F90
+
+../obj/$(PLAT)/znrm2b.$(OXT): dynord/znrm2b.F90 dynord/gnrm2b.F90 $(MKFS) dynord/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/dynord/znrm2b.F90
+
 ../obj/$(PLAT)/smkwpq.$(OXT): dynord/smkwpq.F90 dynord/gmkwpq.F90 $(MKFS) dynord/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/dynord/smkwpq.F90
 

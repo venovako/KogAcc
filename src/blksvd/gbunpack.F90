@@ -17,7 +17,7 @@
      L = (P - 1) * B
      M = (Q - 1) * B
      IF ((M .LT. 0) .OR. (M .GE. N) .OR. (L .LT. 0) .OR. (L .GE. N) .OR. (M .LE. L)) THEN
-        INFO = MIN(INFO, K)
+        INFO = MIN(INFO, -10 - K)
      ELSE ! all OK
         INFO = MIN(INFO, 0)
         L = (P - 1) * B

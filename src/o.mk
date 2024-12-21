@@ -57,6 +57,10 @@ OBJS_DYNORD=\
 ../obj/$(PLAT)/cnrm2o.$(OXT)\
 ../obj/$(PLAT)/dnrm2o.$(OXT)\
 ../obj/$(PLAT)/znrm2o.$(OXT)\
+../obj/$(PLAT)/snrm2b.$(OXT)\
+../obj/$(PLAT)/cnrm2b.$(OXT)\
+../obj/$(PLAT)/dnrm2b.$(OXT)\
+../obj/$(PLAT)/znrm2b.$(OXT)\
 ../obj/$(PLAT)/smkwpq.$(OXT)\
 ../obj/$(PLAT)/cmkwpq.$(OXT)\
 ../obj/$(PLAT)/dmkwpq.$(OXT)\
