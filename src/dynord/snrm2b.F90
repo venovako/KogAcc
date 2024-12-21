@@ -1,4 +1,4 @@
-!>@brief \b SNRM2B computes ||off(X)||_F or ||X||_F for all 2Bx2B blocks X of G.
+!>@brief \b SNRM2B computes ||off(X)||_F or ||X||_F for all BxB blocks X of G.
 SUBROUTINE SNRM2B(N, G, LDG, B, W, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
   IMPLICIT NONE
@@ -25,10 +25,10 @@ SUBROUTINE SNRM2B(N, G, LDG, B, W, INFO)
 
   INTEGER, INTENT(IN) :: N, LDG, B
   REAL(KIND=REAL32), INTENT(IN) :: G(LDG,N)
-  REAL(KIND=REAL32), INTENT(OUT) :: W((N/B)*(N/B))
+  REAL(KIND=REAL32), INTENT(OUT) :: W(N/B,N/B)
   INTEGER, INTENT(INOUT) :: INFO
 
-  INTEGER :: N_B, I, J, K, L, M, P, Q
+  INTEGER :: I, J, K, L, M, P, Q
 #define NRM2O SNRM2O
 #include "gnrm2b.F90"
 END SUBROUTINE SNRM2B
