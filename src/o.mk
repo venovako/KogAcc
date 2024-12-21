@@ -62,7 +62,6 @@ OBJS_DYNORD=\
 ../obj/$(PLAT)/dnrm2b.$(OXT)\
 ../obj/$(PLAT)/znrm2b.$(OXT)\
 ../obj/$(PLAT)/sb2enc.$(OXT)\
-../obj/$(PLAT)/db2enc.$(OXT)\
 ../obj/$(PLAT)/smkwpq.$(OXT)\
 ../obj/$(PLAT)/cmkwpq.$(OXT)\
 ../obj/$(PLAT)/dmkwpq.$(OXT)\
@@ -73,6 +72,8 @@ OBJS_DYNORD=\
 ../obj/$(PLAT)/zmk3pq.$(OXT)\
 ../obj/$(PLAT)/smkdpq.$(OXT)\
 ../obj/$(PLAT)/cmkdpq.$(OXT)\
+../obj/$(PLAT)/smkbpq.$(OXT)\
+../obj/$(PLAT)/cmkbpq.$(OXT)\
 ../obj/$(PLAT)/spqcmp.$(OXT)\
 ../obj/$(PLAT)/dpqcmp.$(OXT)\
 ../obj/$(PLAT)/spqmrg.$(OXT)\
@@ -183,8 +184,11 @@ OBJS_BLKSVD += \
 ../obj/$(PLAT)/zksvdd.$(OXT)
 
 OBJS_DYNORD += \
+../obj/$(PLAT)/db2enc.$(OXT)\
 ../obj/$(PLAT)/dmkdpq.$(OXT)\
-../obj/$(PLAT)/zmkdpq.$(OXT)
+../obj/$(PLAT)/zmkdpq.$(OXT)\
+../obj/$(PLAT)/dmkbpq.$(OXT)\
+../obj/$(PLAT)/zmkbpq.$(OXT)
 
 EXES_BLKSVD += \
 ../bin/$(PLAT)/dksvdd.exe\

@@ -11,12 +11,16 @@
   IF (LDG .LT. N) INFO = -3
   IF (N .LT. 0) INFO = -1
   IF (INFO .NE. 0) RETURN
+  IF (N .EQ. 0) RETURN
   IF (MOD(N, B) .NE. 0) THEN
      INFO = -4
      RETURN
   END IF
   M = N / B
-  IF (M .EQ. 0) RETURN
+  IF (M .LE. 0) THEN
+     INFO = -2
+     RETURN
+  END IF
 
   !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,LDG,B,W,K,M) PRIVATE(I,J,P,Q) COLLAPSE(2) IF(L .NE. 0)
   DO Q = 1, M
