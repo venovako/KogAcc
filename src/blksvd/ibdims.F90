@@ -15,7 +15,7 @@ PURE SUBROUTINE IBDIMS(N, B, M, M_B, NW, ND, NO, INFO)
   INTEGER, INTENT(OUT) :: M, M_B, NW, ND, NO
   INTEGER, INTENT(INOUT) :: N, B, INFO
 
-  INTEGER :: T
+  INTEGER :: T, M_P
 
   CALL NB2M(N, B, M, M_B)
   IF (M_B .NE. 0) THEN
@@ -53,20 +53,15 @@ PURE SUBROUTINE IBDIMS(N, B, M, M_B, NW, ND, NO, INFO)
   END IF
   ND = M_B * M_B
   NO = T * 2 * B
-  NW = MAX(ND, 3 * NO * (M_B / 2))
-  ND = MOD(M_B, 2)
-  IF (ND .EQ. 0) THEN
-     NO = (M_B / 2) * (M_B - 1)
+  M_P = M_B / 2
+  NW = MAX(ND, 3 * NO * M_P)
+  IF (MOD(M_B, 2) .EQ. 0) THEN
+     NO = M_P * (M_B - 1)
   ELSE ! M_B odd
      NO = M_B * ((M_B - 1) / 2)
   END IF
-  ND = ((M_B + ND) / 2) * B * (2 * B - 1)
+  ND = M_P * B * (2 * B - 1)
   ND = MAX(ND, NO + 1)
-  NO = NO + (M_B / 2)
-  IF (MOD(B, 2) .EQ. 0) THEN
-     NO = NO + (B / 2) * (B + 1)
-  ELSE ! B odd
-     NO = NO + B * ((B + 1) / 2)
-  END IF
+  NO = NO + M_P + 2 * B * B
   B = T
 END SUBROUTINE IBDIMS
