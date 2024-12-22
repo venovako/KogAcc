@@ -29,7 +29,7 @@ ifndef NDEBUG
 FCFLAGS += -debug parallel
 endif # !NDEBUG
 endif # Linux
-GFC=gfortran$(GNU)
+GFC=gfortran
 ifdef NDEBUG
 GFCFLAGS=-O$(NDEBUG)
 else # !NDEBUG
