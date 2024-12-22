@@ -71,8 +71,9 @@ OBJS_DYNORD=\
 ../obj/$(PLAT)/cmk3pq.$(OXT)\
 ../obj/$(PLAT)/dmk3pq.$(OXT)\
 ../obj/$(PLAT)/zmk3pq.$(OXT)\
+../obj/$(PLAT)/smkd.$(OXT)\
+../obj/$(PLAT)/cmkd.$(OXT)\
 ../obj/$(PLAT)/smkdpq.$(OXT)\
-../obj/$(PLAT)/cmkdpq.$(OXT)\
 ../obj/$(PLAT)/smkbpq.$(OXT)\
 ../obj/$(PLAT)/cmkbpq.$(OXT)\
 ../obj/$(PLAT)/spqcmp.$(OXT)\
@@ -189,8 +190,9 @@ OBJS_BLKSVD += \
 
 OBJS_DYNORD += \
 ../obj/$(PLAT)/db2enc.$(OXT)\
+../obj/$(PLAT)/dmkd.$(OXT)\
+../obj/$(PLAT)/zmkd.$(OXT)\
 ../obj/$(PLAT)/dmkdpq.$(OXT)\
-../obj/$(PLAT)/zmkdpq.$(OXT)\
 ../obj/$(PLAT)/dmkbpq.$(OXT)\
 ../obj/$(PLAT)/zmkbpq.$(OXT)
 

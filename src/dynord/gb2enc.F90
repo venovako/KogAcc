@@ -5,14 +5,14 @@
   IF (N .EQ. 0) RETURN
 
   IF (MOD(N, 2) .EQ. 0) THEN
-     M = (N / 2) * (N - 1)
+     INFO = (N / 2) * (N - 1)
   ELSE ! N odd
-     M = N * ((N - 1) / 2)
+     INFO = N * ((N - 1) / 2)
   END IF
 
   X = MONE
-  !$OMP PARALLEL DO DEFAULT(NONE) SHARED(W,D,M) PRIVATE(H,K,P,Q) REDUCTION(MAX:X) IF(L .NE. 0)
-  DO K = 1, M
+  !$OMP PARALLEL DO DEFAULT(NONE) SHARED(W,D,INFO) PRIVATE(H,K,P,Q) REDUCTION(MAX:X) IF(L .NE. 0)
+  DO K = 1, INFO
      P = O(1,K)
      Q = O(2,K)
      H = CR_HYPOT(CR_HYPOT(W(P,P), W(Q,P)), CR_HYPOT(W(P,Q), W(Q,Q)))
@@ -20,4 +20,4 @@
      X = MAX(X, D(K))
   END DO
   !$OMP END PARALLEL DO
-  D(M+1) = X
+  D(INFO+1) = X

@@ -21,11 +21,12 @@
   END IF
 
   INFO = -1
-  !$ IF (L .NE. 0) INFO = INFO - 1
+  !$ IF (L .NE. 0) INFO = INFO - ABS(L)
   CALL NRM2B(N, G, LDG, B, W, INFO)
   IF (INFO .LT. 0) RETURN
   INFO = L
   CALL B2ENC(M, W, D, O, INFO)
   IF (INFO .LT. 0) RETURN
-  INFO = -K - 1
-  CALL MKDPQ(M, G, LDG, D, O, INFO)
+  K = INFO
+  INFO = L
+  CALL MKDPQ(M, K, D, O(1,K+1), INFO)

@@ -187,9 +187,19 @@
 #ifndef __GFORTRAN__
      !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
 #endif
-     CALL MKDPQ(N, G, LDG, D, O, L)
+     CALL MKD(N, G, LDG, D, O, L)
      IF (L .LT. 0) THEN
         INFO = -10
+        RETURN
+     END IF
+     I = L
+     L = 0
+#ifndef __GFORTRAN__
+     !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
+#endif
+     CALL MKDPQ(N, I, D, O(1,I+1), L)
+     IF (L .LT. 0) THEN
+        INFO = -11
         RETURN
      END IF
      I = L

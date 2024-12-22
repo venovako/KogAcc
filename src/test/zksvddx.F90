@@ -102,7 +102,7 @@ PROGRAM ZKSVDDX
 
   ALLOCATE(SV(M))
   ALLOCATE(W(MAX(6,MAX((M-1),5)*M)))
-  ALLOCATE(D(MAX(M,(M*(M-1))/2)))
+  ALLOCATE(D((M*(M-1))/2+1))
   ALLOCATE(O(2,M*(M/2)))
   JOB = 1
   DO I = 1, M-1
