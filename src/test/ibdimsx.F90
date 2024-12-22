@@ -58,6 +58,6 @@ PROGRAM IBDIMSX
   WRITE (OUTPUT_UNIT,*) 'M / B                     =', M_B
   WRITE (OUTPUT_UNIT,*) 'len(W)                    =', NW
   WRITE (OUTPUT_UNIT,*) 'len(D)                    =', ND
-  WRITE (OUTPUT_UNIT,*) 'len(O)                    =', NO
+  WRITE (OUTPUT_UNIT,*) 'ncols(O) [        O(2,:)] =', NO
   WRITE (OUTPUT_UNIT,*) 'values in an L1 cache line=', INFO
 END PROGRAM IBDIMSX
