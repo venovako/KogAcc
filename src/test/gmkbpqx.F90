@@ -1,0 +1,92 @@
+  I = COMMAND_ARGUMENT_COUNT()
+  IF (I .NE. 3) THEN
+     CALL GET_COMMAND_ARGUMENT(0, BN)
+     WRITE (ERROR_UNIT,*) TRIM(BN), ' N B BN'
+     ERROR STOP 'INVALID COMMAND LINE'
+  END IF
+  CALL GET_COMMAND_ARGUMENT(1, BN, I, INFO)
+  IF (INFO .NE. 0) ERROR STOP 'N'
+  READ (BN,*) N
+  CALL GET_COMMAND_ARGUMENT(2, BN, I, INFO)
+  IF (INFO .NE. 0) ERROR STOP 'B'
+  READ (BN,*) B
+  CALL GET_COMMAND_ARGUMENT(3, BN, I, INFO)
+  IF (INFO .NE. 0) ERROR STOP 'BN'
+
+  IF (N .LE. 0) ERROR STOP 'N'
+  CALL NB2M(N, B, I, INFO)
+  IF (INFO .NE. 0) ERROR STOP 'B'
+  LDG = I
+
+  ALLOCATE(G(LDG,I))
+  IF (LDG .GT. N) THEN
+     INFO = 0
+     !$ INFO = 1
+     CALL BRDG(I, N, G, LDG, INFO)
+     IF (INFO .NE. 0) ERROR STOP 'BRDG'
+  ELSE
+     INFO = 0
+  END IF
+
+  CALL BFOPEN(TRIM(BN)//'.G', 'RO', J, INFO)
+  IF (INFO .NE. 0) ERROR STOP 'BFOPEN'
+  CALL BRD2(J, N, N, G, LDG, INFO)
+  IF (INFO .NE. 0) ERROR STOP 'BRD2'
+  CLOSE(J, IOSTAT=INFO)
+  IF (INFO .NE. 0) ERROR STOP 'CLOSE'
+
+  N = I
+  M = N / B
+  IF (MOD(M, 2) .EQ. 0) THEN
+     L = (M / 2) * (M - 1)
+  ELSE ! M odd
+     L = M * ((M - 1) / 2)
+  END IF
+  J = L + (M / 2)
+
+  ALLOCATE(W(M,M))
+  ALLOCATE(D(L+1))
+  ALLOCATE(O(2,J))
+
+  INFO = 1
+  DO I = 1, M-1
+     DO J = I+1, M
+        O(1,INFO) = I
+        O(2,INFO) = J
+        INFO = INFO + 1
+     END DO
+  END DO
+
+  CALL SYSTEM_CLOCK(C0)
+  INFO = 0
+  !$ INFO = 1
+  CALL MKBPQ(N, G, LDG, B, W, D, O, INFO)
+  CALL SYSTEM_CLOCK(C1, CR)
+  T = REAL(CR, REAL128)
+  T = REAL(C1 - C0, REAL128) / T
+  WRITE (OUTPUT_UNIT,'(A,F15.6,A)',ADVANCE='NO') 'MKBPQ took ', T, ' s'
+  WRITE (OUTPUT_UNIT,'(I11,A)') INFO, ' steps generated'
+  FLUSH(OUTPUT_UNIT)
+  DO I = 1, INFO
+     J = L + I
+     WRITE (OUTPUT_UNIT,'(A,I11,A,I11,A)') '(', O(1,J), ',', O(2,J), ')'
+  END DO
+  FLUSH(OUTPUT_UNIT)
+  DO N = 1, L
+     CALL XDEC(D(N), I, J)
+     WRITE (OUTPUT_UNIT,'(A,I11,A,I11,A)',ADVANCE='NO') 'D(', I, ',', J, ')='
+     WRITE (OUTPUT_UNIT,9) D(N)
+  END DO
+  FLUSH(OUTPUT_UNIT)
+  DO J = 1, M
+     DO I = 1, M
+        WRITE (ERROR_UNIT,9,ADVANCE='NO') W(I,J)
+     END DO
+     WRITE (ERROR_UNIT,*)
+     FLUSH(ERROR_UNIT)
+  END DO
+
+  DEALLOCATE(O)
+  DEALLOCATE(D)
+  DEALLOCATE(W)
+  DEALLOCATE(G)

@@ -195,7 +195,8 @@ EXES_BLKSVD += \
 ../bin/$(PLAT)/zksvdd.exe
 
 EXES_DYNORD += \
-../bin/$(PLAT)/dmkbpq.exe
+../bin/$(PLAT)/dmkbpq.exe\
+../bin/$(PLAT)/zmkbpq.exe
 
 EXES_KSVD2 += \
 ../bin/$(PLAT)/qksvd2.exe\
