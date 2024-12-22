@@ -54,7 +54,7 @@
            IF ((I .NE. P) .AND. (I .NE. Q) .AND. (J .NE. P) .AND. (J .NE. Q)) THEN
               W = MAX(W, D(K))
            ELSE ! colliding
-              D(K) = MONE
+              D(K) = -D(K)
            END IF
         END IF
      END DO

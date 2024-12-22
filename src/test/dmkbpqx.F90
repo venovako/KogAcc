@@ -87,8 +87,6 @@ PROGRAM DMKBPQX
   CALL GET_COMMAND_ARGUMENT(3, BN, I, INFO)
   IF (INFO .NE. 0) ERROR STOP 'BN'
 
-  L = 0
-  !$ L = 1
   IF (N .LE. 0) ERROR STOP 'N'
   CALL NB2M(N, B, I, INFO)
   IF (INFO .NE. 0) ERROR STOP 'B'
@@ -96,7 +94,8 @@ PROGRAM DMKBPQX
 
   ALLOCATE(G(LDG,I))
   IF (LDG .GT. N) THEN
-     INFO = L
+     INFO = 0
+     !$ INFO = 1
      CALL DBRDG(I, N, G, LDG, INFO)
      IF (INFO .NE. 0) ERROR STOP 'DBRDG(G)'
   ELSE
@@ -113,14 +112,14 @@ PROGRAM DMKBPQX
   N = I
   M = N / B
   IF (MOD(M, 2) .EQ. 0) THEN
-     I = (M / 2) * (M - 1)
+     L = (M / 2) * (M - 1)
   ELSE ! M odd
-     I = M * ((M - 1) / 2)
+     L = M * ((M - 1) / 2)
   END IF
-  J = I + (M / 2)
+  J = L + (M / 2)
 
   ALLOCATE(W(M,M))
-  ALLOCATE(D(I+1))
+  ALLOCATE(D(L+1))
   ALLOCATE(O(2,J))
 
   INFO = 1
@@ -133,20 +132,32 @@ PROGRAM DMKBPQX
   END DO
 
   CALL SYSTEM_CLOCK(C0)
-  INFO = L
+  INFO = 0
+  !$ INFO = 1
   CALL DMKBPQ(N, G, LDG, B, W, D, O, INFO)
   CALL SYSTEM_CLOCK(C1, CR)
   T = REAL(CR, REAL128)
   T = REAL(C1 - C0, REAL128) / T
-  WRITE (OUTPUT_UNIT,'(A,F15.6,A,I11)',ADVANCE='NO') 'DMKBPQ took ', T, ' s with ', INFO, ' steps'
+  WRITE (OUTPUT_UNIT,'(A,F15.6,A)',ADVANCE='NO') 'DMKBPQ took ', T, ' s'
+  WRITE (OUTPUT_UNIT,'(I11,A)') INFO, ' steps generated'
   FLUSH(OUTPUT_UNIT)
-  IF (INFO .LT. 0) WRITE (ERROR_UNIT,'(A)') 'ERROR in DMKBPQ'
-
-  DO L = 1, INFO
-     CALL QDEC(D(L), I, J)
-     WRITE (OUTPUT_UNIT,'(I11,A,I11,A,ES25.17E3)') I, ',', J, ',', D(L)
+  DO I = 1, INFO
+     J = L + I
+     WRITE (OUTPUT_UNIT,'(A,I11,A,I11,A)') '(', O(1,J), ',', O(2,J), ')'
   END DO
   FLUSH(OUTPUT_UNIT)
+  DO N = 1, L
+     CALL QDEC(D(N), I, J)
+     WRITE (OUTPUT_UNIT,'(A,I11,A,I11,A,ES25.17E3)') 'D(', I, ',', J, ')=', D(N)
+  END DO
+  FLUSH(OUTPUT_UNIT)
+  DO J = 1, M
+     DO I = 1, M
+        WRITE (OUTPUT_UNIT,'(ES25.17E3)',ADVANCE='NO') W(I,J)
+     END DO
+     WRITE (OUTPUT_UNIT,*)
+     FLUSH(OUTPUT_UNIT)
+  END DO
 
   DEALLOCATE(O)
   DEALLOCATE(D)
