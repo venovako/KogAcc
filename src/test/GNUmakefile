@@ -138,3 +138,6 @@
 
 ../bin/$(PLAT)/zmkbpq.exe: test/zmkbpqx.F90 test/gmkbpqx.F90 ../lib/$(PLAT)/libblksvd.a ../lib/$(PLAT)/libdynord.a ../lib/$(PLAT)/libarrbio.a $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o zmkbpq.exe ../../../src/test/zmkbpqx.F90 -L../../../lib/$(PLAT) -lblksvd -ldynord -larrbio -L../../../../libpvn/src -lpvn $(GNU) -ldl
+
+../bin/$(PLAT)/ibdims.exe: test/ibdimsx.F90 ../lib/$(PLAT)/libblksvd.a $(MKFS) test/GNUmakefile
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o ibdims.exe ../../../src/test/ibdimsx.F90 -L../../../lib/$(PLAT) -lblksvd -L../../../../libpvn/src -lpvn $(GNU) -ldl

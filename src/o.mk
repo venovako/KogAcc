@@ -46,7 +46,8 @@ OBJS_BLKSVD=\
 ../obj/$(PLAT)/sksvdd.$(OXT)\
 ../obj/$(PLAT)/cksvdd.$(OXT)\
 ../obj/$(PLAT)/xksvdd.$(OXT)\
-../obj/$(PLAT)/wksvdd.$(OXT)
+../obj/$(PLAT)/wksvdd.$(OXT)\
+../obj/$(PLAT)/ibdims.$(OXT)
 
 OBJS_DYNORD=\
 ../obj/$(PLAT)/sabsg.$(OXT)\
@@ -150,7 +151,8 @@ EXES_BLKSVD=\
 ../bin/$(PLAT)/sksvdd.exe\
 ../bin/$(PLAT)/cksvdd.exe\
 ../bin/$(PLAT)/xksvdd.exe\
-../bin/$(PLAT)/wksvdd.exe
+../bin/$(PLAT)/wksvdd.exe\
+../bin/$(PLAT)/ibdims.exe
 
 EXES_DYNORD=\
 ../bin/$(PLAT)/smkbpq.exe\

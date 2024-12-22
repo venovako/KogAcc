@@ -69,3 +69,6 @@
 
 ../obj/$(PLAT)/wksvdd.$(OXT): blksvd/wksvdd.F90 blksvd/hksvdd.F90 $(MKFS) blksvd/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/wksvdd.F90
+
+../obj/$(PLAT)/ibdims.$(OXT): blksvd/ibdims.F90 $(MKFS) blksvd/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/ibdims.F90

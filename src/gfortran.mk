@@ -10,7 +10,7 @@ ifndef MARCH
 MARCH=native
 endif # !MARCH
 ifeq ($(ARCH),ppc64le)
-FCFLAGS += -mcpu=$(MARCH) -mpower8-fusion -mtraceback=full
+FCFLAGS += -DCLS=128 -mcpu=$(MARCH) -mpower8-fusion -mtraceback=full
 else # !ppc64le
 FCFLAGS += -march=$(MARCH)
 ifeq ($(OS),Darwin)
