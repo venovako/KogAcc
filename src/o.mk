@@ -153,6 +153,8 @@ EXES_BLKSVD=\
 ../bin/$(PLAT)/wksvdd.exe
 
 EXES_DYNORD=\
+../bin/$(PLAT)/smkbpq.exe\
+../bin/$(PLAT)/cmkbpq.exe\
 ../bin/$(PLAT)/spqsort.exe\
 ../bin/$(PLAT)/dpqsort.exe
 

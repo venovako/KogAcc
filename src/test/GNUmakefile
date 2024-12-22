@@ -127,8 +127,14 @@
 ../bin/$(PLAT)/wksvdd.exe: test/wksvddx.F90 test/zrdinp.F90 test/zwrout.F90 ../lib/$(PLAT)/libblksvd.a ../lib/$(PLAT)/libdynord.a ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libarrbio.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o wksvdd.exe ../../../src/test/wksvddx.F90 -L../../../lib/$(PLAT) -lblksvd -ldynord -lksvd2 -larrbio -lfaux -L../../../../libpvn/src -lpvn $(GNU) -ldl
 
+../bin/$(PLAT)/smkbpq.exe: test/smkbpqx.F90 test/gmkbpqx.F90 ../lib/$(PLAT)/libblksvd.a ../lib/$(PLAT)/libdynord.a ../lib/$(PLAT)/libarrbio.a $(MKFS) test/GNUmakefile
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o smkbpq.exe ../../../src/test/smkbpqx.F90 -L../../../lib/$(PLAT) -lblksvd -ldynord -larrbio -L../../../../libpvn/src -lpvn $(GNU) -ldl
+
 ../bin/$(PLAT)/dmkbpq.exe: test/dmkbpqx.F90 test/gmkbpqx.F90 ../lib/$(PLAT)/libblksvd.a ../lib/$(PLAT)/libdynord.a ../lib/$(PLAT)/libarrbio.a $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o dmkbpq.exe ../../../src/test/dmkbpqx.F90 -L../../../lib/$(PLAT) -lblksvd -ldynord -larrbio -L../../../../libpvn/src -lpvn $(GNU) -ldl
+
+../bin/$(PLAT)/cmkbpq.exe: test/cmkbpqx.F90 test/gmkbpqx.F90 ../lib/$(PLAT)/libblksvd.a ../lib/$(PLAT)/libdynord.a ../lib/$(PLAT)/libarrbio.a $(MKFS) test/GNUmakefile
+	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o cmkbpq.exe ../../../src/test/cmkbpqx.F90 -L../../../lib/$(PLAT) -lblksvd -ldynord -larrbio -L../../../../libpvn/src -lpvn $(GNU) -ldl
 
 ../bin/$(PLAT)/zmkbpq.exe: test/zmkbpqx.F90 test/gmkbpqx.F90 ../lib/$(PLAT)/libblksvd.a ../lib/$(PLAT)/libdynord.a ../lib/$(PLAT)/libarrbio.a $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FCFLAGS) -o zmkbpq.exe ../../../src/test/zmkbpqx.F90 -L../../../lib/$(PLAT) -lblksvd -ldynord -larrbio -L../../../../libpvn/src -lpvn $(GNU) -ldl
