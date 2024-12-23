@@ -46,13 +46,15 @@ SUBROUTINE XMKDPQ(N, M, D, O, INFO)
            CALL XDEC(D(K), I, J)
            IF ((I .NE. P) .AND. (I .NE. Q) .AND. (J .NE. P) .AND. (J .NE. Q)) THEN
               W = MAX(W, D(K))
+              K = K + 1
            ELSE ! colliding
               D(K) = D(S)
-              K = K - 1
               S = S - 1
            END IF
+        ELSE ! can be skipped
+           D(K) = D(S)
+           S = S - 1
         END IF
-        K = K + 1
      END DO
      IF (W .LE. WZERO) EXIT
   END DO
