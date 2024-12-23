@@ -191,8 +191,11 @@ OBJS_BLKSVD += \
 OBJS_DYNORD += \
 ../obj/$(PLAT)/db2enc.$(OXT)\
 ../obj/$(PLAT)/dmkd.$(OXT)\
+../obj/$(PLAT)/xmkd.$(OXT)\
 ../obj/$(PLAT)/zmkd.$(OXT)\
+../obj/$(PLAT)/wmkd.$(OXT)\
 ../obj/$(PLAT)/dmkdpq.$(OXT)\
+../obj/$(PLAT)/xmkdpq.$(OXT)\
 ../obj/$(PLAT)/dmkbpq.$(OXT)\
 ../obj/$(PLAT)/zmkbpq.$(OXT)
 
