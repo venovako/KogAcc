@@ -100,6 +100,9 @@
 ../obj/$(PLAT)/zscalg.$(OXT): faux/zscalg.F90 faux/hscalg.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/zscalg.F90
 
+../obj/$(PLAT)/initrc.$(OXT): faux/initrc.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/initrc.F90
+
 ../obj/$(PLAT)/jstep.$(OXT): faux/jstep.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/jstep.F90
 
