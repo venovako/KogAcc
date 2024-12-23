@@ -4,9 +4,7 @@
   IF (MRQSTP .LT. 0) THEN
      MRQSTP = -(MRQSTP + 1)
   ELSE ! MRQSTP >= 0
-#ifndef __GFORTRAN__
      !$ LOMP = .TRUE.
-#endif
      CONTINUE
   END IF
 
@@ -49,9 +47,7 @@
 
   ! optionally set U and V to I
   IF (LUSID) THEN
-#ifndef __GFORTRAN__
      !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J) SHARED(U,N) IF(LOMP)
-#endif
      DO J = 1, N
         DO I = 1, J-1
            U(I,J) = ZERO
@@ -61,14 +57,10 @@
            U(I,J) = ZERO
         END DO
      END DO
-#ifndef __GFORTRAN__
      !$OMP END PARALLEL DO
-#endif
   END IF
   IF (LVSID) THEN
-#ifndef __GFORTRAN__
      !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J) SHARED(V,N) IF(LOMP)
-#endif
      DO J = 1, N
         DO I = 1, J-1
            V(I,J) = ZERO
@@ -78,16 +70,12 @@
            V(I,J) = ZERO
         END DO
      END DO
-#ifndef __GFORTRAN__
      !$OMP END PARALLEL DO
-#endif
   END IF
 
   ! scale G
   L = 0
-#ifndef __GFORTRAN__
   !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
-#endif
   CALL LANGO(N, G, LDG, GN, L)
   IF (L .NE. 0) THEN
      INFO = -3
@@ -96,9 +84,7 @@
   GS = EXPONENT(HUGE(GN)) - EXPONENT(GN) - 3
   IF (GS .NE. 0) THEN
      L = 0
-#ifndef __GFORTRAN__
      !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
-#endif
      CALL SCALG(N, N, G, LDG, GS, L)
      IF (L .NE. 0) THEN
         INFO = -3
@@ -114,9 +100,7 @@
         US = 0
      ELSE ! scaling of U might be required
         L = 0
-#ifndef __GFORTRAN__
         !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
-#endif
         CALL LANGO(N, U, LDU, UN, L)
         IF (L .NE. 0) THEN
            INFO = -5
@@ -126,9 +110,7 @@
      END IF
      IF (US .NE. 0) THEN
         L = 0
-#ifndef __GFORTRAN__
         !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
-#endif
         CALL SCALG(N, N, U, LDU, US, L)
         IF (L .NE. 0) THEN
            INFO = -5
@@ -148,9 +130,7 @@
         VS = 0
      ELSE ! scaling of V might be required
         L = 0
-#ifndef __GFORTRAN__
         !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
-#endif
         CALL LANGO(N, V, LDV, VN, L)
         IF (L .NE. 0) THEN
            INFO = -7
@@ -160,9 +140,7 @@
      END IF
      IF (VS .NE. 0) THEN
         L = 0
-#ifndef __GFORTRAN__
         !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
-#endif
         CALL SCALG(N, N, V, LDV, VS, L)
         IF (L .NE. 0) THEN
            INFO = -7
@@ -184,9 +162,7 @@
 
      ! build the current step's pairs
      L = 0
-#ifndef __GFORTRAN__
      !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
-#endif
      CALL MKD(N, G, LDG, D, O, L)
      IF (L .LT. 0) THEN
         INFO = -10
@@ -194,9 +170,7 @@
      END IF
      I = L
      L = 0
-#ifndef __GFORTRAN__
      !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
-#endif
      CALL MKDPQ(N, I, D, O(1,I+1), L)
      IF (L .LT. 0) THEN
         INFO = -11
@@ -214,9 +188,7 @@
 
      ! compute and apply the transformations
      M = 0
-#ifndef __GFORTRAN__
 !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,U,W,O,N,LDG,LDU,I,LUACC) PRIVATE(J,G2,U2,P,Q,WV,WS,T,L,ES) REDUCTION(+:M) IF(LOMP)
-#endif
      DO J = 1, I
         L = (N * (N - 1)) / 2
         P = O(1,L+J)
@@ -263,16 +235,12 @@
            END IF
         END IF
      END DO
-#ifndef __GFORTRAN__
 !$OMP END PARALLEL DO
-#endif
      IF (M .NE. 0) THEN
         INFO = -19
         RETURN
      END IF
-#ifndef __GFORTRAN__
 !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,V,W,O,N,LDG,LDV,I,LVACC) PRIVATE(J,P,Q,WV,WS,T,L) REDUCTION(+:M) IF(LOMP)
-#endif
      DO J = 1, I
         L = (N * (N - 1)) / 2
         P = O(1,L+J)
@@ -304,9 +272,7 @@
         G(Q,Q) = W(WS+1)
         IF (IAND(T, 8) .NE. 0) M = M + 1
      END DO
-#ifndef __GFORTRAN__
 !$OMP END PARALLEL DO
-#endif
      IF ((M .LT. 0) .OR. (M .GT. I)) THEN
         INFO = -20
         RETURN
@@ -317,9 +283,7 @@
 
         ! optionally scale G
         L = 0
-#ifndef __GFORTRAN__
         !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
-#endif
         CALL LANGO(N, G, LDG, GN, L)
         IF (L .NE. 0) THEN
            INFO = -3
@@ -328,9 +292,7 @@
         T = EXPONENT(HUGE(GN)) - EXPONENT(GN) - 3
         IF (T .LT. 0) THEN
            L = 0
-#ifndef __GFORTRAN__
            !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
-#endif
            CALL SCALG(N, N, G, LDG, T, L)
            IF (L .NE. 0) THEN
               INFO = -3
@@ -343,9 +305,7 @@
         ! optionally scale U
         IF (LUACC .AND. (.NOT. LUSID)) THEN
            L = 0
-#ifndef __GFORTRAN__
            !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
-#endif
            CALL LANGO(N, U, LDU, UN, L)
            IF (L .NE. 0) THEN
               INFO = -5
@@ -354,9 +314,7 @@
            T = EXPONENT(HUGE(UN)) - EXPONENT(UN) - 2
            IF (T .LT. 0) THEN
               L = 0
-#ifndef __GFORTRAN__
               !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
-#endif
               CALL SCALG(N, N, U, LDU, T, L)
               IF (L .NE. 0) THEN
                  INFO = -5
@@ -370,9 +328,7 @@
         ! optionally scale V
         IF (LVACC .AND. (.NOT. LVSID)) THEN
            L = 0
-#ifndef __GFORTRAN__
            !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
-#endif
            CALL LANGO(N, V, LDV, VN, L)
            IF (L .NE. 0) THEN
               INFO = -7
@@ -381,9 +337,7 @@
            T = EXPONENT(HUGE(VN)) - EXPONENT(VN) - 2
            IF (T .LT. 0) THEN
               L = 0
-#ifndef __GFORTRAN__
               !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
-#endif
               CALL SCALG(N, N, V, LDV, T, L)
               IF (L .NE. 0) THEN
                  INFO = -7
@@ -401,9 +355,7 @@
 
   ! extract SV from G
   I = 0
-#ifndef __GFORTRAN__
   !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,SV,N,GS) PRIVATE(J) REDUCTION(MAX:I) IF(LOMP)
-#endif
   DO J = 1, N
      SV(J) = G(J,J)
      IF (.NOT. (SV(J) .LE. HUGE(SV(J)))) THEN
@@ -412,9 +364,7 @@
         I = MAX(I, 0)
      END IF
   END DO
-#ifndef __GFORTRAN__
   !$OMP END PARALLEL DO
-#endif
   IF (I .NE. 0) THEN
      INFO = -9
      RETURN
@@ -423,9 +373,7 @@
   ! backscale G, U, V
   IF (GS .NE. 0) THEN
      L = 0
-#ifndef __GFORTRAN__
      !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
-#endif
      CALL SCALG(N, N, G, LDG, -GS, L)
      IF (L .NE. 0) THEN
         INFO = -3
@@ -435,9 +383,7 @@
   END IF
   IF (US .NE. 0) THEN
      L = 0
-#ifndef __GFORTRAN__
      !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
-#endif
      CALL SCALG(N, N, U, LDU, -US, L)
      IF (L .NE. 0) THEN
         INFO = -5
@@ -447,9 +393,7 @@
   END IF
   IF (VS .NE. 0) THEN
      L = 0
-#ifndef __GFORTRAN__
      !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
-#endif
      CALL SCALG(N, N, V, LDV, -VS, L)
      IF (L .NE. 0) THEN
         INFO = -7

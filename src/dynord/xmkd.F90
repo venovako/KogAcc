@@ -40,7 +40,11 @@ SUBROUTINE XMKD(N, G, LDG, D, O, INFO)
   INFO = 0
   IF (LDG .LT. N) INFO = -3
   IF (N .LT. 0) INFO = -1
+#ifdef CLS
+  IF (N .GT. 1073741824) INFO = -1
+#else
   IF (N .GT. 32) INFO = -1
+#endif
   IF (INFO .NE. 0) RETURN
   IF (MOD(N, 2) .EQ. 0) THEN
      INFO = (N / 2) * (N - 1)

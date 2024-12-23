@@ -2,7 +2,6 @@
 SUBROUTINE XMKDPQ(N, M, D, O, INFO)
   USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
   IMPLICIT NONE
-#ifndef __GFORTRAN__
   INTERFACE
      PURE SUBROUTINE XDEC(E, P, Q) BIND(C,NAME='pvn_djs_xdec_')
        USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
@@ -10,7 +9,7 @@ SUBROUTINE XMKDPQ(N, M, D, O, INFO)
        INTEGER, INTENT(OUT) :: P, Q
      END SUBROUTINE XDEC
   END INTERFACE
-#endif
+
   REAL(KIND=c_long_double), PARAMETER :: WZERO = 0.0_c_long_double
   INTEGER, INTENT(IN) :: N, M
   REAL(KIND=c_long_double), INTENT(INOUT) :: D(M+1)
@@ -19,10 +18,7 @@ SUBROUTINE XMKDPQ(N, M, D, O, INFO)
 
   REAL(KIND=c_long_double) :: W
   INTEGER :: I, J, K, L, P, Q, R, S
-#ifdef __GFORTRAN__
-  EXTERNAL :: PVN_DJS_XDEC
-#define XDEC PVN_DJS_XDEC
-#endif
+
   ! find the remaining pivots
   L = INFO
   INFO = 0
