@@ -54,7 +54,10 @@ PURE SUBROUTINE IBDIMS(N, B, M, M_B, NW, ND, NO, INFO)
   ND = M_B * M_B
   NO = T * 2 * B
   M_P = M_B / 2
-  NW = MAX(ND, 3 * NO * M_P)
+  ! LAYOUT OF W:
+  ! M_B x M_B
+  ! 3 * (LDB x 2*B) * M_P
+  NW = MAX(ND, (3 * NO * M_P))
   IF (MOD(M_B, 2) .EQ. 0) THEN
      NO = M_P * (M_B - 1)
   ELSE ! M_B odd
@@ -64,10 +67,11 @@ PURE SUBROUTINE IBDIMS(N, B, M, M_B, NW, ND, NO, INFO)
   ! LAYOUT OF D: D(X) = (X*(X-1))/2 + 1
   ! D(M_B)
   ! D(2*B _1) ... D(2*B _M_P)
-  B = T
-  T = M_P * (B_P + 1)
-  ND = MAX(T, NO + 1)
+  ND = MAX((NO + 1), ((B_P + 1) * M_P))
   ! LAYOUT OF O: RC(X) = (X*(X-1))/2
-  ! RC(M_B) RC(2*B) PQ(M_B) PQ(2*B _1) ... PQ(2*B _M_P)
-  NO = NO + B_P + T
+  ! RC(M_B) RC(2*B) OD
+  ! LAYOUT OF OD: PQI(X) = X
+  ! PQI(M_B) PQI(2*B _1) ... PQI(2*B _M_P)
+  NO = NO + B_P + M_B + 2 * B * M_P
+  B = T
 END SUBROUTINE IBDIMS
