@@ -1,3 +1,4 @@
+$(warning GNU Fortran is used without OpenMP for now!)
 AR=ar
 ARFLAGS=rsv
 FC=$(COMPILER_PREFIX)gfortran$(COMPILER_SUFFIX)
@@ -17,8 +18,8 @@ ifeq ($(OS),Darwin)
 FCFLAGS += -Wa,-q
 endif # Darwin
 endif # ?ppc64le
-# -frecursive if not -fopenmp
-FCFLAGS += -fopenmp -fPIC -fexceptions -fasynchronous-unwind-tables -fno-omit-frame-pointer -ffp-contract=fast -ffree-line-length-none -fstack-arrays
+# replace -frecursive with -fopenmp when it works
+FCFLAGS += -frecursive -fPIC -fexceptions -fasynchronous-unwind-tables -fno-omit-frame-pointer -ffp-contract=fast -ffree-line-length-none -fstack-arrays
 ifdef NDEBUG
 FCFLAGS += -fno-math-errno -fvect-cost-model=unlimited
 else # !NDEBUG
