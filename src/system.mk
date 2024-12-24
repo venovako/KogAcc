@@ -8,7 +8,7 @@ ifndef OS
 OS=$(shell uname)
 endif # !OS
 ifndef COMPILER
-COMPILER=ifx
+COMPILER=gfortran
 endif # !COMPILER
 ifndef DEL
 DEL=rm -frv
