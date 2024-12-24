@@ -171,7 +171,7 @@
      I = L
      L = 0
      !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
-     CALL MKDPQ(N, I, D, O(1,I+1), L)
+     CALL MKDPQ(N, I, D, OD, L)
      IF (L .LT. 0) THEN
         INFO = -11
         RETURN
@@ -188,11 +188,11 @@
 
      ! compute and apply the transformations
      M = 0
-!$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,U,W,O,N,LDG,LDU,I,LUACC) PRIVATE(J,G2,U2,P,Q,WV,WS,T,L,ES) REDUCTION(+:M) IF(LOMP)
+!$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,U,W,OD,N,LDG,LDU,I,LUACC) PRIVATE(J,G2,U2,P,Q,WV,WS,T,L,ES) REDUCTION(+:M) IF(LOMP)
      DO J = 1, I
         L = (N * (N - 1)) / 2
-        P = O(1,L+J)
-        Q = O(2,L+J)
+        P = OD(1,J)
+        Q = OD(2,J)
         IF ((P .LE. 0) .OR. (Q .LE. P) .OR. (P .GE. N) .OR. (Q .GT. N)) THEN
            M = M + 1
            CYCLE
@@ -205,9 +205,9 @@
         WS = WV + 4
         ES(1) = 0
         CALL KSVD2(G2, U2, W(WV), W(WS), ES)
-        O(2,L+I+J) = ES(1)
+        OD(2,I+J) = ES(1)
         CALL CVGPP(G2, U2, W(WV), W(WS), ES)
-        O(1,L+I+J) = ES(1)
+        OD(1,I+J) = ES(1)
         T = ES(1)
         IF (T .LT. 0) THEN
            M = M + 1
@@ -240,14 +240,14 @@
         INFO = -19
         RETURN
      END IF
-!$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,V,W,O,N,LDG,LDV,I,LVACC) PRIVATE(J,P,Q,WV,WS,T,L) REDUCTION(+:M) IF(LOMP)
+!$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,V,W,OD,N,LDG,LDV,I,LVACC) PRIVATE(J,P,Q,WV,WS,T,L) REDUCTION(+:M) IF(LOMP)
      DO J = 1, I
         L = (N * (N - 1)) / 2
-        P = O(1,L+J)
-        Q = O(2,L+J)
+        P = OD(1,J)
+        Q = OD(2,J)
         WV = (J - 1) * 6 + 1
         WS = WV + 4
-        T = O(1,L+I+J)
+        T = OD(1,I+J)
         ! transform V and G from the right
         IF (IAND(T, 4) .NE. 0) THEN
            IF (LVACC) THEN

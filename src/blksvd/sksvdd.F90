@@ -1,5 +1,5 @@
 !>@brief \b SKSVDD computes the SVD of G as U S V^T, with S returned in SV and U and V optionally accumulated on either identity for the SVD, or on preset input matrices.
-SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
+SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, OD, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: INT64, REAL32, REAL64
   !$ USE OMP_LIB
   IMPLICIT NONE
@@ -83,11 +83,12 @@ SUBROUTINE SKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
 
   INTEGER, PARAMETER :: K = REAL32, USID = 8, UACC = 16, VSID = 32, VACC = 64
   REAL(KIND=K), PARAMETER :: ZERO = 0.0_K, ONE = 1.0_K
-  INTEGER, INTENT(IN) :: JOB, N, LDG, LDU, LDV
+  INTEGER, INTENT(IN) :: JOB, N, LDG, LDU, LDV, O(2,*)
   REAL(KIND=K), INTENT(INOUT) :: G(LDG,N), U(LDU,N), V(LDV,N)
   REAL(KIND=K), INTENT(OUT) :: SV(N), W(*)
   REAL(KIND=REAL64), INTENT(OUT) :: D(*)
-  INTEGER, INTENT(INOUT) :: O(2,*), INFO
+  INTEGER, INTENT(OUT) :: OD(2,N)
+  INTEGER, INTENT(INOUT) :: INFO
 
   REAL(KIND=K) :: G2(2,2), U2(2,2)
   REAL(KIND=K) :: GN, UN, VN

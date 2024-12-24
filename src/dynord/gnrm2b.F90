@@ -27,7 +27,7 @@
      DO P = 1, M
         I = (P - 1) * B + 1
         J = (Q - 1) * B + 1
-        IF (I .EQ. J) THEN
+        IF (P .EQ. Q) THEN
            W(P,Q) = NRM2O(B, B, G(I,J), LDG, K)
         ELSE ! off-diag block
            W(P,Q) = NRM2O(B, B, G(I,J), LDG, 0)

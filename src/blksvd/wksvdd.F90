@@ -1,5 +1,5 @@
 !>@brief \b WKSVDD computes the SVD of G as U S V^H, with S returned in SV and U and V optionally accumulated on either identity for the SVD, or on preset input matrices.
-SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
+SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, OD, INFO)
   USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: INT64, REAL64
   !$ USE OMP_LIB
@@ -98,11 +98,12 @@ SUBROUTINE WKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, INFO)
   INTEGER, PARAMETER :: K = REAL64, USID = 8, UACC = 16, VSID = 32, VACC = 64
   REAL(KIND=K), PARAMETER :: ZERO = 0.0_K, ONE = 1.0_K
   COMPLEX(KIND=K), PARAMETER :: CZERO = (ZERO,ZERO), CONE = (ONE,ZERO)
-  INTEGER, INTENT(IN) :: JOB, N, LDG, LDU, LDV
+  INTEGER, INTENT(IN) :: JOB, N, LDG, LDU, LDV, O(2,*)
   COMPLEX(KIND=K), INTENT(INOUT) :: G(LDG,N), U(LDU,N), V(LDV,N)
   REAL(KIND=K), INTENT(OUT) :: SV(N), W(*)
   REAL(KIND=c_long_double), INTENT(OUT) :: D(*)
-  INTEGER, INTENT(INOUT) :: O(2,*), INFO
+  INTEGER, INTENT(OUT) :: OD(2,N)
+  INTEGER, INTENT(INOUT) :: INFO
 
   COMPLEX(KIND=K) :: G2(2,2), U2(2,2), V2(2,2)
   REAL(KIND=K) :: GN, UN, VN
