@@ -23,6 +23,11 @@ PURE SUBROUTINE IBDIMS(N, B, M, M_B, NW, ND, NO, INFO)
      RETURN
   END IF
   M_B = M / B
+  IF (INFO .GT. 0) THEN
+     NW = 3
+  ELSE ! INFO .LE. 0
+     NW = 5
+  END IF
   SELECT CASE (INFO)
   CASE (REAL32)
      T = CLS / 4
@@ -56,8 +61,8 @@ PURE SUBROUTINE IBDIMS(N, B, M, M_B, NW, ND, NO, INFO)
   M_P = M_B / 2
   ! LAYOUT OF W:
   ! M_B x M_B
-  ! 3 * (LDB x 2*B) * M_P
-  NW = MAX(ND, (3 * NO * M_P))
+  ! (3 * (LDB x 2*B) * M_P); ((MAX((2*B-1),NW) * 2*B) * M_P)
+  NW = MAX(ND, ((3 * NO + MAX((2 * B - 1), NW) * 2 * B) * M_P))
   IF (MOD(M_B, 2) .EQ. 0) THEN
      NO = M_P * (M_B - 1)
   ELSE ! M_B odd
