@@ -29,4 +29,4 @@
   IF (INFO .LT. 0) RETURN
   K = INFO
   INFO = L
-  CALL MKDPQ(M, K, D, O(1,K+1), INFO)
+  CALL MKDPQ(M, K, D, OD, INFO)
