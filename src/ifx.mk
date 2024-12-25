@@ -10,12 +10,7 @@ ifndef MARCH
 # common-avx512 for KNLs
 MARCH=Host
 endif # !MARCH
-ifeq ($(ABI),ilp64)
-FCFLAGS += -qmkl-$(ABI)=sequential
-else # !ilp64
-FCFLAGS += -qmkl=sequential
-endif # ?ilp64
-FCFLAGS += -x$(MARCH) -fPIC -fexceptions -fasynchronous-unwind-tables -fno-omit-frame-pointer -fp-model=precise -fp-speculation=safe -fimf-precision=high -fma -fprotect-parens -no-ftz -mprefer-vector-width=512 -qopenmp -standard-semantics -traceback -vec-threshold0 -rdynamic -static-intel -static-libgcc
+FCFLAGS += -x$(MARCH) -fPIC -fexceptions -fasynchronous-unwind-tables -fno-omit-frame-pointer -fp-model=precise -fp-speculation=safe -fimf-precision=high -fma -fprotect-parens -no-ftz -mprefer-vector-width=512 -qopenmp -standard-semantics -traceback -vec-threshold0
 ifdef NDEBUG
 FCFLAGS += -fno-math-errno -qopt-report=3
 ifndef PROFILE
@@ -29,6 +24,13 @@ ifndef NDEBUG
 FCFLAGS += -debug parallel
 endif # !NDEBUG
 endif # Linux
+LDFLAGS=-rdynamic -static-intel -static-libgcc
+ifeq ($(ABI),ilp64)
+LDFLAGS += -qmkl-$(ABI)=sequential
+else # !ilp64
+LDFLAGS += -qmkl=sequential
+endif # ?ilp64
+LDFLAGS += $(shell if [ -L /usr/lib64/libmemkind.so ]; then echo '-lmemkind'; fi) -L../../../../libpvn/src -lpvn -ldl $(realpath $(shell gcc -print-file-name=libquadmath.a))
 GFC=gfortran
 ifdef NDEBUG
 GFCFLAGS=-O$(NDEBUG)
@@ -42,4 +44,3 @@ else # !NDEBUG
 GFCFLAGS += -fcheck=all,no-recursion -finit-local-zero -finit-real=snan -finit-derived -Wcharacter-truncation -Wimplicit-procedure -Wfunction-elimination -Wrealloc-lhs-all
 endif # ?NDEBUG
 GFCFLAGS += -pedantic -Wall -Wextra -Wno-array-temporaries -Wno-compare-reals -Wno-c-binding-type
-GFCFLAGS += -rdynamic -static-libgcc -static-libgfortran -static-libquadmath
