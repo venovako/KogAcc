@@ -4,7 +4,7 @@
      J = 0
      CALL BROTC(N, B, V, LDV, O(1,I), O(2,I), VB(1,1,I), LDB, GB(B+1,1,I), LDB, J)
      IF (J .LT. 0) THEN
-        INFO = MIN(INFO, -10 * I - 6)
+        INFO = MIN(INFO, -10 * I - 8)
      ELSE ! OK
         INFO = MIN(INFO, 0)
      END IF

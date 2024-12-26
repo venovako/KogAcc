@@ -25,20 +25,22 @@
      GJ = (P - 1) * B + 1
      RI = 1
      RJ = 1
-     CALL GEMM('N', 'N', B, B, B, ONE, G(GI,GJ), LDG, R(RI,RJ), LDB, ZERO, W, LDW)
+     CALL GEMM('N', 'N', B, B, B, ONE, G(GI,GJ), LDG, R(RI,RJ), LDB, ZERO, W(1,1), LDW)
      J = GJ
      GJ = (Q - 1) * B + 1
      RI = B + 1
-     CALL GEMM('N', 'N', B, B, B, ONE, G(GI,GJ), LDG, R(RI,RJ), LDB, ONE,  W, LDW)
-     CALL LACPY('A', B, B, W, LDW, G(GI,J), LDG)
+     CALL GEMM('N', 'N', B, B, B, ONE, G(GI,GJ), LDG, R(RI,RJ), LDB, ONE,  W(1,1), LDW)
      M = GJ
      GJ = J
      J = M
      RJ = RI
      RI = 1
-     CALL GEMM('N', 'N', B, B, B, ONE, G(GI,GJ), LDG, R(RI,RJ), LDB, ZERO, W, LDW)
+     CALL GEMM('N', 'N', B, B, B, ONE, G(GI,GJ), LDG, R(RI,RJ), LDB, ZERO, W(1,B+1), LDW)
+     M = GJ
      GJ = J
+     J = M
      RI = B + 1
-     CALL GEMM('N', 'N', B, B, B, ONE, G(GI,GJ), LDG, R(RI,RJ), LDB, ONE,  W, LDW)
-     CALL LACPY('A', B, B, W, LDW, G(GI,J), LDG)
+     CALL GEMM('N', 'N', B, B, B, ONE, G(GI,GJ), LDG, R(RI,RJ), LDB, ONE,  W(1,B+1), LDW)
+     CALL LACPY('A', B, B, W(1,1), LDW, G(GI,J), LDG)
+     CALL LACPY('A', B, B, W(1,B+1), LDW, G(GI,GJ), LDG)
   END DO

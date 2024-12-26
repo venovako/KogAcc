@@ -20,7 +20,7 @@
   L = INFO
   INFO = 0
   IF (L .LT. 0) THEN
-     ! TODO: update U, V, and G from the right concurrently, of which the first two updates have an equal amount of work.
+     ! TODO: update U and V from the right concurrently.
 #include "gbupU.F90"
 #include "gbupV.F90"
 #include "gbupGc.F90"
