@@ -117,6 +117,10 @@ OBJS_FAUX=\
 ../obj/$(PLAT)/zmul.$(OXT)\
 ../obj/$(PLAT)/cfma.$(OXT)\
 ../obj/$(PLAT)/zfma.$(OXT)\
+../obj/$(PLAT)/sconjt.$(OXT)\
+../obj/$(PLAT)/cconjt.$(OXT)\
+../obj/$(PLAT)/dconjt.$(OXT)\
+../obj/$(PLAT)/zconjt.$(OXT)\
 ../obj/$(PLAT)/slango.$(OXT)\
 ../obj/$(PLAT)/clango.$(OXT)\
 ../obj/$(PLAT)/dlango.$(OXT)\

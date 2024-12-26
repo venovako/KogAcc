@@ -16,6 +16,18 @@
 ../obj/$(PLAT)/zfma.$(OXT): faux/zfma.F90 faux/hfma.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/zfma.F90
 
+../obj/$(PLAT)/sconjt.$(OXT): faux/sconjt.F90 faux/gconjt.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/sconjt.F90
+
+../obj/$(PLAT)/cconjt.$(OXT): faux/cconjt.F90 faux/hconjt.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/cconjt.F90
+
+../obj/$(PLAT)/dconjt.$(OXT): faux/dconjt.F90 faux/gconjt.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/dconjt.F90
+
+../obj/$(PLAT)/zconjt.$(OXT): faux/zconjt.F90 faux/hconjt.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/zconjt.F90
+
 ../obj/$(PLAT)/slango.$(OXT): faux/slango.F90 faux/glango.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/slango.F90
 
