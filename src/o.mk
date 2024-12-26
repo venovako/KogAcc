@@ -141,6 +141,10 @@ OBJS_FAUX=\
 ../obj/$(PLAT)/zrotr.$(OXT)\
 ../obj/$(PLAT)/zrotra.$(OXT)\
 ../obj/$(PLAT)/zrotrx.$(OXT)\
+../obj/$(PLAT)/sbrotr.$(OXT)\
+../obj/$(PLAT)/cbrotr.$(OXT)\
+../obj/$(PLAT)/dbrotr.$(OXT)\
+../obj/$(PLAT)/zbrotr.$(OXT)\
 ../obj/$(PLAT)/sscalg.$(OXT)\
 ../obj/$(PLAT)/cscalg.$(OXT)\
 ../obj/$(PLAT)/dscalg.$(OXT)\

@@ -100,6 +100,18 @@
 ../obj/$(PLAT)/zrotrx.$(OXT): faux/zrotrx.F90 faux/hrotra.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(GFC) $(GFCFLAGS) $(CFLG) ../../../src/faux/zrotrx.F90
 
+../obj/$(PLAT)/sbrotr.$(OXT): faux/sbrotr.F90 faux/gbrotr.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/sbrotr.F90
+
+../obj/$(PLAT)/cbrotr.$(OXT): faux/cbrotr.F90 faux/gbrotr.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/cbrotr.F90
+
+../obj/$(PLAT)/dbrotr.$(OXT): faux/dbrotr.F90 faux/gbrotr.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/dbrotr.F90
+
+../obj/$(PLAT)/zbrotr.$(OXT): faux/zbrotr.F90 faux/gbrotr.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/zbrotr.F90
+
 ../obj/$(PLAT)/sscalg.$(OXT): faux/sscalg.F90 faux/gscalg.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/sscalg.F90
 
