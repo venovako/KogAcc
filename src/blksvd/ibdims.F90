@@ -70,13 +70,12 @@ PURE SUBROUTINE IBDIMS(N, B, M, M_B, NW, ND, NO, INFO)
   END IF
   B_P = B * (2 * B - 1)
   ! LAYOUT OF D: D(X) = (X*(X-1))/2 + 1
-  ! D(M_B)
-  ! D(2*B _1) ... D(2*B _M_P)
-  ND = MAX((NO + 1), ((B_P + 1) * M_P))
+  ! MAX(D(M_B), CEIL(M/2)) D(2*B)_1 ... D(2*B)_M_P
+  ND = MAX((NO + 1), ((M / 2) + MOD(M, 2))) + (B_P + 1) * M_P
   ! LAYOUT OF O: RC(X) = (X*(X-1))/2
   ! RC(M_B) RC(2*B) OD
   ! LAYOUT OF OD: PQI(X) = X
-  ! PQI(M_B) PQI(2*B _1) ... PQI(2*B _M_P)
+  ! PQI(M_B) PQI(2*B)_1 ... PQI(2*B)_M_P
   NO = NO + B_P + M_B + 2 * B * M_P
   B = T
 END SUBROUTINE IBDIMS

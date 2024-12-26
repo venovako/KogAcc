@@ -48,9 +48,15 @@ OBJS_BLKSVD=\
 ../obj/$(PLAT)/dksvd0.$(OXT)\
 ../obj/$(PLAT)/zksvd0.$(OXT)\
 ../obj/$(PLAT)/sksvdd.$(OXT)\
+../obj/$(PLAT)/dksvdd.$(OXT)\
 ../obj/$(PLAT)/cksvdd.$(OXT)\
+../obj/$(PLAT)/zksvdd.$(OXT)\
 ../obj/$(PLAT)/xksvdd.$(OXT)\
 ../obj/$(PLAT)/wksvdd.$(OXT)\
+../obj/$(PLAT)/sbksvdd.$(OXT)\
+../obj/$(PLAT)/cbksvdd.$(OXT)\
+../obj/$(PLAT)/dbksvdd.$(OXT)\
+../obj/$(PLAT)/zbksvdd.$(OXT)\
 ../obj/$(PLAT)/ibdims.$(OXT)
 
 OBJS_DYNORD=\
@@ -67,6 +73,7 @@ OBJS_DYNORD=\
 ../obj/$(PLAT)/dnrm2b.$(OXT)\
 ../obj/$(PLAT)/znrm2b.$(OXT)\
 ../obj/$(PLAT)/sb2enc.$(OXT)\
+../obj/$(PLAT)/db2enc.$(OXT)\
 ../obj/$(PLAT)/smkwpq.$(OXT)\
 ../obj/$(PLAT)/cmkwpq.$(OXT)\
 ../obj/$(PLAT)/dmkwpq.$(OXT)\
@@ -76,10 +83,18 @@ OBJS_DYNORD=\
 ../obj/$(PLAT)/dmk3pq.$(OXT)\
 ../obj/$(PLAT)/zmk3pq.$(OXT)\
 ../obj/$(PLAT)/smkd.$(OXT)\
+../obj/$(PLAT)/dmkd.$(OXT)\
+../obj/$(PLAT)/xmkd.$(OXT)\
 ../obj/$(PLAT)/cmkd.$(OXT)\
+../obj/$(PLAT)/zmkd.$(OXT)\
+../obj/$(PLAT)/wmkd.$(OXT)\
 ../obj/$(PLAT)/smkdpq.$(OXT)\
+../obj/$(PLAT)/dmkdpq.$(OXT)\
+../obj/$(PLAT)/xmkdpq.$(OXT)\
 ../obj/$(PLAT)/smkbpq.$(OXT)\
+../obj/$(PLAT)/dmkbpq.$(OXT)\
 ../obj/$(PLAT)/cmkbpq.$(OXT)\
+../obj/$(PLAT)/zmkbpq.$(OXT)\
 ../obj/$(PLAT)/spqcmp.$(OXT)\
 ../obj/$(PLAT)/dpqcmp.$(OXT)\
 ../obj/$(PLAT)/spqmrg.$(OXT)\
@@ -167,14 +182,18 @@ EXES_BLKSVD=\
 ../bin/$(PLAT)/dksvd0.exe\
 ../bin/$(PLAT)/zksvd0.exe\
 ../bin/$(PLAT)/sksvdd.exe\
+../bin/$(PLAT)/dksvdd.exe\
 ../bin/$(PLAT)/cksvdd.exe\
+../bin/$(PLAT)/zksvdd.exe\
 ../bin/$(PLAT)/xksvdd.exe\
 ../bin/$(PLAT)/wksvdd.exe\
 ../bin/$(PLAT)/ibdims.exe
 
 EXES_DYNORD=\
 ../bin/$(PLAT)/smkbpq.exe\
+../bin/$(PLAT)/dmkbpq.exe\
 ../bin/$(PLAT)/cmkbpq.exe\
+../bin/$(PLAT)/zmkbpq.exe\
 ../bin/$(PLAT)/spqsort.exe\
 ../bin/$(PLAT)/dpqsort.exe
 
@@ -183,8 +202,11 @@ EXES_KSVD2=\
 ../bin/$(PLAT)/cksvd2.exe\
 ../bin/$(PLAT)/dksvd2.exe\
 ../bin/$(PLAT)/zksvd2.exe\
+../bin/$(PLAT)/qksvd2.exe\
+../bin/$(PLAT)/yksvd2.exe\
 ../bin/$(PLAT)/slwsv2.exe\
-../bin/$(PLAT)/dlwsv2.exe
+../bin/$(PLAT)/dlwsv2.exe\
+../bin/$(PLAT)/qlwsv2.exe
 
 EXES_FAUX=\
 ../bin/$(PLAT)/sthalt.exe\
@@ -198,38 +220,7 @@ EXES_TEST=\
 ../bin/$(PLAT)/srnd.exe\
 ../bin/$(PLAT)/crnd.exe\
 ../bin/$(PLAT)/drnd.exe\
-../bin/$(PLAT)/zrnd.exe
-
-ifneq ($(COMPILER),xlf)
-OBJS_BLKSVD += \
-../obj/$(PLAT)/dksvdd.$(OXT)\
-../obj/$(PLAT)/zksvdd.$(OXT)
-
-OBJS_DYNORD += \
-../obj/$(PLAT)/db2enc.$(OXT)\
-../obj/$(PLAT)/dmkd.$(OXT)\
-../obj/$(PLAT)/xmkd.$(OXT)\
-../obj/$(PLAT)/zmkd.$(OXT)\
-../obj/$(PLAT)/wmkd.$(OXT)\
-../obj/$(PLAT)/dmkdpq.$(OXT)\
-../obj/$(PLAT)/xmkdpq.$(OXT)\
-../obj/$(PLAT)/dmkbpq.$(OXT)\
-../obj/$(PLAT)/zmkbpq.$(OXT)
-
-EXES_BLKSVD += \
-../bin/$(PLAT)/dksvdd.exe\
-../bin/$(PLAT)/zksvdd.exe
-
-EXES_DYNORD += \
-../bin/$(PLAT)/dmkbpq.exe\
-../bin/$(PLAT)/zmkbpq.exe
-
-EXES_KSVD2 += \
-../bin/$(PLAT)/qksvd2.exe\
-../bin/$(PLAT)/yksvd2.exe\
-../bin/$(PLAT)/qlwsv2.exe
-
-EXES_TEST += \
+../bin/$(PLAT)/zrnd.exe\
 ../bin/$(PLAT)/sran2u.exe\
 ../bin/$(PLAT)/sran2g.exe\
 ../bin/$(PLAT)/cran2g.exe\
@@ -242,7 +233,6 @@ EXES_TEST += \
 ../bin/$(PLAT)/drnd2u.exe\
 ../bin/$(PLAT)/drnd2g.exe\
 ../bin/$(PLAT)/zrnd2g.exe
-endif # !xlf
 
 OBJS=$(OBJS_ARRBIO) $(OBJS_BLKSVD) $(OBJS_DYNORD) $(OBJS_KSVD2) $(OBJS_FAUX)
 
