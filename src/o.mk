@@ -39,6 +39,10 @@ OBJS_BLKSVD=\
 ../obj/$(PLAT)/cbunpack.$(OXT)\
 ../obj/$(PLAT)/dbunpack.$(OXT)\
 ../obj/$(PLAT)/zbunpack.$(OXT)\
+../obj/$(PLAT)/sbupdate.$(OXT)\
+../obj/$(PLAT)/cbupdate.$(OXT)\
+../obj/$(PLAT)/dbupdate.$(OXT)\
+../obj/$(PLAT)/zbupdate.$(OXT)\
 ../obj/$(PLAT)/sksvd0.$(OXT)\
 ../obj/$(PLAT)/cksvd0.$(OXT)\
 ../obj/$(PLAT)/dksvd0.$(OXT)\

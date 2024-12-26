@@ -40,6 +40,18 @@
 ../obj/$(PLAT)/zbunpack.$(OXT): blksvd/zbunpack.F90 blksvd/gbunpack.F90 $(MKFS) blksvd/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/zbunpack.F90
 
+../obj/$(PLAT)/sbupdate.$(OXT): blksvd/sbupdate.F90 blksvd/gbupdate.F90 blksvd/gbupGc.F90 blksvd/gbupGr.F90 blksvd/gbupU.F90 blksvd/gbupV.F90 $(MKFS) blksvd/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/sbupdate.F90
+
+../obj/$(PLAT)/cbupdate.$(OXT): blksvd/cbupdate.F90 blksvd/gbupdate.F90 blksvd/gbupGc.F90 blksvd/gbupGr.F90 blksvd/gbupU.F90 blksvd/gbupV.F90 $(MKFS) blksvd/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/cbupdate.F90
+
+../obj/$(PLAT)/dbupdate.$(OXT): blksvd/dbupdate.F90 blksvd/gbupdate.F90 blksvd/gbupGc.F90 blksvd/gbupGr.F90 blksvd/gbupU.F90 blksvd/gbupV.F90 $(MKFS) blksvd/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/dbupdate.F90
+
+../obj/$(PLAT)/zbupdate.$(OXT): blksvd/zbupdate.F90 blksvd/gbupdate.F90 blksvd/gbupGc.F90 blksvd/gbupGr.F90 blksvd/gbupU.F90 blksvd/gbupV.F90 $(MKFS) blksvd/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/zbupdate.F90
+
 ../obj/$(PLAT)/sksvd0.$(OXT): blksvd/sksvd0.F90 blksvd/gksvd0.F90 $(MKFS) blksvd/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/blksvd/sksvd0.F90
 
