@@ -4,16 +4,15 @@
      J = 0
      CALL CONJT(2*B, UB(1,1,I), LDB, J)
      IF (J .LT. 0) THEN
-        INFO = MIN(INFO, -10 * I - 9)
-     ELSE ! OK
-        INFO = MIN(INFO, 0)
-     END IF
-     J = 1
-     CALL BROTR(N, B, G, LDG, O(1,I), O(2,I), UB(1,1,I), LDB, GB(1,1,I), LDB, J)
-     IF (J .LT. 0) THEN
         INFO = MIN(INFO, -10 * I - 6)
      ELSE ! OK
-        INFO = MIN(INFO, 0)
+        J = 1
+        CALL BROTR(N, B, G, LDG, O(1,I), O(2,I), UB(1,1,I), LDB, GB(1,1,I), LDB, J)
+        IF (J .LT. 0) THEN
+           INFO = MIN(INFO, -10 * I - 7)
+        ELSE ! OK
+           INFO = MIN(INFO, 0)
+        END IF
      END IF
   END DO
   !$OMP END PARALLEL DO
