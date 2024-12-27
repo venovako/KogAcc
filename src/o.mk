@@ -172,6 +172,7 @@ OBJS_FAUX=\
 ../obj/$(PLAT)/cscalg.$(OXT)\
 ../obj/$(PLAT)/dscalg.$(OXT)\
 ../obj/$(PLAT)/zscalg.$(OXT)\
+../obj/$(PLAT)/initcc.$(OXT)\
 ../obj/$(PLAT)/initrc.$(OXT)\
 ../obj/$(PLAT)/jstep.$(OXT)\
 ../obj/$(PLAT)/jsweep.$(OXT)

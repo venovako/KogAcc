@@ -1,4 +1,4 @@
-!>@brief \b IBDIMS computes various dimensions based on N and B.
+!>@brief \b IBDIMS computes various dimensions based on N, B, and M = JS.
 PURE SUBROUTINE IBDIMS(N, B, M, M_B, NW, ND, NO, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32, REAL64, REAL128
   IMPLICIT NONE
@@ -12,17 +12,27 @@ PURE SUBROUTINE IBDIMS(N, B, M, M_B, NW, ND, NO, INFO)
 #ifndef CLS
 #define CLS 64
 #endif
-  INTEGER, INTENT(OUT) :: M, M_B, NW, ND, NO
-  INTEGER, INTENT(INOUT) :: N, B, INFO
+  INTEGER, INTENT(INOUT) :: N, B, M, INFO
+  INTEGER, INTENT(OUT) :: M_B, NW, ND, NO
 
-  INTEGER :: T, M_P, B_P
+  INTEGER :: J, T, M_P, B_P
 
+  IF ((M .GE. 2) .AND. (M .LE. 4)) THEN
+     J = M
+  ELSE ! unsupported JS
+     INFO = -3
+     RETURN
+  END IF
   CALL NB2M(N, B, M, M_B)
   IF (M_B .NE. 0) THEN
      INFO = M_B
      RETURN
   END IF
   M_B = M / B
+  IF ((J .NE. 3) .AND. (MOD(M_B, 2) .NE. 0)) THEN
+     M = M + B
+     M_B = M_B + 1
+  END IF
   IF (INFO .GT. 0) THEN
      NW = 3
   ELSE ! INFO .LE. 0
@@ -63,18 +73,26 @@ PURE SUBROUTINE IBDIMS(N, B, M, M_B, NW, ND, NO, INFO)
   ! M_B x M_B
   ! (3 * (LDB x 2*B) * M_P); ((MAX((2*B-1),NW) * 2*B) * M_P)
   NW = MAX(ND, ((3 * NO + MAX((2 * B - 1), NW) * 2 * B) * M_P))
-  IF (MOD(M_B, 2) .EQ. 0) THEN
-     NO = M_P * (M_B - 1)
-  ELSE ! M_B odd
-     NO = M_B * ((M_B - 1) / 2)
+  IF (J .EQ. 4) THEN
+     NO = M_P * M_B
+  ELSE ! J .NE. 4
+     IF (MOD(M_B, 2) .EQ. 0) THEN
+        NO = M_P * (M_B - 1)
+     ELSE ! M_B odd
+        NO = M_B * ((M_B - 1) / 2)
+     END IF
   END IF
   B_P = B * (2 * B - 1)
   ! LAYOUT OF D: D(X) = (X*(X-1))/2 + 1
-  ! D(M_B)
+  ! D(M_B) [ if J .EQ. 3 ]
   ! D(2*B)_1 ... D(2*B)_M_P
-  ND = MAX((NO + 1), (B_P + 1) * M_P)
+  IF (J .EQ. 3) THEN
+     ND = MAX((NO + 1), (B_P + 1) * M_P)
+  ELSE ! J .NE. 3
+     ND = (B_P + 1) * M_P
+  END IF
   ! LAYOUT OF O: RC(X) = (X*(X-1))/2
-  ! RC(M_B) RC(2*B) OD
+  ! RCJ(M_B) RC(2*B) OD
   ! LAYOUT OF OD: PQI(X) = X
   ! PQI(M_B) PQI(2*B)_1 ... PQI(2*B)_M_P
   NO = NO + B_P + M_B + 2 * B * M_P
