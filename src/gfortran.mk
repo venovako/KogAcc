@@ -34,7 +34,7 @@ LDFLAGS += $(shell if [ -L /usr/lib64/libmemkind.so ]; then echo '-lmemkind'; fi
 endif # ?Darwin
 else # !MKLROOT
 ifndef LAPACK
-LAPACK=$(HOME)/lapack-ilp64
+LAPACK=$(HOME)/lapack-$(ABI)
 endif # !LAPACK
 LDFLAGS += -L$(LAPACK) -ltmglib -llapack -lrefblas
 endif # ?MKLROOT
