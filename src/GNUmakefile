@@ -14,6 +14,7 @@ MKFS += o.mk GNUmakefile arrbio/GNUmakefile blksvd/GNUmakefile dynord/GNUmakefil
 ifndef PLAT
 PLAT=$(COMPILER)/$(OS)-$(ARCH)-$(ABI)$(DEBUG)
 endif # !PLAT
+FLFLAGS=$(subst PIC,PIE,$(FCFLAGS))
 include o.mk
 
 .PHONY: all asm clean dirs doc help
