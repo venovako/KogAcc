@@ -24,7 +24,7 @@ else # !NDEBUG
 FCFLAGS += -fcheck=all,no-recursion -finit-local-zero -finit-real=snan -finit-derived -Wcharacter-truncation -Wimplicit-procedure -Wfunction-elimination -Wrealloc-lhs-all
 endif # ?NDEBUG
 FCFLAGS += -pedantic -Wall -Wextra -Wno-array-temporaries -Wno-compare-reals -Wno-c-binding-type
-LDFLAGS=-rdynamic -static-libgcc -static-libgfortran -static-libquadmath
+LDFLAGS=-pie -rdynamic -static-libgcc -static-libgfortran -static-libquadmath
 ifdef MKLROOT
 ifeq ($(OS),Darwin)
 LDFLAGS += ${MKLROOT}/lib/libmkl_intel_$(ABI).a ${MKLROOT}/lib/libmkl_sequential.a ${MKLROOT}/lib/libmkl_core.a

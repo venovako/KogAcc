@@ -24,7 +24,7 @@ ifndef NDEBUG
 FCFLAGS += -debug parallel
 endif # !NDEBUG
 endif # Linux
-LDFLAGS=-rdynamic -static-intel -static-libgcc
+LDFLAGS=-pie -rdynamic -static-intel -static-libgcc
 ifeq ($(ABI),ilp64)
 LDFLAGS += -qmkl-$(ABI)=sequential
 else # !ilp64
