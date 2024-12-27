@@ -41,6 +41,6 @@ GFCFLAGS += -march=native -frecursive -fPIC -fexceptions -fasynchronous-unwind-t
 ifdef NDEBUG
 GFCFLAGS += -fno-math-errno -fvect-cost-model=unlimited
 else # !NDEBUG
-GFCFLAGS += -fcheck=all,no-recursion -finit-local-zero -finit-real=snan -finit-derived -Wcharacter-truncation -Wimplicit-procedure -Wfunction-elimination -Wrealloc-lhs-all
+GFCFLAGS += -finit-local-zero -finit-real=snan -finit-derived -Wcharacter-truncation -Wimplicit-procedure -Wfunction-elimination -Wrealloc-lhs-all
 endif # ?NDEBUG
 GFCFLAGS += -pedantic -Wall -Wextra -Wno-array-temporaries -Wno-compare-reals -Wno-c-binding-type
