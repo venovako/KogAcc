@@ -24,6 +24,7 @@ else # !NDEBUG
 FCFLAGS += -fcheck=all,no-recursion -finit-local-zero -finit-real=snan -finit-derived -Wcharacter-truncation -Wimplicit-procedure -Wfunction-elimination -Wrealloc-lhs-all
 endif # ?NDEBUG
 FCFLAGS += -pedantic -Wall -Wextra -Wno-array-temporaries -Wno-compare-reals -Wno-c-binding-type
+FLFLAGS=$(subst PIC,PIE,$(FCFLAGS))
 LDFLAGS=-pie -rdynamic -static-libgcc -static-libgfortran -static-libquadmath
 ifdef MKLROOT
 ifeq ($(OS),Darwin)
