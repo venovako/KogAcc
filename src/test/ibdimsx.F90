@@ -51,6 +51,10 @@ PROGRAM IBDIMSX
   END SELECT
 
   SELECT CASE (M)
+  CASE (0)
+     WRITE (OUTPUT_UNIT,*) 'Assuming the row-cyclic block-ordering.'
+  CASE (1)
+     WRITE (OUTPUT_UNIT,*) 'Assuming the column-cyclic block-ordering.'
   CASE (2)
      WRITE (OUTPUT_UNIT,*) 'Assuming the generalized Mantharam-Eberlein block-ordering.'
   CASE (3)
@@ -58,7 +62,7 @@ PROGRAM IBDIMSX
   CASE (4)
      WRITE (OUTPUT_UNIT,*) 'Assuming the modified modulus block-ordering.'
   CASE DEFAULT
-     ERROR STOP 'J must be one of 2, 3, 4'
+     ERROR STOP 'J must be one of 0, 1, 2, 3, 4'
   END SELECT
 
   WRITE (OUTPUT_UNIT,*) 'N [   initial order of G] =', N

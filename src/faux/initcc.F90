@@ -10,12 +10,13 @@ PURE SUBROUTINE INITCC(N, O, INFO)
   IF (N .LE. 1) INFO = -1
   IF (INFO .NE. 0) RETURN
 
-  K = 1
+  K = 0
   DO J = 2, N
      DO I = 1, J-1
+        K = K + 1
         O(1,K) = I
         O(2,K) = J
-        K = K + 1
      END DO
   END DO
+  INFO = K
 END SUBROUTINE INITCC

@@ -136,11 +136,17 @@
 ../obj/$(PLAT)/zscalg.$(OXT): faux/zscalg.F90 faux/hscalg.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/zscalg.F90
 
+../obj/$(PLAT)/initrc.$(OXT): faux/initrc.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/initrc.F90
+
 ../obj/$(PLAT)/initcc.$(OXT): faux/initcc.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/initcc.F90
 
-../obj/$(PLAT)/initrc.$(OXT): faux/initrc.F90 $(MKFS) faux/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/initrc.F90
+../obj/$(PLAT)/initme.$(OXT): faux/initme.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/initme.F90
+
+../obj/$(PLAT)/initmm.$(OXT): faux/initmm.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/initmm.F90
 
 ../obj/$(PLAT)/jstep.$(OXT): faux/jstep.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/jstep.F90

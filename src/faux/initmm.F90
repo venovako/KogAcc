@@ -1,0 +1,20 @@
+!>@brief \b INITMM initializes O with the modified modulus ordering.
+SUBROUTINE INITMM(N, O, INFO)
+  IMPLICIT NONE
+  INTERFACE
+     SUBROUTINE JSWEEP(J, N, S, P, O, INFO)
+       IMPLICIT NONE
+       INTEGER, INTENT(IN) :: J, N
+       INTEGER, INTENT(OUT) :: S, P, O(2,*), INFO
+     END SUBROUTINE JSWEEP
+  END INTERFACE
+  INTEGER, INTENT(IN) :: N
+  INTEGER, INTENT(OUT) :: O(2,*), INFO
+
+  INTEGER :: I, J, K
+
+  INFO = 0
+  J = 4
+  CALL JSWEEP(J, N, K, I, O, INFO)
+  IF (INFO .EQ. 0) INFO = K
+END SUBROUTINE INITMM

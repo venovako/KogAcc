@@ -17,19 +17,20 @@ PURE SUBROUTINE IBDIMS(N, B, M, M_B, NW, ND, NO, INFO)
 
   INTEGER :: J, T, M_P, B_P
 
-  IF ((M .GE. 2) .AND. (M .LE. 4)) THEN
+  SELECT CASE (M)
+  CASE (0,1,2,3,4)
      J = M
-  ELSE ! unsupported JS
+  CASE DEFAULT
      INFO = -3
      RETURN
-  END IF
+  END SELECT
   CALL NB2M(N, B, M, M_B)
   IF (M_B .NE. 0) THEN
      INFO = M_B
      RETURN
   END IF
   M_B = M / B
-  IF ((J .NE. 3) .AND. (MOD(M_B, 2) .NE. 0)) THEN
+  IF (((J .EQ. 2) .OR. (J .EQ. 4)) .AND. (MOD(M_B, 2) .NE. 0)) THEN
      M = M + B
      M_B = M_B + 1
   END IF
