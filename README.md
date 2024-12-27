@@ -16,6 +16,8 @@ Please set the option `SAFE=sv2` for `libpvn`.
 
 When building `KogAcc`, if the Intel's oneMKL library is not installed, please set the `LAPACK` variable to a Reference LAPACK installation (see the makefiles).
 
+For now, only little-endian platforms are supported, with the `gfortran` or `ifx` compilers.
+
 Building the documentation requires a recent version of [Doxygen](https://doxygen.nl) and [Graphviz](https://graphviz.org).
 Many routines are documented only rudimentary for now.
 
