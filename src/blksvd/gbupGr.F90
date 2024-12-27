@@ -1,5 +1,5 @@
   ! update G from the left
-  !$OMP PARALLEL DO DEFAULT(NONE) SHARED(N,B,G,LDG,GB,UB,LDB,NB,O) PRIVATE(I,J) REDUCTION(MIN:INFO) IF(L .NE. 0)
+  !$OMP PARALLEL DO DEFAULT(NONE) SHARED(M,B,G,LDG,GB,UB,LDB,NB,O) PRIVATE(I,J) REDUCTION(MIN:INFO) IF(L .NE. 0)
   DO I = 1, NB
      IF (O(1,NB+I) .GT. 0) THEN
         J = 0
@@ -8,7 +8,7 @@
            INFO = MIN(INFO, -10 * I - 6)
         ELSE ! OK
            J = 1
-           CALL BROTR(N, B, G, LDG, O(1,I), O(2,I), UB(1,1,I), LDB, GB(1,1,I), LDB, J)
+           CALL BROTR(M, B, G, LDG, O(1,I), O(2,I), UB(1,1,I), LDB, GB(1,1,I), LDB, J)
            IF (J .LT. 0) INFO = MIN(INFO, -10 * I - 7)
         END IF
      END IF

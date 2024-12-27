@@ -14,6 +14,8 @@ First, clone [libpvn](https://github.com/venovako/libpvn) repository, with the s
 Then, build the `libpvn` library, with the same family of compilers and (no-)debug mode as it is meant to be used here (e.g., with `icx` if `ifx` is desired).
 Please set the option `SAFE=sv2` for `libpvn`.
 
+When building `KogAcc`, if the Intel's oneMKL library is not installed, please set the `LAPACK` variable to a Reference LAPACK installation (see the makefiles).
+
 Building the documentation requires a recent version of [Doxygen](https://doxygen.nl) and [Graphviz](https://graphviz.org).
 Many routines are documented only rudimentary for now.
 

@@ -4,16 +4,16 @@
   IF (LDB .LT. J) I = -8
   IF (Q .LE. P) I = -6
   IF (P .LE. 0) I = -5
-  IF (LDG .LT. N) I = -4
+  IF (LDG .LT. M) I = -4
   IF (B .LE. 0) I = -2
-  IF (N .LT. 2) I = -1
+  IF (M .LT. 2) I = -1
   IF (I .NE. 0) THEN
      INFO = I
      RETURN
   END IF
-  J = N / B
+  J = M / B
   IF (Q .GT. J) I = -6
-  IF (MOD(N, B) .NE. 0) I = -2
+  IF (MOD(M, B) .NE. 0) I = -2
   IF (I .NE. 0) THEN
      INFO = I
      RETURN

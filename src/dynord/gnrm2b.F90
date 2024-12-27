@@ -8,23 +8,23 @@
   INFO = 0
 
   IF (B .LT. 1) INFO = -4
-  IF (LDG .LT. N) INFO = -3
-  IF (N .LT. 0) INFO = -1
+  IF (LDG .LT. M) INFO = -3
+  IF (M .LT. 0) INFO = -1
   IF (INFO .NE. 0) RETURN
-  IF (N .EQ. 0) RETURN
-  IF (MOD(N, B) .NE. 0) THEN
+  IF (M .EQ. 0) RETURN
+  IF (MOD(M, B) .NE. 0) THEN
      INFO = -4
      RETURN
   END IF
-  M = N / B
-  IF (M .LE. 0) THEN
+  N = M / B
+  IF (N .LE. 0) THEN
      INFO = -2
      RETURN
   END IF
 
-  !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,LDG,B,W,K,M) PRIVATE(I,J,P,Q) COLLAPSE(2) IF(L .NE. 0)
-  DO Q = 1, M
-     DO P = 1, M
+  !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,LDG,B,W,K,N) PRIVATE(I,J,P,Q) COLLAPSE(2) IF(L .NE. 0)
+  DO Q = 1, N
+     DO P = 1, N
         I = (P - 1) * B + 1
         J = (Q - 1) * B + 1
         IF (P .EQ. Q) THEN

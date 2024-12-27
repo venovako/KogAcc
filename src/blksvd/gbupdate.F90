@@ -2,16 +2,16 @@
   L = 2 * B
   IF (NB .LT. 0) I = -13
   IF (LDB .LT. L) I = -12
-  IF (LDV .LT. N) I = -8
-  IF (LDU .LT. N) I = -6
-  IF (LDG .LT. N) I = -4
+  IF (LDV .LT. M) I = -8
+  IF (LDU .LT. M) I = -6
+  IF (LDG .LT. M) I = -4
   IF (B .LE. 0) I = -2
-  IF (N .LT. 2) I = -1
+  IF (M .LT. 2) I = -1
   IF (I .NE. 0) THEN
      INFO = I
      RETURN
   END IF
-  IF (MOD(N, B) .NE. 0) THEN
+  IF (MOD(M, B) .NE. 0) THEN
      INFO = -2
      RETURN
   END IF
