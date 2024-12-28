@@ -30,7 +30,7 @@ ifneq ($(STATIC),true)
 LDFLAGS += $(STATIC)
 endif # !true
 else # !STATIC
-LDFLAGS=-pie -rdynamic -static-libgcc -static-libgfortran -static-libquadmath
+LDFLAGS=-rdynamic -static-libgcc -static-libgfortran -static-libquadmath #-pie
 endif # ?STATIC
 ifdef MKLROOT
 ifeq ($(OS),Darwin)
