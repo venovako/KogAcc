@@ -1,5 +1,5 @@
   I = COMMAND_ARGUMENT_COUNT()
-  IF ((I .LT. 1) .OR. (I .GT. 2)) ERROR STOP 'args: N [P]'
+  IF ((I .LT. 1) .OR. (I .GT. 2)) STOP 'args: N [P]'
   IF (I .EQ. 2) THEN
      CALL GET_COMMAND_ARGUMENT(2, CLA)
      READ (CLA,*) P
@@ -8,7 +8,7 @@
   END IF
   CALL GET_COMMAND_ARGUMENT(1, CLA)
   READ (CLA,*) N
-  IF (N .LE. 0) ERROR STOP 'N <= 0'
+  IF (N .LE. 0) STOP 'N <= 0'
   Q = QZERO
   Q = -QONE / Q
   F = Q
@@ -24,7 +24,7 @@
   END IF
   J = MIN(I + (L - 1), N)
   O = PVN_RAN_OPEN()
-  IF (O .LT. 0_c_int) ERROR STOP 'cannot open /dev/random for reading'
+  IF (O .LT. 0_c_int) STOP 'cannot open /dev/random for reading'
   DO K = I, J
      G(1,1) = RAN_SAFE(O, P)
 #ifdef UPPER

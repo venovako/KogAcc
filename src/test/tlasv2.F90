@@ -12,27 +12,27 @@
      READ (*,*) G(2,2)
   CASE (1)
      CALL GET_COMMAND_ARGUMENT(1, CLA, STATUS=INFO)
-     IF ((INFO .NE. 0) .OR. (LEN_TRIM(CLA) .LE. 0)) ERROR STOP 'the input file name is invalid'
+     IF ((INFO .NE. 0) .OR. (LEN_TRIM(CLA) .LE. 0)) STOP 'the input file name is invalid'
      IF ((LEN_TRIM(CLA) .EQ. 1) .AND. (CLA(1:1) .EQ. '-')) THEN
         I = INPUT_UNIT
      ELSE ! assume (0,5,6) = (stderr,stdin,stdout)
         I = 1
      END IF
      IF (I .NE. INPUT_UNIT) OPEN(UNIT=I, FILE=TRIM(CLA), ACTION='READ', STATUS='OLD', IOSTAT=INFO)
-     IF (INFO .NE. 0) ERROR STOP 'cannot open the input file'
+     IF (INFO .NE. 0) STOP 'cannot open the input file'
      ONCE = .FALSE.
   CASE (3)
      CALL GET_COMMAND_ARGUMENT(1, CLA, STATUS=INFO)
-     IF (INFO .NE. 0) ERROR STOP 'the first argument is invalid'
+     IF (INFO .NE. 0) STOP 'the first argument is invalid'
      READ (CLA,*) G(1,1)
      CALL GET_COMMAND_ARGUMENT(2, CLA, STATUS=INFO)
-     IF (INFO .NE. 0) ERROR STOP 'the second argument is invalid'
+     IF (INFO .NE. 0) STOP 'the second argument is invalid'
      READ (CLA,*) G(1,2)
      CALL GET_COMMAND_ARGUMENT(3, CLA, STATUS=INFO)
-     IF (INFO .NE. 0) ERROR STOP 'the third argument is invalid'
+     IF (INFO .NE. 0) STOP 'the third argument is invalid'
      READ (CLA,*) G(2,2)
   CASE DEFAULT
-     ERROR STOP 'zero, one [input file name], or three [G(1,1) G(1,2) G(2,2)] arguments required'
+     STOP 'zero, one [input file name], or three [G(1,1) G(1,2) G(2,2)] arguments required'
   END SELECT
   INFO3(2) = 0
   INFO3(3) = 0
@@ -79,5 +79,5 @@
      ELSE
         INFO = 0
      END IF
-     IF (INFO .NE. 0) ERROR STOP 'cannot close the input file'
+     IF (INFO .NE. 0) STOP 'cannot close the input file'
   END IF

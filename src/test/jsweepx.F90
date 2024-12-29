@@ -21,19 +21,19 @@ PROGRAM JSWEEPX
      ELSE ! truncation
         WRITE (ERROR_UNIT,'(A)') 'jsweep.exe J N'
      END IF
-     ERROR STOP 'argument count mismatch'
+     STOP 'argument count mismatch'
   END IF
 
   CALL GET_COMMAND_ARGUMENT(1, V, STATUS=INFO)
-  IF (INFO .NE. 0) ERROR STOP 'J'
+  IF (INFO .NE. 0) STOP 'J'
   READ (V,*) J
-  IF (J .LT. 0) ERROR STOP 'J < 0'
+  IF (J .LT. 0) STOP 'J < 0'
 
   CALL GET_COMMAND_ARGUMENT(2, V, STATUS=INFO)
-  IF (INFO .NE. 0) ERROR STOP 'N'
+  IF (INFO .NE. 0) STOP 'N'
   READ (V,*) N
-  IF (N .LT. 0) ERROR STOP 'N < 0'
-  IF (N .GE. 100000) ERROR STOP 'N >= 100000'
+  IF (N .LT. 0) STOP 'N < 0'
+  IF (N .GE. 100000) STOP 'N >= 100000'
 
   ALLOCATE(O(2,N*(N-1)))
   CALL JSWEEP(J, N, S, P, O, INFO)

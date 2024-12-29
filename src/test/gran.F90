@@ -1,5 +1,5 @@
   I = COMMAND_ARGUMENT_COUNT()
-  IF ((I .LT. 2) .OR. (I .GT. 3)) ERROR STOP 'args: ((U|u)[pper]|(G|g)[eneral]) N [P]'
+  IF ((I .LT. 2) .OR. (I .GT. 3)) STOP 'args: ((U|u)[pper]|(G|g)[eneral]) N [P]'
   IF (I .EQ. 3) THEN
      CALL GET_COMMAND_ARGUMENT(3, CLA)
      READ (CLA,*) P
@@ -8,7 +8,7 @@
   END IF
   CALL GET_COMMAND_ARGUMENT(2, CLA)
   READ (CLA,*) N
-  IF (N .LT. 0) ERROR STOP 'the second argument is invalid'
+  IF (N .LT. 0) STOP 'the second argument is invalid'
   CALL GET_COMMAND_ARGUMENT(1, CLA)
   SELECT CASE (CLA(1:1))
   CASE ('G','g')
@@ -16,10 +16,10 @@
   CASE ('U','u')
      UPPER = .TRUE.
   CASE DEFAULT
-     ERROR STOP 'the first argument is invalid'
+     STOP 'the first argument is invalid'
   END SELECT
   U = PVN_RAN_OPEN()
-  IF (U .LT. 0_c_int) ERROR STOP 'cannot open /dev/random for reading'
+  IF (U .LT. 0_c_int) STOP 'cannot open /dev/random for reading'
   IF (UPPER) THEN
      DO I = 1, N
         WRITE (*,1,ADVANCE='NO') '', RAN_SAFE(U, P)

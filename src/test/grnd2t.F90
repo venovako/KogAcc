@@ -1,5 +1,5 @@
   CALL RANDOM_SEED(SIZE=SSIZE)
-  IF (SSIZE .LE. 0) ERROR STOP 'seed size non-positive'
+  IF (SSIZE .LE. 0) STOP 'seed size non-positive'
   I = COMMAND_ARGUMENT_COUNT()
   IF (I .LT. 1) THEN
      IF (SSIZE .GT. 1) THEN
@@ -9,11 +9,11 @@
         CLA = 'args: N [SEED1]'
      END IF
      WRITE (ERROR_UNIT,*) TRIM(CLA)
-     ERROR STOP 'All SEED arguments have to be given, or none of them.'
+     STOP 'All SEED arguments have to be given, or none of them.'
   END IF
   CALL GET_COMMAND_ARGUMENT(1, CLA)
   READ (CLA,*) N
-  IF (N .LE. 0) ERROR STOP 'N <= 0'
+  IF (N .LE. 0) STOP 'N <= 0'
   IF (I .EQ. 1) THEN
      ALLOCATE(ISEED(SSIZE))
      CALL RANDOM_SEED
@@ -26,7 +26,7 @@
      END DO
      CALL RANDOM_SEED(PUT=ISEED)
   ELSE ! a wrong SEED
-     ERROR STOP 'invalid number of SEED arguments'
+     STOP 'invalid number of SEED arguments'
   END IF
 #ifndef _OPENMP
   DO I = 1, SSIZE

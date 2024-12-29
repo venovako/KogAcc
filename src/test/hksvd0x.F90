@@ -2,16 +2,16 @@
   IF (I .NE. 3) THEN
      CALL GET_COMMAND_ARGUMENT(0, BN)
      WRITE (ERROR_UNIT,*) TRIM(BN), ' J N BN'
-     ERROR STOP 'INVALID COMMAND LINE'
+     STOP 'INVALID COMMAND LINE'
   END IF
   CALL GET_COMMAND_ARGUMENT(1, BN, I, INFO)
-  IF (INFO .NE. 0) ERROR STOP 'J'
+  IF (INFO .NE. 0) STOP 'J'
   READ (BN,*) J
   CALL GET_COMMAND_ARGUMENT(2, BN, I, INFO)
-  IF (INFO .NE. 0) ERROR STOP 'N'
+  IF (INFO .NE. 0) STOP 'N'
   READ (BN,*) N
   CALL GET_COMMAND_ARGUMENT(3, BN, I, INFO)
-  IF (INFO .NE. 0) ERROR STOP 'BN'
+  IF (INFO .NE. 0) STOP 'BN'
 
   L = 0
   IF ((J .GE. 2) .AND. (J .LE. 4)) THEN
@@ -20,15 +20,15 @@
   ELSE IF ((J .GE. 5) .AND. (J .LE. 7)) THEN
      J = J - 3
   ELSE IF (J .GE. 8) THEN
-     ERROR STOP 'J'
+     STOP 'J'
   END IF
 
-  IF (N .LE. 0) ERROR STOP 'N'
+  IF (N .LE. 0) STOP 'N'
 
   IF ((J .EQ. 2) .OR. (J .EQ. 4)) THEN
      INFO = L
      CALL NB2M(N, 2, M, INFO)
-     IF (INFO .NE. 0) ERROR STOP 'NB2M'
+     IF (INFO .NE. 0) STOP 'NB2M'
   ELSE ! all other strategies
      M = N
   END IF
@@ -44,26 +44,26 @@
   IF (M .GT. N) THEN
      INFO = L
      CALL BRDG(M, N, U, LDU, INFO)
-     IF (INFO .NE. 0) ERROR STOP 'BRDG(U)'
+     IF (INFO .NE. 0) STOP 'BRDG(U)'
   END IF
 
   ALLOCATE(V(LDV,M))
   IF (M .GT. N) THEN
      INFO = L
      CALL BRDG(M, N, V, LDV, INFO)
-     IF (INFO .NE. 0) ERROR STOP 'BRDG(V)'
+     IF (INFO .NE. 0) STOP 'BRDG(V)'
   END IF
 
   ALLOCATE(G(LDG,M))
   IF (M .GT. N) THEN
      INFO = L
      CALL BRDG(M, N, G, LDG, INFO)
-     IF (INFO .NE. 0) ERROR STOP 'BRDG(G)'
+     IF (INFO .NE. 0) STOP 'BRDG(G)'
   END IF
 
   INFO = L
   CALL RDINP(BN, M, N, G, LDG, INFO)
-  IF (INFO .NE. 0) ERROR STOP 'RDINP'
+  IF (INFO .NE. 0) STOP 'RDINP'
 
 #ifdef ANIMATE
   ALLOCATE(SV(MAX(2,M)))
@@ -75,7 +75,7 @@
   IF ((J .GE. 0) .AND. (J .NE. 3)) THEN
      INFO = L
      CALL JSWEEP(J, M, S, P, O, INFO)
-     IF (INFO .NE. 0) ERROR STOP 'JSWEEP'
+     IF (INFO .NE. 0) STOP 'JSWEEP'
   ELSE IF (J .LT. 0) THEN
      S = 1
      P = MIN(-J, M / 2)
@@ -120,17 +120,10 @@
   WRITE (OUTPUT_UNIT,'(A,F15.6,A,I11,A)',ADVANCE='NO') 'KSVD0 took ', T, ' s with ', INFO, ' steps and W=('
   WRITE (OUTPUT_UNIT,9) W(1), ',', W(2), ',', W(3), ')'
   FLUSH(OUTPUT_UNIT)
-  IF (INFO .LT. 0) THEN
-     WRITE (ERROR_UNIT,*) 'ERROR in KSVD0'
-  ELSE IF (INFO .EQ. HUGE(INFO)) THEN
-     WRITE (ERROR_UNIT,*) 'NO CONVERGENCE'
-  ELSE ! all OK
-     WRITE (ERROR_UNIT,*) 'SUCCESS'
-  END IF
 
   INFO = -INT(W(4))
   CALL WROUT(BN, J, N, U, LDU, V, LDV, SV, INFO)
-  IF (INFO .NE. 0) ERROR STOP 'WROUT'
+  IF (INFO .NE. 0) STOP 'WROUT'
 
   DEALLOCATE(R)
   DEALLOCATE(O)

@@ -109,8 +109,8 @@
   IF (C_ASSOCIATED(CTX)) J = INT(VIS_FRAME(CTX, G, LDF))
 #endif
 !#ifndef NDEBUG
-  WRITE (OUTPUT_UNIT,'(A,I1,A)') '"BLK_STEP', JS, '", "BLK_PAIRS", "MAX_STEPS", "SUM_STEPS"'
-  FLUSH(OUTPUT_UNIT)
+  WRITE (ERROR_UNIT,'(A,I1,A)') '"BLK_STEP', JS, '", "BLK_PAIRS", "MAX_STEPS", "SUM_STEPS"'
+  FLUSH(ERROR_UNIT)
 !#endif
 
   DO BS = 0, L-1
@@ -119,8 +119,8 @@
      IF (C_ASSOCIATED(CTX)) J = INT(VIS_FRAME(CTX, G, LDF))
 #endif
 !#ifndef NDEBUG
-     WRITE (OUTPUT_UNIT,'(I11,A)',ADVANCE='NO') BS, ', '
-     FLUSH(OUTPUT_UNIT)
+     WRITE (ERROR_UNIT,'(I11,A)',ADVANCE='NO') BS, ', '
+     FLUSH(ERROR_UNIT)
 !#endif
      J = 0
      IF (JS .EQ. 3) THEN
@@ -132,22 +132,22 @@
         NB = P
      END IF
 !#ifndef NDEBUG
-     WRITE (OUTPUT_UNIT,'(I11,A)',ADVANCE='NO') NB, ', '
-     FLUSH(OUTPUT_UNIT)
+     WRITE (ERROR_UNIT,'(I11,A)',ADVANCE='NO') NB, ', '
+     FLUSH(ERROR_UNIT)
 !#endif
      IF ((J .LT. 0) .OR. (NB .LT. 0)) THEN
         INFO = -1000 * I - 100 + J
 !#ifndef NDEBUG
-        WRITE (OUTPUT_UNIT,'(I11,A,I11)') 0, ', ', J
-        FLUSH(OUTPUT_UNIT)
+        WRITE (ERROR_UNIT,'(I11,A,I11)') 0, ', ', J
+        FLUSH(ERROR_UNIT)
 !#endif
         EXIT
      END IF
      ! CONVERGENCE
      IF (NB .EQ. 0) THEN
 !#ifndef NDEBUG
-        WRITE (OUTPUT_UNIT,'(I11,A,I11)') 0, ', ', 0
-        FLUSH(OUTPUT_UNIT)
+        WRITE (ERROR_UNIT,'(I11,A,I11)') 0, ', ', 0
+        FLUSH(ERROR_UNIT)
 !#endif
         EXIT
      END IF
@@ -167,8 +167,8 @@
      IF (J .LT. 0) THEN
         INFO = J
 !#ifndef NDEBUG
-        WRITE (OUTPUT_UNIT,'(I11,A,I11)') J, ', ', 0
-        FLUSH(OUTPUT_UNIT)
+        WRITE (ERROR_UNIT,'(I11,A,I11)') J, ', ', 0
+        FLUSH(ERROR_UNIT)
 !#endif
         EXIT
      END IF
@@ -179,8 +179,8 @@
         T = T + O(1,J)
      END DO
      !$OMP END PARALLEL DO
-     WRITE (OUTPUT_UNIT,'(I11,A,I11)') Q, ', ', T
-     FLUSH(OUTPUT_UNIT)
+     WRITE (ERROR_UNIT,'(I11,A,I11)') Q, ', ', T
+     FLUSH(ERROR_UNIT)
 !#endif
      ! CONVERGENCE
      IF (Q .EQ. 0) EXIT
