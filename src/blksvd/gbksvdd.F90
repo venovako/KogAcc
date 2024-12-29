@@ -24,9 +24,9 @@
         INFO = MIN(INFO, -100 * I - 98)
      ELSE IF (.NOT. (WB(3,I) .LE. HUGE(ZERO))) THEN
         INFO = MIN(INFO, -100 * I - 97)
+#endif
      ELSE ! OK
         INFO = MIN(INFO, 0)
-#endif
      END IF
   END DO
   !$OMP END PARALLEL DO
