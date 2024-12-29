@@ -137,10 +137,20 @@
 !#endif
      IF ((J .LT. 0) .OR. (NB .LT. 0)) THEN
         INFO = -1000 * I - 100 + J
+!#ifndef NDEBUG
+        WRITE (OUTPUT_UNIT,'(I11,A,I11)') 0, ', ', J
+        FLUSH(OUTPUT_UNIT)
+!#endif
         EXIT
      END IF
      ! CONVERGENCE
-     IF (NB .EQ. 0) EXIT
+     IF (NB .EQ. 0) THEN
+!#ifndef NDEBUG
+        WRITE (OUTPUT_UNIT,'(I11,A,I11)') 0, ', ', 0
+        FLUSH(OUTPUT_UNIT)
+!#endif
+        EXIT
+     END IF
      ! pack G
      J = 0
      !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
@@ -156,6 +166,10 @@
      Q = J
      IF (J .LT. 0) THEN
         INFO = J
+!#ifndef NDEBUG
+        WRITE (OUTPUT_UNIT,'(I11,A,I11)') J, ', ', 0
+        FLUSH(OUTPUT_UNIT)
+!#endif
         EXIT
      END IF
 !#ifndef NDEBUG
