@@ -108,14 +108,18 @@
   LDF = INT(LDG, c_size_t)
   IF (C_ASSOCIATED(CTX)) J = INT(VIS_FRAME(CTX, G, LDF))
 #endif
+!#ifndef NDEBUG
+  WRITE (OUTPUT_UNIT,'(A,I1,A)') '"BLK_STEP', JS, '", "BLK_PAIRS", "MAX_STEPS", "SUM_STEPS"'
+  FLUSH(OUTPUT_UNIT)
+!#endif
 
   DO BS = 0, L-1
+     I = BS + 1
 #ifdef ANIMATE
      IF (C_ASSOCIATED(CTX)) J = INT(VIS_FRAME(CTX, G, LDF))
 #endif
-     I = BS + 1
 !#ifndef NDEBUG
-     WRITE (OUTPUT_UNIT,'(I11,A)',ADVANCE='NO') I, ','
+     WRITE (OUTPUT_UNIT,'(I11,A)',ADVANCE='NO') BS, ', '
      FLUSH(OUTPUT_UNIT)
 !#endif
      J = 0
@@ -128,7 +132,7 @@
         NB = P
      END IF
 !#ifndef NDEBUG
-     WRITE (OUTPUT_UNIT,'(I11,A)',ADVANCE='NO') NB, ','
+     WRITE (OUTPUT_UNIT,'(I11,A)',ADVANCE='NO') NB, ', '
      FLUSH(OUTPUT_UNIT)
 !#endif
      IF ((J .LT. 0) .OR. (NB .LT. 0)) THEN
@@ -161,7 +165,7 @@
         T = T + O(1,J)
      END DO
      !$OMP END PARALLEL DO
-     WRITE (OUTPUT_UNIT,'(I11,A,I11)') Q, ',', T
+     WRITE (OUTPUT_UNIT,'(I11,A,I11)') Q, ', ', T
      FLUSH(OUTPUT_UNIT)
 !#endif
      ! CONVERGENCE
