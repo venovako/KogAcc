@@ -1,14 +1,14 @@
-!!! TODO: REQUIRES TESTING !!!
+!!! TODO: REQUIRES TESTING; NO SCALING IMPLEMENTED !!!
 !>@brief \b DKSVD1 computes the SVD of G as U S V^T, with S returned in SV and U and V optionally accumulated on either identity for the SVD, or on preset input matrices.
 SUBROUTINE DKSVD1(JOB, M, B, G, LDG, U, LDU, V, LDV, SV, LDB, W, NW, D, ND, O, NO, INFO)
 #ifdef ANIMATE
   USE, INTRINSIC :: ISO_C_BINDING
 #endif
-#ifdef NDEBUG
-  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64, REAL128
-#else
+!#ifdef NDEBUG
+!  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64, REAL128
+!#else
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64, REAL128, OUTPUT_UNIT
-#endif
+!#endif
   !$ USE OMP_LIB
   IMPLICIT NONE
   INTERFACE
@@ -93,7 +93,7 @@ SUBROUTINE DKSVD1(JOB, M, B, G, LDG, U, LDU, V, LDV, SV, LDB, W, NW, D, ND, O, N
   REAL(KIND=KK), INTENT(OUT) :: D(ND)
   INTEGER, INTENT(INOUT) :: O(2,NO), INFO
 
-  INTEGER :: I, J, L, N, P, Q, S, JS, BS, M_B, M_P, B_P, LB, LW, LD, NB
+  INTEGER :: I, J, L, N, P, Q, R, S, T, JS, BS, M_B, M_P, B_P, LB, LW, LD, NB
   INTEGER :: IGB, IUB, IVB, IWB, IO1, IO0, IOB, IOD
   LOGICAL :: LOMP, LUSID, LUACC, LVSID, LVACC
 #ifdef ANIMATE
@@ -120,9 +120,9 @@ SUBROUTINE DKSVD1(JOB, M, B, G, LDG, U, LDU, V, LDV, SV, LDB, W, NW, D, ND, O, N
   I = B
   J = JS
   INFO = CL
-  CALL IBDIMS(N, I, J, M_B, LW, LD, Q, INFO)
+  CALL IBDIMS(N, I, J, M_B, LW, LD, T, INFO)
   IF (INFO .GT. 0) INFO = 0
-  IF (NO .LT. Q) INFO = -17
+  IF (NO .LT. T) INFO = -17
   IF (ND .LT. LD) INFO = -15
   IF (NW .LT. LW) INFO = -13
   IF (LDB .LT. I) INFO = -11
@@ -224,9 +224,10 @@ SUBROUTINE DKSVD1(JOB, M, B, G, LDG, U, LDU, V, LDV, SV, LDB, W, NW, D, ND, O, N
      IF (C_ASSOCIATED(CTX)) J = INT(VIS_FRAME(CTX, G, LDF))
 #endif
      I = BS + 1
-#ifndef NDEBUG
-     WRITE (OUTPUT_UNIT,*) 'BEGIN BLOCK STEP ', I
-#endif
+!#ifndef NDEBUG
+     WRITE (OUTPUT_UNIT,'(I11,A)',ADVANCE='NO') I, ','
+     FLUSH(OUTPUT_UNIT)
+!#endif
      J = 0
      IF (JS .EQ. 3) THEN
         !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
@@ -236,9 +237,10 @@ SUBROUTINE DKSVD1(JOB, M, B, G, LDG, U, LDU, V, LDV, SV, LDB, W, NW, D, ND, O, N
         CALL JSTEP(JS, M_B, S, I, P, O(1,IO1), O(1,IOB), J)
         NB = P
      END IF
-#ifndef NDEBUG
-     WRITE (OUTPUT_UNIT,*) NB, ' block pivot pairs generated'
-#endif
+!#ifndef NDEBUG
+     WRITE (OUTPUT_UNIT,'(I11,A)',ADVANCE='NO') NB, ','
+     FLUSH(OUTPUT_UNIT)
+!#endif
      IF ((J .LT. 0) .OR. (NB .LT. 0)) THEN
         INFO = -1000 * I - 100 + J
         EXIT
@@ -253,21 +255,25 @@ SUBROUTINE DKSVD1(JOB, M, B, G, LDG, U, LDU, V, LDV, SV, LDB, W, NW, D, ND, O, N
         INFO = -1000 * I - 200 + J
         EXIT
      END IF
-#ifndef NDEBUG
-     WRITE (OUTPUT_UNIT,*) 'G packed'
-#endif
-     Q = IOB + NB
+     R = IOB + NB
      J = 0
      !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
-     CALL BKSVDD(N, NB, W(IGB), W(IUB), W(IVB), LDB, SV, W(IWB), LW, D, LD, O(1,IOD), O(1,IO0), O(1,Q), J)
+     CALL BKSVDD(N, NB, W(IGB), W(IUB), W(IVB), LDB, SV, W(IWB), LW, D, LD, O(1,IOD), O(1,IO0), O(1,R), J)
      Q = J
-#ifndef NDEBUG
-     WRITE (OUTPUT_UNIT,*) Q, ' max # of inner steps'
-#endif
      IF (J .LT. 0) THEN
         INFO = J
         EXIT
      END IF
+!#ifndef NDEBUG
+     T = 0
+     !$OMP PARALLEL DO DEFAULT(NONE) SHARED(O,R) PRIVATE(J) REDUCTION(+:T) IF(LOMP)
+     DO J = R, R+NB-1
+        T = T + O(1,J)
+     END DO
+     !$OMP END PARALLEL DO
+     WRITE (OUTPUT_UNIT,'(I11,A,I11)') Q, ',', T
+     FLUSH(OUTPUT_UNIT)
+!#endif
      ! CONVERGENCE
      IF (Q .EQ. 0) EXIT
      ! unpack G
@@ -278,9 +284,6 @@ SUBROUTINE DKSVD1(JOB, M, B, G, LDG, U, LDU, V, LDV, SV, LDB, W, NW, D, ND, O, N
         INFO = -1000 * I - 300 + J
         EXIT
      END IF
-#ifndef NDEBUG
-     WRITE (OUTPUT_UNIT,*) 'G unpacked'
-#endif
      J = 0
      !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
      CALL BUPDATE(M, B, G, LDG, U, LDU, V, LDV, W(IGB), W(IUB), W(IVB), LDB, NB, O(1,IOB), J)
@@ -288,9 +291,6 @@ SUBROUTINE DKSVD1(JOB, M, B, G, LDG, U, LDU, V, LDV, SV, LDB, W, NW, D, ND, O, N
         INFO = -1000 + J
         EXIT
      END IF
-#ifndef NDEBUG
-     WRITE (OUTPUT_UNIT,*) 'G,U,V updated'
-#endif
   END DO
 #ifdef ANIMATE
   IF (C_ASSOCIATED(CTX)) J = INT(VIS_FRAME(CTX, G, LDF))
