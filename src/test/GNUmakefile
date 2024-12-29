@@ -109,6 +109,9 @@
 ../bin/$(PLAT)/zksvd0.exe: test/zksvd0x.F90 test/hksvd0x.F90 test/zrdinp.F90 test/zwrout.F90 ../lib/$(PLAT)/libblksvd.a ../lib/$(PLAT)/libdynord.a ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libarrbio.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FLFLAGS) -o zksvd0.exe ../../../src/test/zksvd0x.F90 -L../../../lib/$(PLAT) -lblksvd -ldynord -lksvd2 -larrbio -lfaux $(LDFLAGS)
 
+../bin/$(PLAT)/dksvd1.exe: test/dksvd1x.F90 test/gksvd1x.F90 test/drdinp.F90 test/dwrout.F90 ../lib/$(PLAT)/libblksvd.a ../lib/$(PLAT)/libdynord.a ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libarrbio.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
+	cd ../bin/$(PLAT) && $(FC) $(FLFLAGS) -o dksvd1.exe ../../../src/test/dksvd1x.F90 -L../../../lib/$(PLAT) -lblksvd -ldynord -lksvd2 -larrbio -lfaux $(LDFLAGS)
+
 ../bin/$(PLAT)/sksvdd.exe: test/sksvddx.F90 test/gksvddx.F90 test/srdinp.F90 test/swrout.F90 ../lib/$(PLAT)/libblksvd.a ../lib/$(PLAT)/libdynord.a ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libarrbio.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FLFLAGS) -o sksvdd.exe ../../../src/test/sksvddx.F90 -L../../../lib/$(PLAT) -lblksvd -ldynord -lksvd2 -larrbio -lfaux $(LDFLAGS)
 
