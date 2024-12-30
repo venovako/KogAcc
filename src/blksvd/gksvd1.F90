@@ -46,7 +46,7 @@
   N = 2 * B
   M_P = M_B / 2
   ! split W
-  LB = LDB * N * M_P
+  LB = LDB * N * M_P * CS
   IGB = 1
   IUB = IGB + LB
   IVB = IUB + LB
@@ -141,7 +141,7 @@
   END IF
   D(1) = GN
   D(1) = (D(1) * N) * N
-  GS = EXPONENT(HUGE(GN)) - EXPONENT(D(1)) - 1
+  GS = EXPONENT(HUGE(GN)) - EXPONENT(D(1)) - CS
   IF (GS .NE. 0) THEN
      J = 0
      !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
@@ -168,7 +168,7 @@
         END IF
         D(1) = UN
         D(1) = D(1) * N
-        US = EXPONENT(HUGE(UN)) - EXPONENT(D(1)) - 1
+        US = EXPONENT(HUGE(UN)) - EXPONENT(D(1)) - CS
      END IF
      IF (US .NE. 0) THEN
         J = 0
@@ -200,7 +200,7 @@
         END IF
         D(1) = VN
         D(1) = D(1) * N
-        VS = EXPONENT(HUGE(VN)) - EXPONENT(D(1)) - 1
+        VS = EXPONENT(HUGE(VN)) - EXPONENT(D(1)) - CS
      END IF
      IF (VS .NE. 0) THEN
         J = 0
@@ -322,7 +322,7 @@
      END IF
      D(1) = GN
      D(1) = (D(1) * N) * N
-     T = EXPONENT(HUGE(GN)) - EXPONENT(D(1)) - 1
+     T = EXPONENT(HUGE(GN)) - EXPONENT(D(1)) - CS
      IF (T .LT. 0) THEN
         J = 0
         !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
@@ -345,7 +345,7 @@
         END IF
         D(1) = UN
         D(1) = D(1) * N
-        T = EXPONENT(HUGE(UN)) - EXPONENT(D(1)) - 1
+        T = EXPONENT(HUGE(UN)) - EXPONENT(D(1)) - CS
         IF (T .LT. 0) THEN
            J = 0
            !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
@@ -369,7 +369,7 @@
         END IF
         D(1) = VN
         D(1) = D(1) * N
-        T = EXPONENT(HUGE(VN)) - EXPONENT(D(1)) - 1
+        T = EXPONENT(HUGE(VN)) - EXPONENT(D(1)) - CS
         IF (T .LT. 0) THEN
            J = 0
            !$ IF (LOMP) J = OMP_GET_NUM_THREADS()

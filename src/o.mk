@@ -47,12 +47,13 @@ OBJS_BLKSVD=\
 ../obj/$(PLAT)/cksvd0.$(OXT)\
 ../obj/$(PLAT)/dksvd0.$(OXT)\
 ../obj/$(PLAT)/zksvd0.$(OXT)\
+../obj/$(PLAT)/sksvd1.$(OXT)\
 ../obj/$(PLAT)/dksvd1.$(OXT)\
 ../obj/$(PLAT)/sksvdd.$(OXT)\
 ../obj/$(PLAT)/dksvdd.$(OXT)\
+../obj/$(PLAT)/xksvdd.$(OXT)\
 ../obj/$(PLAT)/cksvdd.$(OXT)\
 ../obj/$(PLAT)/zksvdd.$(OXT)\
-../obj/$(PLAT)/xksvdd.$(OXT)\
 ../obj/$(PLAT)/wksvdd.$(OXT)\
 ../obj/$(PLAT)/sbksvdd.$(OXT)\
 ../obj/$(PLAT)/cbksvdd.$(OXT)\
@@ -185,6 +186,7 @@ EXES_BLKSVD=\
 ../bin/$(PLAT)/cksvd0.exe\
 ../bin/$(PLAT)/dksvd0.exe\
 ../bin/$(PLAT)/zksvd0.exe\
+../bin/$(PLAT)/sksvd1.exe\
 ../bin/$(PLAT)/dksvd1.exe\
 ../bin/$(PLAT)/sksvdd.exe\
 ../bin/$(PLAT)/dksvdd.exe\
