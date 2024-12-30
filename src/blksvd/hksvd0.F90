@@ -120,8 +120,8 @@
   END IF
 
   ! scale G
-  L = 0
-  !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
+  L = -1
+  !$ IF (LOMP) L = -OMP_GET_NUM_THREADS() - 1
   CALL LANGO(N, G, LDG, GN, L)
   IF (L .NE. 0) THEN
      INFO = -3
@@ -145,8 +145,8 @@
         UN = ONE
         US = 0
      ELSE ! scaling of U might be required
-        L = 0
-        !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
+        L = -1
+        !$ IF (LOMP) L = -OMP_GET_NUM_THREADS() - 1
         CALL LANGO(N, U, LDU, UN, L)
         IF (L .NE. 0) THEN
            INFO = -5
@@ -175,8 +175,8 @@
         VN = ONE
         VS = 0
      ELSE ! scaling of V might be required
-        L = 0
-        !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
+        L = -1
+        !$ IF (LOMP) L = -OMP_GET_NUM_THREADS() - 1
         CALL LANGO(N, V, LDV, VN, L)
         IF (L .NE. 0) THEN
            INFO = -7

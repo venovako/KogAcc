@@ -28,7 +28,11 @@
   IF ((J .LT. 0) .OR. (J .GT. 4)) STOP 'J'
   IF (B .EQ. 0) THEN
      B = 16
+#ifdef CLS
+  ELSE IF ((B .LT. 0) .OR. (B .GT. 536870912)) THEN
+#else
   ELSE IF ((B .LT. 0) .OR. (B .GT. 16)) THEN
+#endif
      STOP 'B'
   END IF
 
@@ -120,10 +124,11 @@
   CALL SYSTEM_CLOCK(C1, CR)
   T = REAL(CR, REAL128)
   T = REAL(C1 - C0, REAL128) / T
-  WRITE (OUTPUT_UNIT,'(A,F15.6,A,I11,A)') 'KSVD1 took ', T, ' s with ', INFO, ' block steps'
+  WRITE (OUTPUT_UNIT,'(A,F15.6,A,I11,A)',ADVANCE='NO') 'KSVD1 took ', T, ' s with ', INFO, ' block steps and W=('
+  WRITE (OUTPUT_UNIT,9) W(1), ',', W(2), ',', W(3), ')'
   FLUSH(OUTPUT_UNIT)
 
-  INFO = 0
+  INFO = -INT(W(4))
   CALL WROUT(BN, J, N, U, LDU, V, LDV, SV, INFO)
   IF (INFO .NE. 0) STOP 'WROUT'
 

@@ -103,6 +103,7 @@ PROGRAM DKSVD1X
 #define WROUT DWROUT
 #define KSVD1 DKSVD1
 #include "gksvd1x.F90"
+9 FORMAT(3(ES25.17E3,A))
 CONTAINS
 #include "drdinp.F90"
 #include "dwrout.F90"

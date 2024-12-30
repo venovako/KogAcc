@@ -1,5 +1,26 @@
   L = INFO
   INFO = 0
+  LOMP = .FALSE.
+  IF (L .LT. 0) THEN
+     L = -(L + 1)
+  ELSE ! L .GE. 0
+     !$ LOMP = .TRUE.
+     CONTINUE
+  END IF
+
+#ifdef NDEBUG
+  I = 6
+#else
+  I = NW
+  !$OMP PARALLEL DO DEFAULT(NONE) SHARED(W,I) PRIVATE(J) IF(LOMP)
+#endif
+  DO J = 1, I
+     W(J) = ZERO
+  END DO
+#ifndef NDEBUG
+  !$OMP END PARALLEL DO
+#endif
+
   JS = IAND(JOB, 7)
   IF ((JOB .LT. 0) .OR. (JOB .GT. 124) .OR. (JS .GT. 4)) THEN
      INFO = -1
@@ -61,17 +82,26 @@
      P = M_P
   END IF
 
-  LOMP = .FALSE.
-  IF (L .LT. 0) THEN
-     L = -(L + 1)
-  ELSE ! L .GE. 0
-     !$ LOMP = .TRUE.
-     CONTINUE
-  END IF
   LUSID = (IAND(JOB, USID) .NE. 0)
   LUACC = (IAND(JOB, UACC) .NE. 0)
   LVSID = (IAND(JOB, VSID) .NE. 0)
   LVACC = (IAND(JOB, VACC) .NE. 0)
+
+#ifdef ANIMATE
+  CALL C_F_POINTER(C_LOC(SV), CP)
+  CTX = CP
+  CP => NULL()
+  LDF = INT(LDG, c_size_t)
+  IF (C_ASSOCIATED(CTX)) J = INT(VIS_FRAME(CTX, G, LDF))
+#endif
+
+#ifndef NDEBUG
+  !$OMP PARALLEL DO DEFAULT(NONE) SHARED(SV,M) PRIVATE(J) IF(LOMP)
+  DO J = 1, M
+     SV(J) = ZERO
+  END DO
+  !$OMP END PARALLEL DO
+#endif
 
   ! optionally set U and V to I
   IF (LUSID) THEN
@@ -101,15 +131,94 @@
      !$OMP END PARALLEL DO
   END IF
 
-#ifdef ANIMATE
-  CALL C_F_POINTER(C_LOC(SV), CP)
-  CTX = CP
-  CP => NULL()
-  LDF = INT(LDG, c_size_t)
-  IF (C_ASSOCIATED(CTX)) J = INT(VIS_FRAME(CTX, G, LDF))
-#endif
+  ! scale G
+  J = -1
+  !$ IF (LOMP) J = -OMP_GET_NUM_THREADS() - 1
+  CALL LANGO(M, G, LDG, GN, J)
+  IF (J .NE. 0) THEN
+     INFO = -4
+     RETURN
+  END IF
+  D(1) = GN
+  D(1) = (D(1) * N) * N
+  GS = EXPONENT(HUGE(GN)) - EXPONENT(D(1)) - 1
+  IF (GS .NE. 0) THEN
+     J = 0
+     !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
+     CALL SCALG(M, M, G, LDG, GS, J)
+     IF (J .NE. 0) THEN
+        INFO = -4
+        RETURN
+     END IF
+     GN = SCALE(GN, GS)
+  END IF
+
+  ! optionally scale U
+  IF (LUACC) THEN
+     IF (LUSID) THEN
+        UN = ONE
+        US = 0
+     ELSE ! scaling of U might be required
+        J = -1
+        !$ IF (LOMP) J = -OMP_GET_NUM_THREADS() - 1
+        CALL LANGO(M, U, LDU, UN, J)
+        IF (J .NE. 0) THEN
+           INFO = -6
+           RETURN
+        END IF
+        D(1) = UN
+        D(1) = D(1) * N
+        US = EXPONENT(HUGE(UN)) - EXPONENT(D(1)) - 1
+     END IF
+     IF (US .NE. 0) THEN
+        J = 0
+        !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
+        CALL SCALG(M, M, U, LDU, US, J)
+        IF (J .NE. 0) THEN
+           INFO = -6
+           RETURN
+        END IF
+        UN = SCALE(UN, US)
+     END IF
+  ELSE ! .NOT. LUACC
+     UN = ONE
+     US = 0
+  END IF
+
+  ! optionally scale V
+  IF (LVACC) THEN
+     IF (LVSID) THEN
+        VN = ONE
+        VS = 0
+     ELSE ! scaling of V might be required
+        J = -1
+        !$ IF (LOMP) J = -OMP_GET_NUM_THREADS() - 1
+        CALL LANGO(M, V, LDV, VN, J)
+        IF (J .NE. 0) THEN
+           INFO = -8
+           RETURN
+        END IF
+        D(1) = VN
+        D(1) = D(1) * N
+        VS = EXPONENT(HUGE(VN)) - EXPONENT(D(1)) - 1
+     END IF
+     IF (VS .NE. 0) THEN
+        J = 0
+        !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
+        CALL SCALG(M, M, V, LDV, VS, J)
+        IF (J .NE. 0) THEN
+           INFO = -8
+           RETURN
+        END IF
+        VN = SCALE(VN, VS)
+     END IF
+  ELSE ! .NOT. LVACC
+     VN = ONE
+     VS = 0
+  END IF
+
 !#ifndef NDEBUG
-  WRITE (ERROR_UNIT,'(A,I1,A)') '"BLK_STEP', JS, '", "BLK_PAIRS", "MAX_STEPS", "SUM_STEPS"'
+  WRITE (ERROR_UNIT,'(A,I1,A)') '"BLK_STEP', JS, '", "BLK_PAIRS", "MAX_STEPS", "SUM_STEPS", "GS"'
   FLUSH(ERROR_UNIT)
 !#endif
 
@@ -138,7 +247,8 @@
      IF ((J .LT. 0) .OR. (NB .LT. 0)) THEN
         INFO = -1000 * I - 100 + J
 !#ifndef NDEBUG
-        WRITE (ERROR_UNIT,'(I11,A,I11)') 0, ', ', J
+        WRITE (ERROR_UNIT,'(2(I11,A))',ADVANCE='NO') 0, ', ', J, ', '
+        WRITE (ERROR_UNIT,'(I11)') GS
         FLUSH(ERROR_UNIT)
 !#endif
         EXIT
@@ -146,7 +256,8 @@
      ! CONVERGENCE
      IF (NB .EQ. 0) THEN
 !#ifndef NDEBUG
-        WRITE (ERROR_UNIT,'(I11,A,I11)') 0, ', ', 0
+        WRITE (ERROR_UNIT,'(2(I11,A))',ADVANCE='NO') 0, ', ', 0, ', '
+        WRITE (ERROR_UNIT,'(I11)') GS
         FLUSH(ERROR_UNIT)
 !#endif
         EXIT
@@ -167,7 +278,8 @@
      IF (J .LT. 0) THEN
         INFO = J
 !#ifndef NDEBUG
-        WRITE (ERROR_UNIT,'(I11,A,I11)') J, ', ', 0
+        WRITE (ERROR_UNIT,'(2(I11,A))',ADVANCE='NO') J, ', ', 0, ', '
+        WRITE (ERROR_UNIT,'(I11)') GS
         FLUSH(ERROR_UNIT)
 !#endif
         EXIT
@@ -179,7 +291,8 @@
         T = T + O(1,J)
      END DO
      !$OMP END PARALLEL DO
-     WRITE (ERROR_UNIT,'(I11,A,I11)') Q, ', ', T
+     WRITE (ERROR_UNIT,'(2(I11,A))',ADVANCE='NO') Q, ', ', T, ', '
+     WRITE (ERROR_UNIT,'(I11)') GS
      FLUSH(ERROR_UNIT)
 !#endif
      ! CONVERGENCE
@@ -199,10 +312,77 @@
         INFO = -1000 + J
         EXIT
      END IF
+     ! optionally scale G
+     J = 0
+     !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
+     CALL LANGO(M, G, LDG, GN, J)
+     IF (J .NE. 0) THEN
+        INFO = -1000 * I - 400 + J
+        EXIT
+     END IF
+     D(1) = GN
+     D(1) = (D(1) * N) * N
+     T = EXPONENT(HUGE(GN)) - EXPONENT(D(1)) - 1
+     IF (T .LT. 0) THEN
+        J = 0
+        !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
+        CALL SCALG(M, M, G, LDG, T, J)
+        IF (J .NE. 0) THEN
+           INFO = -1000 * I - 500 + J
+           EXIT
+        END IF
+        GN = SCALE(GN, T)
+        GS = GS + T
+     END IF
+     ! optionally scale U
+     IF (LUACC .AND. (.NOT. LUSID)) THEN
+        J = 0
+        !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
+        CALL LANGO(M, U, LDU, UN, J)
+        IF (J .NE. 0) THEN
+           INFO = -1000 * I - 600 + J
+           EXIT
+        END IF
+        D(1) = UN
+        D(1) = D(1) * N
+        T = EXPONENT(HUGE(UN)) - EXPONENT(D(1)) - 1
+        IF (T .LT. 0) THEN
+           J = 0
+           !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
+           CALL SCALG(M, M, U, LDU, T, J)
+           IF (J .NE. 0) THEN
+              INFO = -1000 * I - 700 + J
+              EXIT
+           END IF
+           UN = SCALE(UN, T)
+           US = US + T
+        END IF
+     END IF
+     ! optionally scale V
+     IF (LVACC .AND. (.NOT. LVSID)) THEN
+        J = 0
+        !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
+        CALL LANGO(M, V, LDV, VN, J)
+        IF (J .NE. 0) THEN
+           INFO = -1000 * I - 800 + J
+           EXIT
+        END IF
+        D(1) = VN
+        D(1) = D(1) * N
+        T = EXPONENT(HUGE(VN)) - EXPONENT(D(1)) - 1
+        IF (T .LT. 0) THEN
+           J = 0
+           !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
+           CALL SCALG(M, M, V, LDV, T, J)
+           IF (J .NE. 0) THEN
+              INFO = -1000 * I - 900 + J
+              EXIT
+           END IF
+           VN = SCALE(VN, T)
+           VS = VS + T
+        END IF
+     END IF
   END DO
-#ifdef ANIMATE
-  IF (C_ASSOCIATED(CTX)) J = INT(VIS_FRAME(CTX, G, LDF))
-#endif
   IF (INFO .NE. 0) RETURN
   INFO = BS
 
@@ -212,3 +392,46 @@
      SV(J) = G(J,J)
   END DO
   !$OMP END PARALLEL DO
+
+  ! backscale G, U, V
+  IF (GS .NE. 0) THEN
+     J = 0
+     !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
+     CALL SCALG(M, M, G, LDG, -GS, J)
+     IF (J .NE. 0) THEN
+        INFO = -4
+        RETURN
+     END IF
+     GN = SCALE(GN, -GS)
+  END IF
+  IF (US .NE. 0) THEN
+     J = 0
+     !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
+     CALL SCALG(M, M, U, LDU, -US, J)
+     IF (J .NE. 0) THEN
+        INFO = -6
+        RETURN
+     END IF
+     UN = SCALE(UN, -US)
+  END IF
+  IF (VS .NE. 0) THEN
+     J = 0
+     !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
+     CALL SCALG(M, M, V, LDV, -VS, J)
+     IF (J .NE. 0) THEN
+        INFO = -8
+        RETURN
+     END IF
+     VN = SCALE(VN, -VS)
+  END IF
+
+  ! the first three elements of W indicate if and where an overflow occured in the backscaling above
+  W(1) = GN
+  W(2) = UN
+  W(3) = VN
+  W(4) = REAL(GS, K)
+  W(5) = REAL(US, K)
+  W(6) = REAL(VS, K)
+#ifdef ANIMATE
+  IF (C_ASSOCIATED(CTX)) J = INT(VIS_FRAME(CTX, G, LDF))
+#endif
