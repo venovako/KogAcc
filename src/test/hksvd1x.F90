@@ -39,7 +39,7 @@
   LDG = N
   LDB = B
   M = J
-  INFO = K
+  INFO = -K
   CALL IBDIMS(LDG, LDB, M, M_B, NW, ND, NO, INFO)
   IF (INFO .LT. 0) STOP 'IBDIMS'
   LDU = LDG
@@ -110,8 +110,15 @@
 #ifdef ANIMATE
   JOB = 3
   I = LEN_TRIM(BN) + 1
+  BN(I:I) = 'R'
+  CN = BN
+  CN(I:I) = 'I'
+  I = I + 1
   BN(I:I) = C_NULL_CHAR
-  CTX = VIS_START(M, M, JOB, BN)
+  CN(I:I) = C_NULL_CHAR
+  CTX = VIS_START(M, M, JOB, BN, CN)
+  BN(I:I) = ' '
+  I = I - 1
   BN(I:I) = ' '
   BN = TRIM(BN)
   CALL C_F_POINTER(C_LOC(SV), CP)
@@ -129,10 +136,10 @@
   T = REAL(CR, REAL128)
   T = REAL(C1 - C0, REAL128) / T
   WRITE (OUTPUT_UNIT,'(A,F15.6,A,I11,A)',ADVANCE='NO') 'KSVD1 took ', T, ' s with ', INFO, ' block steps and W=('
-  WRITE (OUTPUT_UNIT,9) W(1), ',', W(2), ',', W(3), ')'
+  WRITE (OUTPUT_UNIT,9) REAL(W(1)), ',', AIMAG(W(1)), ',', REAL(W(2)), ')'
   FLUSH(OUTPUT_UNIT)
 
-  INFO = -INT(W(4))
+  INFO = -INT(AIMAG(W(2)))
   CALL WROUT(BN, J, N, U, LDU, V, LDV, SV, INFO)
   IF (INFO .NE. 0) STOP 'WROUT'
 
@@ -148,8 +155,10 @@
   IF (C_ASSOCIATED(CTX)) THEN
      M = ANIMATE
      JOB = 8
+     BN(I:I) = 'R'
+     I = I + 1
      BN(I:I) = C_NULL_CHAR
-     I = INT(VIS_STOP(CTX, M, M, JOB, BN))
+     I = INT(PVN_CVIS_STOP(CTX, M, M, JOB, BN, JOB, CN))
      CTX = C_NULL_PTR
   END IF
 #endif

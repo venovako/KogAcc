@@ -30,7 +30,7 @@
   N = M
   I = B
   J = JS
-  INFO = K
+  INFO = -K
   CALL IBDIMS(N, I, J, M_B, LW, LD, T, INFO)
   IF (INFO .GT. 0) INFO = 0
   IF (NO .LT. T) INFO = -17
@@ -46,12 +46,12 @@
   N = 2 * B
   M_P = M_B / 2
   ! split W
-  LB = LDB * N * M_P
+  LB = LDB * N * M_P * 2
   IGB = 1
   IUB = IGB + LB
   IVB = IUB + LB
   IWB = IVB + LB
-  LW = MAX((N - 1), 3) * N
+  LW = MAX((N - 1), 5) * N
   ! split D
   B_P = B * (N - 1)
   LD = B_P + 1
@@ -141,7 +141,7 @@
   END IF
   D(1) = GN
   D(1) = (D(1) * N) * N
-  GS = EXPONENT(HUGE(GN)) - EXPONENT(D(1)) - 1
+  GS = EXPONENT(HUGE(GN)) - EXPONENT(D(1)) - 2
   IF (GS .NE. 0) THEN
      J = 0
      !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
@@ -168,7 +168,7 @@
         END IF
         D(1) = UN
         D(1) = D(1) * N
-        US = EXPONENT(HUGE(UN)) - EXPONENT(D(1)) - 1
+        US = EXPONENT(HUGE(UN)) - EXPONENT(D(1)) - 2
      END IF
      IF (US .NE. 0) THEN
         J = 0
@@ -200,7 +200,7 @@
         END IF
         D(1) = VN
         D(1) = D(1) * N
-        VS = EXPONENT(HUGE(VN)) - EXPONENT(D(1)) - 1
+        VS = EXPONENT(HUGE(VN)) - EXPONENT(D(1)) - 2
      END IF
      IF (VS .NE. 0) THEN
         J = 0
@@ -322,7 +322,7 @@
      END IF
      D(1) = GN
      D(1) = (D(1) * N) * N
-     T = EXPONENT(HUGE(GN)) - EXPONENT(D(1)) - 1
+     T = EXPONENT(HUGE(GN)) - EXPONENT(D(1)) - 2
      IF (T .LT. 0) THEN
         J = 0
         !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
@@ -345,7 +345,7 @@
         END IF
         D(1) = UN
         D(1) = D(1) * N
-        T = EXPONENT(HUGE(UN)) - EXPONENT(D(1)) - 1
+        T = EXPONENT(HUGE(UN)) - EXPONENT(D(1)) - 2
         IF (T .LT. 0) THEN
            J = 0
            !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
@@ -369,7 +369,7 @@
         END IF
         D(1) = VN
         D(1) = D(1) * N
-        T = EXPONENT(HUGE(VN)) - EXPONENT(D(1)) - 1
+        T = EXPONENT(HUGE(VN)) - EXPONENT(D(1)) - 2
         IF (T .LT. 0) THEN
            J = 0
            !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
@@ -389,7 +389,7 @@
   ! extract SV from G
   !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,SV,M) PRIVATE(J) IF(LOMP)
   DO J = 1, M
-     SV(J) = G(J,J)
+     SV(J) = REAL(G(J,J))
   END DO
   !$OMP END PARALLEL DO
 

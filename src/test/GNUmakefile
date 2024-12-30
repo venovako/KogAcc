@@ -112,8 +112,14 @@
 ../bin/$(PLAT)/sksvd1.exe: test/sksvd1x.F90 test/gksvd1x.F90 test/srdinp.F90 test/swrout.F90 ../lib/$(PLAT)/libblksvd.a ../lib/$(PLAT)/libdynord.a ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libarrbio.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FLFLAGS) -o sksvd1.exe ../../../src/test/sksvd1x.F90 -L../../../lib/$(PLAT) -lblksvd -ldynord -lksvd2 -larrbio -lfaux $(LDFLAGS)
 
+../bin/$(PLAT)/cksvd1.exe: test/cksvd1x.F90 test/hksvd1x.F90 test/crdinp.F90 test/cwrout.F90 ../lib/$(PLAT)/libblksvd.a ../lib/$(PLAT)/libdynord.a ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libarrbio.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
+	cd ../bin/$(PLAT) && $(FC) $(FLFLAGS) -o cksvd1.exe ../../../src/test/cksvd1x.F90 -L../../../lib/$(PLAT) -lblksvd -ldynord -lksvd2 -larrbio -lfaux $(LDFLAGS)
+
 ../bin/$(PLAT)/dksvd1.exe: test/dksvd1x.F90 test/gksvd1x.F90 test/drdinp.F90 test/dwrout.F90 ../lib/$(PLAT)/libblksvd.a ../lib/$(PLAT)/libdynord.a ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libarrbio.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FLFLAGS) -o dksvd1.exe ../../../src/test/dksvd1x.F90 -L../../../lib/$(PLAT) -lblksvd -ldynord -lksvd2 -larrbio -lfaux $(LDFLAGS)
+
+../bin/$(PLAT)/zksvd1.exe: test/zksvd1x.F90 test/hksvd1x.F90 test/zrdinp.F90 test/zwrout.F90 ../lib/$(PLAT)/libblksvd.a ../lib/$(PLAT)/libdynord.a ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libarrbio.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
+	cd ../bin/$(PLAT) && $(FC) $(FLFLAGS) -o zksvd1.exe ../../../src/test/zksvd1x.F90 -L../../../lib/$(PLAT) -lblksvd -ldynord -lksvd2 -larrbio -lfaux $(LDFLAGS)
 
 ../bin/$(PLAT)/sksvdd.exe: test/sksvddx.F90 test/gksvddx.F90 test/srdinp.F90 test/swrout.F90 ../lib/$(PLAT)/libblksvd.a ../lib/$(PLAT)/libdynord.a ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libarrbio.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FLFLAGS) -o sksvdd.exe ../../../src/test/sksvddx.F90 -L../../../lib/$(PLAT) -lblksvd -ldynord -lksvd2 -larrbio -lfaux $(LDFLAGS)
