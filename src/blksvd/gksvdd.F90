@@ -153,10 +153,6 @@
      VS = 0
   END IF
 
-  ! initialize the counters
-  TT = 0_INT64
-  TM = 0_INT64
-
   DO STP = 0, MRQSTP-1
      T = STP + 1
 
@@ -179,9 +175,7 @@
      I = L
      ! convergence
      IF (I .EQ. 0) EXIT
-     IF (I .GT. 0) THEN
-        TT = TT + I
-     ELSE ! should never happen
+     IF (I .LT. 0) THEN
         INFO = -12
         RETURN
      END IF
@@ -279,8 +273,6 @@
      END IF
 
      IF (M .GT. 0) THEN
-        TM = TM + M
-
         ! optionally scale G
         L = 0
         !$ IF (LOMP) L = OMP_GET_NUM_THREADS()

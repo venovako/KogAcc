@@ -44,6 +44,10 @@
   IF (INFO .NE. 0) RETURN
 
   N = 2 * B
+  LX = (K .EQ. REAL64)
+#ifndef CLS
+  IF (N .GT. 32) LX = .FALSE.
+#endif
   M_P = M_B / 2
   ! split W
   LB = LDB * N * M_P * 2
@@ -271,8 +275,13 @@
         EXIT
      END IF
      R = IOB + NB
-     J = 0
-     !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
+     IF (LX) THEN
+        J = -1
+        !$ IF (LOMP) J = -OMP_GET_NUM_THREADS() - 1
+     ELSE ! not extended
+        J = 0
+        !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
+     END IF
      CALL BKSVDD(N, NB, W(IGB), W(IUB), W(IVB), LDB, SV, W(IWB), LW, D, LD, O(1,IOD), O(1,IO0), O(1,R), J)
      Q = J
      IF (J .LT. 0) THEN

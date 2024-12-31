@@ -28,11 +28,7 @@
   IF ((J .LT. 0) .OR. (J .GT. 4)) STOP 'J'
   IF (B .EQ. 0) THEN
      B = 16
-#ifdef CLS
-  ELSE IF ((B .LT. 0) .OR. (B .GT. 536870912)) THEN
-#else
-  ELSE IF ((B .LT. 0) .OR. (B .GT. 16)) THEN
-#endif
+  ELSE IF (B .LT. 0) THEN
      STOP 'B'
   END IF
 

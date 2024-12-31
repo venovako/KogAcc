@@ -1,6 +1,6 @@
 !>@brief \b DKSVDD computes the SVD of G as U S V^T, with S returned in SV and U and V optionally accumulated on either identity for the SVD, or on preset input matrices.
 SUBROUTINE DKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, OD, INFO)
-  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: INT64, REAL64, REAL128
+  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64, REAL128
   !$ USE OMP_LIB
   IMPLICIT NONE
   INTERFACE
@@ -92,7 +92,6 @@ SUBROUTINE DKSVDD(JOB, N, G, LDG, U, LDU, V, LDV, SV, W, D, O, OD, INFO)
 
   REAL(KIND=K) :: G2(2,2), U2(2,2)
   REAL(KIND=K) :: GN, UN, VN
-  INTEGER(KIND=INT64) :: TT, TM
   INTEGER :: MRQSTP, I, J, L, M, P, Q, T, GS, US, VS, WV, WS, STP, ES(3)
   LOGICAL :: LOMP, LUSID, LUACC, LVSID, LVACC
 #define LANGO DLANGO
