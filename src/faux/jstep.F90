@@ -3,7 +3,7 @@ PURE SUBROUTINE JSTEP(J, N, S, T, P, O, R, INFO)
   IMPLICIT NONE
   INTEGER, INTENT(IN) :: J, N, S, T, P, O(*)
   INTEGER, INTENT(OUT) :: R(2,P), INFO
-  INTEGER :: I, K, L, M
+  INTEGER :: I, JJ, K, L, M
 
   INFO = 0
   IF (P .LT. 0) INFO = -5
@@ -16,7 +16,13 @@ PURE SUBROUTINE JSTEP(J, N, S, T, P, O, R, INFO)
   IF (P .EQ. 0) RETURN
 
   M = MOD(T - 1, S) + 1
-  SELECT CASE (J)
+  IF ((J .GE. 5) .AND. (J .LE. 7)) THEN
+     JJ = J - 3
+  ELSE ! a sequential ordering
+     JJ = J
+  END IF
+
+  SELECT CASE (JJ)
   CASE (0, 1)
      L = 1
      IF (P .GT. L) THEN

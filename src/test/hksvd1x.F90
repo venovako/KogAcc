@@ -17,15 +17,9 @@
   IF (INFO .NE. 0) STOP 'BN'
 
   L = 0
-  IF (N .GT. 0) THEN
-     !$ L = 1
-     CONTINUE
-  ELSE IF (N .LT. 0) THEN
-     N = -N
-  ELSE ! N .EQ. 0
-     STOP 'N'
-  END IF
-  IF ((J .LT. 0) .OR. (J .GT. 4)) STOP 'J'
+  !$ L = 1
+  IF (N .LE. 0) STOP 'N'
+  IF ((J .LT. 0) .OR. (J .GT. 63)) STOP 'J'
   IF (B .EQ. 0) THEN
      B = 16
   ELSE IF (B .LT. 0) THEN
@@ -76,7 +70,7 @@
   ALLOCATE(O(2,NO))
 
   SELECT CASE (J)
-  CASE (0,3)
+  CASE (0,3,6)
      CALL INITRC(M_B, O, INFO)
      IF (MOD(M_B, 2) .EQ. 0) THEN
         I = (M_B / 2) * (M_B - 1)
@@ -90,18 +84,30 @@
      ELSE ! M_B odd
         I = M_B * ((M_B - 1) / 2)
      END IF
-  CASE (2)
+  CASE (2,5)
      CALL INITME(M_B, O, INFO)
      I = (M_B / 2) * (M_B - 1)
-  CASE (4)
+  CASE (4,7)
      CALL INITMM(M_B, O, INFO)
      I = (M_B / 2) * M_B
   CASE DEFAULT
      STOP 'J'
   END SELECT
+  IF (INFO .NE. 0) STOP 'INIT(O1)'
   I = I + 1
-  IF (INFO .EQ. 0) CALL INITRC(2*B, O(1,I), INFO)
-  IF (INFO .NE. 0) STOP 'INIT(O)'
+  SELECT CASE (IAND(J, 7))
+  CASE (0,3,6)
+     CALL INITRC(2*B, O(1,I), INFO)
+  CASE (1)
+     CALL INITCC(2*B, O(1,I), INFO)
+  CASE (2,5)
+     CALL INITME(2*B, O(1,I), INFO)
+  CASE (4,7)
+     CALL INITMM(2*B, O(1,I), INFO)
+  CASE DEFAULT
+     STOP 'J'
+  END SELECT
+  IF (INFO .NE. 0) STOP 'INIT(O0)'
 
 #ifdef ANIMATE
   JOB = 3
@@ -122,7 +128,7 @@
   CP => NULL()
 #endif
 
-  JOB = J + 120
+  JOB = J + 960
   INFO = -HUGE(INFO)
   INFO = INFO - 1
   !$ IF (L .NE. 0) INFO = -(INFO + 1)

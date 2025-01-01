@@ -57,6 +57,10 @@ OBJS_BLKSVD=\
 ../obj/$(PLAT)/cksvdd.$(OXT)\
 ../obj/$(PLAT)/zksvdd.$(OXT)\
 ../obj/$(PLAT)/wksvdd.$(OXT)\
+../obj/$(PLAT)/sbksvd0.$(OXT)\
+../obj/$(PLAT)/cbksvd0.$(OXT)\
+../obj/$(PLAT)/dbksvd0.$(OXT)\
+../obj/$(PLAT)/zbksvd0.$(OXT)\
 ../obj/$(PLAT)/sbksvdd.$(OXT)\
 ../obj/$(PLAT)/cbksvdd.$(OXT)\
 ../obj/$(PLAT)/dbksvdd.$(OXT)\
@@ -131,6 +135,7 @@ OBJS_KSVD2=\
 ../obj/$(PLAT)/ykerr2.$(OXT)
 
 OBJS_FAUX=\
+../obj/$(PLAT)/j2c.$(OXT)\
 ../obj/$(PLAT)/sthalt.$(OXT)\
 ../obj/$(PLAT)/cmul.$(OXT)\
 ../obj/$(PLAT)/zmul.$(OXT)\

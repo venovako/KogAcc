@@ -21,15 +21,17 @@
   !$OMP END PARALLEL DO
 #endif
 
-  JS = IAND(JOB, 7)
-  IF ((JOB .LT. 0) .OR. (JOB .GT. 124) .OR. (JS .GT. 4)) THEN
+  IF ((JOB .LT. 0) .OR. (JOB .GT. 1023)) THEN
      INFO = -1
      RETURN
   END IF
 
+  JS0 = IAND(JOB, 7)
+  JS1 = ISHFT(IAND(JOB, 56), -3)
+
   N = M
   I = B
-  J = JS
+  J = JS1
   INFO = K
   CALL IBDIMS(N, I, J, M_B, LW, LD, T, INFO)
   IF (INFO .GT. 0) INFO = 0
@@ -55,7 +57,11 @@
   IUB = IGB + LB
   IVB = IUB + LB
   IWB = IVB + LB
-  LW = MAX((N - 1), 3) * N
+  IF ((JS0 .EQ. 3) .OR. (JS0 .EQ. 6)) THEN
+     LW = MAX((N - 1), 3) * N
+  ELSE ! not dynamic ordering
+     LW = MAX(N, 3) * N
+  END IF
   ! split D
   B_P = B * (N - 1)
   LD = B_P + 1
@@ -67,20 +73,21 @@
      S = M_B * (P / 2)
   END IF
   IO1 = 1
-  IF (JS .EQ. 4) THEN
+  IF ((JS1 .EQ. 4) .OR. (JS1 .EQ. 7)) THEN
      IO0 = IO1 + M_P * M_B
-  ELSE ! JS .NE. 4
+  ELSE ! not modified modulus
      IO0 = IO1 + S
   END IF
+  IF ((JS0 .EQ. 4) .OR. (JS0 .EQ. 7)) B_P = B_P + B
   IOB = IO0 + B_P
   IOD = IOB + M_B
   ! Steps and Pairs
-  IF ((JS .EQ. 0) .OR. (JS .EQ. 1)) THEN
+  IF ((JS1 .EQ. 0) .OR. (JS1 .EQ. 1)) THEN
      P = 1
   ELSE ! a parallel ordering
-     IF (JS .EQ. 4) THEN
+     IF ((JS1 .EQ. 4) .OR. (JS1 .EQ. 7)) THEN
         S = M_B
-     ELSE ! (JS .EQ. 2) .OR. (JS .EQ. 3)
+     ELSE ! not modified modulus
         S = P
      END IF
      P = M_P
@@ -222,7 +229,7 @@
   END IF
 
 !#ifndef NDEBUG
-  WRITE (ERROR_UNIT,'(A,I1,A)') '"BLK_STEP', JS, '", "BLK_PAIRS", "MAX_STEPS", "SUM_STEPS", "GS"'
+  WRITE (ERROR_UNIT,'(A,I1,A)') '"BLK_STEP', JS1, '", "BLK_PAIRS", "MAX_STEPS", "SUM_STEPS", "GS"'
   FLUSH(ERROR_UNIT)
 !#endif
 
@@ -236,12 +243,12 @@
      FLUSH(ERROR_UNIT)
 !#endif
      J = 0
-     IF (JS .EQ. 3) THEN
+     IF ((JS1 .EQ. 3) .OR. (JS1 .EQ. 6)) THEN
         !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
         CALL MKBPQ(M, G, LDG, B, W, D, O(1,IO1), O(1,IOB), J)
         NB = J
      ELSE ! a (quasi)-cyclic ordering
-        CALL JSTEP(JS, M_B, S, I, P, O(1,IO1), O(1,IOB), J)
+        CALL JSTEP(JS1, M_B, S, I, P, O(1,IO1), O(1,IOB), J)
         NB = P
      END IF
 !#ifndef NDEBUG
@@ -275,14 +282,20 @@
         EXIT
      END IF
      R = IOB + NB
-     IF (LX) THEN
-        J = -1
-        !$ IF (LOMP) J = -OMP_GET_NUM_THREADS() - 1
-     ELSE ! not extended
+     IF ((JS0 .EQ. 3) .OR. (JS0 .EQ. 6)) THEN
+        IF (LX) THEN
+           J = -1
+           !$ IF (LOMP) J = -OMP_GET_NUM_THREADS() - 1
+        ELSE ! not extended
+           J = 0
+           !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
+        END IF
+        CALL BKSVDD(N, NB, W(IGB), W(IUB), W(IVB), LDB, SV, W(IWB), LW, D, LD, O(1,IOD), O(1,IO0), O(1,R), J)
+     ELSE ! not dynamic ordering
         J = 0
         !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
+        CALL BKSVD0(JS0, N, NB, W(IGB), W(IUB), W(IVB), LDB, SV, W(IWB), LW, O(1,IOD), O(1,IO0), O(1,R), J)
      END IF
-     CALL BKSVDD(N, NB, W(IGB), W(IUB), W(IVB), LDB, SV, W(IWB), LW, D, LD, O(1,IOD), O(1,IO0), O(1,R), J)
      Q = J
      IF (J .LT. 0) THEN
         INFO = J
@@ -314,9 +327,19 @@
         INFO = -1000 * I - 300 + J
         EXIT
      END IF
+     IF (LUACC) THEN
+        T = LDU
+     ELSE ! .NOT. LUACC
+        T = -LDU
+     END IF
+     IF (LVACC) THEN
+        R = LDV
+     ELSE ! .NOT. LVACC
+        R = -LDV
+     END IF
      J = 0
      !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
-     CALL BUPDATE(M, B, G, LDG, U, LDU, V, LDV, W(IGB), W(IUB), W(IVB), LDB, NB, O(1,IOB), J)
+     CALL BUPDATE(M, B, G, LDG, U, T, V, R, W(IGB), W(IUB), W(IVB), LDB, NB, O(1,IOB), J)
      IF (J .LT. 0) THEN
         INFO = -1000 + J
         EXIT

@@ -1,6 +1,9 @@
 ../lib/$(PLAT)/libfaux.a: $(OBJS_FAUX) $(MKFS) faux/GNUmakefile
 	$(AR) $(ARFLAGS) $@ $(OBJS_FAUX)
 
+../obj/$(PLAT)/j2c.$(OXT): faux/j2c.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/j2c.F90
+
 ../obj/$(PLAT)/sthalt.$(OXT): faux/sthalt.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/sthalt.F90
 

@@ -20,7 +20,7 @@
   IF (LDG .LT. N) INFO = -4
   IF (N .LT. 0) INFO = -2
   IF (JOB .LT. 0) INFO = -1
-  IF (JOB .GT. 124) INFO = -1
+  IF (JOB .GT. 1023) INFO = -1
   IF (INFO .NE. 0) RETURN
   IF (N .EQ. 0) RETURN
 

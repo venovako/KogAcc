@@ -20,7 +20,7 @@
   IF (LDG .LT. N) INFO = -4
   IF (N .LT. 0) INFO = -2
   IF (JOB .LT. 0) INFO = -1
-  IF (JOB .GT. 124) INFO = -1
+  IF (JOB .GT. 1023) INFO = -1
   JS = IAND(JOB, 7)
   M = N * (N - 1)
   M_2 = M / 2
@@ -191,8 +191,10 @@
   END IF
 
   ! initialize the counters
+#ifndef NDEBUG
   TT = 0_INT64
   TM = 0_INT64
+#endif
   SM = 0_INT64
 #ifndef NDEBUG
   WRITE (OUTPUT_UNIT,*) '"STEP","GN","UN","VN","PAIRS","OFF_G_F","BIG_TRANS"'
@@ -247,9 +249,13 @@
         FLUSH(OUTPUT_UNIT)
 #endif
         EXIT
+#ifdef NDEBUG
+     ELSE IF (I .LT. 0) THEN
+#else
      ELSE IF (I .GT. 0) THEN
         TT = TT + I
      ELSE ! should never happen
+#endif
         INFO = -12
         RETURN
      END IF
@@ -349,8 +355,9 @@
 #endif
 
      IF (M .GT. 0) THEN
+#ifndef NDEBUG
         TM = TM + M
-
+#endif
         ! optionally scale G
         L = 0
         !$ IF (LOMP) L = OMP_GET_NUM_THREADS()

@@ -14,18 +14,10 @@
   IF (INFO .NE. 0) STOP 'BN'
 
   L = 0
-  IF ((J .GE. 2) .AND. (J .LE. 4)) THEN
-     !$ L = 1
-     CONTINUE
-  ELSE IF ((J .GE. 5) .AND. (J .LE. 7)) THEN
-     J = J - 3
-  ELSE IF (J .GE. 8) THEN
-     STOP 'J'
-  END IF
-
+  !$ L = 1
+  IF ((J .LT. 0) .OR. (J .GT. 7)) STOP 'J'
   IF (N .LE. 0) STOP 'N'
-
-  IF ((J .EQ. 2) .OR. (J .EQ. 4)) THEN
+  IF ((J .EQ. 2) .OR. (J .EQ. 4) .OR. (J .EQ. 5) .OR. (J .EQ. 7)) THEN
      INFO = L
      CALL NB2M(N, 2, M, INFO)
      IF (INFO .NE. 0) STOP 'NB2M'
@@ -72,21 +64,15 @@
 #endif
   ALLOCATE(W(MAX(6,MAX(M,5)*M)))
   ALLOCATE(O(2*M*(M-1)))
-  IF ((J .GE. 0) .AND. (J .NE. 3)) THEN
+  IF ((J .NE. 3) .AND. (J .NE. 6)) THEN
      INFO = L
      CALL JSWEEP(J, M, S, P, O, INFO)
      IF (INFO .NE. 0) STOP 'JSWEEP'
-  ELSE IF (J .LT. 0) THEN
-     S = 1
-     P = MIN(-J, M / 2)
-     IF (M .GT. 1) O(1) = P
-     J = 3
-  ELSE ! J = 3
+  ELSE ! dynamic ordering
      S = 1
      P = M / 2
      IF (M .GT. 1) O(1) = 0
   END IF
-
   ALLOCATE(R(2,M))
 
 #ifdef ANIMATE
@@ -108,7 +94,7 @@
   CP => NULL()
 #endif
 
-  JOB = J + 120
+  JOB = J + 960
   INFO = -HUGE(INFO)
   INFO = INFO - 1
   !$ IF (L .NE. 0) INFO = -(INFO + 1)

@@ -32,4 +32,25 @@ Run `make help` (GNU make assumed) in the `src` subdirectory.
 
 Setting `NDEBUG` to, e.g., `3` is recommened.
 
+## Running
+
+The available Jacobi strategies:
+
+| J |                    description |
+| - | ------------------------------ |
+| 0 |        row-cyclic (sequential) |
+| 1 |     column-cyclic (sequential) |
+| 2 | generalized Mantharam-Eberlein |
+| 3 |                        dynamic |
+| 4 |               modified modulus |
+| 5 |              same as 2 for now |
+| 6 |              same as 3 for now |
+| 7 |              same as 4 for now |
+
+A block strategy pair is computed as:
+```Fortran
+J_inner + J_outer * 8
+```
+where `J_inner` and `J_outer` are taken from the table above.
+
 This work has been supported in part by Croatian Science Foundation under the project IP-2014-09-3670 ([MFBDA](https://web.math.pmf.unizg.hr/mfbda/)).

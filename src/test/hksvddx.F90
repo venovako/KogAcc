@@ -80,7 +80,7 @@
      END DO
   END DO
   J = 3
-  JOB = 123
+  JOB = J + 960
   INFO = -HUGE(INFO)
   INFO = INFO - 1
   !$ IF (L .NE. 0) INFO = -(INFO + 1)

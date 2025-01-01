@@ -8,7 +8,7 @@ SUBROUTINE JSWEEP(J, N, S, P, O, INFO)
 
   INTEGER(KIND=c_int), ALLOCATABLE :: ARR(:,:)
   INTEGER(KIND=c_intptr_t) :: JS
-  INTEGER :: I, K, L
+  INTEGER :: I, JJ, K, L
   INTEGER(KIND=c_int) :: ID, M
 
   INTEGER(KIND=c_int), EXTERNAL :: PVN_CJS_INIT, PVN_CJS_NEXT, PVN_CJS_FREE
@@ -21,7 +21,13 @@ SUBROUTINE JSWEEP(J, N, S, P, O, INFO)
   IF (INFO .NE. 0) RETURN
   IF (N .LE. 1) RETURN
 
-  SELECT CASE (J)
+  IF ((J .GE. 5) .AND. (J .LE. 7)) THEN
+     JJ = J - 3
+  ELSE ! a sequential ordering
+     JJ = J
+  END IF
+
+  SELECT CASE (JJ)
   CASE (0,1)
      P = 1
      IF (MOD(N, 2) .EQ. 0) THEN
@@ -46,7 +52,7 @@ SUBROUTINE JSWEEP(J, N, S, P, O, INFO)
   END SELECT
   IF (INFO .NE. 0) RETURN
 
-  ID = INT(J, c_int)
+  ID = INT(JJ, c_int)
   M = INT(N, c_int)
   JS = 0_c_intptr_t
   INFO = INT(PVN_CJS_INIT(JS, ID, M))
@@ -57,9 +63,9 @@ SUBROUTINE JSWEEP(J, N, S, P, O, INFO)
      INFO = 0
   END IF
 
-  IF (J .EQ. 4) THEN
+  IF (JJ .EQ. 4) THEN
      ALLOCATE(ARR(4,P), STAT=L)
-  ELSE ! J .NE. 4
+  ELSE ! JJ .NE. 4
      ALLOCATE(ARR(2,P), STAT=L)
   END IF
   IF (L .NE. 0) THEN
@@ -74,7 +80,7 @@ SUBROUTINE JSWEEP(J, N, S, P, O, INFO)
         INFO = 3
         EXIT
      END IF
-     SELECT CASE (J)
+     SELECT CASE (JJ)
      CASE (0,1)
         O(1,L) = INT(ARR(1,1)) + 1
         O(2,L) = INT(ARR(2,1)) + 1

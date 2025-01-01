@@ -15,22 +15,21 @@ PURE SUBROUTINE IBDIMS(N, B, M, M_B, NW, ND, NO, INFO)
   INTEGER, INTENT(INOUT) :: N, B, M, INFO
   INTEGER, INTENT(OUT) :: M_B, NW, ND, NO
 
-  INTEGER :: J, T, M_P, B_P
+  INTEGER :: JS0, JS1, T, M_P, B_P
 
-  SELECT CASE (M)
-  CASE (0,1,2,3,4)
-     J = M
-  CASE DEFAULT
+  JS0 = IAND(M, 7)
+  JS1 = ISHFT(IAND(M, 56), -3)
+  IF (M .GT. 63) THEN
      INFO = -3
      RETURN
-  END SELECT
+  END IF
   CALL NB2M(N, B, M, M_B)
   IF (M_B .NE. 0) THEN
      INFO = M_B
      RETURN
   END IF
   M_B = M / B
-  IF (((J .EQ. 2) .OR. (J .EQ. 4)) .AND. (MOD(M_B, 2) .NE. 0)) THEN
+  IF (((JS1 .EQ. 2) .OR. (JS1 .EQ. 4) .OR. (JS1 .EQ. 5) .OR. (JS1 .EQ. 7)) .AND. (MOD(M_B, 2) .NE. 0)) THEN
      M = M + B
      M_B = M_B + 1
   END IF
@@ -74,13 +73,23 @@ PURE SUBROUTINE IBDIMS(N, B, M, M_B, NW, ND, NO, INFO)
   ! M_B x M_B
   ! (3 * (LDB x 2*B) * M_P); ((MAX((2*B-1),NW) * 2*B) * M_P)
   IF (NW .EQ. 3) THEN
-     NW = MAX(6, MAX(ND, ((3 * NO + MAX((2 * B - 1), NW) * 2 * B) * M_P)))
+     IF ((JS0 .EQ. 3) .OR. (JS0 .EQ. 6)) THEN
+        NW = MAX((2 * B - 1), NW)
+     ELSE ! not dynamic ordering
+        NW = MAX((2 * B), NW)
+     END IF
+     NW = MAX(6, MAX(ND, ((3 * NO + NW * 2 * B) * M_P)))
   ELSE ! W complex
-     NW = MAX(3, MAX(((ND + MOD(ND, 2)) / 2), ((3 * NO + MAX((2 * B - 1), NW) * B) * M_P)))
+     IF ((JS0 .EQ. 3) .OR. (JS0 .EQ. 6)) THEN
+        NW = MAX((2 * B - 1), NW)
+     ELSE ! not dynamic ordering
+        NW = MAX((2 * B), NW)
+     END IF
+     NW = MAX(3, MAX(((ND + MOD(ND, 2)) / 2), ((3 * NO + NW * B) * M_P)))
   END IF
-  IF (J .EQ. 4) THEN
+  IF ((JS1 .EQ. 4) .OR. (JS1 .EQ. 7)) THEN
      NO = M_P * M_B
-  ELSE ! J .NE. 4
+  ELSE ! not modified modulus
      IF (MOD(M_B, 2) .EQ. 0) THEN
         NO = M_P * (M_B - 1)
      ELSE ! M_B odd
@@ -89,17 +98,20 @@ PURE SUBROUTINE IBDIMS(N, B, M, M_B, NW, ND, NO, INFO)
   END IF
   B_P = B * (2 * B - 1)
   ! LAYOUT OF D: D(X) = (X*(X-1))/2 + 1
-  ! D(M_B) [ if J .EQ. 3 ]
+  ! D(M_B) [ if dynamic block-ordering ]
   ! D(2*B)_1 ... D(2*B)_M_P
-  IF (J .EQ. 3) THEN
+  IF ((JS1 .EQ. 3) .OR. (JS1 .EQ. 6)) THEN
      ND = MAX((NO + 1), (B_P + 1) * M_P)
-  ELSE ! J .NE. 3
+  ELSE IF ((JS0 .EQ. 3) .OR. (JS0 .EQ. 6)) THEN
      ND = (B_P + 1) * M_P
+  ELSE ! not dynamic ordering
+     ND = 1
   END IF
-  ! LAYOUT OF O: RC(X) = (X*(X-1))/2
-  ! RCJ(M_B) RC(2*B) OD
+  ! LAYOUT OF O: RCJ(X) = (X*(X-1))/2 or X*X/2
+  ! RCJ(M_B) RCJ(2*B) OD
   ! LAYOUT OF OD: PQI(X) = X
   ! PQI(M_B) PQI(2*B)_1 ... PQI(2*B)_M_P
+  IF ((JS0 .EQ. 4) .OR. (JS0 .EQ. 7)) B_P = B_P + B
   NO = NO + B_P + M_B + 2 * B * M_P
   B = T
 END SUBROUTINE IBDIMS
