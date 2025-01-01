@@ -46,9 +46,10 @@
   IF (INFO .NE. 0) RETURN
 
   N = 2 * B
-  LX = (K .EQ. REAL64)
-#ifndef CLS
-  IF (N .GT. 32) LX = .FALSE.
+#ifdef CLS
+  LX = .FALSE.
+#else
+  LX = ((K .EQ. REAL64) .AND. (N .LE. 32))
 #endif
   M_P = M_B / 2
   ! split W
