@@ -230,7 +230,7 @@
   END IF
 
 !#ifndef NDEBUG
-  WRITE (ERROR_UNIT,'(A,I1,A)') '"BLK_STEP', JS1, '", "BLK_PAIRS", "MAX_STEPS", "SUM_STEPS", "GS"'
+  WRITE (ERROR_UNIT,'(A,I1,A,I1,A)') '"BLK_STEP', JS1, '", "BLK_PAIRS", "MAX_STEPS", "SUM_STEPS", "GS', JS0, '"'
   FLUSH(ERROR_UNIT)
 !#endif
 

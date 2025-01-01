@@ -43,4 +43,4 @@
   END DO
   !$OMP END PARALLEL DO
   IF (INFO .LT. 0) RETURN
-  INFO = -J ! max # of steps
+  INFO = -J ! max # of sweeps
