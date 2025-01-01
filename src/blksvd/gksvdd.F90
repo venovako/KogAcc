@@ -31,6 +31,14 @@
 
   M = N * (N - 1)
 
+#ifndef NDEBUG
+  !$OMP PARALLEL DO DEFAULT(NONE) SHARED(SV,N) PRIVATE(J) IF(LOMP)
+  DO J = 1, N
+     SV(J) = ZERO
+  END DO
+  !$OMP END PARALLEL DO
+#endif
+
   IF (N .EQ. 1) THEN
      GN = ABS(G(1,1))
      IF (.NOT. (GN .LE. HUGE(GN))) THEN

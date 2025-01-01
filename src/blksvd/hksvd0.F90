@@ -65,6 +65,14 @@
   IF (C_ASSOCIATED(CTX)) L = INT(PVN_CVIS_FRAME(CTX, G, LDF))
 #endif
 
+#ifndef NDEBUG
+  !$OMP PARALLEL DO DEFAULT(NONE) SHARED(SV,N) PRIVATE(J) IF(LOMP)
+  DO J = 1, N
+     SV(J) = ZERO
+  END DO
+  !$OMP END PARALLEL DO
+#endif
+
   IF (N .EQ. 1) THEN
      W(2) = ABS(REAL(G(1,1)))
      W(3) = ABS(AIMAG(G(1,1)))
