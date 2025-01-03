@@ -31,7 +31,7 @@
 
   N = M
   I = B
-  J = JS1
+  J = IAND(JOB, 63)
   INFO = K
   CALL IBDIMS(N, I, J, M_B, LW, LD, T, INFO)
   IF (INFO .GT. 0) INFO = 0
