@@ -22,9 +22,12 @@
      ! \kappa_2(G)
      F(1,1) = MAX(Q, F(1,1))
      F(2,1) = MAX(-Q, F(2,1))
+     NS(1) = PVN_TIME_MONO_NS()
      INFO = 0
      CALL KSVD2(G, U, V, S, INFO)
+     NS(1) = PVN_TIME_MONO_NS() - NS(1)
      IF (INFO(1) .LT. -HUGE(0)) CALL STHALT('KSVD2')
+     NSTIME(1,P) = NSTIME(1,P) + NS(1)
      CALL KERR2(G, U, V, S, E(1,1), INFO)
      Q = S(1)
      Q = SCALE(Q, INFO(2) - INFO(1))
@@ -42,3 +45,5 @@
      F(2,5) = MAX(-E(4,1), F(2,5))
      F(1,6) = MAX(E(5,1), F(1,6))
      F(2,6) = MAX(-E(5,1), F(2,6))
+     F(1,7) = MAX((NS(1) / Q9), F(1,7))
+     F(2,7) = MAX(QZERO, F(2,7))

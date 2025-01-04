@@ -25,6 +25,10 @@
   J = MIN(I + (L - 1), N)
   O = PVN_RAN_OPEN()
   IF (O .LT. 0_c_int) STOP 'cannot open /dev/random for reading'
+  NSTIME(1) = 0_c_long
+#ifdef UPPER
+  NSTIME(2) = 0_c_long
+#endif
   DO K = I, J
      G(1,1) = RAN_SAFE(O, P)
 #ifdef UPPER
@@ -41,18 +45,27 @@
 #endif
   END DO
 #ifdef UPPER
-  L = 16
+  L = 18
 #else
-  L = 6
+  L = 8
+#endif
+  F(1,L) = NSTIME(1) / (N * Q9)
+#ifdef UPPER
+  F(2,L) = NSTIME(2) / (N * Q9)
+#else
+  F(2,L) = QZERO
 #endif
   WRITE (OUTPUT_UNIT,'(I11)',ADVANCE='NO') N
   DO K = 1, L-1
      WRITE (OUTPUT_UNIT,1,ADVANCE='NO') ',', F(1,K)
   END DO
   WRITE (OUTPUT_UNIT,1) ',', F(1,L)
+  FLUSH(OUTPUT_UNIT)
   WRITE (ERROR_UNIT,'(I11)',ADVANCE='NO') N
-  DO K = 1, L-1
+  DO K = 1, L-2
      WRITE (ERROR_UNIT,1,ADVANCE='NO') ',', -F(2,K)
   END DO
-  WRITE (ERROR_UNIT,1) ',', -F(2,L)
+  WRITE (ERROR_UNIT,1,ADVANCE='NO') ',', F(2,L-1)
+  WRITE (ERROR_UNIT,1) ',', F(2,L)
+  FLUSH(ERROR_UNIT)
   O = PVN_RAN_CLOSE(O)
