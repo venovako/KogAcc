@@ -53,4 +53,6 @@ J_inner + J_outer * 8
 ```
 where `J_inner` and `J_outer` are taken from the table above.
 
+For now, set the block size to at least `4`.
+
 This work has been supported in part by Croatian Science Foundation under the project IP-2014-09-3670 ([MFBDA](https://web.math.pmf.unizg.hr/mfbda/)).
