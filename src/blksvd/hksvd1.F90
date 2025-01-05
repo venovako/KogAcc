@@ -28,7 +28,8 @@
   JS0 = IAND(JOB, 7)
   JS1 = ISHFT(IAND(JOB, 56), -3)
 
-  IF (B .LT. 2) THEN
+  ! TODO: remove the check when fixed
+  IF (B .LT. 4) THEN
      INFO = -3
      RETURN
   END IF
