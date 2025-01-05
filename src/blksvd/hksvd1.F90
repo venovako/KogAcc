@@ -25,10 +25,13 @@
      INFO = -1
      RETURN
   END IF
-
   JS0 = IAND(JOB, 7)
   JS1 = ISHFT(IAND(JOB, 56), -3)
 
+  IF (B .LT. 2) THEN
+     INFO = -3
+     RETURN
+  END IF
   N = M
   I = B
   J = IAND(JOB, 63)
