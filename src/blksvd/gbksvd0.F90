@@ -29,7 +29,7 @@
      CASE DEFAULT
         ! this should never happen and will trigger a division by zero
         L = 0
-     END IF
+     END SELECT
      L = O(1,I) / L
      J = MIN(J, -L)
      O(2,I) = INT(WB(4,I)) ! GS
