@@ -17,10 +17,8 @@
   !$ L = 1
   IF ((J .LT. 0) .OR. (J .GT. 7)) STOP 'J'
   IF (N .LE. 0) STOP 'N'
-  IF ((J .EQ. 2) .OR. (J .EQ. 4) .OR. (J .EQ. 5) .OR. (J .EQ. 7)) THEN
-     INFO = L
-     CALL NB2M(N, 2, M, INFO)
-     IF (INFO .NE. 0) STOP 'NB2M'
+  IF (((J .EQ. 2) .OR. (J .EQ. 4) .OR. (J .EQ. 5) .OR. (J .EQ. 7)) .AND. (MOD(N, 2) .NE. 0)) THEN
+     M = N + 1
   ELSE ! all other strategies
      M = N
   END IF
@@ -96,7 +94,12 @@
   CALL SYSTEM_CLOCK(C1, CR)
   T = REAL(CR, REAL128)
   T = REAL(C1 - C0, REAL128) / T
-  WRITE (OUTPUT_UNIT,'(A,F15.6,A,I11,A)',ADVANCE='NO') 'KSVD0 took ', T, ' s with ', INFO, ' steps and W=('
+  WRITE (OUTPUT_UNIT,'(A,F15.6,A,I11)',ADVANCE='NO') 'KSVD0 took ', T, ' s with ', INFO
+  IF ((J .EQ. 3) .OR. (J .EQ. 6)) THEN
+     WRITE (OUTPUT_UNIT,'(A)',ADVANCE='NO') ' steps and W=('
+  ELSE ! not dynamic ordering
+     WRITE (OUTPUT_UNIT,'(A)',ADVANCE='NO') ' sweeps and W=('
+  END IF
   WRITE (OUTPUT_UNIT,9) W(1), ',', W(2), ',', W(3), ')'
   FLUSH(OUTPUT_UNIT)
 

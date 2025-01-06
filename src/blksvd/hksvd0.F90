@@ -208,11 +208,8 @@
   END IF
 
   ! initialize the counters
-#ifndef NDEBUG
   TT = 0_INT64
   TM = 0_INT64
-#endif
-  SM = 0_INT64
 #ifndef NDEBUG
   WRITE (OUTPUT_UNIT,*) '"STEP","GN","UN","VN","PAIRS","OFF_G_F","BIG_TRANS"'
   FLUSH(OUTPUT_UNIT)
@@ -232,7 +229,7 @@
 #endif
 
      ! build the current step's pairs
-     IF (JS .EQ. 3) THEN
+     IF ((JS .EQ. 3) .OR. (JS .EQ. 6)) THEN
         L = 0
         !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
         CALL MK3PQ(NP, N, G, LDG, W, O, L)
@@ -242,7 +239,6 @@
         END IF
         I = L
      ELSE ! tabular O
-        W(M_2 + 1) = -ONE
         I = NP
      END IF
      IF (I .GT. 0) THEN
@@ -256,7 +252,11 @@
      END IF
 #ifndef NDEBUG
      WRITE (OUTPUT_UNIT,'(A,I5)',ADVANCE='NO') ',', I
-     WRITE (OUTPUT_UNIT,9,ADVANCE='NO') ',', W(M_2 + 1)
+     IF ((JS .EQ. 3) .OR. (JS .EQ. 6)) THEN
+        WRITE (OUTPUT_UNIT,9,ADVANCE='NO') ',', W(M_2 + 1)
+     ELSE ! not dynamic ordering
+        WRITE (OUTPUT_UNIT,9,ADVANCE='NO') ',', -ONE
+     END IF
      FLUSH(OUTPUT_UNIT)
 #endif
      IF (I .EQ. 0) THEN
@@ -266,13 +266,7 @@
         FLUSH(OUTPUT_UNIT)
 #endif
         EXIT
-#ifdef NDEBUG
      ELSE IF (I .LT. 0) THEN
-#else
-     ELSE IF (I .GT. 0) THEN
-        TT = TT + I
-     ELSE ! should never happen
-#endif
         INFO = -12
         RETURN
      END IF
@@ -283,19 +277,30 @@
      DO J = 1, I
         P = R(1,J)
         Q = R(2,J)
+#ifndef NDEBUG
         IF ((P .LE. 0) .OR. (Q .LE. P) .OR. (P .GE. N) .OR. (Q .GT. N)) THEN
            M = M + 1
            CYCLE
         END IF
+#endif
         G2(1,1) = G(P,P)
         G2(2,1) = G(Q,P)
         G2(1,2) = G(P,Q)
         G2(2,2) = G(Q,Q)
         WV = (J - 1) * 10 + 1
         WS = WV + 8
+        IF ((AIMAG(G2(1,1)) .EQ. ZERO) .AND. (AIMAG(G2(2,1)) .EQ. ZERO) .AND. (AIMAG(G2(1,2)) .EQ. ZERO) .AND. &
+             (AIMAG(G2(2,2)) .EQ. ZERO) .AND. (REAL(G2(1,1)) .GE. ZERO) .AND. (REAL(G2(2,1)) .EQ. ZERO) .AND. &
+             (REAL(G2(1,2)) .EQ. ZERO) .AND. (REAL(G2(2,2)) .GE. ZERO) .AND. (REAL(G2(1,1)) .GE. REAL(G2(2,2)))) THEN
+           R(1,I+J) = 0
+           R(2,I+J) = 0
+           W(WS) = REAL(G2(1,1))
+           W(WS+1) = REAL(G2(2,2))
+           CYCLE
+        END IF
         ES(1) = 0
         CALL KSVD2(G2, U2, V2, W(WS), ES)
-        R(2,I+J) = ES(1)
+        R(2,I+J) = 1
         CALL CVGPP(G2, U2, V2, W(WS), ES)
         R(1,I+J) = ES(1)
         W(WV) = REAL(V2(1,1))
@@ -338,15 +343,15 @@
         INFO = -19
         RETURN
      END IF
-!$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,V,W,R,N,LDG,LDV,I,LVACC) PRIVATE(J,V2,P,Q,WV,WS,T,L) REDUCTION(+:M) IF(LOMP)
+     T = 0
+!$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,V,W,R,N,LDG,LDV,I,LVACC) PRIVATE(J,V2,P,Q,WV,WS,L) REDUCTION(+:M,T) IF(LOMP)
      DO J = 1, I
         P = R(1,J)
         Q = R(2,J)
         WV = (J - 1) * 10 + 1
         WS = WV + 8
-        T = R(1,I+J)
         ! transform V and G from the right
-        IF (IAND(T, 4) .NE. 0) THEN
+        IF (IAND(R(1,I+J), 4) .NE. 0) THEN
            V2(1,1) = CMPLX(W(WV), W(WV+1), K)
            V2(2,1) = CMPLX(W(WV+2), W(WV+3), K)
            V2(1,2) = CMPLX(W(WV+4), W(WV+5), K)
@@ -371,7 +376,8 @@
         G(Q,P) = CZERO
         G(P,Q) = CZERO
         G(Q,Q) = CMPLX(W(WS+1), ZERO, K)
-        IF (IAND(T, 8) .NE. 0) M = M + 1
+        IF (IAND(R(1,I+J), 8) .NE. 0) M = M + 1
+        T = T + R(2,I+J)
      END DO
 !$OMP END PARALLEL DO
      IF ((M .LT. 0) .OR. (M .GT. I)) THEN
@@ -381,97 +387,102 @@
 #ifndef NDEBUG
      WRITE (OUTPUT_UNIT,'(A,I5)') ',', M
      FLUSH(OUTPUT_UNIT)
-     TM = TM + M
 #endif
-     ! optionally scale G
-     L = 0
-     !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
-     CALL LANGO(N, G, LDG, GN, L)
-     IF (L .NE. 0) THEN
-        INFO = -3
-        RETURN
-     END IF
-     T = EXPONENT(HUGE(GN)) - EXPONENT(GN) - 9
-     IF (T .LT. 0) THEN
+     TT = TT + T
+     IF (M .GT. 0) THEN
+        TM = TM + M
+
+        ! optionally scale G
         L = 0
         !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
-        CALL SCALG(N, N, G, LDG, T, L)
+        CALL LANGO(N, G, LDG, GN, L)
         IF (L .NE. 0) THEN
            INFO = -3
            RETURN
         END IF
-        GN = SCALE(GN, T)
-        GS = GS + T
-     END IF
-
-     ! optionally scale U
-     IF (LUACC .AND. (.NOT. LUSID)) THEN
-        L = 0
-        !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
-        CALL LANGO(N, U, LDU, UN, L)
-        IF (L .NE. 0) THEN
-           INFO = -5
-           RETURN
-        END IF
-        T = EXPONENT(HUGE(UN)) - EXPONENT(UN) - 4
+        T = EXPONENT(HUGE(GN)) - EXPONENT(GN) - 9
         IF (T .LT. 0) THEN
            L = 0
            !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
-           CALL SCALG(N, N, U, LDU, T, L)
+           CALL SCALG(N, N, G, LDG, T, L)
+           IF (L .NE. 0) THEN
+              INFO = -3
+              RETURN
+           END IF
+           GN = SCALE(GN, T)
+           GS = GS + T
+        END IF
+
+        ! optionally scale U
+        IF (LUACC .AND. (.NOT. LUSID)) THEN
+           L = 0
+           !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
+           CALL LANGO(N, U, LDU, UN, L)
            IF (L .NE. 0) THEN
               INFO = -5
               RETURN
            END IF
-           UN = SCALE(UN, T)
-           US = US + T
+           T = EXPONENT(HUGE(UN)) - EXPONENT(UN) - 4
+           IF (T .LT. 0) THEN
+              L = 0
+              !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
+              CALL SCALG(N, N, U, LDU, T, L)
+              IF (L .NE. 0) THEN
+                 INFO = -5
+                 RETURN
+              END IF
+              UN = SCALE(UN, T)
+              US = US + T
+           END IF
         END IF
-     END IF
 
-     ! optionally scale V
-     IF (LVACC .AND. (.NOT. LVSID)) THEN
-        L = 0
-        !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
-        CALL LANGO(N, V, LDV, VN, L)
-        IF (L .NE. 0) THEN
-           INFO = -7
-           RETURN
-        END IF
-        T = EXPONENT(HUGE(VN)) - EXPONENT(VN) - 4
-        IF (T .LT. 0) THEN
+        ! optionally scale V
+        IF (LVACC .AND. (.NOT. LVSID)) THEN
            L = 0
            !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
-           CALL SCALG(N, N, V, LDV, T, L)
+           CALL LANGO(N, V, LDV, VN, L)
            IF (L .NE. 0) THEN
               INFO = -7
               RETURN
            END IF
-           VN = SCALE(VN, T)
-           VS = VS + T
+           T = EXPONENT(HUGE(VN)) - EXPONENT(VN) - 4
+           IF (T .LT. 0) THEN
+              L = 0
+              !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
+              CALL SCALG(N, N, V, LDV, T, L)
+              IF (L .NE. 0) THEN
+                 INFO = -7
+                 RETURN
+              END IF
+              VN = SCALE(VN, T)
+              VS = VS + T
+           END IF
         END IF
      END IF
 
-     ! check for convergence
-     IF (JS .NE. 3) THEN
-        SM = SM + M
+     IF ((JS .NE. 3) .AND. (JS .NE. 6)) THEN
         T = STP + 1
         IF (MOD(T, NS) .EQ. 0) THEN
            L = T / NS
 #ifndef NDEBUG
-           WRITE (OUTPUT_UNIT,*) 'sweep', L, ' completed with:', SM, ' big transformations'
+           WRITE (OUTPUT_UNIT,*) 'sweep', L, ' =', TM, '/', TT, ' transf.'
            FLUSH(OUTPUT_UNIT)
 #endif
-           IF (SM .EQ. 0_INT64) EXIT
-           SM = 0_INT64
+           IF (TM .EQ. 0_INT64) EXIT
+           TM = 0_INT64
+           TT = 0_INT64
         END IF
      END IF
   END DO
 
   ! no convergence if INFO = MRQSTP
-  INFO = STP
-#ifndef NDEBUG
-  WRITE (OUTPUT_UNIT,*) 'exited after:', TT, ' transformations, of which big:', TM
-  FLUSH(OUTPUT_UNIT)
-#endif
+  IF (STP .GE. MRQSTP) THEN
+     INFO = MRQSTP
+  ELSE IF ((JS .EQ. 3) .OR. (JS .EQ. 6)) THEN
+     INFO = STP
+  ELSE ! convergence in the terms of sweeps
+     INFO = L
+  END IF
 #ifdef ANIMATE
   IF (C_ASSOCIATED(CTX)) L = INT(PVN_CVIS_FRAME(CTX, G, LDF))
 #endif

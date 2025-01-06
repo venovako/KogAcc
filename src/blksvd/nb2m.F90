@@ -11,7 +11,7 @@ PURE SUBROUTINE NB2M(N, B, M, INFO)
 
   INFO = 0
   IF (B .LE. 0) INFO = -2
-  IF (N .LE. B) INFO = -1
+  IF ((N .LT. B) .OR. ((N .EQ. B) .AND. (B .NE. 1))) INFO = -1
   IF (INFO .NE. 0) RETURN
 
   M = MOD(N, B)

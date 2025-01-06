@@ -199,11 +199,8 @@
   END IF
 
   ! initialize the counters
-#ifndef NDEBUG
-  TT = 0_INT64
   TM = 0_INT64
-#endif
-  SM = 0_INT64
+  TT = 0_INT64
 #ifndef NDEBUG
   WRITE (OUTPUT_UNIT,*) '"STEP","GN","UN","VN","PAIRS","OFF_G_F","BIG_TRANS"'
   FLUSH(OUTPUT_UNIT)
@@ -223,7 +220,7 @@
 #endif
 
      ! build the current step's pairs
-     IF (JS .EQ. 3) THEN
+     IF ((JS .EQ. 3) .OR. (JS .EQ. 6)) THEN
         L = 0
         !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
         CALL MK3PQ(NP, N, G, LDG, W, O, L)
@@ -233,7 +230,6 @@
         END IF
         I = L
      ELSE ! tabular O
-        W(M_2 + 1) = -ONE
         I = NP
      END IF
      IF (I .GT. 0) THEN
@@ -247,7 +243,11 @@
      END IF
 #ifndef NDEBUG
      WRITE (OUTPUT_UNIT,'(A,I5)',ADVANCE='NO') ',', I
-     WRITE (OUTPUT_UNIT,9,ADVANCE='NO') ',', W(M_2 + 1)
+     IF ((JS .EQ. 3) .OR. (JS .EQ. 6)) THEN
+        WRITE (OUTPUT_UNIT,9,ADVANCE='NO') ',', W(M_2 + 1)
+     ELSE ! not dynamic ordering
+        WRITE (OUTPUT_UNIT,9,ADVANCE='NO') ',', -ONE
+     END IF
      FLUSH(OUTPUT_UNIT)
 #endif
      IF (I .EQ. 0) THEN
@@ -257,13 +257,7 @@
         FLUSH(OUTPUT_UNIT)
 #endif
         EXIT
-#ifdef NDEBUG
      ELSE IF (I .LT. 0) THEN
-#else
-     ELSE IF (I .GT. 0) THEN
-        TT = TT + I
-     ELSE ! should never happen
-#endif
         INFO = -12
         RETURN
      END IF
@@ -274,19 +268,29 @@
      DO J = 1, I
         P = R(1,J)
         Q = R(2,J)
+#ifndef NDEBUG
         IF ((P .LE. 0) .OR. (Q .LE. P) .OR. (P .GE. N) .OR. (Q .GT. N)) THEN
            M = M + 1
            CYCLE
         END IF
+#endif
         G2(1,1) = G(P,P)
         G2(2,1) = G(Q,P)
         G2(1,2) = G(P,Q)
         G2(2,2) = G(Q,Q)
         WV = (J - 1) * 6 + 1
         WS = WV + 4
+        IF ((G2(1,1) .GE. ZERO) .AND. (G2(2,1) .EQ. ZERO) .AND. (G2(1,2) .EQ. ZERO) .AND. (G2(2,2) .GE. ZERO) .AND. &
+             (G2(1,1) .GE. G2(2,2))) THEN
+           R(1,I+J) = 0
+           R(2,I+J) = 0
+           W(WS) = G2(1,1)
+           W(WS+1) = G2(2,2)
+           CYCLE
+        END IF
         ES(1) = 0
         CALL KSVD2(G2, U2, W(WV), W(WS), ES)
-        R(2,I+J) = ES(1)
+        R(2,I+J) = 1
         CALL CVGPP(G2, U2, W(WV), W(WS), ES)
         R(1,I+J) = ES(1)
         T = ES(1)
@@ -321,15 +325,15 @@
         INFO = -19
         RETURN
      END IF
-!$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,V,W,R,N,LDG,LDV,I,LVACC) PRIVATE(J,P,Q,WV,WS,T,L) REDUCTION(+:M) IF(LOMP)
+     T = 0
+!$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,V,W,R,N,LDG,LDV,I,LVACC) PRIVATE(J,P,Q,WV,WS,L) REDUCTION(+:M,T) IF(LOMP)
      DO J = 1, I
         P = R(1,J)
         Q = R(2,J)
         WV = (J - 1) * 6 + 1
         WS = WV + 4
-        T = R(1,I+J)
         ! transform V and G from the right
-        IF (IAND(T, 4) .NE. 0) THEN
+        IF (IAND(R(1,I+J), 4) .NE. 0) THEN
            IF (LVACC) THEN
               L = 0
               CALL ROTC(N, N, V, LDV, P, Q, W(WV), L)
@@ -350,7 +354,8 @@
         G(Q,P) = ZERO
         G(P,Q) = ZERO
         G(Q,Q) = W(WS+1)
-        IF (IAND(T, 8) .NE. 0) M = M + 1
+        IF (IAND(R(1,I+J), 8) .NE. 0) M = M + 1
+        T = T + R(2,I+J)
      END DO
 !$OMP END PARALLEL DO
      IF ((M .LT. 0) .OR. (M .GT. I)) THEN
@@ -361,11 +366,10 @@
      WRITE (OUTPUT_UNIT,'(A,I5)') ',', M
      FLUSH(OUTPUT_UNIT)
 #endif
-
+     TT = TT + T
      IF (M .GT. 0) THEN
-#ifndef NDEBUG
         TM = TM + M
-#endif
+
         ! optionally scale G
         L = 0
         !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
@@ -434,28 +438,29 @@
         END IF
      END IF
 
-     ! check for convergence
-     IF (JS .NE. 3) THEN
-        SM = SM + M
+     IF ((JS .NE. 3) .AND. (JS .NE. 6)) THEN
         T = STP + 1
         IF (MOD(T, NS) .EQ. 0) THEN
            L = T / NS
 #ifndef NDEBUG
-           WRITE (OUTPUT_UNIT,*) 'sweep', L, ' completed with:', SM, ' big transformations'
+           WRITE (OUTPUT_UNIT,*) 'sweep', L, ' =', TM, '/', TT, ' transf.'
            FLUSH(OUTPUT_UNIT)
 #endif
-           IF (SM .EQ. 0_INT64) EXIT
-           SM = 0_INT64
+           IF (TM .EQ. 0_INT64) EXIT
+           TM = 0_INT64
+           TT = 0_INT64
         END IF
      END IF
   END DO
 
   ! no convergence if INFO = MRQSTP
-  INFO = STP
-#ifndef NDEBUG
-  WRITE (OUTPUT_UNIT,*) 'exited after:', TT, ' transformations, of which big:', TM
-  FLUSH(OUTPUT_UNIT)
-#endif
+  IF (STP .GE. MRQSTP) THEN
+     INFO = MRQSTP
+  ELSE IF ((JS .EQ. 3) .OR. (JS .EQ. 6)) THEN
+     INFO = STP
+  ELSE ! convergence in the terms of sweeps
+     INFO = L
+  END IF
 #ifdef ANIMATE
   IF (C_ASSOCIATED(CTX)) L = INT(PVN_RVIS_FRAME(CTX, G, LDF))
 #endif

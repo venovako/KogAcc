@@ -19,18 +19,11 @@
 #endif
      L = JS + JOB
      CALL KSVD0(L, B2, GB(1,1,I), LDB, UB(1,1,I), LDB, VB(1,1,I), LDB, SB(1,I), WB(1,I), OB, OD(1,1,I), O(1,I))
-     SELECT CASE (JS)
-     CASE (0,1)
-        L = (B2 / 2) * (B2 - 1)
-     CASE (2,5)
-        L = B2 - 1
-     CASE (4,7)
-        L = B2
-     CASE DEFAULT
-        ! this should never happen and will trigger a division by zero
-        L = 0
-     END SELECT
-     L = O(1,I) / L
+     IF ((JS .EQ. 3) .OR. (JS .EQ. 6)) THEN
+        L = MAX(0, O(1,I))
+     ELSE ! not dynamic ordering
+        L = MAX(0, O(1,I) - 1)
+     END IF
      J = MIN(J, -L)
      O(2,I) = INT(WB(4,I)) ! GS
      IF (O(1,I) .LT. 0) THEN
