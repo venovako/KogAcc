@@ -28,7 +28,7 @@
   JS0 = IAND(JOB, 7)
   JS1 = ISHFT(IAND(JOB, 56), -3)
 
-  ! TODO: remove the check when fixed
+  ! TODO: FIXME
   IF (B .LT. 4) THEN
      INFO = -3
      RETURN
@@ -157,7 +157,7 @@
   END IF
   D(1) = GN
   D(1) = (D(1) * N) * N
-  GS = EXPONENT(HUGE(GN)) - EXPONENT(D(1)) - 1
+  GS = EXPONENT(HUGE(GN)) - EXPONENT(D(1)) - 2
   IF (GS .NE. 0) THEN
      J = 0
      !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
@@ -168,7 +168,6 @@
      END IF
      GN = SCALE(GN, GS)
   END IF
-
   ! optionally scale U
   IF (LUACC) THEN
      IF (LUSID) THEN
@@ -200,7 +199,6 @@
      UN = ONE
      US = 0
   END IF
-
   ! optionally scale V
   IF (LVACC) THEN
      IF (LVSID) THEN
@@ -359,7 +357,7 @@
      END IF
      D(1) = GN
      D(1) = (D(1) * N) * N
-     T = EXPONENT(HUGE(GN)) - EXPONENT(D(1)) - 1
+     T = EXPONENT(HUGE(GN)) - EXPONENT(D(1)) - 2
      IF (T .LT. 0) THEN
         J = 0
         !$ IF (LOMP) J = OMP_GET_NUM_THREADS()

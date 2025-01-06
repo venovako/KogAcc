@@ -32,12 +32,13 @@ endif # !true
 else # !STATIC
 LDFLAGS=-rdynamic -static-intel -static-libgcc #-pie
 endif # ?STATIC
-ifeq ($(ABI),ilp64)
-LDFLAGS += -qmkl-$(ABI)=sequential
-else # !ilp64
-LDFLAGS += -qmkl=sequential
-endif # ?ilp64
-LDFLAGS += $(shell if [ -L /usr/lib64/libmemkind.so ]; then echo '-lmemkind'; fi) -L../../../../libpvn/src -lpvn -ldl $(realpath $(shell gcc -print-file-name=libquadmath.a))
+# ifeq ($(ABI),ilp64)
+# LDFLAGS += -qmkl-$(ABI)=sequential
+# else # !ilp64
+# LDFLAGS += -qmkl=sequential
+# endif # ?ilp64
+# LDFLAGS += $(shell if [ -L /usr/lib64/libmemkind.so ]; then echo '-lmemkind'; fi)
+LDFLAGS += -L../../../../libpvn/src -lpvn -ldl $(realpath $(shell gcc -print-file-name=libquadmath.a))
 GFC=gfortran
 ifdef NDEBUG
 GFCFLAGS=-O$(NDEBUG)

@@ -140,6 +140,14 @@ OBJS_FAUX=\
 ../obj/$(PLAT)/zmul.$(OXT)\
 ../obj/$(PLAT)/cfma.$(OXT)\
 ../obj/$(PLAT)/zfma.$(OXT)\
+../obj/$(PLAT)/scp.$(OXT)\
+../obj/$(PLAT)/ccp.$(OXT)\
+../obj/$(PLAT)/dcp.$(OXT)\
+../obj/$(PLAT)/zcp.$(OXT)\
+../obj/$(PLAT)/smm.$(OXT)\
+../obj/$(PLAT)/cmm.$(OXT)\
+../obj/$(PLAT)/dmm.$(OXT)\
+../obj/$(PLAT)/zmm.$(OXT)\
 ../obj/$(PLAT)/sconjt.$(OXT)\
 ../obj/$(PLAT)/cconjt.$(OXT)\
 ../obj/$(PLAT)/dconjt.$(OXT)\
