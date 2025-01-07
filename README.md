@@ -12,9 +12,13 @@ Several routines and executables require having quadruple precision (`KIND=REAL1
 
 First, clone [libpvn](https://github.com/venovako/libpvn) repository, with the same parent directory as this one has (e.g., `venovako/libpvn` and `venovako/KogAcc`).
 Then, build the `libpvn` library, with the same family of compilers and (no-)debug mode as it is meant to be used here (e.g., with `icx` if `ifx` is desired).
-Please set the option `SAFE=sv2` for `libpvn`.
+Please set the make option `SAFE=sv2` for `libpvn`.
 
 For now, only little-endian platforms are supported, with the `gfortran` or `ifx` compilers.
+
+The complex routines have not been tested as thoroughly as the real ones.
+Use them with care.
+Also, the block-routines, including but not limited to the `xKSVD1` ones, have not been completed yet.
 
 Building the documentation requires a recent version of [Doxygen](https://doxygen.nl) and [Graphviz](https://graphviz.org).
 Many routines are documented only rudimentary for now.
@@ -51,6 +55,6 @@ J_inner + J_outer * 8
 ```
 where `J_inner` and `J_outer` are taken from the table above.
 
-For now, set the block size to at least `4`.
+For now, set the block size `B` to at least `4`.
 
 This work has been supported in part by Croatian Science Foundation under the project IP-2014-09-3670 ([MFBDA](https://web.math.pmf.unizg.hr/mfbda/)).
