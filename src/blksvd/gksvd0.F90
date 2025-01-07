@@ -230,13 +230,13 @@
      ! compute and apply the transformations
      M = 0
      IF (I .LE. 1) THEN
-        T = 0
+        Z = .FALSE.
      ELSE IF (LOMP) THEN
-        T = 1
+        Z = .TRUE.
      ELSE ! .NOT. LOMP
-        T = 0
+        Z = .FALSE.
      END IF
-!$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,U,W,R,N,LDG,LDU,I,LUACC) PRIVATE(J,G2,U2,P,Q,WV,WS,T,L,ES) REDUCTION(+:M) IF(T .NE. 0)
+!$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,U,W,R,N,LDG,LDU,I,LUACC) PRIVATE(J,G2,U2,P,Q,WV,WS,T,L,ES) REDUCTION(+:M) IF(Z)
      DO J = 1, I
         P = R(1,J)
         Q = R(2,J)
@@ -303,7 +303,7 @@
      ELSE ! .NOT. LOMP
         Z = .FALSE.
      END IF
-!$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,V,W,R,N,LDG,LDV,I,LVACC) PRIVATE(J,P,Q,WV,WS,L) REDUCTION(+:M,T) IF(LOMP)
+!$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,V,W,R,N,LDG,LDV,I,LVACC) PRIVATE(J,P,Q,WV,WS,L) REDUCTION(+:M,T) IF(Z)
      DO J = 1, I
         P = R(1,J)
         Q = R(2,J)

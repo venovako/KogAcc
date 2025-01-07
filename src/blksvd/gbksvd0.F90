@@ -19,11 +19,7 @@
 #endif
      L = JS + JOB
      CALL KSVD0(L, B2, GB(1,1,I), LDB, UB(1,1,I), LDB, VB(1,1,I), LDB, SB(1,I), WB(1,I), OB, OD(1,1,I), O(1,I))
-     IF ((JS .EQ. 3) .OR. (JS .EQ. 6)) THEN
-        L = MAX(0, O(1,I))
-     ELSE ! not dynamic ordering
-        L = MAX(0, O(1,I) - 1)
-     END IF
+     L = MAX(0, O(1,I) - 1)
      J = MIN(J, -L)
      O(2,I) = INT(WB(4,I)) ! GS
      IF (O(1,I) .LT. 0) THEN
