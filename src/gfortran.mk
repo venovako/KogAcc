@@ -32,6 +32,7 @@ endif # !true
 else # !STATIC
 LDFLAGS=-rdynamic -static-libgcc -static-libgfortran -static-libquadmath #-pie
 endif # ?STATIC
+# for xGEMM and xLACPY:
 # ifdef MKLROOT
 # ifeq ($(OS),Darwin)
 # LDFLAGS += ${MKLROOT}/lib/libmkl_intel_$(ABI).a ${MKLROOT}/lib/libmkl_sequential.a ${MKLROOT}/lib/libmkl_core.a

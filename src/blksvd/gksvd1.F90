@@ -29,10 +29,10 @@
   JS1 = ISHFT(IAND(JOB, 56), -3)
 
   ! TODO: FIXME
-  ! IF (B .LT. 4) THEN
-  !    INFO = -3
-  !    RETURN
-  ! END IF
+  IF (B .LT. 4) THEN
+     INFO = -3
+     RETURN
+  END IF
   N = M
   I = B
   J = IAND(JOB, 63)

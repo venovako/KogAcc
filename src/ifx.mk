@@ -32,6 +32,7 @@ endif # !true
 else # !STATIC
 LDFLAGS=-rdynamic -static-intel -static-libgcc #-pie
 endif # ?STATIC
+# for xGEMM and xLACPY:
 # ifeq ($(ABI),ilp64)
 # LDFLAGS += -qmkl-$(ABI)=sequential
 # else # !ilp64
