@@ -19,8 +19,7 @@
   IF (LDU .LT. N) INFO = -6
   IF (LDG .LT. N) INFO = -4
   IF (N .LT. 0) INFO = -2
-  IF (JOB .LT. 0) INFO = -1
-  IF (JOB .GT. 1023) INFO = -1
+  IF ((JOB .LT. 0) .OR. (JOB .GT. 1023)) INFO = -1
   JS = IAND(JOB, 7)
   M = N * (N - 1)
   M_2 = M / 2
@@ -28,18 +27,14 @@
   CASE (0,1) ! row/column cyclic
      NP = 1
      NS = M_2
-  CASE (2) ! generalized Mantharam-Eberlein
+  CASE (2,5) ! generalized Mantharam-Eberlein
      IF (MOD(N, 2) .EQ. 0) THEN
         NP = N / 2
         NS = N - 1
      ELSE ! N odd
         INFO = -2
      END IF
-  CASE (3) ! dynamic ordering
-     NP = N / 2
-     IF ((N .GE. 2) .AND. (O(1) .GT. 0)) NP = MIN(NP, O(1))
-     NS = 1
-  CASE (4) ! modified modulus
+  CASE (4,7) ! modified modulus
      IF (MOD(N, 2) .EQ. 0) THEN
         NP = N / 2
         NS = N
@@ -137,7 +132,6 @@
      END IF
      GN = SCALE(GN, GS)
   END IF
-
   ! optionally scale U
   IF (LUACC) THEN
      IF (LUSID) THEN
@@ -167,7 +161,6 @@
      UN = ONE
      US = 0
   END IF
-
   ! optionally scale V
   IF (LVACC) THEN
      IF (LVSID) THEN
@@ -220,60 +213,37 @@
 #endif
 
      ! build the current step's pairs
-     IF ((JS .EQ. 3) .OR. (JS .EQ. 6)) THEN
-        L = 0
-        !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
-        CALL MK3PQ(NP, N, G, LDG, W, O, L)
-        IF (L .LT. 0) THEN
-           INFO = -10
-           RETURN
-        END IF
-        I = L
-     ELSE ! tabular O
-        I = NP
-     END IF
-     IF (I .GT. 0) THEN
-        L = 0
-        !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
-        CALL JSTEP(JS, N, NS, T, I, O, R, L)
-        IF (L .NE. 0) THEN
-           INFO = -11
-           RETURN
-        END IF
+     I = NP
+     L = 0
+     !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
+     CALL JSTEP(JS, N, NS, T, I, O, R, L)
+     IF (L .NE. 0) THEN
+        INFO = -11
+        RETURN
      END IF
 #ifndef NDEBUG
      WRITE (OUTPUT_UNIT,'(A,I5)',ADVANCE='NO') ',', I
-     IF ((JS .EQ. 3) .OR. (JS .EQ. 6)) THEN
-        WRITE (OUTPUT_UNIT,9,ADVANCE='NO') ',', W(M_2 + 1)
-     ELSE ! not dynamic ordering
-        WRITE (OUTPUT_UNIT,9,ADVANCE='NO') ',', -ONE
-     END IF
+     WRITE (OUTPUT_UNIT,9,ADVANCE='NO') ',', -ONE
      FLUSH(OUTPUT_UNIT)
 #endif
-     IF (I .EQ. 0) THEN
-        ! convergence
-#ifndef NDEBUG
-        WRITE (OUTPUT_UNIT,'(A,I5)') ',', 0
-        FLUSH(OUTPUT_UNIT)
-#endif
-        EXIT
-     ELSE IF (I .LT. 0) THEN
-        INFO = -12
-        RETURN
-     END IF
 
      ! compute and apply the transformations
      M = 0
-!$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,U,W,R,N,LDG,LDU,I,LUACC) PRIVATE(J,G2,U2,P,Q,WV,WS,T,L,ES) REDUCTION(+:M) IF(LOMP)
+     IF (I .LE. 1) THEN
+        T = 0
+     ELSE IF (LOMP) THEN
+        T = 1
+     ELSE ! .NOT. LOMP
+        T = 0
+     END IF
+!$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,U,W,R,N,LDG,LDU,I,LUACC) PRIVATE(J,G2,U2,P,Q,WV,WS,T,L,ES) REDUCTION(+:M) IF(T .NE. 0)
      DO J = 1, I
         P = R(1,J)
         Q = R(2,J)
-#ifndef NDEBUG
         IF ((P .LE. 0) .OR. (Q .LE. P) .OR. (P .GE. N) .OR. (Q .GT. N)) THEN
            M = M + 1
            CYCLE
         END IF
-#endif
         G2(1,1) = G(P,P)
         G2(2,1) = G(Q,P)
         G2(1,2) = G(P,Q)
@@ -290,7 +260,6 @@
         END IF
         ES(1) = 0
         CALL KSVD2(G2, U2, W(WV), W(WS), ES)
-        R(2,I+J) = 1
         CALL CVGPP(G2, U2, W(WV), W(WS), ES)
         R(1,I+J) = ES(1)
         T = ES(1)
@@ -298,6 +267,7 @@
            M = M + 1
            CYCLE
         END IF
+        R(2,I+J) = 1
         ! transform U from the right, transpose U2, and transform G from the left
         IF (IAND(T, 2) .NE. 0) THEN
            IF (LUACC) THEN
@@ -326,6 +296,13 @@
         RETURN
      END IF
      T = 0
+     IF (I .LE. 1) THEN
+        Z = .FALSE.
+     ELSE IF (LOMP) THEN
+        Z = .TRUE.
+     ELSE ! .NOT. LOMP
+        Z = .FALSE.
+     END IF
 !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,V,W,R,N,LDG,LDV,I,LVACC) PRIVATE(J,P,Q,WV,WS,L) REDUCTION(+:M,T) IF(LOMP)
      DO J = 1, I
         P = R(1,J)
@@ -369,7 +346,6 @@
      TT = TT + T
      IF (M .GT. 0) THEN
         TM = TM + M
-
         ! optionally scale G
         L = 0
         !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
@@ -390,7 +366,6 @@
            GN = SCALE(GN, T)
            GS = GS + T
         END IF
-
         ! optionally scale U
         IF (LUACC .AND. (.NOT. LUSID)) THEN
            L = 0
@@ -413,7 +388,6 @@
               US = US + T
            END IF
         END IF
-
         ! optionally scale V
         IF (LVACC .AND. (.NOT. LVSID)) THEN
            L = 0
@@ -437,27 +411,23 @@
            END IF
         END IF
      END IF
-
-     IF ((JS .NE. 3) .AND. (JS .NE. 6)) THEN
-        T = STP + 1
-        IF (MOD(T, NS) .EQ. 0) THEN
-           L = T / NS
+     ! convergence?
+     T = STP + 1
+     IF (MOD(T, NS) .EQ. 0) THEN
+        L = T / NS
 #ifndef NDEBUG
-           WRITE (OUTPUT_UNIT,*) 'sweep', L, ' =', TM, '/', TT, ' transf.'
-           FLUSH(OUTPUT_UNIT)
+        WRITE (OUTPUT_UNIT,*) 'sweep', L, ' =', TM, '/', TT, ' transf.'
+        FLUSH(OUTPUT_UNIT)
 #endif
-           IF (TM .EQ. 0_INT64) EXIT
-           TM = 0_INT64
-           TT = 0_INT64
-        END IF
+        IF (TM .EQ. 0_INT64) EXIT
+        TM = 0_INT64
+        TT = 0_INT64
      END IF
   END DO
 
   ! no convergence if INFO = MRQSTP
   IF (STP .GE. MRQSTP) THEN
      INFO = MRQSTP
-  ELSE IF ((JS .EQ. 3) .OR. (JS .EQ. 6)) THEN
-     INFO = STP
   ELSE ! convergence in the terms of sweeps
      INFO = L
   END IF

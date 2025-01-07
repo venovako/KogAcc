@@ -14,13 +14,19 @@
   IF (INFO .NE. 0) STOP 'BN'
 
   L = 0
-  !$ L = 1
   IF ((J .LT. 0) .OR. (J .GT. 7)) STOP 'J'
   IF (N .LE. 0) STOP 'N'
-  IF (((J .EQ. 2) .OR. (J .EQ. 4) .OR. (J .EQ. 5) .OR. (J .EQ. 7)) .AND. (MOD(N, 2) .NE. 0)) THEN
-     M = N + 1
-  ELSE ! all other strategies
+  IF ((J .EQ. 2) .OR. (J .EQ. 4) .OR. (J .EQ. 5) .OR. (J .EQ. 7)) THEN
+     IF (MOD(N, 2) .EQ. 0) THEN
+        M = N
+     ELSE ! N odd
+        M = N + 1
+     END IF
+     !$ L = 1
+  ELSE IF ((J .EQ. 0) .OR. (J .EQ. 1)) THEN
      M = N
+  ELSE ! (J .EQ. 3) .OR. (J .EQ. 6)
+     STOP 'J'
   END IF
   LDV = 32
   LDU = LDV / INT(SIZEOF(0.0_K))
@@ -56,21 +62,23 @@
   IF (INFO .NE. 0) STOP 'RDINP'
 
 #ifdef ANIMATE
-  ALLOCATE(SV(MAX(2,M)))
+  IF (K .EQ. REAL32) THEN
+     ALLOCATE(SV(MAX(2,M)))
+  ELSE ! higher precision
+     ALLOCATE(SV(M))
+  END IF
 #else
   ALLOCATE(SV(M))
 #endif
-  ALLOCATE(W(MAX(6,MAX(M,5)*M)))
-  ALLOCATE(O(2*M*(M-1)))
-  IF ((J .NE. 3) .AND. (J .NE. 6)) THEN
-     INFO = L
-     CALL JSWEEP(J, M, S, P, O, INFO)
-     IF (INFO .NE. 0) STOP 'JSWEEP'
-  ELSE ! dynamic ordering
-     S = 1
-     P = M / 2
-     IF (M .GT. 1) O(1) = 0
+  ALLOCATE(W(MAX(6,5*M)))
+  IF ((J .EQ. 4) .OR. (J .EQ. 7)) THEN
+     ALLOCATE(O(M*M))
+  ELSE ! not modified modulus
+     ALLOCATE(O(M*(M-1)))
   END IF
+  INFO = L
+  CALL JSWEEP(J, M, S, P, O, INFO)
+  IF (INFO .NE. 0) STOP 'JSWEEP'
   ALLOCATE(R(2,M))
 
 #ifdef ANIMATE
@@ -101,12 +109,7 @@
   CALL SYSTEM_CLOCK(C1, CR)
   T = REAL(CR, REAL128)
   T = REAL(C1 - C0, REAL128) / T
-  WRITE (OUTPUT_UNIT,'(A,F15.6,A,I11)',ADVANCE='NO') 'KSVD0 took ', T, ' s with ', INFO
-  IF ((J .EQ. 3) .OR. (J .EQ. 6)) THEN
-     WRITE (OUTPUT_UNIT,'(A)',ADVANCE='NO') ' steps and W=('
-  ELSE ! not dynamic ordering
-     WRITE (OUTPUT_UNIT,'(A)',ADVANCE='NO') ' sweeps and W=('
-  END IF
+  WRITE (OUTPUT_UNIT,'(A,F15.6,A,I11,A)',ADVANCE='NO') 'KSVD0 took ', T, ' s with ', INFO, ' sweeps and W=('
   WRITE (OUTPUT_UNIT,9) W(1), ',', W(2), ',', W(3), ')'
   FLUSH(OUTPUT_UNIT)
 

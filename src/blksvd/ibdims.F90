@@ -73,18 +73,10 @@ PURE SUBROUTINE IBDIMS(N, B, M, M_B, NW, ND, NO, INFO)
   ! M_B x M_B
   ! (3 * (LDB x 2*B) * M_P); ((MAX((2*B-1),NW) * 2*B) * M_P)
   IF (NW .EQ. 3) THEN
-     IF ((JS0 .EQ. 3) .OR. (JS0 .EQ. 6)) THEN
-        NW = MAX((2 * B - 1), NW)
-     ELSE ! not dynamic ordering
-        NW = MAX((2 * B), NW)
-     END IF
+     IF ((JS0 .EQ. 3) .OR. (JS0 .EQ. 6)) NW = MAX((2 * B - 1), NW)
      NW = MAX(6, MAX(ND, ((3 * NO + NW * 2 * B) * M_P)))
   ELSE ! W complex
-     IF ((JS0 .EQ. 3) .OR. (JS0 .EQ. 6)) THEN
-        NW = MAX((2 * B - 1), NW)
-     ELSE ! not dynamic ordering
-        NW = MAX((2 * B), NW)
-     END IF
+     IF ((JS0 .EQ. 3) .OR. (JS0 .EQ. 6)) NW = MAX((2 * B - 1), NW)
      NW = MAX(3, MAX(((ND + MOD(ND, 2)) / 2), ((3 * NO + NW * B) * M_P)))
   END IF
   IF ((JS1 .EQ. 4) .OR. (JS1 .EQ. 7)) THEN

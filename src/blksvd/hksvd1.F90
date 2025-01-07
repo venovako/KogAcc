@@ -29,10 +29,10 @@
   JS1 = ISHFT(IAND(JOB, 56), -3)
 
   ! TODO: FIXME
-  IF (B .LT. 4) THEN
-     INFO = -3
-     RETURN
-  END IF
+  ! IF (B .LT. 4) THEN
+  !    INFO = -3
+  !    RETURN
+  ! END IF
   N = M
   I = B
   J = IAND(JOB, 63)
@@ -65,7 +65,7 @@
   IF ((JS0 .EQ. 3) .OR. (JS0 .EQ. 6)) THEN
      LW = MAX((N - 1), 5) * N
   ELSE ! not dynamic ordering
-     LW = MAX(N, 5) * N
+     LW = MAX(6, (5 * N))
   END IF
   ! split D
   B_P = B * (N - 1)
