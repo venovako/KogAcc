@@ -1,5 +1,5 @@
 !>@brief \b ZROTRX premultiplies the rows (p,q) of G by W using an imperfect emulation of an accurate a*b+c*d operation.
-SUBROUTINE ZROTRX(M, N, G, LDG, P, Q, W, INFO)
+PURE SUBROUTINE ZROTRX(M, N, G, LDG, P, Q, W, INFO)
   USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
   IMPLICIT NONE

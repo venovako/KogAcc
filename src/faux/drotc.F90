@@ -1,5 +1,5 @@
 !>@brief \b DROTC postmultiplies the columns (p,q) of G by W.
-SUBROUTINE DROTC(M, N, G, LDG, P, Q, W, INFO)
+PURE SUBROUTINE DROTC(M, N, G, LDG, P, Q, W, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
   IMPLICIT NONE
   INTEGER, PARAMETER :: K = REAL64

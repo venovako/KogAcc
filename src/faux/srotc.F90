@@ -1,5 +1,5 @@
 !>@brief \b SROTC postmultiplies the columns (p,q) of G by W.
-SUBROUTINE SROTC(M, N, G, LDG, P, Q, W, INFO)
+PURE SUBROUTINE SROTC(M, N, G, LDG, P, Q, W, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
   IMPLICIT NONE
   INTEGER, PARAMETER :: K = REAL32

@@ -1,5 +1,5 @@
 !>@brief \b SROTRA premultiplies the rows (p,q) of G by W using an emulation of an accurate a*b+c*d operation.
-SUBROUTINE SROTRA(M, N, G, LDG, P, Q, W, INFO)
+PURE SUBROUTINE SROTRA(M, N, G, LDG, P, Q, W, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32, REAL64
   IMPLICIT NONE
   INTEGER, PARAMETER :: K = REAL32, L = REAL64

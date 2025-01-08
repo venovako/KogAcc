@@ -3,7 +3,7 @@
   IF (NB .LT. 0) I = -13
   IF (LDB .LT. L) I = -12
   IF (LDG .LT. M) I = -4
-  IF (B .LE. 0) I = -2
+  IF (B .LT. 1) I = -2
   IF (M .LT. 2) I = -1
   IF (I .NE. 0) THEN
      INFO = I

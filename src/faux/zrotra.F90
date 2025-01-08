@@ -1,5 +1,5 @@
 !>@brief \b ZROTRA premultiplies the rows (p,q) of G by W using an imperfect emulation of an accurate a*b+c*d operation.
-SUBROUTINE ZROTRA(M, N, G, LDG, P, Q, W, INFO)
+PURE SUBROUTINE ZROTRA(M, N, G, LDG, P, Q, W, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64, REAL128
   IMPLICIT NONE
   INTEGER, PARAMETER :: K = REAL64, L = REAL128

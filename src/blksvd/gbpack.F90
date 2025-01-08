@@ -14,12 +14,9 @@
   DO K = 1, NB
      P = O(1,K)
      Q = O(2,K)
-     L = (P - 1) * B
-     N = (Q - 1) * B
-     IF ((N .LT. 0) .OR. (N .GT. M) .OR. (L .LT. 0) .OR. (L .GT. M) .OR. (N .LE. L)) THEN
+     IF ((P .LE. 0) .OR. (Q .LE. 0) .OR. (P .GE. Q)) THEN
         INFO = MIN(INFO, -10 - K)
-     ELSE ! all OK
-        INFO = MIN(INFO, 0)
+     ELSE ! OK
         L = (P - 1) * B
         N = (P - 1) * B
         DO J = 1, B
@@ -60,6 +57,7 @@
               GB(I,B+J,K) = ZERO
            END DO
         END DO
+        INFO = MIN(INFO, 0)
      END IF
   END DO
   !$OMP END PARALLEL DO

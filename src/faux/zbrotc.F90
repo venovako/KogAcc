@@ -1,5 +1,5 @@
 !>@brief \b ZBROTC postmultiplies the block-columns (P,Q) of G by R.
-SUBROUTINE ZBROTC(M, B, G, LDG, P, Q, R, LDB, W, LDW, INFO)
+PURE SUBROUTINE ZBROTC(M, B, G, LDG, P, Q, R, LDB, W, LDW, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
   IMPLICIT NONE
   INTERFACE

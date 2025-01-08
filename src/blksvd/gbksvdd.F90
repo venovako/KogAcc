@@ -40,14 +40,12 @@
         O(2,I) = INT(WB(4,I)) ! GS
         IF (O(1,I) .LT. 0) THEN
            INFO = MIN(INFO, -100 * I + O(1,I))
-#ifndef NDEBUG
         ELSE IF (.NOT. (WB(1,I) .LE. HUGE(WB(1,I)))) THEN
            INFO = MIN(INFO, -100 * I - 99)
         ELSE IF (.NOT. (WB(2,I) .LE. HUGE(WB(2,I)))) THEN
            INFO = MIN(INFO, -100 * I - 98)
         ELSE IF (.NOT. (WB(3,I) .LE. HUGE(WB(3,I)))) THEN
            INFO = MIN(INFO, -100 * I - 97)
-#endif
         ELSE ! OK
            INFO = MIN(INFO, 0)
         END IF
