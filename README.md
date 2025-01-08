@@ -57,7 +57,7 @@ where `J_inner` and `J_outer` are taken from the table above.
 
 ## TODO
 
-Due to a very simplistic vectorization, the routines for now expect the input matrix to be `M x M`, where `M` is divisible by the maximal vector length of `8`.
+Due to a very simplistic vectorization, the `xKSVD0` and `xKSVDD` routines for now expect the input matrix to be `M x M`, where `M` is divisible by the maximal vector length of `8`.
 This can and should eventually be fixed by re-writing the `xROT*` routines from `src/faux` more carefully.
 
 For now, the routines `xGEMM` and `xLACPY` from BLAS and LAPACK, respectively, are not used, to simplify the building prerequisites.
