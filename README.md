@@ -55,7 +55,12 @@ J_inner + J_outer * 8
 ```
 where `J_inner` and `J_outer` are taken from the table above.
 
-*TODO*: due to a very simplistic vectorization, the routines for now expect the input matrix to be `M x M`, where `M` is divisible by the maximal vector length of `8`.
+## TODO
+
+Due to a very simplistic vectorization, the routines for now expect the input matrix to be `M x M`, where `M` is divisible by the maximal vector length of `8`.
 This can and should eventually be fixed by re-writing the `xROT*` routines from `src/faux` more carefully.
+
+For now, the routines `xGEMM` and `xLACPY` from BLAS and LAPACK, respectively, are not used, to simplify the building prerequisites.
+They should be employed in the fully optimized code, instead of the present substitutes.
 
 This work has been supported in part by Croatian Science Foundation under the project IP-2014-09-3670 ([MFBDA](https://web.math.pmf.unizg.hr/mfbda/)).

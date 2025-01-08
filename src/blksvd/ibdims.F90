@@ -72,6 +72,7 @@ PURE SUBROUTINE IBDIMS(N, B, M, M_B, NW, ND, NO, INFO)
   ! LAYOUT OF W:
   ! M_B x M_B
   ! ((2 * (LDB x 2*B) + LDB x LDB) * M_P); ((MAX((2*B-1),NW) * 2*B) * M_P)
+  ! TODO: (3 * (LDB x 2*B) * M_P); ((MAX((2*B-1),NW) * 2*B) * M_P)
   IF (NW .EQ. 3) THEN
      IF ((JS0 .EQ. 3) .OR. (JS0 .EQ. 6)) NW = MAX((2 * B - 1), NW)
      NW = MAX(6, MAX(ND, ((2 * NO + T * T + NW * 2 * B) * M_P)))

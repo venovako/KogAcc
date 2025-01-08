@@ -53,7 +53,7 @@
   M_P = M_B / 2
   ! split W
   IGB = 1
-  LB = LDB * LDB * M_P * 2
+  LB = LDB * LDB * M_P * 2 ! TODO: use the LB from below
   IUB = IGB + LB
   LB = LDB * N * M_P * 2
   IVB = IUB + LB
