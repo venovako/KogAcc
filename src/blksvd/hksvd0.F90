@@ -245,12 +245,12 @@
      ELSE ! .NOT. LOMP
         Z = .FALSE.
      END IF
-!$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,U,W,R,N,LDG,LDU,I,LUACC) PRIVATE(J,G2,U2,V2,P,Q,WV,WS,T,L,ES) REDUCTION(+:M) IF(Z)
+     !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,U,W,R,N,LDG,LDU,I,LUACC) PRIVATE(J,G2,U2,V2,P,Q,WV,WS,L,ES) REDUCTION(MAX:M) IF(Z)
      DO J = 1, I
         P = R(1,J)
         Q = R(2,J)
         IF ((P .LE. 0) .OR. (Q .LE. P) .OR. (P .GE. N) .OR. (Q .GT. N)) THEN
-           M = M + 1
+           M = MAX(M, J * 10)
            CYCLE
         END IF
         G2(1,1) = G(P,P)
@@ -270,11 +270,11 @@
         END IF
         ES(1) = 0
         CALL KSVD2(G2, U2, V2, W(WS), ES)
+        R(2,I+J) = ES(1)
         CALL CVGPP(G2, U2, V2, W(WS), ES)
         R(1,I+J) = ES(1)
-        T = ES(1)
-        IF (T .LT. 0) THEN
-           M = M + 1
+        IF (ES(1) .LT. 0) THEN
+           M = MAX(M, J * 10 + 1)
            CYCLE
         END IF
         R(2,I+J) = 1
@@ -287,12 +287,12 @@
         W(WV+6) = REAL(V2(2,2))
         W(WV+7) = AIMAG(V2(2,2))
         ! transform U from the right, conjugate-transpose U2, and transform G from the left
-        IF (IAND(T, 2) .NE. 0) THEN
+        IF (IAND(ES(1), 2) .NE. 0) THEN
            IF (LUACC) THEN
               L = 0
               CALL ROTC(N, N, U, LDU, P, Q, U2, L)
               IF (L .LT. 0) THEN
-                 M = M + 1
+                 M = MAX(M, J * 10 + 2)
                  CYCLE
               END IF
            END IF
@@ -303,12 +303,12 @@
            L = 0
            CALL ROTR(N, N, G, LDG, P, Q, G2, L)
            IF (L .LT. 0) THEN
-              M = M + 1
+              M = MAX(M, J * 10 + 3)
               CYCLE
            END IF
         END IF
      END DO
-!$OMP END PARALLEL DO
+     !$OMP END PARALLEL DO
      IF (M .NE. 0) THEN
         INFO = -19
         RETURN
@@ -321,7 +321,7 @@
      ELSE ! .NOT. LOMP
         Z = .FALSE.
      END IF
-!$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,V,W,R,N,LDG,LDV,I,LVACC) PRIVATE(J,V2,P,Q,WV,WS,L) REDUCTION(+:M,T) IF(Z)
+     !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,V,W,R,N,LDG,LDV,I,LVACC) PRIVATE(J,V2,P,Q,WV,WS,L) REDUCTION(+:M,T) IF(Z)
      DO J = 1, I
         P = R(1,J)
         Q = R(2,J)
@@ -356,7 +356,7 @@
         IF (IAND(R(1,I+J), 8) .NE. 0) M = M + 1
         T = T + R(2,I+J)
      END DO
-!$OMP END PARALLEL DO
+     !$OMP END PARALLEL DO
      IF ((M .LT. 0) .OR. (M .GT. I)) THEN
         INFO = -20
         RETURN
@@ -369,8 +369,8 @@
      IF (M .GT. 0) THEN
         TM = TM + M
         ! optionally scale G
-        L = 0
-        !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
+        L = -1
+        !$ IF (LOMP) L = -OMP_GET_NUM_THREADS() - 1
         CALL LANGO(N, G, LDG, GN, L)
         IF (L .NE. 0) THEN
            INFO = -3
@@ -390,8 +390,8 @@
         END IF
         ! optionally scale U
         IF (LUACC .AND. (.NOT. LUSID)) THEN
-           L = 0
-           !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
+           L = -1
+           !$ IF (LOMP) L = -OMP_GET_NUM_THREADS() - 1
            CALL LANGO(N, U, LDU, UN, L)
            IF (L .NE. 0) THEN
               INFO = -5
@@ -412,8 +412,8 @@
         END IF
         ! optionally scale V
         IF (LVACC .AND. (.NOT. LVSID)) THEN
-           L = 0
-           !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
+           L = -1
+           !$ IF (LOMP) L = -OMP_GET_NUM_THREADS() - 1
            CALL LANGO(N, V, LDV, VN, L)
            IF (L .NE. 0) THEN
               INFO = -7

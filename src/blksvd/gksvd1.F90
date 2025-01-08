@@ -28,11 +28,6 @@
   JS0 = IAND(JOB, 7)
   JS1 = ISHFT(IAND(JOB, 56), -3)
 
-  ! TODO: FIXME
-  IF (B .LT. 4) THEN
-     INFO = -3
-     RETURN
-  END IF
   N = M
   I = B
   J = IAND(JOB, 63)
@@ -348,8 +343,8 @@
         EXIT
      END IF
      ! optionally scale G
-     J = 0
-     !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
+     J = -1
+     !$ IF (LOMP) J = -OMP_GET_NUM_THREADS() - 1
      CALL LANGO(M, G, LDG, GN, J)
      IF (J .NE. 0) THEN
         INFO = -1000 * I - 400 + J
@@ -371,8 +366,8 @@
      END IF
      ! optionally scale U
      IF (LUACC .AND. (.NOT. LUSID)) THEN
-        J = 0
-        !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
+        J = -1
+        !$ IF (LOMP) J = -OMP_GET_NUM_THREADS() - 1
         CALL LANGO(M, U, LDU, UN, J)
         IF (J .NE. 0) THEN
            INFO = -1000 * I - 600 + J
@@ -395,8 +390,8 @@
      END IF
      ! optionally scale V
      IF (LVACC .AND. (.NOT. LVSID)) THEN
-        J = 0
-        !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
+        J = -1
+        !$ IF (LOMP) J = -OMP_GET_NUM_THREADS() - 1
         CALL LANGO(M, V, LDV, VN, J)
         IF (J .NE. 0) THEN
            INFO = -1000 * I - 800 + J
