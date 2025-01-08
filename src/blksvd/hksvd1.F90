@@ -1,12 +1,9 @@
   L = INFO
   INFO = 0
   LOMP = .FALSE.
-  IF (L .LT. 0) THEN
-     L = -(L + 1)
-  ELSE ! L .GE. 0
-     !$ LOMP = .TRUE.
-     CONTINUE
-  END IF
+  JS0 = IAND(JOB, 7)
+  JS1 = ISHFT(IAND(JOB, 56), -3)
+  !$ IF ((JS1 .GE. 2) .AND. (JS1 .LE. 4) .AND. (M .GE. 4)) LOMP = .TRUE.
 
 #ifdef NDEBUG
   I = 6
@@ -21,12 +18,9 @@
   !$OMP END PARALLEL DO
 #endif
 
-  IF ((JOB .LT. 0) .OR. (JOB .GT. 1023)) THEN
-     INFO = -1
-     RETURN
-  END IF
-  JS0 = IAND(JOB, 7)
-  JS1 = ISHFT(IAND(JOB, 56), -3)
+  IF (L .LT. 0) INFO = -20
+  IF ((JOB .LT. 0) .OR. (JOB .GT. 1023)) INFO = -1
+  IF (INFO .NE. 0) RETURN
 
   N = M
   I = B
@@ -53,9 +47,8 @@
   M_P = M_B / 2
   ! split W
   IGB = 1
-  LB = LDB * LDB * M_P * 2 ! TODO: use the LB from below
-  IUB = IGB + LB
   LB = LDB * N * M_P * 2
+  IUB = IGB + LB
   IVB = IUB + LB
   IWB = IVB + LB
   IF ((JS0 .EQ. 3) .OR. (JS0 .EQ. 6)) THEN

@@ -1,3 +1,11 @@
+  REAL(KIND=K) :: X(VL)
+  !DIR$ ATTRIBUTES ALIGN: 64:: X
+  REAL(KIND=K) :: Y(VL)
+  !DIR$ ATTRIBUTES ALIGN: 64:: Y
+  REAL(KIND=K) :: Z(2,2)
+  !DIR$ ATTRIBUTES ALIGN: 64:: Z
+  INTEGER :: I, J
+
   I = INFO
   INFO = 0
   IF ((Q .LE. P) .OR. (Q .GT. M)) INFO = -6
@@ -26,85 +34,125 @@
   Z = W
   SELECT CASE (INFO)
   CASE (0)
-     IF ((Z(1,1) .EQ. 0.0_K) .OR. (Z(2,2) .EQ. 0.0_K)) GOTO 1
-     Z(1,2) = Z(1,2) / Z(1,1)
-     Z(2,1) = Z(2,1) / Z(2,2)
-     DO J = 1, N, VL
-        !DIR$ VECTOR ALWAYS
-        DO I = 1, VL
-           X(I) = G(P,J+I-1)
-           Y(I) = G(Q,J+I-1)
+     IF ((Z(1,1) .EQ. 0.0_K) .OR. (Z(2,2) .EQ. 0.0_K)) THEN
+        DO J = 1, N, VL
+           !DIR$ VECTOR ALWAYS
+           DO I = 1, VL
+              X(I) = G(P,J+I-1)
+              Y(I) = G(Q,J+I-1)
+           END DO
+           !DIR$ VECTOR ALWAYS
+           DO I = 1, VL
+              G(P,J+I-1) = Z(1,1) * X(I) + Z(1,2) * Y(I)
+              G(Q,J+I-1) = Z(2,1) * X(I) + Z(2,2) * Y(I)
+           END DO
         END DO
-        !DIR$ VECTOR ALWAYS
-        DO I = 1, VL
-           G(P,J+I-1) = Z(1,1) * (X(I) + Z(1,2) * Y(I))
-           G(Q,J+I-1) = Z(2,2) * (Z(2,1) * X(I) + Y(I))
+     ELSE
+        Z(1,2) = Z(1,2) / Z(1,1)
+        Z(2,1) = Z(2,1) / Z(2,2)
+        DO J = 1, N, VL
+           !DIR$ VECTOR ALWAYS
+           DO I = 1, VL
+              X(I) = G(P,J+I-1)
+              Y(I) = G(Q,J+I-1)
+           END DO
+           !DIR$ VECTOR ALWAYS
+           DO I = 1, VL
+              G(P,J+I-1) = Z(1,1) * (X(I) + Z(1,2) * Y(I))
+              G(Q,J+I-1) = Z(2,2) * (Z(2,1) * X(I) + Y(I))
+           END DO
         END DO
-     END DO
+     END IF
   CASE (1)
-     IF ((Z(1,2) .EQ. 0.0_K) .OR. (Z(2,2) .EQ. 0.0_K)) GOTO 1
-     Z(1,1) = Z(1,1) / Z(1,2)
-     Z(2,1) = Z(2,1) / Z(2,2)
-     DO J = 1, N, VL
-        !DIR$ VECTOR ALWAYS
-        DO I = 1, VL
-           X(I) = G(P,J+I-1)
-           Y(I) = G(Q,J+I-1)
+     IF ((Z(1,2) .EQ. 0.0_K) .OR. (Z(2,2) .EQ. 0.0_K)) THEN
+        DO J = 1, N, VL
+           !DIR$ VECTOR ALWAYS
+           DO I = 1, VL
+              X(I) = G(P,J+I-1)
+              Y(I) = G(Q,J+I-1)
+           END DO
+           !DIR$ VECTOR ALWAYS
+           DO I = 1, VL
+              G(P,J+I-1) = Z(1,1) * X(I) + Z(1,2) * Y(I)
+              G(Q,J+I-1) = Z(2,1) * X(I) + Z(2,2) * Y(I)
+           END DO
         END DO
-        !DIR$ VECTOR ALWAYS
-        DO I = 1, VL
-           G(P,J+I-1) = Z(1,2) * (Z(1,1) * X(I) + Y(I))
-           G(Q,J+I-1) = Z(2,2) * (Z(2,1) * X(I) + Y(I))
+     ELSE
+        Z(1,1) = Z(1,1) / Z(1,2)
+        Z(2,1) = Z(2,1) / Z(2,2)
+        DO J = 1, N, VL
+           !DIR$ VECTOR ALWAYS
+           DO I = 1, VL
+              X(I) = G(P,J+I-1)
+              Y(I) = G(Q,J+I-1)
+           END DO
+           !DIR$ VECTOR ALWAYS
+           DO I = 1, VL
+              G(P,J+I-1) = Z(1,2) * (Z(1,1) * X(I) + Y(I))
+              G(Q,J+I-1) = Z(2,2) * (Z(2,1) * X(I) + Y(I))
+           END DO
         END DO
-     END DO
+     END IF
   CASE (2)
-     IF ((Z(1,1) .EQ. 0.0_K) .OR. (Z(2,1) .EQ. 0.0_K)) GOTO 1
-     Z(1,2) = Z(1,2) / Z(1,1)
-     Z(2,2) = Z(2,2) / Z(2,1)
-     DO J = 1, N, VL
-        !DIR$ VECTOR ALWAYS
-        DO I = 1, VL
-           X(I) = G(P,J+I-1)
-           Y(I) = G(Q,J+I-1)
+     IF ((Z(1,1) .EQ. 0.0_K) .OR. (Z(2,1) .EQ. 0.0_K)) THEN
+        DO J = 1, N, VL
+           !DIR$ VECTOR ALWAYS
+           DO I = 1, VL
+              X(I) = G(P,J+I-1)
+              Y(I) = G(Q,J+I-1)
+           END DO
+           !DIR$ VECTOR ALWAYS
+           DO I = 1, VL
+              G(P,J+I-1) = Z(1,1) * X(I) + Z(1,2) * Y(I)
+              G(Q,J+I-1) = Z(2,1) * X(I) + Z(2,2) * Y(I)
+           END DO
         END DO
-        !DIR$ VECTOR ALWAYS
-        DO I = 1, VL
-           G(P,J+I-1) = Z(1,1) * (X(I) + Z(1,2) * Y(I))
-           G(Q,J+I-1) = Z(2,1) * (X(I) + Z(2,2) * Y(I))
+     ELSE
+        Z(1,2) = Z(1,2) / Z(1,1)
+        Z(2,2) = Z(2,2) / Z(2,1)
+        DO J = 1, N, VL
+           !DIR$ VECTOR ALWAYS
+           DO I = 1, VL
+              X(I) = G(P,J+I-1)
+              Y(I) = G(Q,J+I-1)
+           END DO
+           !DIR$ VECTOR ALWAYS
+           DO I = 1, VL
+              G(P,J+I-1) = Z(1,1) * (X(I) + Z(1,2) * Y(I))
+              G(Q,J+I-1) = Z(2,1) * (X(I) + Z(2,2) * Y(I))
+           END DO
         END DO
-     END DO
+     END IF
   CASE (3)
-     IF ((Z(1,2) .EQ. 0.0_K) .OR. (Z(2,1) .EQ. 0.0_K)) GOTO 1
-     Z(1,1) = Z(1,1) / Z(1,2)
-     Z(2,2) = Z(2,2) / Z(2,1)
-     DO J = 1, N, VL
-        !DIR$ VECTOR ALWAYS
-        DO I = 1, VL
-           X(I) = G(P,J+I-1)
-           Y(I) = G(Q,J+I-1)
+     IF ((Z(1,2) .EQ. 0.0_K) .OR. (Z(2,1) .EQ. 0.0_K)) THEN
+        DO J = 1, N, VL
+           !DIR$ VECTOR ALWAYS
+           DO I = 1, VL
+              X(I) = G(P,J+I-1)
+              Y(I) = G(Q,J+I-1)
+           END DO
+           !DIR$ VECTOR ALWAYS
+           DO I = 1, VL
+              G(P,J+I-1) = Z(1,1) * X(I) + Z(1,2) * Y(I)
+              G(Q,J+I-1) = Z(2,1) * X(I) + Z(2,2) * Y(I)
+           END DO
         END DO
-        !DIR$ VECTOR ALWAYS
-        DO I = 1, VL
-           G(P,J+I-1) = Z(1,2) * (Z(1,1) * X(I) + Y(I))
-           G(Q,J+I-1) = Z(2,1) * (X(I) + Z(2,2) * Y(I))
+     ELSE
+        Z(1,1) = Z(1,1) / Z(1,2)
+        Z(2,2) = Z(2,2) / Z(2,1)
+        DO J = 1, N, VL
+           !DIR$ VECTOR ALWAYS
+           DO I = 1, VL
+              X(I) = G(P,J+I-1)
+              Y(I) = G(Q,J+I-1)
+           END DO
+           !DIR$ VECTOR ALWAYS
+           DO I = 1, VL
+              G(P,J+I-1) = Z(1,2) * (Z(1,1) * X(I) + Y(I))
+              G(Q,J+I-1) = Z(2,1) * (X(I) + Z(2,2) * Y(I))
+           END DO
         END DO
-     END DO
+     END IF
   CASE DEFAULT
      INFO = -8
-     RETURN
   END SELECT
-  GOTO 2
-
-1 DO J = 1, N, VL
-     !DIR$ VECTOR ALWAYS
-     DO I = 1, VL
-        X(I) = G(P,J+I-1)
-        Y(I) = G(Q,J+I-1)
-     END DO
-     !DIR$ VECTOR ALWAYS
-     DO I = 1, VL
-        G(P,J+I-1) = Z(1,1) * X(I) + Z(1,2) * Y(I)
-        G(Q,J+I-1) = Z(2,1) * X(I) + Z(2,2) * Y(I)
-     END DO
-  END DO
-2 CONTINUE

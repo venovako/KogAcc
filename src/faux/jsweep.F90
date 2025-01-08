@@ -21,14 +21,14 @@ SUBROUTINE JSWEEP(J, N, S, P, O, INFO)
   IF (INFO .NE. 0) RETURN
   IF (N .LE. 1) RETURN
 
-  IF ((J .GE. 5) .AND. (J .LE. 7)) THEN
-     JJ = J - 3
-  ELSE ! a sequential ordering
+  IF (J .LE. 4) THEN
      JJ = J
+  ELSE ! a sequential-parallel ordering
+     JJ = J - 3
   END IF
 
   SELECT CASE (JJ)
-  CASE (0,1)
+  CASE (0, 1)
      P = 1
      IF (MOD(N, 2) .EQ. 0) THEN
         S = (N / 2) * (N - 1)
@@ -81,7 +81,7 @@ SUBROUTINE JSWEEP(J, N, S, P, O, INFO)
         EXIT
      END IF
      SELECT CASE (JJ)
-     CASE (0,1)
+     CASE (0, 1)
         O(1,L) = INT(ARR(1,1)) + 1
         O(2,L) = INT(ARR(2,1)) + 1
         L = L + 1

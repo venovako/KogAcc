@@ -1,3 +1,9 @@
+  COMPLEX(KIND=K) :: X(VL)
+  !DIR$ ATTRIBUTES ALIGN: 64:: X
+  COMPLEX(KIND=K) :: Y(VL)
+  !DIR$ ATTRIBUTES ALIGN: 64:: Y
+  INTEGER :: I, J
+
   J = INFO
   INFO = 0
   IF ((Q .LE. P) .OR. (Q .GT. N)) INFO = -6

@@ -10,8 +10,7 @@
   J = 0
   !$OMP PARALLEL DO DEFAULT(NONE) SHARED(JS,B2,NB,GB,UB,VB,LDB,SB,WB,OD,OB,O) PRIVATE(I,L) REDUCTION(MIN:INFO,J) IF(I .NE. 0)
   DO I = 1, NB
-     O(1,I) = -HUGE(0)
-     O(1,I) = O(1,I) - 1
+     O(1,I) = HUGE(0)
 #ifdef ANIMATE
      DO L = 1, B2
         SB(L,I) = 0.0_K

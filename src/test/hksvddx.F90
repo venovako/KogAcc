@@ -56,10 +56,10 @@
      IF (INFO .NE. 0) STOP 'BRDG(V)'
   END IF
 
-  ALLOCATE(G(LDG,LDG))
+  ALLOCATE(G(LDG,M))
   IF (M .GT. N) THEN
      INFO = L
-     CALL BRDG(LDG, N, G, LDG, INFO)
+     CALL BRDG(M, N, G, LDG, INFO)
      IF (INFO .NE. 0) STOP 'BRDG(G)'
   END IF
 
@@ -79,11 +79,10 @@
         JOB = JOB + 1
      END DO
   END DO
-  J = 3
+  J = 6
+  !$ J = 3
   JOB = J + 960
-  INFO = -HUGE(INFO)
-  INFO = INFO - 1
-  !$ IF (L .NE. 0) INFO = -(INFO + 1)
+  INFO = HUGE(INFO)
   CALL SYSTEM_CLOCK(C0)
   CALL KSVDD(JOB, M, G, LDG, U, LDU, V, LDV, SV, W, D, O, O(1,(M*(M-1))/2+1), INFO)
   CALL SYSTEM_CLOCK(C1, CR)

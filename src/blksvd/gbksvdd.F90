@@ -11,8 +11,7 @@
   IF (I .GE. 0) THEN
      !$OMP PARALLEL DO DEFAULT(NONE) SHARED(B2,NB,GB,UB,VB,LDB,SB,WB,DB,OD,OB,O) PRIVATE(I) REDUCTION(MIN:INFO,J) IF(I .NE. 0)
      DO I = 1, NB
-        O(1,I) = -HUGE(0)
-        O(1,I) = O(1,I) - 1
+        O(1,I) = HUGE(0)
         CALL KSVDD(JOB, B2, GB(1,1,I), LDB, UB(1,1,I), LDB, VB(1,1,I), LDB, SB(1,I), WB(1,I), DB(1,I), OB, OD(1,1,I), O(1,I))
         J = MIN(J, -O(1,I))
         O(2,I) = INT(WB(4,I)) ! GS
@@ -33,8 +32,7 @@
      I = I + 1
      !$OMP PARALLEL DO DEFAULT(NONE) SHARED(B2,NB,GB,UB,VB,LDB,SB,WB,DB,OD,OB,O) PRIVATE(I) REDUCTION(MIN:INFO,J) IF(I .NE. 0)
      DO I = 1, NB
-        O(1,I) = -HUGE(0)
-        O(1,I) = O(1,I) - 1
+        O(1,I) = HUGE(0)
         CALL KKSVDD(JOB, B2, GB(1,1,I), LDB, UB(1,1,I), LDB, VB(1,1,I), LDB, SB(1,I), WB(1,I), DB(1,I), OB, OD(1,1,I), O(1,I))
         J = MIN(J, -O(1,I))
         O(2,I) = INT(WB(4,I)) ! GS

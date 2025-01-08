@@ -1,12 +1,8 @@
   MRQSTP = INFO
   INFO = 0
   LOMP = .FALSE.
-  IF (MRQSTP .LT. 0) THEN
-     MRQSTP = -(MRQSTP + 1)
-  ELSE ! MRQSTP >= 0
-     !$ LOMP = .TRUE.
-     CONTINUE
-  END IF
+  JS = IAND(JOB, 7)
+  !$ IF ((JS .GE. 2) .AND. (JS .LE. 4) .AND. (N .GE. 4)) LOMP = .TRUE.
 
   W(1) = ONE
   W(2) = ONE
@@ -15,12 +11,12 @@
   W(5) = ZERO
   W(6) = ZERO
 
+  IF (MRQSTP .LT. 0) INFO = -13
   IF (LDV .LT. N) INFO = -8
   IF (LDU .LT. N) INFO = -6
   IF (LDG .LT. N) INFO = -4
   IF (N .LT. 0) INFO = -2
   IF ((JOB .LT. 0) .OR. (JOB .GT. 1023)) INFO = -1
-  JS = IAND(JOB, 7)
   M = N * (N - 1)
   M_2 = M / 2
   SELECT CASE (JS)
@@ -238,14 +234,7 @@
 
      ! compute and apply the transformations
      M = 0
-     IF (I .LE. 1) THEN
-        Z = .FALSE.
-     ELSE IF (LOMP) THEN
-        Z = .TRUE.
-     ELSE ! .NOT. LOMP
-        Z = .FALSE.
-     END IF
-     !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,U,W,R,N,LDG,LDU,I,LUACC) PRIVATE(J,G2,U2,V2,P,Q,WV,WS,L,ES) REDUCTION(MAX:M) IF(Z)
+!$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,U,W,R,N,LDG,LDU,I,LUACC) PRIVATE(J,G2,U2,V2,P,Q,WV,WS,L,ES) REDUCTION(MAX:M) IF(LOMP)
      DO J = 1, I
         P = R(1,J)
         Q = R(2,J)
@@ -308,20 +297,13 @@
            END IF
         END IF
      END DO
-     !$OMP END PARALLEL DO
+!$OMP END PARALLEL DO
      IF (M .NE. 0) THEN
         INFO = -19
         RETURN
      END IF
      T = 0
-     IF (I .LE. 1) THEN
-        Z = .FALSE.
-     ELSE IF (LOMP) THEN
-        Z = .TRUE.
-     ELSE ! .NOT. LOMP
-        Z = .FALSE.
-     END IF
-     !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,V,W,R,N,LDG,LDV,I,LVACC) PRIVATE(J,V2,P,Q,WV,WS,L) REDUCTION(+:M,T) IF(Z)
+!$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,V,W,R,N,LDG,LDV,I,LVACC) PRIVATE(J,V2,P,Q,WV,WS,L) REDUCTION(+:M,T) IF(LOMP)
      DO J = 1, I
         P = R(1,J)
         Q = R(2,J)
@@ -356,7 +338,7 @@
         IF (IAND(R(1,I+J), 8) .NE. 0) M = M + 1
         T = T + R(2,I+J)
      END DO
-     !$OMP END PARALLEL DO
+!$OMP END PARALLEL DO
      IF ((M .LT. 0) .OR. (M .GT. I)) THEN
         INFO = -20
         RETURN

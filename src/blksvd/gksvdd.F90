@@ -1,12 +1,8 @@
   MRQSTP = INFO
   INFO = 0
   LOMP = .FALSE.
-  IF (MRQSTP .LT. 0) THEN
-     MRQSTP = -(MRQSTP + 1)
-  ELSE ! MRQSTP >= 0
-     !$ LOMP = .TRUE.
-     CONTINUE
-  END IF
+  J = IAND(JOB, 7)
+  !$ IF ((J .EQ. 3) .AND. (N .GE. 4)) LOMP = .TRUE.
 
   W(1) = ONE
   W(2) = ONE
@@ -15,12 +11,14 @@
   W(5) = ZERO
   W(6) = ZERO
 
+  IF (MRQSTP .LT. 0) INFO = -14
   IF (LDV .LT. N) INFO = -8
   IF (LDU .LT. N) INFO = -6
   IF (LDG .LT. N) INFO = -4
-  IF (N .LT. 0) INFO = -2
+  IF ((N .LT. 0) .OR. (MOD(N, 2) .NE. 0)) INFO = -2
   IF (JOB .LT. 0) INFO = -1
   IF (JOB .GT. 1023) INFO = -1
+  IF ((J .NE. 3) .AND. (J .NE. 6)) INFO = -1
   IF (INFO .NE. 0) RETURN
   IF (N .EQ. 0) RETURN
 
@@ -282,8 +280,8 @@
 
      IF (M .GT. 0) THEN
         ! optionally scale G
-        L = 0
-        !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
+        L = -1
+        !$ IF (LOMP) L = -OMP_GET_NUM_THREADS() - 1
         CALL LANGO(N, G, LDG, GN, L)
         IF (L .NE. 0) THEN
            INFO = -3
@@ -304,8 +302,8 @@
 
         ! optionally scale U
         IF (LUACC .AND. (.NOT. LUSID)) THEN
-           L = 0
-           !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
+           L = -1
+           !$ IF (LOMP) L = -OMP_GET_NUM_THREADS() - 1
            CALL LANGO(N, U, LDU, UN, L)
            IF (L .NE. 0) THEN
               INFO = -5
@@ -327,8 +325,8 @@
 
         ! optionally scale V
         IF (LVACC .AND. (.NOT. LVSID)) THEN
-           L = 0
-           !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
+           L = -1
+           !$ IF (LOMP) L = -OMP_GET_NUM_THREADS() - 1
            CALL LANGO(N, V, LDV, VN, L)
            IF (L .NE. 0) THEN
               INFO = -7

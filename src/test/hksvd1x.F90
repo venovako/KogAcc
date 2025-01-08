@@ -16,8 +16,6 @@
   CALL GET_COMMAND_ARGUMENT(4, BN, I, INFO)
   IF (INFO .NE. 0) STOP 'BN'
 
-  L = 0
-  !$ L = 1
   IF (N .LE. 0) STOP 'N'
   IF ((J .LT. 0) .OR. (J .GT. 63)) STOP 'J'
   IF (B .EQ. 0) THEN
@@ -25,6 +23,9 @@
   ELSE IF (B .LT. 0) THEN
      STOP 'B'
   END IF
+
+  L = 0
+  !$ L = 1
 
   LDG = N
   LDB = B
@@ -49,10 +50,10 @@
      IF (INFO .NE. 0) STOP 'BRDG(V)'
   END IF
 
-  ALLOCATE(G(LDG,LDG))
+  ALLOCATE(G(LDG,M))
   IF (M .GT. N) THEN
      INFO = L
-     CALL BRDG(LDG, N, G, LDG, INFO)
+     CALL BRDG(M, N, G, LDG, INFO)
      IF (INFO .NE. 0) STOP 'BRDG(G)'
   END IF
 
@@ -129,9 +130,7 @@
 #endif
 
   JOB = J + 960
-  INFO = -HUGE(INFO)
-  INFO = INFO - 1
-  !$ IF (L .NE. 0) INFO = -(INFO + 1)
+  INFO = HUGE(INFO)
   CALL SYSTEM_CLOCK(C0)
   CALL KSVD1(JOB, M, B, G, LDG, U, LDU, V, LDV, SV, LDB, W, NW, D, ND, O, NO, INFO)
   CALL SYSTEM_CLOCK(C1, CR)

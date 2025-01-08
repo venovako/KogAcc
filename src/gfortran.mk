@@ -32,20 +32,23 @@ endif # !true
 else # !STATIC
 LDFLAGS=-rdynamic -static-libgcc -static-libgfortran -static-libquadmath #-pie
 endif # ?STATIC
-# for xGEMM and xLACPY:
-# ifdef MKLROOT
-# ifeq ($(OS),Darwin)
-# LDFLAGS += ${MKLROOT}/lib/libmkl_intel_$(ABI).a ${MKLROOT}/lib/libmkl_sequential.a ${MKLROOT}/lib/libmkl_core.a
-# else # Linux
-# LDFLAGS += -Wl,--start-group ${MKLROOT}/lib/libmkl_gf_$(ABI).a ${MKLROOT}/lib/libmkl_sequential.a ${MKLROOT}/lib/libmkl_core.a -Wl,--end-group
-# LDFLAGS += $(shell if [ -L /usr/lib64/libmemkind.so ]; then echo '-lmemkind'; fi)
-# endif # ?Darwin
-# else # !MKLROOT
-# ifndef LAPACK
-# LAPACK=$(HOME)/lapack-$(ABI)
-# endif # !LAPACK
-# LDFLAGS += -L$(LAPACK) -ltmglib -llapack -lrefblas
-# endif # ?MKLROOT
+ifdef LAPACK
+FCFLAGS += -DLAPACK=$(LAPACK)
+ifeq ($(LAPACK),sequential)
+ifdef MKLROOT
+ifeq ($(OS),Darwin)
+LDFLAGS += ${MKLROOT}/lib/libmkl_intel_$(ABI).a ${MKLROOT}/lib/libmkl_sequential.a ${MKLROOT}/lib/libmkl_core.a
+else # Linux
+LDFLAGS += -Wl,--start-group ${MKLROOT}/lib/libmkl_gf_$(ABI).a ${MKLROOT}/lib/libmkl_sequential.a ${MKLROOT}/lib/libmkl_core.a -Wl,--end-group
+LDFLAGS += $(shell if [ -L /usr/lib64/libmemkind.so ]; then echo '-lmemkind'; fi)
+endif # ?Darwin
+else # !MKLROOT
+LDFLAGS += -L$(HOME)/lapack-$(ABI) -ltmglib -llapack -lrefblas
+endif # ?MKLROOT
+else # LAPACK != sequential
+LDFLAGS += -L$(LAPACK) -ltmglib -llapack -lrefblas
+endif # LAPACK ?= sequential
+endif # LAPACK
 LDFLAGS += -L../../../../libpvn/src -lpvn -ldl
 GFC=$(FC)
 GFCFLAGS=$(FCFLAGS)
