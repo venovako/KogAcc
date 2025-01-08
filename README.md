@@ -16,10 +16,6 @@ Please set the make option `SAFE=sv2` for `libpvn`.
 
 For now, only little-endian platforms are supported, with the `gfortran` or `ifx` compilers.
 
-The complex routines have not been tested as thoroughly as the real ones.
-Use them with care.
-Also, the block-routines, including but not limited to the `xKSVD1` ones, have not been completed yet.
-
 Building the documentation requires a recent version of [Doxygen](https://doxygen.nl) and [Graphviz](https://graphviz.org).
 Many routines are documented only rudimentary for now.
 
@@ -45,14 +41,20 @@ The available Jacobi strategies:
 | 2 | generalized Mantharam-Eberlein |
 | 3 |                        dynamic |
 | 4 |               modified modulus |
-| 5 |              same as 2 for now |
-| 6 |              same as 3 for now |
-| 7 |              same as 4 for now |
+| 5 |   2, but executed sequentially |
+| 6 |   3, but executed sequentially |
+| 7 |   4, but executed sequentially |
 
 A block strategy pair is computed as:
 ```Fortran
 J_inner + J_outer * 8
 ```
 where `J_inner` and `J_outer` are taken from the table above.
+
+## TODO
+
+More testing is generally needed.
+The complex routines have not been tested as thoroughly as the real ones.
+Use them with care.
 
 This work has been supported in part by Croatian Science Foundation under the project IP-2014-09-3670 ([MFBDA](https://web.math.pmf.unizg.hr/mfbda/)).
