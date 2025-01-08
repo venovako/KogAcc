@@ -52,9 +52,10 @@
 #endif
   M_P = M_B / 2
   ! split W
-  LB = LDB * N * M_P
   IGB = 1
+  LB = LDB * LDB * M_P
   IUB = IGB + LB
+  LB = LDB * N * M_P
   IVB = IUB + LB
   IWB = IVB + LB
   IF ((JS0 .EQ. 3) .OR. (JS0 .EQ. 6)) THEN

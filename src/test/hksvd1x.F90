@@ -49,10 +49,10 @@
      IF (INFO .NE. 0) STOP 'BRDG(V)'
   END IF
 
-  ALLOCATE(G(LDG,M))
+  ALLOCATE(G(LDG,LDG))
   IF (M .GT. N) THEN
      INFO = L
-     CALL BRDG(M, N, G, LDG, INFO)
+     CALL BRDG(LDG, N, G, LDG, INFO)
      IF (INFO .NE. 0) STOP 'BRDG(G)'
   END IF
 

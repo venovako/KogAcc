@@ -55,6 +55,7 @@ J_inner + J_outer * 8
 ```
 where `J_inner` and `J_outer` are taken from the table above.
 
-For now, set the block size `B` to at least `4`.
+*TODO*: due to a very simplistic vectorization, the routines for now expect the input matrix to be `M x M`, where `M` is divisible by the maximal vector length of `8`.
+This can and should eventually be fixed by re-writing the `xROT*` routines from `src/faux` more carefully.
 
 This work has been supported in part by Croatian Science Foundation under the project IP-2014-09-3670 ([MFBDA](https://web.math.pmf.unizg.hr/mfbda/)).
