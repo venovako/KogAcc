@@ -51,6 +51,8 @@ J_inner + J_outer * 8
 ```
 where `J_inner` and `J_outer` are taken from the table above.
 
+Please, set the block size `B` to at least `4`, for now.
+
 ## TODO
 
 More testing is generally needed.
