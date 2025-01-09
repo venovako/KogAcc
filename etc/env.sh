@@ -8,7 +8,7 @@ if [ -n "${OMP_PLACES}" ]
 then
 	unset OMP_PLACES
 fi
-export OMP_PLACES="CORES,THREADS"
+export OMP_PLACES=THREADS
 if [ -n "${OMP_PROC_BIND}" ]
 then
 	unset OMP_PROC_BIND
