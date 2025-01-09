@@ -53,6 +53,13 @@ where `J_inner` and `J_outer` are taken from the table above.
 
 Please, set the block size `B` to at least `4`, for now.
 
+The `etc/env.sh` script should be sourced, without arguments or with a single argument `2`, as:
+```bash
+source etc/env.sh
+```
+before running any OpenMP-parallel executable.
+The argument `2` enables the nested, two-level OpenMP parallelism for the block-method executables `?ksvd1.exe`.
+
 ## TODO
 
 More testing is generally needed.

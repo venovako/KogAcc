@@ -8,12 +8,22 @@ if [ -n "${OMP_PLACES}" ]
 then
 	unset OMP_PLACES
 fi
-export OMP_PLACES=THREADS
+if [ "$1" = "2" ]
+then
+	export OMP_PLACES=THREADS
+else
+	export OMP_PLACES=CORES
+fi
 if [ -n "${OMP_PROC_BIND}" ]
 then
 	unset OMP_PROC_BIND
 fi
-export OMP_PROC_BIND="SPREAD,CLOSE"
+if [ "$1" = "2" ]
+then
+	export OMP_PROC_BIND="SPREAD,CLOSE"
+else
+	export OMP_PROC_BIND=SPREAD
+fi
 if [ -n "${OMP_DYNAMIC}" ]
 then
 	unset OMP_DYNAMIC
@@ -28,9 +38,19 @@ if [ -n "${OMP_NESTED}" ]
 then
 	unset OMP_NESTED
 fi
-export OMP_NESTED=TRUE
+if [ "$1" = "2" ]
+then
+	export OMP_NESTED=TRUE
+else
+	export OMP_NESTED=FALSE
+fi
 if [ -n "${OMP_MAX_ACTIVE_LEVELS}" ]
 then
 	unset OMP_MAX_ACTIVE_LEVELS
 fi
-export OMP_MAX_ACTIVE_LEVELS=2
+if [ "$1" = "2" ]
+then
+	export OMP_MAX_ACTIVE_LEVELS=2
+else
+	export OMP_MAX_ACTIVE_LEVELS=1
+fi
