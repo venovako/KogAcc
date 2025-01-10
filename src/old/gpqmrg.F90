@@ -1,8 +1,10 @@
   ! This is the generic part of the (w,p,q)-arrays merge routines.
   INFO = 0
+#ifndef NDEBUG
   IF (N .LT. 0) INFO = -3
   IF (M .LT. 0) INFO = -2
   IF (INFO .NE. 0) RETURN
+#endif
   I = 1
   J = 1
   K = 1

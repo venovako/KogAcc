@@ -1,7 +1,9 @@
   INFO = 0
+#ifndef NDEBUG
   IF (LDG .LT. N) INFO = -3
   IF (N .LT. 0) INFO = -1
   IF (INFO .NE. 0) RETURN
+#endif
   IF (N .EQ. 0) RETURN
 
   K = 1
@@ -20,7 +22,10 @@
            INFO = -6 - M
            RETURN
         END IF
-        IF ((H .EQ. ZERO) .AND. (SIGN(ONE,G(I,I)) .EQ. ONE) .AND. (SIGN(ONE,G(J,J)) .EQ. ONE) .AND. (G(I,I) .GE. G(J,J))) THEN
+        IF ((H .EQ. ZERO) .AND. &
+             (AIMAG(G(I,I)) .EQ. ZERO) .AND. (SIGN(ONE,REAL(G(I,I))) .EQ. ONE) .AND. &
+             (AIMAG(G(J,J)) .EQ. ZERO) .AND. (SIGN(ONE,REAL(G(J,J))) .EQ. ONE) .AND. &
+             (REAL(G(I,I)) .GE. REAL(G(J,J)))) THEN
            CYCLE
         ELSE ! transformation required
            W(K,L) = H

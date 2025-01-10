@@ -25,12 +25,6 @@
 ../bin/$(PLAT)/qlwsv2.exe: test/qlwsv2x.F90 test/tlasv2.F90 ../lib/$(PLAT)/libksvd2.a $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FLFLAGS) -o qlwsv2.exe ../../../src/test/qlwsv2x.F90 -L../../../lib/$(PLAT) -lksvd2 $(LDFLAGS)
 
-../bin/$(PLAT)/spqsort.exe: test/spqsortx.F90 ../lib/$(PLAT)/libdynord.a $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FLFLAGS) -o spqsort.exe ../../../src/test/spqsortx.F90 -L../../../lib/$(PLAT) -ldynord $(LDFLAGS)
-
-../bin/$(PLAT)/dpqsort.exe: test/dpqsortx.F90 ../lib/$(PLAT)/libdynord.a $(MKFS) test/GNUmakefile
-	cd ../bin/$(PLAT) && $(FC) $(FLFLAGS) -o dpqsort.exe ../../../src/test/dpqsortx.F90 -L../../../lib/$(PLAT) -ldynord $(LDFLAGS)
-
 ../bin/$(PLAT)/sran.exe: test/sran.F90 test/gran.F90 $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FLFLAGS) -o sran.exe ../../../src/test/sran.F90 -L../../../lib/$(PLAT) -lfaux $(LDFLAGS)
 

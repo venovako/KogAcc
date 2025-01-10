@@ -220,20 +220,20 @@
      VS = 0
   END IF
 
-!#ifndef NDEBUG
-  WRITE (ERROR_UNIT,'(A,I1,A,I1,A)') '"BLK_STEP', JS1, '", "BLK_PAIRS", "MAX_STEPS", "SUM_STEPS", "GS', JS0, '"'
-  FLUSH(ERROR_UNIT)
-!#endif
+#ifdef PRINTOUT
+  WRITE (PRINTOUT,'(A,I1,A,I1,A)') '"BLK_STEP', JS1, '", "BLK_PAIRS", "MAX_STEPS", "SUM_STEPS", "GS', JS0, '"'
+  FLUSH(PRINTOUT)
+#endif
 
   DO BS = 0, L-1
      I = BS + 1
 #ifdef ANIMATE
      IF (C_ASSOCIATED(CTX)) J = INT(VIS_FRAME(CTX, G, LDF))
 #endif
-!#ifndef NDEBUG
-     WRITE (ERROR_UNIT,'(I11,A)',ADVANCE='NO') BS, ', '
-     FLUSH(ERROR_UNIT)
-!#endif
+#ifdef PRINTOUT
+     WRITE (PRINTOUT,'(I11,A)',ADVANCE='NO') BS, ', '
+     FLUSH(PRINTOUT)
+#endif
      J = 0
      IF ((JS1 .EQ. 3) .OR. (JS1 .EQ. 6)) THEN
         !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
@@ -243,26 +243,26 @@
         CALL JSTEP(JS1, M_B, S, I, P, O(1,IO1), O(1,IOB), J)
         NB = P
      END IF
-!#ifndef NDEBUG
-     WRITE (ERROR_UNIT,'(I11,A)',ADVANCE='NO') NB, ', '
-     FLUSH(ERROR_UNIT)
-!#endif
+#ifdef PRINTOUT
+     WRITE (PRINTOUT,'(I11,A)',ADVANCE='NO') NB, ', '
+     FLUSH(PRINTOUT)
+#endif
      IF ((J .LT. 0) .OR. (NB .LT. 0)) THEN
         INFO = -1000 * I - 100 + J
-!#ifndef NDEBUG
-        WRITE (ERROR_UNIT,'(2(I11,A))',ADVANCE='NO') 0, ', ', J, ', '
-        WRITE (ERROR_UNIT,'(I11)') GS
-        FLUSH(ERROR_UNIT)
-!#endif
+#ifdef PRINTOUT
+        WRITE (PRINTOUT,'(2(I11,A))',ADVANCE='NO') 0, ', ', J, ', '
+        WRITE (PRINTOUT,'(I11)') GS
+        FLUSH(PRINTOUT)
+#endif
         EXIT
      END IF
      ! CONVERGENCE
      IF (NB .EQ. 0) THEN
-!#ifndef NDEBUG
-        WRITE (ERROR_UNIT,'(2(I11,A))',ADVANCE='NO') 0, ', ', 0, ', '
-        WRITE (ERROR_UNIT,'(I11)') GS
-        FLUSH(ERROR_UNIT)
-!#endif
+#ifdef PRINTOUT
+        WRITE (PRINTOUT,'(2(I11,A))',ADVANCE='NO') 0, ', ', 0, ', '
+        WRITE (PRINTOUT,'(I11)') GS
+        FLUSH(PRINTOUT)
+#endif
         EXIT
      END IF
      ! pack G
@@ -291,24 +291,24 @@
      Q = J
      IF (J .LT. 0) THEN
         INFO = J
-!#ifndef NDEBUG
-        WRITE (ERROR_UNIT,'(2(I11,A))',ADVANCE='NO') J, ', ', 0, ', '
-        WRITE (ERROR_UNIT,'(I11)') GS
-        FLUSH(ERROR_UNIT)
-!#endif
+#ifdef PRINTOUT
+        WRITE (PRINTOUT,'(2(I11,A))',ADVANCE='NO') J, ', ', 0, ', '
+        WRITE (PRINTOUT,'(I11)') GS
+        FLUSH(PRINTOUT)
+#endif
         EXIT
      END IF
-!#ifndef NDEBUG
+#ifdef PRINTOUT
      T = 0
      !$OMP PARALLEL DO DEFAULT(NONE) SHARED(O,R,NB) PRIVATE(J) REDUCTION(+:T) IF(LOMP)
      DO J = R, R+NB-1
         T = T + O(1,J)
      END DO
      !$OMP END PARALLEL DO
-     WRITE (ERROR_UNIT,'(2(I11,A))',ADVANCE='NO') Q, ', ', T, ', '
-     WRITE (ERROR_UNIT,'(I11)') GS
-     FLUSH(ERROR_UNIT)
-!#endif
+     WRITE (PRINTOUT,'(2(I11,A))',ADVANCE='NO') Q, ', ', T, ', '
+     WRITE (PRINTOUT,'(I11)') GS
+     FLUSH(PRINTOUT)
+#endif
      ! CONVERGENCE
      IF (Q .EQ. 0) EXIT
      ! unpack G
@@ -337,8 +337,13 @@
         EXIT
      END IF
      ! optionally scale G
+#ifdef NDEBUG
+     J = 0
+     !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
+#else
      J = -1
      !$ IF (LOMP) J = -OMP_GET_NUM_THREADS() - 1
+#endif
      CALL LANGO(M, G, LDG, GN, J)
      IF (J .NE. 0) THEN
         INFO = -1000 * I - 400 + J
@@ -360,8 +365,13 @@
      END IF
      ! optionally scale U
      IF (LUACC .AND. (.NOT. LUSID)) THEN
+#ifdef NDEBUG
+        J = 0
+        !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
+#else
         J = -1
         !$ IF (LOMP) J = -OMP_GET_NUM_THREADS() - 1
+#endif
         CALL LANGO(M, U, LDU, UN, J)
         IF (J .NE. 0) THEN
            INFO = -1000 * I - 600 + J
@@ -384,8 +394,13 @@
      END IF
      ! optionally scale V
      IF (LVACC .AND. (.NOT. LVSID)) THEN
+#ifdef NDEBUG
+        J = 0
+        !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
+#else
         J = -1
         !$ IF (LOMP) J = -OMP_GET_NUM_THREADS() - 1
+#endif
         CALL LANGO(M, V, LDV, VN, J)
         IF (J .NE. 0) THEN
            INFO = -1000 * I - 800 + J

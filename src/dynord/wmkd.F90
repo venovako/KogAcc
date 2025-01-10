@@ -38,6 +38,7 @@ SUBROUTINE WMKD(N, G, LDG, D, O, INFO)
 
   L = INFO
   INFO = 0
+#ifndef NDEBUG
   IF (LDG .LT. N) INFO = -3
   IF (N .LT. 0) INFO = -1
 #ifdef CLS
@@ -46,6 +47,7 @@ SUBROUTINE WMKD(N, G, LDG, D, O, INFO)
   IF (N .GT. 32) INFO = -1
 #endif
   IF (INFO .NE. 0) RETURN
+#endif
   IF (MOD(N, 2) .EQ. 0) THEN
      INFO = (N / 2) * (N - 1)
   ELSE ! N odd

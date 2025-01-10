@@ -1,3 +1,4 @@
+#ifndef NDEBUG
   J = 0
   I = 2 * B
   IF (LDW .LT. B) J = -10
@@ -11,14 +12,16 @@
      INFO = J
      RETURN
   END IF
+#endif
   I = M / B
+#ifndef NDEBUG
   IF (Q .GT. I) J = -6
   IF (MOD(M, B) .NE. 0) J = -2
   IF (J .NE. 0) THEN
      INFO = J
      RETURN
   END IF
-
+#endif
   DO J = 1, I
      IF ((INFO .NE. 0) .AND. ((J .EQ. P) .OR. (J .EQ. Q))) CYCLE
      GI = (P - 1) * B + 1

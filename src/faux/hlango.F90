@@ -1,10 +1,11 @@
   S = ZERO
   I = INFO
   INFO = 0
+#ifndef NDEBUG
   IF (LDG .LT. N) INFO = -3
   IF (N .LT. 0) INFO = -1
   IF (INFO .NE. 0) RETURN
-
+#endif
   IF (I .GE. 0) THEN
      !$OMP PARALLEL DO DEFAULT(NONE) PRIVATE(I,J,SC,SM) SHARED(G,N) COLLAPSE(2) REDUCTION(MAX:S) IF(I .NE. 0)
      DO J = 1, N

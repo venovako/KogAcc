@@ -1,10 +1,12 @@
   I = INFO
   INFO = 0
+#ifndef NDEBUG
   IF (LDW .LT. M) INFO = -6
   IF (LDG .LT. M) INFO = -4
   IF (N .LT. 0) INFO = -2
   IF (M .LT. 0) INFO = -1
   IF (INFO .NE. 0) RETURN
+#endif
   IF (M .EQ. 0) RETURN
   IF (N .EQ. 0) RETURN
 
@@ -13,7 +15,7 @@
      INFO = MIN(INFO, 0)
      IF (INFO .EQ. 0) THEN
         DO I = 1, M
-           H = CR_HYPOT(REAL(G(I,J)), AIMAG(G(I,J)))
+           H = ABS(G(I,J))
            IF (.NOT. (H .LE. HUGE(H))) THEN
               INFO = MIN(INFO, -3)
               EXIT

@@ -36,10 +36,12 @@ SUBROUTINE SMKD(N, G, LDG, D, O, INFO)
 
   L = INFO
   INFO = 0
+#ifndef NDEBUG
   IF (LDG .LT. N) INFO = -3
   IF (N .LT. 0) INFO = -1
   IF (N .GT. 16384) INFO = -1
   IF (INFO .NE. 0) RETURN
+#endif
 #define XENC DENC
 #include "gmkd.F90"
 END SUBROUTINE SMKD

@@ -68,10 +68,6 @@ OBJS_BLKSVD=\
 ../obj/$(PLAT)/ibdims.$(OXT)
 
 OBJS_DYNORD=\
-../obj/$(PLAT)/sabsg.$(OXT)\
-../obj/$(PLAT)/cabsg.$(OXT)\
-../obj/$(PLAT)/dabsg.$(OXT)\
-../obj/$(PLAT)/zabsg.$(OXT)\
 ../obj/$(PLAT)/snrm2o.$(OXT)\
 ../obj/$(PLAT)/cnrm2o.$(OXT)\
 ../obj/$(PLAT)/dnrm2o.$(OXT)\
@@ -82,14 +78,6 @@ OBJS_DYNORD=\
 ../obj/$(PLAT)/znrm2b.$(OXT)\
 ../obj/$(PLAT)/sb2enc.$(OXT)\
 ../obj/$(PLAT)/db2enc.$(OXT)\
-../obj/$(PLAT)/smkwpq.$(OXT)\
-../obj/$(PLAT)/cmkwpq.$(OXT)\
-../obj/$(PLAT)/dmkwpq.$(OXT)\
-../obj/$(PLAT)/zmkwpq.$(OXT)\
-../obj/$(PLAT)/smk3pq.$(OXT)\
-../obj/$(PLAT)/cmk3pq.$(OXT)\
-../obj/$(PLAT)/dmk3pq.$(OXT)\
-../obj/$(PLAT)/zmk3pq.$(OXT)\
 ../obj/$(PLAT)/smkd.$(OXT)\
 ../obj/$(PLAT)/dmkd.$(OXT)\
 ../obj/$(PLAT)/xmkd.$(OXT)\
@@ -102,13 +90,7 @@ OBJS_DYNORD=\
 ../obj/$(PLAT)/smkbpq.$(OXT)\
 ../obj/$(PLAT)/dmkbpq.$(OXT)\
 ../obj/$(PLAT)/cmkbpq.$(OXT)\
-../obj/$(PLAT)/zmkbpq.$(OXT)\
-../obj/$(PLAT)/spqcmp.$(OXT)\
-../obj/$(PLAT)/dpqcmp.$(OXT)\
-../obj/$(PLAT)/spqmrg.$(OXT)\
-../obj/$(PLAT)/dpqmrg.$(OXT)\
-../obj/$(PLAT)/spqsrt.$(OXT)\
-../obj/$(PLAT)/dpqsrt.$(OXT)
+../obj/$(PLAT)/zmkbpq.$(OXT)
 
 OBJS_KSVD2=\
 ../obj/$(PLAT)/sksvd2.$(OXT)\
@@ -216,9 +198,7 @@ EXES_DYNORD=\
 ../bin/$(PLAT)/smkbpq.exe\
 ../bin/$(PLAT)/dmkbpq.exe\
 ../bin/$(PLAT)/cmkbpq.exe\
-../bin/$(PLAT)/zmkbpq.exe\
-../bin/$(PLAT)/spqsort.exe\
-../bin/$(PLAT)/dpqsort.exe
+../bin/$(PLAT)/zmkbpq.exe
 
 EXES_KSVD2=\
 ../bin/$(PLAT)/sksvd2.exe\

@@ -1,11 +1,15 @@
   I = INFO
   INFO = 0
+#ifndef NDEBUG
   IF (LDG .LT. N) INFO = -4
   IF (N .LT. 0) INFO = -2
   IF (K .LT. 0) INFO = -1
+#endif
   L = N / 2
+#ifndef NDEBUG
   IF (K .GT. L) INFO = -1
   IF (INFO .NE. 0) RETURN
+#endif
   IF (N .EQ. 0) RETURN
 
   IF (K .GT. 0) L = K

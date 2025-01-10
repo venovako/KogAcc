@@ -1,3 +1,4 @@
+#ifndef NDEBUG
   I = 0
   L = 2 * B
   IF (NB .LT. 0) I = -13
@@ -13,10 +14,11 @@
      INFO = -2
      RETURN
   END IF
-  IF (NB .EQ. 0) RETURN
+#endif
   ! GB is assumed to be unpacked back to G prior to invoking this routine.
   L = INFO
   INFO = 0
+  IF (NB .EQ. 0) RETURN
   IF (L .LT. 0) THEN
      ! TODO: consider updating U and V from the right concurrently.
      IF (LDU .GT. 0) THEN

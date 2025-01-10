@@ -22,9 +22,11 @@ SUBROUTINE XMKDPQ(N, M, D, O, INFO)
   ! find the remaining pivots
   L = INFO
   INFO = 0
+#ifndef NDEBUG
   IF (N .LT. 0) INFO = -1
   IF (M .LT. 0) INFO = -2
   IF (INFO .NE. 0) RETURN
+#endif
   IF (N .EQ. 0) RETURN
   IF (M .EQ. 0) RETURN
   W = D(M+1)

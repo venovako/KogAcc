@@ -1,7 +1,9 @@
   Z = INFO
   INFO = 0
+#ifndef NDEBUG
   IF (N .LT. 0) INFO = -2
   IF (INFO .NE. 0) RETURN
+#endif
   FLIP = .FALSE.
   L = 1
 

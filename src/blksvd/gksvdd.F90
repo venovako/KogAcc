@@ -193,10 +193,12 @@
         L = (N * (N - 1)) / 2
         P = OD(1,J)
         Q = OD(2,J)
+#ifndef NDEBUG
         IF ((P .LE. 0) .OR. (Q .LE. P) .OR. (P .GE. N) .OR. (Q .GT. N)) THEN
            M = M + 1
            CYCLE
         END IF
+#endif
         G2(1,1) = G(P,P)
         G2(2,1) = G(Q,P)
         G2(1,2) = G(P,Q)
@@ -280,8 +282,13 @@
 
      IF (M .GT. 0) THEN
         ! optionally scale G
+#ifdef NDEBUG
+        L = 0
+        !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
+#else
         L = -1
         !$ IF (LOMP) L = -OMP_GET_NUM_THREADS() - 1
+#endif
         CALL LANGO(N, G, LDG, GN, L)
         IF (L .NE. 0) THEN
            INFO = -3
@@ -302,8 +309,13 @@
 
         ! optionally scale U
         IF (LUACC .AND. (.NOT. LUSID)) THEN
+#ifdef NDEBUG
+           L = 0
+           !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
+#else
            L = -1
            !$ IF (LOMP) L = -OMP_GET_NUM_THREADS() - 1
+#endif
            CALL LANGO(N, U, LDU, UN, L)
            IF (L .NE. 0) THEN
               INFO = -5
@@ -325,8 +337,13 @@
 
         ! optionally scale V
         IF (LVACC .AND. (.NOT. LVSID)) THEN
+#ifdef NDEBUG
+           L = 0
+           !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
+#else
            L = -1
            !$ IF (LOMP) L = -OMP_GET_NUM_THREADS() - 1
+#endif
            CALL LANGO(N, V, LDV, VN, L)
            IF (L .NE. 0) THEN
               INFO = -7

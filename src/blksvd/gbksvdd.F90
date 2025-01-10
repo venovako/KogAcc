@@ -1,5 +1,6 @@
   I = INFO
   INFO = 0
+#ifndef NDEBUG
   IF (LD .LT. 0) INFO = -12
   IF (LW .LT. 0) INFO = -10
   IF (LDB .LT. 0) INFO = -7
@@ -7,6 +8,7 @@
   IF (B2 .LT. 2) INFO = -2
   IF ((JS .NE. 3) .AND. (JS .NE. 6)) INFO = -1
   IF (INFO .NE. 0) RETURN
+#endif
   IF (NB .EQ. 0) RETURN
   J = 0
   IF (I .GE. 0) THEN

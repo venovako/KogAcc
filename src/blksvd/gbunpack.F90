@@ -1,5 +1,6 @@
   L = INFO
   INFO = 0
+#ifndef NDEBUG
   N = 2 * B
   IF (L .LT. 0) INFO = -9
   IF (NB .LT. 0) INFO = -7
@@ -8,6 +9,7 @@
   IF (LDG .LT. M) INFO = -3
   IF (M .LT. (NB * N)) INFO = -1
   IF (INFO .NE. 0) RETURN
+#endif
   IF (NB .EQ. 0) RETURN
 
   !$OMP PARALLEL DO DEFAULT(NONE) SHARED(M,G,B,GB,LDB,NB,O) PRIVATE(I,J,K,L,N,P,Q) REDUCTION(MIN:INFO) IF(L .NE. 0)

@@ -1,7 +1,9 @@
   INFO = 0
+#ifndef NDEBUG
   IF (LDG .LT. N) INFO = -3
   IF (N .LT. 0) INFO = -1
   IF (INFO .NE. 0) RETURN
+#endif
   IF (N .EQ. 0) RETURN
 
   DO J = 1, N

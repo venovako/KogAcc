@@ -1,5 +1,6 @@
   L = INFO
   INFO = 0
+#ifndef NDEBUG
   N = 2 * B
   IF (L .LT. 0) INFO = -9
   IF (NB .LT. 0) INFO = -7
@@ -8,6 +9,7 @@
   IF (LDG .LT. M) INFO = -3
   IF (M .LT. (NB * N)) INFO = -1
   IF (INFO .NE. 0) RETURN
+#endif
   IF (NB .EQ. 0) RETURN
 
   !$OMP PARALLEL DO DEFAULT(NONE) SHARED(M,G,B,GB,LDB,NB,O) PRIVATE(I,J,K,L,N,P,Q) REDUCTION(MIN:INFO) IF(L .NE. 0)
@@ -32,10 +34,12 @@
            DO I = 1, B
               GB(B+I,J,K) = G(L+I,N+J)
            END DO
+#ifndef NDEBUG
            !DIR$ VECTOR ALWAYS
            DO I = 2*B+1, LDB
               GB(I,J,K) = ZERO
            END DO
+#endif
         END DO
         L = (P - 1) * B
         N = (Q - 1) * B
@@ -52,10 +56,12 @@
            DO I = 1, B
               GB(B+I,B+J,K) = G(L+I,N+J)
            END DO
+#ifndef NDEBUG
            !DIR$ VECTOR ALWAYS
            DO I = 2*B+1, LDB
               GB(I,B+J,K) = ZERO
            END DO
+#endif
         END DO
         INFO = MIN(INFO, 0)
      END IF

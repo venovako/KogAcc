@@ -190,19 +190,19 @@
   ! initialize the counters
   TM = 0_INT64
   TT = 0_INT64
-#ifndef NDEBUG
-  WRITE (OUTPUT_UNIT,*) '"STEP","GN","UN","VN","PAIRS","OFF_G_F","BIG_TRANS"'
-  FLUSH(OUTPUT_UNIT)
+#ifdef PRINT0UT
+  WRITE (PRINT0UT,*) '"STEP","GN","UN","VN","PAIRS","OFF_G_F","BIG_TRANS"'
+  FLUSH(PRINT0UT)
 #endif
 
   DO STP = 0, MRQSTP-1
      T = STP + 1
-#ifndef NDEBUG
-     WRITE (OUTPUT_UNIT,'(I10)',ADVANCE='NO') T
-     WRITE (OUTPUT_UNIT,9,ADVANCE='NO') ',', GN
-     WRITE (OUTPUT_UNIT,9,ADVANCE='NO') ',', UN
-     WRITE (OUTPUT_UNIT,9,ADVANCE='NO') ',', VN
-     FLUSH(OUTPUT_UNIT)
+#ifdef PRINT0UT
+     WRITE (PRINT0UT,'(I10)',ADVANCE='NO') T
+     WRITE (PRINT0UT,9,ADVANCE='NO') ',', GN
+     WRITE (PRINT0UT,9,ADVANCE='NO') ',', UN
+     WRITE (PRINT0UT,9,ADVANCE='NO') ',', VN
+     FLUSH(PRINT0UT)
 #endif
 #ifdef ANIMATE
      IF (C_ASSOCIATED(CTX)) L = INT(PVN_RVIS_FRAME(CTX, G, LDF))
@@ -217,10 +217,10 @@
         INFO = -11
         RETURN
      END IF
-#ifndef NDEBUG
-     WRITE (OUTPUT_UNIT,'(A,I5)',ADVANCE='NO') ',', I
-     WRITE (OUTPUT_UNIT,9,ADVANCE='NO') ',', -ONE
-     FLUSH(OUTPUT_UNIT)
+#ifdef PRINT0UT
+     WRITE (PRINT0UT,'(A,I5)',ADVANCE='NO') ',', I
+     WRITE (PRINT0UT,9,ADVANCE='NO') ',', -ONE
+     FLUSH(PRINT0UT)
 #endif
 
      ! compute and apply the transformations
@@ -229,10 +229,12 @@
      DO J = 1, I
         P = R(1,J)
         Q = R(2,J)
+#ifndef NDEBUG
         IF ((P .LE. 0) .OR. (Q .LE. P) .OR. (P .GE. N) .OR. (Q .GT. N)) THEN
            M = MAX(M, J * 10)
            CYCLE
         END IF
+#endif
         G2(1,1) = G(P,P)
         G2(2,1) = G(Q,P)
         G2(1,2) = G(P,Q)
@@ -321,16 +323,21 @@
         INFO = -20
         RETURN
      END IF
-#ifndef NDEBUG
-     WRITE (OUTPUT_UNIT,'(A,I5)') ',', M
-     FLUSH(OUTPUT_UNIT)
+#ifdef PRINT0UT
+     WRITE (PRINT0UT,'(A,I5)') ',', M
+     FLUSH(PRINT0UT)
 #endif
      TT = TT + T
      IF (M .GT. 0) THEN
         TM = TM + M
         ! optionally scale G
+#ifdef NDEBUG
+        L = 0
+        !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
+#else
         L = -1
         !$ IF (LOMP) L = -OMP_GET_NUM_THREADS() - 1
+#endif
         CALL LANGO(N, G, LDG, GN, L)
         IF (L .NE. 0) THEN
            INFO = -3
@@ -350,8 +357,13 @@
         END IF
         ! optionally scale U
         IF (LUACC .AND. (.NOT. LUSID)) THEN
+#ifdef NDEBUG
+           L = 0
+           !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
+#else
            L = -1
            !$ IF (LOMP) L = -OMP_GET_NUM_THREADS() - 1
+#endif
            CALL LANGO(N, U, LDU, UN, L)
            IF (L .NE. 0) THEN
               INFO = -5
@@ -372,8 +384,13 @@
         END IF
         ! optionally scale V
         IF (LVACC .AND. (.NOT. LVSID)) THEN
+#ifdef NDEBUG
+           L = 0
+           !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
+#else
            L = -1
            !$ IF (LOMP) L = -OMP_GET_NUM_THREADS() - 1
+#endif
            CALL LANGO(N, V, LDV, VN, L)
            IF (L .NE. 0) THEN
               INFO = -7
@@ -397,9 +414,9 @@
      T = STP + 1
      IF (MOD(T, NS) .EQ. 0) THEN
         L = T / NS
-#ifndef NDEBUG
-        WRITE (OUTPUT_UNIT,*) 'sweep', L, ' =', TM, '/', TT, ' transf.'
-        FLUSH(OUTPUT_UNIT)
+#ifdef PRINT0UT
+        WRITE (PRINT0UT,*) 'sweep', L, ' =', TM, '/', TT, ' transf.'
+        FLUSH(PRINT0UT)
 #endif
         IF (TM .EQ. 0_INT64) EXIT
         TM = 0_INT64

@@ -1,19 +1,25 @@
   L = INFO
   INFO = 0
+#ifndef NDEBUG
   IF (B .LT. 1) INFO = -4
   IF (LDG .LT. M) INFO = -3
   IF (M .LT. 0) INFO = -1
   IF (INFO .NE. 0) RETURN
+#endif
   IF (M .EQ. 0) RETURN
+#ifndef NDEBUG
   IF (MOD(M, B) .NE. 0) THEN
      INFO = -4
      RETURN
   END IF
+#endif
   N = M / B
+#ifndef NDEBUG
   IF (N .LE. 0) THEN
      INFO = -2
      RETURN
   END IF
+#endif
   IF (MOD(N, 2) .EQ. 0) THEN
      K = (N / 2) * (N - 1)
   ELSE ! N ood

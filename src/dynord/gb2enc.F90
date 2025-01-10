@@ -1,7 +1,9 @@
   L = INFO
   INFO = 0
+#ifndef NDEBUG
   IF (N .LT. 0) INFO = -1
   IF (INFO .NE. 0) RETURN
+#endif
   IF (N .EQ. 0) RETURN
 
   IF (MOD(N, 2) .EQ. 0) THEN
