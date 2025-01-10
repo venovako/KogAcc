@@ -46,6 +46,7 @@ else # !MKLROOT
 LDFLAGS += -L$(HOME)/lapack-$(ABI) -ltmglib -llapack -lrefblas
 endif # ?MKLROOT
 else # LAPACK != sequential
+# LAPACK == parallel not meant to be used with gfortran for now
 LDFLAGS += -L$(LAPACK) -ltmglib -llapack -lrefblas
 endif # LAPACK ?= sequential
 endif # LAPACK

@@ -3,7 +3,7 @@
   LOMP = .FALSE.
   JS0 = IAND(JOB, 7)
   JS1 = ISHFT(IAND(JOB, 56), -3)
-  !$ IF ((JS1 .GE. 2) .AND. (JS1 .LE. 4) .AND. (M .GE. 4)) LOMP = .TRUE.
+  !$ IF ((JS1 .GE. 2) .AND. (JS1 .LE. 4)) LOMP = .TRUE.
 
 #ifdef NDEBUG
   I = 6
@@ -282,7 +282,7 @@
            J = 0
            !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
         END IF
-        CALL BKSVDD(N, NB, W(IGB), W(IUB), W(IVB), LDB, SV, W(IWB), LW, D, LD, O(1,IOD), O(1,IO0), O(1,R), J)
+        CALL BKSVDD(JS0, N, NB, W(IGB), W(IUB), W(IVB), LDB, SV, W(IWB), LW, D, LD, O(1,IOD), O(1,IO0), O(1,R), J)
      ELSE ! not dynamic ordering
         J = 0
         !$ IF (LOMP) J = OMP_GET_NUM_THREADS()

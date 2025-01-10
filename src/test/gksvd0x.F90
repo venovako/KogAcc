@@ -16,7 +16,7 @@
   IF ((J .LT. 0) .OR. (J .GT. 7)) STOP 'J'
   IF (N .LE. 0) STOP 'N'
   L = 0
-  !$ IF ((J .GE. 2) .AND. (J .LE. 4) .AND. (N .GE. 4)) L = 1
+  !$ IF ((J .GE. 2) .AND. (J .LE. 4)) L = 1
   IF ((J .EQ. 2) .OR. (J .EQ. 4) .OR. (J .EQ. 5) .OR. (J .EQ. 7)) THEN
      IF (MOD(N, 2) .EQ. 0) THEN
         M = N

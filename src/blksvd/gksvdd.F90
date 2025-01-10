@@ -2,7 +2,7 @@
   INFO = 0
   LOMP = .FALSE.
   J = IAND(JOB, 7)
-  !$ IF ((J .EQ. 3) .AND. (N .GE. 4)) LOMP = .TRUE.
+  !$ IF (J .EQ. 3) LOMP = .TRUE.
 
   W(1) = ONE
   W(2) = ONE
