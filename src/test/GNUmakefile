@@ -85,6 +85,12 @@
 ../bin/$(PLAT)/zrnd2g.exe: test/zrnd2t.F90 test/hrnd2t.F90 ../lib/$(PLAT)/libksvd2.a ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FLFLAGS) -o zrnd2g.exe ../../../src/test/zrnd2t.F90 -L../../../lib/$(PLAT) -lksvd2 -lfaux $(LDFLAGS)
 
+../bin/$(PLAT)/minmax.exe: test/minmax.F90 $(MKFS) test/GNUmakefile
+	cd ../bin/$(PLAT) && $(FC) $(FLFLAGS) -o minmax.exe ../../../src/test/minmax.F90 $(LDFLAGS)
+
+../bin/$(PLAT)/seedsz.exe: test/seedsz.F90 $(MKFS) test/GNUmakefile
+	cd ../bin/$(PLAT) && $(FC) $(FLFLAGS) -o seedsz.exe ../../../src/test/seedsz.F90 $(LDFLAGS)
+
 ../bin/$(PLAT)/sthalt.exe: test/sthaltx.F90 ../lib/$(PLAT)/libfaux.a $(MKFS) test/GNUmakefile
 	cd ../bin/$(PLAT) && $(FC) $(FLFLAGS) -o sthalt.exe ../../../src/test/sthaltx.F90 -L../../../lib/$(PLAT) -lfaux $(LDFLAGS)
 

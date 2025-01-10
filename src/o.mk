@@ -224,6 +224,8 @@ EXES_TEST=\
 ../bin/$(PLAT)/crnd.exe\
 ../bin/$(PLAT)/drnd.exe\
 ../bin/$(PLAT)/zrnd.exe\
+../bin/$(PLAT)/minmax.exe\
+../bin/$(PLAT)/seedsz.exe\
 ../bin/$(PLAT)/sran2u.exe\
 ../bin/$(PLAT)/sran2g.exe\
 ../bin/$(PLAT)/cran2g.exe\
