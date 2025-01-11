@@ -1,0 +1,54 @@
+!>@brief \b DMMJIT prepares a jitted matrix multiply.
+SUBROUTINE DMMJIT(TRANSA, TRANSB, M, N, K, ALPHA, LDA, LDB, BETA, LDC, JITTER, JFNPTR, INFO)
+  USE, INTRINSIC :: ISO_C_BINDING
+#ifdef MKL
+#if (MKL .EQ. 1)
+  USE MKL_JIT_BLAS_LP64
+#else
+  USE MKL_JIT_BLAS_ILP64
+#endif
+#endif
+  IMPLICIT NONE
+  CHARACTER, INTENT(IN) :: TRANSA, TRANSB
+  INTEGER, INTENT(IN) :: M, N, K, LDA, LDB, LDC
+  REAL(KIND=c_double), INTENT(IN) :: ALPHA, BETA
+  TYPE(c_ptr), INTENT(OUT) :: JITTER
+  TYPE(c_funptr), INTENT(OUT) :: JFNPTR
+  INTEGER, INTENT(OUT) :: INFO
+
+  JITTER = c_null_ptr
+  JFNPTR = c_null_funptr
+#ifdef MKL
+  INFO = INT(MKL_JIT_CREATE_DGEMM(JITTER, TRANSA, TRANSB, M, N, K, ALPHA, LDA, LDB, BETA, LDC))
+  IF (INFO .EQ. INT(MKL_JIT_SUCCESS)) THEN
+     INFO = 0
+  ELSE IF (INFO .EQ. INT(MKL_NO_JIT)) THEN
+     INFO = 1
+  ELSE IF (INFO .EQ. INT(MKL_JIT_ERROR)) THEN
+     INFO = -11
+  ELSE ! should never happen
+     INFO = -13
+  END IF
+  IF (INFO .LT. 0) THEN
+     IF (C_ASSOCIATED(JITTER)) THEN
+        IF (INT(MKL_JIT_DESTROY(JITTER)) .NE. INT(MKL_JIT_SUCCESS)) INFO = -14
+        JITTER = c_null_ptr
+     END IF
+     RETURN
+  END IF
+  IF (C_ASSOCIATED(JITTER)) THEN
+     JFNPTR = MKL_JIT_GET_DGEMM_PTR(JITTER)
+     IF (.NOT. C_ASSOCIATED(JFNPTR)) THEN
+        IF (INT(MKL_JIT_DESTROY(JITTER)) .EQ. INT(MKL_JIT_SUCCESS)) THEN
+           INFO = -12
+        ELSE ! should never happen
+           INFO = -15
+        END IF
+     END IF
+  ELSE ! should never happen
+     INFO = -16
+  END IF
+#else
+  INFO = -17
+#endif
+END SUBROUTINE DMMJIT
