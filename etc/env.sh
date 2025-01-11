@@ -34,23 +34,27 @@ then
 	unset MKL_DYNAMIC
 fi
 export MKL_DYNAMIC=FALSE
-#if [ -n "${OMP_NESTED}" ]
-#then
-#	unset OMP_NESTED
-#fi
-#if [ "$1" = "2" ]
-#then
-#	export OMP_NESTED=TRUE
-#else
-#	export OMP_NESTED=FALSE
-#fi
+if [ -n "${OMP_NESTED}" ]
+then
+	unset OMP_NESTED
+fi
 if [ -n "${OMP_MAX_ACTIVE_LEVELS}" ]
 then
 	unset OMP_MAX_ACTIVE_LEVELS
 fi
 if [ "$1" = "2" ]
 then
-	export OMP_MAX_ACTIVE_LEVELS=2
+	if [ "$2" = "old" ]
+	then
+		export OMP_NESTED=TRUE
+	else
+		export OMP_MAX_ACTIVE_LEVELS=2
+	fi
 else
-	export OMP_MAX_ACTIVE_LEVELS=1
+	if [ "$1" = "old" ]
+	then
+		export OMP_NESTED=FALSE
+	else
+		export OMP_MAX_ACTIVE_LEVELS=1
+	fi
 fi

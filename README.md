@@ -58,7 +58,7 @@ The `etc/env.sh` script should be sourced, without arguments or with a single ar
 source etc/env.sh
 ```
 before running any OpenMP-parallel executable.
-The argument `2` enables the nested, two-level OpenMP parallelism for the block-method executables `?ksvd1.exe`.
+The argument `2` enables the experimental, nested, two-level OpenMP parallelism for the block-method executables `?ksvd1.exe`.
 
 ## TODO
 
