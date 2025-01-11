@@ -1,3 +1,4 @@
+!>@brief SEEDSZ prints out the seed size.
 PROGRAM SEEDSZ
   IMPLICIT NONE
   INTEGER :: SZ

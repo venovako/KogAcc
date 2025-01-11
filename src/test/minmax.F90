@@ -1,3 +1,4 @@
+!>@brief MINMAX plays with the MIN and MAX intrinsics.
 PROGRAM MINMAX
   IMPLICIT NONE
   REAL, PARAMETER :: ZERO = 0.0, MZERO = -0.0
