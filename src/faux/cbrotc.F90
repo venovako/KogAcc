@@ -1,5 +1,5 @@
 !>@brief \b CBROTC postmultiplies the block-columns (P,Q) of G by R.
-PURE SUBROUTINE CBROTC(M, B, G, LDG, P, Q, R, LDB, W, LDW, INFO)
+SUBROUTINE CBROTC(M, B, G, LDG, P, Q, R, LDB, W, LDW, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
   IMPLICIT NONE
 #ifdef LAPACK

@@ -1,5 +1,5 @@
 !>@brief \b CBROTR premultiplies the block-rows (P,Q) of G by R.
-PURE SUBROUTINE CBROTR(M, B, G, LDG, P, Q, R, LDB, W, LDW, INFO)
+SUBROUTINE CBROTR(M, B, G, LDG, P, Q, R, LDB, W, LDW, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL32
   IMPLICIT NONE
 #ifdef LAPACK

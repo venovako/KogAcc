@@ -34,25 +34,24 @@ LDFLAGS=-rdynamic -static-libgcc -static-libgfortran -static-libquadmath #-pie
 endif # ?STATIC
 ifdef LAPACK
 FCFLAGS += -DLAPACK=$(LAPACK)
-ifeq ($(LAPACK),sequential)
 ifdef MKLROOT
 ifeq ($(ABI),ilp64)
-FCFLAGS += -DMKL=2
+FCFLAGS += -DMKL_ILP64=$(LAPACK)
 else # lp64
-FCFLAGS += -DMKL=1
+FCFLAGS += -DMKL_LP64=$(LAPACK)
 endif # ?ABI
 ifeq ($(OS),Darwin)
-LDFLAGS += ${MKLROOT}/lib/libmkl_intel_$(ABI).a ${MKLROOT}/lib/libmkl_sequential.a ${MKLROOT}/lib/libmkl_core.a
+LDFLAGS += ${MKLROOT}/lib/libmkl_intel_$(ABI).a ${MKLROOT}/lib/libmkl_$(LAPACK).a ${MKLROOT}/lib/libmkl_core.a
+ifeq ($(LAPACK),intel_thread)
+LDFLAGS += ${CMPLR_ROOT}/mac/compiler/lib/libiomp5.a
+endif # intel_thread
 else # Linux
-LDFLAGS += -Wl,--start-group ${MKLROOT}/lib/libmkl_gf_$(ABI).a ${MKLROOT}/lib/libmkl_sequential.a ${MKLROOT}/lib/libmkl_core.a -Wl,--end-group
+LDFLAGS += -Wl,--start-group ${MKLROOT}/lib/libmkl_gf_$(ABI).a ${MKLROOT}/lib/libmkl_$(LAPACK).a ${MKLROOT}/lib/libmkl_core.a -Wl,--end-group
 LDFLAGS += $(shell if [ -L /usr/lib64/libmemkind.so ]; then echo '-lmemkind'; fi)
 endif # ?Darwin
 else # !MKLROOT
-LDFLAGS += -L$(HOME)/lapack-$(ABI) -ltmglib -llapack -lrefblas
-endif # ?MKLROOT
-else # LAPACK != sequential
 LDFLAGS += -L$(LAPACK) -ltmglib -llapack -lrefblas
-endif # LAPACK ?= sequential
+endif # ?MKLROOT
 endif # LAPACK
 LDFLAGS += -L../../../../libpvn/src -lpvn -ldl
 GFC=$(FC)

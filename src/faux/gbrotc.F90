@@ -1,3 +1,6 @@
+#if (defined(MKL_DIRECT_CALL_SEQ) || defined(MKL_DIRECT_CALL))
+#include "mkl_direct_call.fi"
+#endif
 #ifndef NDEBUG
   I = 0
   J = 2 * B
