@@ -7,4 +7,3 @@ else # ifx or ifort or nvfortran
 FCFLAGS += -i8
 endif # ?xlf
 endif # ?gfortran
-FCFLAGS += -DMKL_ILP64=$(ABI)

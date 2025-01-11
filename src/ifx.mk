@@ -35,10 +35,12 @@ endif # ?STATIC
 ifdef LAPACK
 FCFLAGS += -DLAPACK=$(LAPACK)
 ifeq ($(ABI),ilp64)
+FCFLAGS += -DMKL=2
 LDFLAGS += -qmkl-$(ABI)=$(LAPACK)
-else # !ilp64
+else # lp64
+FCFLAGS += -DMKL=1
 LDFLAGS += -qmkl=$(LAPACK)
-endif # ?ilp64
+endif # ?ABI
 LDFLAGS += $(shell if [ -L /usr/lib64/libmemkind.so ]; then echo '-lmemkind'; fi)
 endif # LAPACK
 LDFLAGS += -L../../../../libpvn/src -lpvn -ldl $(realpath $(shell gcc -print-file-name=libquadmath.a))

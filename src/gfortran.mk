@@ -36,6 +36,11 @@ ifdef LAPACK
 FCFLAGS += -DLAPACK=$(LAPACK)
 ifeq ($(LAPACK),sequential)
 ifdef MKLROOT
+ifeq ($(ABI),ilp64)
+FCFLAGS += -DMKL=2
+else # lp64
+FCFLAGS += -DMKL=1
+endif # ?ABI
 ifeq ($(OS),Darwin)
 LDFLAGS += ${MKLROOT}/lib/libmkl_intel_$(ABI).a ${MKLROOT}/lib/libmkl_sequential.a ${MKLROOT}/lib/libmkl_core.a
 else # Linux
@@ -46,7 +51,6 @@ else # !MKLROOT
 LDFLAGS += -L$(HOME)/lapack-$(ABI) -ltmglib -llapack -lrefblas
 endif # ?MKLROOT
 else # LAPACK != sequential
-# LAPACK == parallel not meant to be used with gfortran for now
 LDFLAGS += -L$(LAPACK) -ltmglib -llapack -lrefblas
 endif # LAPACK ?= sequential
 endif # LAPACK
