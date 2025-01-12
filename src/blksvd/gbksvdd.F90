@@ -27,8 +27,10 @@
            INFO = MIN(INFO, -100 * I - 98)
         ELSE IF (.NOT. (WB(3,I) .LE. HUGE(WB(3,I)))) THEN
            INFO = MIN(INFO, -100 * I - 97)
+#ifndef NDEBUG
         ELSE ! OK
            INFO = MIN(INFO, 0)
+#endif
         END IF
      END DO
 !$OMP END PARALLEL DO
@@ -49,8 +51,10 @@
            INFO = MIN(INFO, -100 * I - 98)
         ELSE IF (.NOT. (WB(3,I) .LE. HUGE(WB(3,I)))) THEN
            INFO = MIN(INFO, -100 * I - 97)
+#ifndef NDEBUG
         ELSE ! OK
            INFO = MIN(INFO, 0)
+#endif
         END IF
      END DO
 !$OMP END PARALLEL DO

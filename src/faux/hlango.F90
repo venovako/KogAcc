@@ -23,11 +23,7 @@
         DO I = 1, N
            SC = ABS(REAL(G(I,J)))
            SM = ABS(AIMAG(G(I,J)))
-           IF ((.NOT. (SC .LE. HUGE(SC))) .OR. (.NOT. (SM .LE. HUGE(SM)))) THEN
-              INFO = MAX(INFO, (J - 1) * N + I)
-           ELSE ! SC and SM finite
-              INFO = MAX(INFO, 0)
-           END IF
+           IF ((.NOT. (SC .LE. HUGE(SC))) .OR. (.NOT. (SM .LE. HUGE(SM)))) INFO = MAX(INFO, (J - 1) * N + I)
            S = MAX(S, SC, SM)
         END DO
      END DO

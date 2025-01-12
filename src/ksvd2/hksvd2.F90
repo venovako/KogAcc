@@ -22,7 +22,8 @@
   V(1,2) = CMPLX(V12R, V12I, K)
   V(2,2) = CMPLX(V22R, V22I, K)
   IF (KND .LT. 0_c_int) THEN
-     INFO(1) = -HUGE(0)-1
+     INFO(1) = -HUGE(0)
+     INFO(1) = INFO(1) - 1
   ELSE ! all OK
      INFO(1) = INT(ES(1))
   END IF

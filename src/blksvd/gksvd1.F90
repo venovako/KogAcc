@@ -421,12 +421,25 @@
   INFO = BS
 
   ! extract SV from G
+#ifndef NDEBUG
+  I = 0
+  !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,SV,M) PRIVATE(J) REDUCTION(MAX:I) IF(LOMP)
+#else
   !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,SV,M) PRIVATE(J) IF(LOMP)
+#endif
   DO J = 1, M
      SV(J) = G(J,J)
+#ifndef NDEBUG
+     IF (.NOT. (SV(J) .LE. HUGE(SV(J)))) I = MAX(I, J)
+#endif
   END DO
   !$OMP END PARALLEL DO
-
+#ifndef NDEBUG
+  IF (I .NE. 0) THEN
+     INFO = -10
+     RETURN
+  END IF
+#endif
   ! backscale G, U, V
   IF (GS .NE. 0) THEN
      J = 0

@@ -122,14 +122,6 @@ OBJS_FAUX=\
 ../obj/$(PLAT)/zmul.$(OXT)\
 ../obj/$(PLAT)/cfma.$(OXT)\
 ../obj/$(PLAT)/zfma.$(OXT)\
-../obj/$(PLAT)/scp.$(OXT)\
-../obj/$(PLAT)/ccp.$(OXT)\
-../obj/$(PLAT)/dcp.$(OXT)\
-../obj/$(PLAT)/zcp.$(OXT)\
-../obj/$(PLAT)/smm.$(OXT)\
-../obj/$(PLAT)/cmm.$(OXT)\
-../obj/$(PLAT)/dmm.$(OXT)\
-../obj/$(PLAT)/zmm.$(OXT)\
 ../obj/$(PLAT)/sconjt.$(OXT)\
 ../obj/$(PLAT)/cconjt.$(OXT)\
 ../obj/$(PLAT)/dconjt.$(OXT)\
@@ -176,6 +168,18 @@ OBJS_FAUX=\
 ../obj/$(PLAT)/initmm.$(OXT)\
 ../obj/$(PLAT)/jstep.$(OXT)\
 ../obj/$(PLAT)/jsweep.$(OXT)
+
+ifndef LAPACK
+OBJS_FAUX += \
+../obj/$(PLAT)/scp.$(OXT)\
+../obj/$(PLAT)/ccp.$(OXT)\
+../obj/$(PLAT)/dcp.$(OXT)\
+../obj/$(PLAT)/zcp.$(OXT)\
+../obj/$(PLAT)/smm.$(OXT)\
+../obj/$(PLAT)/cmm.$(OXT)\
+../obj/$(PLAT)/dmm.$(OXT)\
+../obj/$(PLAT)/zmm.$(OXT)
+endif
 
 EXES_BLKSVD=\
 ../bin/$(PLAT)/sksvd0.exe\

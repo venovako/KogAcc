@@ -16,30 +16,6 @@
 ../obj/$(PLAT)/zfma.$(OXT): faux/zfma.F90 faux/hfma.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/zfma.F90
 
-../obj/$(PLAT)/scp.$(OXT): faux/scp.F90 faux/gcp.F90 $(MKFS) faux/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/scp.F90
-
-../obj/$(PLAT)/ccp.$(OXT): faux/ccp.F90 faux/gcp.F90 $(MKFS) faux/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/ccp.F90
-
-../obj/$(PLAT)/dcp.$(OXT): faux/dcp.F90 faux/gcp.F90 $(MKFS) faux/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/dcp.F90
-
-../obj/$(PLAT)/zcp.$(OXT): faux/zcp.F90 faux/gcp.F90 $(MKFS) faux/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/zcp.F90
-
-../obj/$(PLAT)/smm.$(OXT): faux/smm.F90 faux/gmm.F90 $(MKFS) faux/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/smm.F90
-
-../obj/$(PLAT)/cmm.$(OXT): faux/cmm.F90 faux/hmm.F90 $(MKFS) faux/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/cmm.F90
-
-../obj/$(PLAT)/dmm.$(OXT): faux/dmm.F90 faux/gmm.F90 $(MKFS) faux/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/dmm.F90
-
-../obj/$(PLAT)/zmm.$(OXT): faux/zmm.F90 faux/hmm.F90 $(MKFS) faux/GNUmakefile
-	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/zmm.F90
-
 ../obj/$(PLAT)/sconjt.$(OXT): faux/sconjt.F90 faux/gconjt.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/sconjt.F90
 
@@ -177,3 +153,29 @@
 
 ../obj/$(PLAT)/jsweep.$(OXT): faux/jsweep.F90 $(MKFS) faux/GNUmakefile
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/jsweep.F90
+
+ifndef LAPACK
+../obj/$(PLAT)/scp.$(OXT): faux/scp.F90 faux/gcp.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/scp.F90
+
+../obj/$(PLAT)/ccp.$(OXT): faux/ccp.F90 faux/gcp.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/ccp.F90
+
+../obj/$(PLAT)/dcp.$(OXT): faux/dcp.F90 faux/gcp.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/dcp.F90
+
+../obj/$(PLAT)/zcp.$(OXT): faux/zcp.F90 faux/gcp.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/zcp.F90
+
+../obj/$(PLAT)/smm.$(OXT): faux/smm.F90 faux/gmm.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/smm.F90
+
+../obj/$(PLAT)/cmm.$(OXT): faux/cmm.F90 faux/hmm.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/cmm.F90
+
+../obj/$(PLAT)/dmm.$(OXT): faux/dmm.F90 faux/gmm.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/dmm.F90
+
+../obj/$(PLAT)/zmm.$(OXT): faux/zmm.F90 faux/hmm.F90 $(MKFS) faux/GNUmakefile
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/zmm.F90
+endif

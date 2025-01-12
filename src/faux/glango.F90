@@ -21,11 +21,7 @@
      DO J = 1, N
         DO I = 1, N
            SC = ABS(G(I,J))
-           IF (.NOT. (SC .LE. HUGE(SC))) THEN
-              INFO = MAX(INFO, (J - 1) * N + I)
-           ELSE ! SC finite
-              INFO = MAX(INFO, 0)
-           END IF
+           IF (.NOT. (SC .LE. HUGE(SC))) INFO = MAX(INFO, (J - 1) * N + I)
            S = MAX(S, SC)
         END DO
      END DO

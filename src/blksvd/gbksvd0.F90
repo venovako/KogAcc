@@ -12,12 +12,12 @@
   J = 0
   !$OMP PARALLEL DO DEFAULT(NONE) SHARED(JS,B2,NB,GB,UB,VB,LDB,SB,WB,OD,OB,O) PRIVATE(I,L) REDUCTION(MIN:INFO,J) IF(I .NE. 0)
   DO I = 1, NB
-     O(1,I) = HUGE(0)
 #ifdef ANIMATE
      DO L = 1, B2
         SB(L,I) = 0.0_K
      END DO
 #endif
+     O(1,I) = HUGE(0)
      O(2,I) = JS + JOB
      CALL KSVD0(O(2,I), B2, GB(1,1,I), LDB, UB(1,1,I), LDB, VB(1,1,I), LDB, SB(1,I), WB(1,I), OB, OD(1,1,I), O(1,I))
      L = MAX(0, O(1,I) - 1)
@@ -31,8 +31,10 @@
         INFO = MIN(INFO, -100 * I - 98)
      ELSE IF (.NOT. (WB(3,I) .LE. HUGE(WB(3,I)))) THEN
         INFO = MIN(INFO, -100 * I - 97)
+#ifndef NDEBUG
      ELSE ! OK
         INFO = MIN(INFO, 0)
+#endif
      END IF
   END DO
   !$OMP END PARALLEL DO

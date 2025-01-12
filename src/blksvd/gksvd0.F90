@@ -418,7 +418,11 @@
         WRITE (PRINT0UT,*) 'sweep', L, ' =', TM, '/', TT, ' transf.'
         FLUSH(PRINT0UT)
 #endif
-        IF (TM .EQ. 0_INT64) EXIT
+        IF (TM .EQ. 0_INT64) THEN
+           ! do not count a fully empty sweep
+           IF (TT .EQ. 0_INT64) L = L - 1
+           EXIT
+        END IF
         TM = 0_INT64
         TT = 0_INT64
      END IF
@@ -435,22 +439,25 @@
 #endif
 
   ! extract SV from G
+#ifndef NDEBUG
   I = 0
   !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,SV,N,GS) PRIVATE(J) REDUCTION(MAX:I) IF(LOMP)
+#else
+  !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,SV,N,GS) PRIVATE(J) IF(LOMP)
+#endif
   DO J = 1, N
      SV(J) = G(J,J)
-     IF (.NOT. (SV(J) .LE. HUGE(SV(J)))) THEN
-        I = MAX(I, J)
-     ELSE ! SV(J) finite
-        I = MAX(I, 0)
-     END IF
+#ifndef NDEBUG
+     IF (.NOT. (SV(J) .LE. HUGE(SV(J)))) I = MAX(I, J)
+#endif
   END DO
   !$OMP END PARALLEL DO
+#ifndef NDEBUG
   IF (I .NE. 0) THEN
      INFO = -9
      RETURN
   END IF
-
+#endif
   ! backscale G, U, V
   IF (GS .NE. 0) THEN
      L = 0
