@@ -52,6 +52,7 @@ J_inner + J_outer * 8
 where `J_inner` and `J_outer` are taken from the table above.
 
 Please, set the block size `B` to at least `4`, for now.
+For both the blocked and the pointwise routines it is recommended that the matrix order be even.
 
 The `etc/env.sh` script should be sourced, without arguments or with a single argument `2`, as:
 ```bash
