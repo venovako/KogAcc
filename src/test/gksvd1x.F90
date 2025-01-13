@@ -129,7 +129,13 @@
   CALL SYSTEM_CLOCK(C1, CR)
   T = REAL(CR, REAL128)
   T = REAL(C1 - C0, REAL128) / T
-  WRITE (OUTPUT_UNIT,'(A,F15.6,A,I11,A)',ADVANCE='NO') 'KSVD1 took ', T, ' s with ', INFO, ' block steps and W=('
+  WRITE (OUTPUT_UNIT,'(A,F15.6,A,I11,A)',ADVANCE='NO') 'KSVD1 took ', T, ' s with ', INFO, ' block '
+  SELECT CASE (ISHFT(IAND(JOB, 56), -3))
+  CASE (3,6)
+     WRITE (OUTPUT_UNIT,'(A)',ADVANCE='NO') 'steps and W=('
+  CASE DEFAULT
+     WRITE (OUTPUT_UNIT,'(A)',ADVANCE='NO') 'sweeps and W=('
+  END SELECT
   WRITE (OUTPUT_UNIT,9) W(1), ',', W(2), ',', W(3), ')'
   FLUSH(OUTPUT_UNIT)
 

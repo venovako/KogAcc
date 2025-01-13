@@ -225,6 +225,7 @@
   FLUSH(PRINTOUT)
 #endif
 
+  MT = 0
   DO BS = 0, L-1
      I = BS + 1
 #ifdef ANIMATE
@@ -310,7 +311,11 @@
      FLUSH(PRINTOUT)
 #endif
      ! CONVERGENCE
-     IF (Q .EQ. 0) EXIT
+     IF (Q .EQ. 0) THEN
+        IF ((JS1 .EQ. 3) .OR. (JS1 .EQ. 6)) EXIT
+     ELSE ! Q .GT. 0
+        MT = MAX(MT, Q)
+     END IF
      ! unpack G
      J = 0
      !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
@@ -421,9 +426,21 @@
            VS = VS + T
         END IF
      END IF
+     IF ((JS1 .NE. 3) .AND. (JS1 .NE. 6) .AND. (MOD(I, S) .EQ. 0)) THEN
+        IF (MT .EQ. 0) EXIT
+        MT = 0
+     END IF
   END DO
   IF (INFO .NE. 0) RETURN
-  INFO = BS
+
+  IF (BS .GE. L) THEN
+     INFO = L
+  ELSE IF ((JS1 .EQ. 3) .OR. (JS1 .EQ. 6)) THEN
+     INFO = BS
+  ELSE ! a (quasi-)cyclic strategy
+     ! do not count a fully empty sweep
+     INFO = (I / S) - 1
+  END IF
 
   ! extract SV from G
 #ifndef NDEBUG
