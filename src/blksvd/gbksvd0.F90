@@ -20,8 +20,7 @@
      O(1,I) = HUGE(0)
      O(2,I) = JS + JOB
      CALL KSVD0(O(2,I), B2, GB(1,1,I), LDB, UB(1,1,I), LDB, VB(1,1,I), LDB, SB(1,I), WB(1,I), OB, OD(1,1,I), O(1,I))
-     L = MAX(0, O(1,I) - 1)
-     J = MIN(J, -L)
+     J = MIN(J, -O(1,I))
      O(2,I) = INT(WB(4,I)) ! GS
      IF (O(1,I) .LT. 0) THEN
         INFO = MIN(INFO, -100 * I + O(1,I))
@@ -31,10 +30,6 @@
         INFO = MIN(INFO, -100 * I - 98)
      ELSE IF (.NOT. (WB(3,I) .LE. HUGE(WB(3,I)))) THEN
         INFO = MIN(INFO, -100 * I - 97)
-#ifndef NDEBUG
-     ELSE ! OK
-        INFO = MIN(INFO, 0)
-#endif
      END IF
   END DO
   !$OMP END PARALLEL DO
