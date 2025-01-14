@@ -34,5 +34,5 @@
   CALL B2ENC(N, W, D, O, INFO)
   IF (INFO .LT. 0) RETURN
   K = INFO
-  INFO = L
+  INFO = -L - 1
   CALL MKDPQ(N, K, D, OD, INFO)

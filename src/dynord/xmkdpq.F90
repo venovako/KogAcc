@@ -34,6 +34,7 @@ SUBROUTINE XMKDPQ(N, M, D, O, INFO)
 
   R = N / 2
   IF (L .EQ. -1) THEN
+     L = 0
      S = M
      DO INFO = 1, R
         CALL XDEC(W, P, Q)
@@ -107,6 +108,7 @@ SUBROUTINE XMKDPQ(N, M, D, O, INFO)
         IF (W .LE. WZERO) EXIT
      END DO
   ELSE ! L .LT. -1
+     L = L + 1
      DO INFO = 1, R
         CALL XDEC(W, P, Q)
         O(1,INFO) = P
