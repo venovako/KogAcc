@@ -62,4 +62,4 @@ GFCFLAGS += -fno-math-errno -fvect-cost-model=unlimited
 else # !NDEBUG
 GFCFLAGS += -finit-local-zero -finit-real=snan -finit-derived -Wcharacter-truncation -Wimplicit-procedure -Wfunction-elimination -Wrealloc-lhs-all
 endif # ?NDEBUG
-GFCFLAGS += -pedantic -Wall -Wextra -Wno-array-temporaries -Wno-compare-reals -Wno-c-binding-type
+GFCFLAGS += -Wall -Wextra -Wno-array-temporaries -Wno-compare-reals -Wno-c-binding-type #-pedantic

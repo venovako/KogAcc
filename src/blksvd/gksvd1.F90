@@ -42,7 +42,12 @@
 #ifdef CLS
   LX = .FALSE.
 #else
-  LX = ((K .EQ. REAL64) .AND. (N .LE. 32))
+  LX = (K .EQ. REAL64)
+#ifdef XSLOW
+  LX = LX .AND. (N .LE. 32)
+#else
+  LX = LX .AND. (N .LT. 128)
+#endif
 #endif
   M_P = M_B / 2
   ! split W

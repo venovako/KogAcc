@@ -23,7 +23,7 @@ FCFLAGS += -fno-math-errno -fvect-cost-model=unlimited
 else # !NDEBUG
 FCFLAGS += -fcheck=all,no-recursion -finit-local-zero -finit-real=snan -finit-derived -Wcharacter-truncation -Wimplicit-procedure -Wfunction-elimination -Wrealloc-lhs-all
 endif # ?NDEBUG
-FCFLAGS += -pedantic -Wall -Wextra -Wno-array-temporaries -Wno-compare-reals -Wno-c-binding-type
+FCFLAGS += -Wall -Wextra -Wno-array-temporaries -Wno-compare-reals -Wno-c-binding-type #-pedantic
 ifdef STATIC
 LDFLAGS=-static
 ifneq ($(STATIC),true)

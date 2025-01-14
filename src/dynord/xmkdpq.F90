@@ -1,5 +1,5 @@
 !>@brief \b XMKDPQ builds at most N/2 pivot index pairs for the next transformation of G.
-SUBROUTINE XMKDPQ(N, M, D, O, INFO)
+PURE SUBROUTINE XMKDPQ(N, M, D, O, INFO)
   USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
   IMPLICIT NONE
   INTERFACE
@@ -35,7 +35,9 @@ SUBROUTINE XMKDPQ(N, M, D, O, INFO)
   R = N / 2
   S = M
   DO INFO = 1, R
+#ifndef NDEBUG
      P = 0; Q = 0
+#endif
      CALL XDEC(W, P, Q)
      O(1,INFO) = P
      O(2,INFO) = Q
@@ -44,7 +46,9 @@ SUBROUTINE XMKDPQ(N, M, D, O, INFO)
      K = 1
      DO WHILE (K .LE. S)
         IF (D(K) .GT. WZERO) THEN
+#ifndef NDEBUG
            I = 0; J = 0
+#endif
            CALL XDEC(D(K), I, J)
            IF ((I .NE. P) .AND. (I .NE. Q) .AND. (J .NE. P) .AND. (J .NE. Q)) THEN
               W = MAX(W, D(K))
