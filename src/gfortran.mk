@@ -17,7 +17,16 @@ ifeq ($(OS),Darwin)
 FCFLAGS += -Wa,-q
 endif # Darwin
 endif # ?ppc64le
-FCFLAGS += -fopenmp -fPIC -fexceptions -fasynchronous-unwind-tables -fno-omit-frame-pointer -ffp-contract=fast -ffree-line-length-none -fstack-arrays
+ifndef PROFILE
+FCFLAGS += -fopenmp
+else # PROFILE
+ifeq ($(PROFILE),0)
+FCFLAGS += -frecursive
+else # PROFILE != 0
+FCFLAGS += -fopenmp
+endif # PROFILE ?= 0
+endif # ?PROFILE
+FCFLAGS += -fPIC -fexceptions -fasynchronous-unwind-tables -fno-omit-frame-pointer -ffp-contract=fast -ffree-line-length-none -fstack-arrays
 ifdef NDEBUG
 FCFLAGS += -fno-math-errno -fvect-cost-model=unlimited
 else # !NDEBUG
