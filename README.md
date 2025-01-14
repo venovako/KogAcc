@@ -61,6 +61,8 @@ source etc/env.sh
 before running any OpenMP-parallel executable.
 The argument `2` enables the experimental, nested, two-level OpenMP parallelism for the block-method executables `?ksvd1.exe`.
 
+Statically linked executables and more can be found [here](https://venovako.eu/KogAcc/).
+
 ## TODO
 
 More testing is generally needed.
