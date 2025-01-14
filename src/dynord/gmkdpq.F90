@@ -15,7 +15,9 @@
   IF (L .EQ. 0) THEN
      L = M
      DO INFO = 1, R
+#ifndef NDEBUG
         P = 0; Q = 0
+#endif
         CALL XDEC(W, P, Q)
         O(1,INFO) = P
         O(2,INFO) = Q
@@ -24,7 +26,9 @@
         K = 1
         DO WHILE (K .LE. L)
            IF (D(K) .GT. WZERO) THEN
+#ifndef NDEBUG
               I = 0; J = 0
+#endif
               CALL XDEC(D(K), I, J)
               IF ((I .NE. P) .AND. (I .NE. Q) .AND. (J .NE. P) .AND. (J .NE. Q)) THEN
                  W = MAX(W, D(K))
@@ -42,7 +46,9 @@
      END DO
   ELSE ! L .NE. 0
      DO INFO = 1, R
+#ifndef NDEBUG
         P = 0; Q = 0
+#endif
         CALL XDEC(W, P, Q)
         O(1,INFO) = P
         O(2,INFO) = Q
@@ -51,7 +57,9 @@
         !$OMP PARALLEL DO DEFAULT(NONE) SHARED(D,M,P,Q) PRIVATE(I,J,K) REDUCTION(MAX:W)
         DO K = 1, M
            IF (D(K) .GT. WZERO) THEN
+#ifndef NDEBUG
               I = 0; J = 0
+#endif
               CALL XDEC(D(K), I, J)
               IF ((I .NE. P) .AND. (I .NE. Q) .AND. (J .NE. P) .AND. (J .NE. Q)) THEN
                  W = MAX(W, D(K))

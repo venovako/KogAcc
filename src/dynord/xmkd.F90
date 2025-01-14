@@ -1,5 +1,5 @@
-!>@brief \b XMKD builds D from G.
-PURE SUBROUTINE XMKD(N, G, LDG, D, O, INFO)
+!>@brief \b XMKD builds (an approximate) D from G.
+SUBROUTINE XMKD(N, G, LDG, D, O, INFO)
   USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
   IMPLICIT NONE
@@ -32,7 +32,7 @@ PURE SUBROUTINE XMKD(N, G, LDG, D, O, INFO)
   REAL(KIND=c_long_double), INTENT(OUT) :: D(*)
   INTEGER, INTENT(INOUT) :: INFO
 
-  REAL(KIND=c_long_double) :: W
+  REAL(KIND=c_long_double) :: W, HH
   REAL(KIND=REAL64) :: H
   INTEGER :: K, L, P, Q
 
@@ -41,11 +41,15 @@ PURE SUBROUTINE XMKD(N, G, LDG, D, O, INFO)
 #ifndef NDEBUG
   IF (LDG .LT. N) INFO = -3
   IF (N .LT. 0) INFO = -1
+  IF (L .GE. 0) THEN
+     IF (N .GT. 128) INFO = -1
+  ELSE ! L .LT. 0
 #ifdef CLS
-  IF (N .GT. 1073741824) INFO = -1
+     IF (N .GT. 1073741824) INFO = -1
 #else
-  IF (N .GT. 32) INFO = -1
+     IF (N .GT. 32) INFO = -1
 #endif
+  END IF
   IF (INFO .NE. 0) RETURN
 #endif
   IF (MOD(N, 2) .EQ. 0) THEN
@@ -55,22 +59,51 @@ PURE SUBROUTINE XMKD(N, G, LDG, D, O, INFO)
   END IF
 
   W = WZERO
-  DO K = 1, INFO
-     P = O(1,K)
-     Q = O(2,K)
-     IF (G(Q,P) .EQ. ZERO) THEN
-        H = ABS(G(P,Q))
-     ELSE IF (G(P,Q) .EQ. ZERO) THEN
-        H = ABS(G(Q,P))
-     ELSE ! none are 0
-        H = CR_HYPOT(G(Q,P), G(P,Q))
-     END IF
-     IF ((H .GT. ZERO) .OR. (SIGN(ONE,G(P,P)) .NE. ONE) .OR. (SIGN(ONE,G(Q,Q)) .NE. ONE) .OR. (G(P,P) .LT. G(Q,Q))) THEN
-        CALL XENC(D(K), H, P, Q)
-        W = MAX(W, D(K))
-     ELSE ! no transformation
-        D(K) = -H
-     END IF
-  END DO
+  IF (L .GE. 0) THEN
+     !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,D,O,INFO) PRIVATE(HH,K,P,Q) REDUCTION(MAX:W) IF(L .NE. 0)
+     DO K = 1, INFO
+        P = O(1,K)
+        Q = O(2,K)
+        IF (G(Q,P) .EQ. ZERO) THEN
+           HH = ABS(G(P,Q))
+        ELSE IF (G(P,Q) .EQ. ZERO) THEN
+           HH = ABS(G(Q,P))
+        ELSE ! none are 0
+           HH = G(Q,P)
+           D(K) = G(P,Q)
+           HH = HH * HH + D(K) * D(K)
+        END IF
+        IF ((HH .GT. WZERO) .OR. (SIGN(ONE,G(P,P)) .NE. ONE) .OR. (SIGN(ONE,G(Q,Q)) .NE. ONE) .OR. (G(P,P) .LT. G(Q,Q))) THEN
+           D(K) = XENCAP(HH, P, Q)
+           W = MAX(W, D(K))
+        ELSE ! no transformation
+           D(K) = -HH
+        END IF
+     END DO
+     !$OMP END PARALLEL DO
+  ELSE ! L .LT. 0
+     L = L + 1
+     !$OMP PARALLEL DO DEFAULT(NONE) SHARED(G,D,O,INFO) PRIVATE(H,K,P,Q) REDUCTION(MAX:W) IF(L .NE. 0)
+     DO K = 1, INFO
+        P = O(1,K)
+        Q = O(2,K)
+        IF (G(Q,P) .EQ. ZERO) THEN
+           H = ABS(G(P,Q))
+        ELSE IF (G(P,Q) .EQ. ZERO) THEN
+           H = ABS(G(Q,P))
+        ELSE ! none are 0
+           H = CR_HYPOT(G(Q,P), G(P,Q))
+        END IF
+        IF ((H .GT. ZERO) .OR. (SIGN(ONE,G(P,P)) .NE. ONE) .OR. (SIGN(ONE,G(Q,Q)) .NE. ONE) .OR. (G(P,P) .LT. G(Q,Q))) THEN
+           CALL XENC(D(K), H, P, Q)
+           W = MAX(W, D(K))
+        ELSE ! no transformation
+           D(K) = -H
+        END IF
+     END DO
+     !$OMP END PARALLEL DO
+  END IF
   D(INFO+1) = W
+CONTAINS
+#include "xencap.F90"
 END SUBROUTINE XMKD

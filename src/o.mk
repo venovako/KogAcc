@@ -81,15 +81,12 @@ OBJS_DYNORD=\
 ../obj/$(PLAT)/smkd.$(OXT)\
 ../obj/$(PLAT)/dmkd.$(OXT)\
 ../obj/$(PLAT)/xmkd.$(OXT)\
-../obj/$(PLAT)/xmkdap.$(OXT)\
 ../obj/$(PLAT)/cmkd.$(OXT)\
 ../obj/$(PLAT)/zmkd.$(OXT)\
 ../obj/$(PLAT)/wmkd.$(OXT)\
-../obj/$(PLAT)/wmkdap.$(OXT)\
 ../obj/$(PLAT)/smkdpq.$(OXT)\
 ../obj/$(PLAT)/dmkdpq.$(OXT)\
 ../obj/$(PLAT)/xmkdpq.$(OXT)\
-../obj/$(PLAT)/xmkapq.$(OXT)\
 ../obj/$(PLAT)/smkbpq.$(OXT)\
 ../obj/$(PLAT)/dmkbpq.$(OXT)\
 ../obj/$(PLAT)/cmkbpq.$(OXT)\

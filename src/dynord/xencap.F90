@@ -1,0 +1,14 @@
+  PURE FUNCTION XENCAP(H, P, Q)
+    USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
+    USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: INT8
+    IMPLICIT NONE
+    REAL(KIND=c_long_double), INTENT(IN) :: H
+    INTEGER, INTENT(IN) :: P, Q
+    REAL(KIND=c_long_double) :: XENCAP, W
+    INTEGER(KIND=INT8) :: B(16)
+    EQUIVALENCE(W, B)
+    W = H
+    B(1) = INT((Q - 1), INT8)
+    B(2) = INT((P - 1), INT8)
+    XENCAP = W
+  END FUNCTION XENCAP
