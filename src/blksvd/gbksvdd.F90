@@ -6,7 +6,6 @@
   IF (LDB .LT. 0) INFO = -7
   IF (NB .LT. 0) INFO = -3
   IF (B2 .LT. 2) INFO = -2
-  IF ((JS .NE. 3) .AND. (JS .NE. 6)) INFO = -1
   IF (INFO .NE. 0) RETURN
 #endif
   IF (NB .EQ. 0) RETURN
@@ -35,7 +34,12 @@
 !$OMP PARALLEL DO DEFAULT(NONE) SHARED(JS,B2,NB,GB,UB,VB,LDB,SB,WB,DB,OD,OB,O) PRIVATE(I) REDUCTION(MIN:INFO,J) IF(I .NE. 0)
      DO I = 1, NB
         O(1,I) = HUGE(0)
-        O(2,I) = JOB + JS
+        IF (JS .GE. 0) THEN
+           O(2,I) = JOB + JS
+        ELSE ! JS .LT. 0
+           O(1,I) = -O(1,I) - 1
+           O(2,I) = JOB - JS
+        END IF
         CALL KKSVDD(O(2,I), B2, GB(1,1,I),LDB, UB(1,1,I),LDB, VB(1,1,I),LDB, SB(1,I), WB(1,I), DB(1,I), OB, OD(1,1,I), O(1,I))
         J = MIN(J, -O(1,I))
         O(2,I) = INT(WB(4,I)) ! GS

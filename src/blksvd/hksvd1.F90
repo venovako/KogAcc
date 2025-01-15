@@ -1,3 +1,10 @@
+  LX = 0
+  IF (INFO .LT. 0) THEN
+     IF (K .EQ. REAL64) LX = -1
+     INFO = -(INFO + 1)
+  ELSE ! INFO .GE. 0
+     IF (K .EQ. REAL64) LX = 1
+  END IF
   L = INFO
   INFO = 0
   LOMP = .FALSE.
@@ -18,7 +25,6 @@
   !$OMP END PARALLEL DO
 #endif
 
-  IF (L .LT. 0) INFO = -20
   IF ((JOB .LT. 0) .OR. (JOB .GT. 1023)) INFO = -1
   IF (INFO .NE. 0) RETURN
 
@@ -39,12 +45,8 @@
   IF (INFO .NE. 0) RETURN
 
   N = 2 * B
-#ifdef CLS
-  LX = .FALSE.
-#else
-  ! LX = (K .EQ. REAL64) .AND. (N .LE. 32)
-  LX = (K .EQ. REAL64) .AND. (N .LE. 128)
-#endif
+  ! TODO: 128 => 256
+  IF (((LX .LT. 0) .AND. (N .GT. 32)) .OR. ((LX .GT. 0) .AND. (N .GT. 128))) LX = 0
   M_P = M_B / 2
   ! split W
   IGB = 1
@@ -277,14 +279,16 @@
      END IF
      R = IOB + NB
      IF ((JS0 .EQ. 3) .OR. (JS0 .EQ. 6)) THEN
-        IF (LX) THEN
+        Q = JS0
+        IF (LX .NE. 0) THEN
+           IF (LX .LT. 0) Q = -Q
            J = -1
            !$ IF (LOMP) J = -OMP_GET_NUM_THREADS() - 1
         ELSE ! not extended
            J = 0
            !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
         END IF
-        CALL BKSVDD(JS0, N, NB, W(IGB), W(IUB), W(IVB), LDB, SV, W(IWB), LW, D, LD, O(1,IOD), O(1,IO0), O(1,R), J)
+        CALL BKSVDD(Q, N, NB, W(IGB), W(IUB), W(IVB), LDB, SV, W(IWB), LW, D, LD, O(1,IOD), O(1,IO0), O(1,R), J)
      ELSE ! not dynamic ordering
         J = 0
         !$ IF (LOMP) J = OMP_GET_NUM_THREADS()

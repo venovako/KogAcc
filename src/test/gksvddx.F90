@@ -83,6 +83,7 @@
   !$ J = 3
   JOB = J + 960
   INFO = HUGE(INFO)
+  INFO = -INFO - 1
   CALL SYSTEM_CLOCK(C0)
   CALL KSVDD(JOB, M, G, LDG, U, LDU, V, LDV, SV, W, D, O, O(1,(M*(M-1))/2+1), INFO)
   CALL SYSTEM_CLOCK(C1, CR)

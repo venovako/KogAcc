@@ -1,4 +1,10 @@
-  MRQSTP = INFO
+  IF (INFO .LT. 0) THEN
+     MRQSTP = -(INFO + 1)
+     LACC = .TRUE.
+  ELSE ! INFO .GE. 0
+     MRQSTP = INFO
+     LACC = .FALSE.
+  END IF
   INFO = 0
   LOMP = .FALSE.
   J = IAND(JOB, 7)
@@ -11,7 +17,6 @@
   W(5) = ZERO
   W(6) = ZERO
 
-  IF (MRQSTP .LT. 0) INFO = -14
   IF (LDV .LT. N) INFO = -8
   IF (LDU .LT. N) INFO = -6
   IF (LDG .LT. N) INFO = -4
@@ -165,6 +170,7 @@
      ! build the current step's pairs
      L = 0
      !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
+     IF (LACC) L = -L - 1
      CALL MKD(N, G, LDG, D, O, L)
      IF (L .LT. 0) THEN
         INFO = -10
@@ -173,6 +179,7 @@
      I = L
      L = 0
      !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
+     IF (LACC) L = -L - 1
      CALL MKDPQ(N, I, D, OD, L)
      IF (L .LT. 0) THEN
         INFO = -11

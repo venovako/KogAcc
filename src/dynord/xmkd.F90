@@ -42,6 +42,7 @@ SUBROUTINE XMKD(N, G, LDG, D, O, INFO)
   IF (LDG .LT. N) INFO = -3
   IF (N .LT. 0) INFO = -1
   IF (L .GE. 0) THEN
+     ! TODO: 128 => 256
      IF (N .GT. 128) INFO = -1
   ELSE ! L .LT. 0
 #ifdef CLS
