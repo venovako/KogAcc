@@ -26,7 +26,7 @@
   ELSE IF ((J .EQ. 0) .OR. (J .EQ. 1)) THEN
      M = N
   ELSE ! (J .EQ. 3) .OR. (J .EQ. 6)
-     STOP 'J'
+     STOP 'J=3 or J=6: please use ?ksvdd.exe instead'
   END IF
   LDV = 64
   LDU = LDV / INT(SIZEOF(0.0_K))

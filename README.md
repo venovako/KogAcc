@@ -61,10 +61,27 @@ source etc/env.sh
 before running any OpenMP-parallel executable.
 The argument `2` enables the experimental, nested, two-level OpenMP parallelism for the block-method executables `?ksvd1.exe`.
 
+### Selecting a proper method
+
+| routines |                                       description |
+| -------- | ------------------------------------------------- |
+| `xKSVD0` | a pointwise method with a (quasi-)cyclic ordering |
+| `xKSVDD` | a pointwise method with the dynamic ordering      |
+| `xKSVD1` | a blocked method with any available ordering      |
+
+In general, the in-out `INFO` argument of the above routines should be preset in one of two ways:
+- ``INFO=M``, for a faster but less accurate/reliable algorithm, or
+- ``INFO=-M-1``, for a slower but more accurate/reliable one, where
+``M≥0`` is the maximal number of (block-)steps, either parallel or sequential, to be performed.
+
+The test executables always choose the latter option, and should be consulted for examples of properly allocating the various buffers and calling the routines.
+
 ## TODO
 
-More testing is generally needed.
 The complex routines have not been tested as thoroughly as the real ones.
 Use them with care.
+
+More testing is generally needed.
+If something seems wrong, recompiling without the `NDEBUG` option should turn on the error checking and might help with locating the issue.
 
 This work has been supported in part by Croatian Science Foundation under the project IP-2014-09-3670 ([MFBDA](https://web.math.pmf.unizg.hr/mfbda/)).
