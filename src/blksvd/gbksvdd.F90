@@ -38,7 +38,7 @@
            O(2,I) = JOB + JS
         ELSE ! JS .LT. 0
            O(1,I) = -O(1,I) - 1
-           O(2,I) = JOB - JS
+           O(2,I) = JOB - (JS + 1)
         END IF
         CALL KKSVDD(O(2,I), B2, GB(1,1,I),LDB, UB(1,1,I),LDB, VB(1,1,I),LDB, SB(1,I), WB(1,I), DB(1,I), OB, OD(1,1,I), O(1,I))
         J = MIN(J, -O(1,I))

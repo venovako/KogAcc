@@ -284,7 +284,7 @@
      IF ((JS0 .EQ. 3) .OR. (JS0 .EQ. 6)) THEN
         Q = JS0
         IF (LX .NE. 0) THEN
-           IF (LX .LT. 0) Q = -Q
+           IF (LX .LT. 0) Q = -Q - 1
            J = -1
            !$ IF (LOMP) J = -OMP_GET_NUM_THREADS() - 1
         ELSE ! not extended
@@ -293,9 +293,10 @@
         END IF
         CALL BKSVDD(Q, N, NB, W(IGB), W(IUB), W(IVB), LDB, SV, W(IWB), LW, D, LD, O(1,IOD), O(1,IO0), O(1,R), J)
      ELSE ! not dynamic ordering
+        Q = -JS0 - 1
         J = 0
         !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
-        CALL BKSVD0(JS0, N, NB, W(IGB), W(IUB), W(IVB), LDB, SV, W(IWB), LW, O(1,IOD), O(1,IO0), O(1,R), J)
+        CALL BKSVD0(Q, N, NB, W(IGB), W(IUB), W(IVB), LDB, SV, W(IWB), LW, O(1,IOD), O(1,IO0), O(1,R), J)
      END IF
      Q = J
      IF (J .LT. 0) THEN

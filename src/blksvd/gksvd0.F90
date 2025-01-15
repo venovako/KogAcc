@@ -1,4 +1,10 @@
-  MRQSTP = INFO
+  IF (INFO .LT. 0) THEN
+     MRQSTP = -(INFO + 1)
+     LACC = .TRUE.
+  ELSE ! INFO .GE. 0
+     MRQSTP = INFO
+     LACC = .FALSE.
+  END IF
   INFO = 0
   LOMP = .FALSE.
   JS = IAND(JOB, 7)
@@ -11,7 +17,6 @@
   W(5) = ZERO
   W(6) = ZERO
 
-  IF (MRQSTP .LT. 0) INFO = -13
   IF (LDV .LT. N) INFO = -8
   IF (LDU .LT. N) INFO = -6
   IF (LDG .LT. N) INFO = -4
@@ -109,82 +114,91 @@
      !$OMP END PARALLEL DO
   END IF
 
-  ! scale G
-  L = -1
-  !$ IF (LOMP) L = -OMP_GET_NUM_THREADS() - 1
-  CALL LANGO(N, G, LDG, GN, L)
-  IF (L .NE. 0) THEN
-     INFO = -3
-     RETURN
-  END IF
-  GS = EXPONENT(HUGE(GN)) - EXPONENT(GN) - 3
-  IF (GS .NE. 0) THEN
-     L = 0
-     !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
-     CALL SCALG(N, N, G, LDG, GS, L)
+  IF (LACC) THEN
+     ! scale G
+     L = -1
+     !$ IF (LOMP) L = -OMP_GET_NUM_THREADS() - 1
+     CALL LANGO(N, G, LDG, GN, L)
      IF (L .NE. 0) THEN
         INFO = -3
         RETURN
      END IF
-     GN = SCALE(GN, GS)
-  END IF
-  ! optionally scale U
-  IF (LUACC) THEN
-     IF (LUSID) THEN
+     GS = EXPONENT(HUGE(GN)) - EXPONENT(GN) - 3
+     IF (GS .NE. 0) THEN
+        L = 0
+        !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
+        CALL SCALG(N, N, G, LDG, GS, L)
+        IF (L .NE. 0) THEN
+           INFO = -3
+           RETURN
+        END IF
+        GN = SCALE(GN, GS)
+     END IF
+     ! optionally scale U
+     IF (LUACC) THEN
+        IF (LUSID) THEN
+           UN = ONE
+           US = 0
+        ELSE ! scaling of U might be required
+           L = -1
+           !$ IF (LOMP) L = -OMP_GET_NUM_THREADS() - 1
+           CALL LANGO(N, U, LDU, UN, L)
+           IF (L .NE. 0) THEN
+              INFO = -5
+              RETURN
+           END IF
+           US = EXPONENT(HUGE(UN)) - EXPONENT(UN) - 2
+        END IF
+        IF (US .NE. 0) THEN
+           L = 0
+           !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
+           CALL SCALG(N, N, U, LDU, US, L)
+           IF (L .NE. 0) THEN
+              INFO = -5
+              RETURN
+           END IF
+           UN = SCALE(UN, US)
+        END IF
+     ELSE ! .NOT. LUACC
         UN = ONE
         US = 0
-     ELSE ! scaling of U might be required
-        L = -1
-        !$ IF (LOMP) L = -OMP_GET_NUM_THREADS() - 1
-        CALL LANGO(N, U, LDU, UN, L)
-        IF (L .NE. 0) THEN
-           INFO = -5
-           RETURN
-        END IF
-        US = EXPONENT(HUGE(UN)) - EXPONENT(UN) - 2
      END IF
-     IF (US .NE. 0) THEN
-        L = 0
-        !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
-        CALL SCALG(N, N, U, LDU, US, L)
-        IF (L .NE. 0) THEN
-           INFO = -5
-           RETURN
+     ! optionally scale V
+     IF (LVACC) THEN
+        IF (LVSID) THEN
+           VN = ONE
+           VS = 0
+        ELSE ! scaling of V might be required
+           L = -1
+           !$ IF (LOMP) L = -OMP_GET_NUM_THREADS() - 1
+           CALL LANGO(N, V, LDV, VN, L)
+           IF (L .NE. 0) THEN
+              INFO = -7
+              RETURN
+           END IF
+           VS = EXPONENT(HUGE(VN)) - EXPONENT(VN) - 2
         END IF
-        UN = SCALE(UN, US)
-     END IF
-  ELSE ! .NOT. LUACC
-     UN = ONE
-     US = 0
-  END IF
-  ! optionally scale V
-  IF (LVACC) THEN
-     IF (LVSID) THEN
+        IF (VS .NE. 0) THEN
+           L = 0
+           !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
+           CALL SCALG(N, N, V, LDV, VS, L)
+           IF (L .NE. 0) THEN
+              INFO = -7
+              RETURN
+           END IF
+           VN = SCALE(VN, VS)
+        END IF
+     ELSE ! .NOT. LVACC
         VN = ONE
         VS = 0
-     ELSE ! scaling of V might be required
-        L = -1
-        !$ IF (LOMP) L = -OMP_GET_NUM_THREADS() - 1
-        CALL LANGO(N, V, LDV, VN, L)
-        IF (L .NE. 0) THEN
-           INFO = -7
-           RETURN
-        END IF
-        VS = EXPONENT(HUGE(VN)) - EXPONENT(VN) - 2
      END IF
-     IF (VS .NE. 0) THEN
-        L = 0
-        !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
-        CALL SCALG(N, N, V, LDV, VS, L)
-        IF (L .NE. 0) THEN
-           INFO = -7
-           RETURN
-        END IF
-        VN = SCALE(VN, VS)
-     END IF
-  ELSE ! .NOT. LVACC
-     VN = ONE
+  ELSE ! fast
+     GS = 0
+     US = 0
      VS = 0
+     GN = ONE
+     UN = ONE
+     VN = ONE
   END IF
 
   ! initialize the counters
@@ -330,83 +344,85 @@
      TT = TT + T
      IF (M .GT. 0) THEN
         TM = TM + M
-        ! optionally scale G
+        IF (LACC) THEN
+           ! optionally scale G
 #ifdef NDEBUG
-        L = 0
-        !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
-#else
-        L = -1
-        !$ IF (LOMP) L = -OMP_GET_NUM_THREADS() - 1
-#endif
-        CALL LANGO(N, G, LDG, GN, L)
-        IF (L .NE. 0) THEN
-           INFO = -3
-           RETURN
-        END IF
-        T = EXPONENT(HUGE(GN)) - EXPONENT(GN) - 3
-        IF (T .LT. 0) THEN
            L = 0
            !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
-           CALL SCALG(N, N, G, LDG, T, L)
+#else
+           L = -1
+           !$ IF (LOMP) L = -OMP_GET_NUM_THREADS() - 1
+#endif
+           CALL LANGO(N, G, LDG, GN, L)
            IF (L .NE. 0) THEN
               INFO = -3
               RETURN
            END IF
-           GN = SCALE(GN, T)
-           GS = GS + T
-        END IF
-        ! optionally scale U
-        IF (LUACC .AND. (.NOT. LUSID)) THEN
-#ifdef NDEBUG
-           L = 0
-           !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
-#else
-           L = -1
-           !$ IF (LOMP) L = -OMP_GET_NUM_THREADS() - 1
-#endif
-           CALL LANGO(N, U, LDU, UN, L)
-           IF (L .NE. 0) THEN
-              INFO = -5
-              RETURN
-           END IF
-           T = EXPONENT(HUGE(UN)) - EXPONENT(UN) - 2
+           T = EXPONENT(HUGE(GN)) - EXPONENT(GN) - 3
            IF (T .LT. 0) THEN
               L = 0
               !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
-              CALL SCALG(N, N, U, LDU, T, L)
+              CALL SCALG(N, N, G, LDG, T, L)
+              IF (L .NE. 0) THEN
+                 INFO = -3
+                 RETURN
+              END IF
+              GN = SCALE(GN, T)
+              GS = GS + T
+           END IF
+           ! optionally scale U
+           IF (LUACC .AND. (.NOT. LUSID)) THEN
+#ifdef NDEBUG
+              L = 0
+              !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
+#else
+              L = -1
+              !$ IF (LOMP) L = -OMP_GET_NUM_THREADS() - 1
+#endif
+              CALL LANGO(N, U, LDU, UN, L)
               IF (L .NE. 0) THEN
                  INFO = -5
                  RETURN
               END IF
-              UN = SCALE(UN, T)
-              US = US + T
+              T = EXPONENT(HUGE(UN)) - EXPONENT(UN) - 2
+              IF (T .LT. 0) THEN
+                 L = 0
+                 !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
+                 CALL SCALG(N, N, U, LDU, T, L)
+                 IF (L .NE. 0) THEN
+                    INFO = -5
+                    RETURN
+                 END IF
+                 UN = SCALE(UN, T)
+                 US = US + T
+              END IF
            END IF
-        END IF
-        ! optionally scale V
-        IF (LVACC .AND. (.NOT. LVSID)) THEN
+           ! optionally scale V
+           IF (LVACC .AND. (.NOT. LVSID)) THEN
 #ifdef NDEBUG
-           L = 0
-           !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
-#else
-           L = -1
-           !$ IF (LOMP) L = -OMP_GET_NUM_THREADS() - 1
-#endif
-           CALL LANGO(N, V, LDV, VN, L)
-           IF (L .NE. 0) THEN
-              INFO = -7
-              RETURN
-           END IF
-           T = EXPONENT(HUGE(VN)) - EXPONENT(VN) - 2
-           IF (T .LT. 0) THEN
               L = 0
               !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
-              CALL SCALG(N, N, V, LDV, T, L)
+#else
+              L = -1
+              !$ IF (LOMP) L = -OMP_GET_NUM_THREADS() - 1
+#endif
+              CALL LANGO(N, V, LDV, VN, L)
               IF (L .NE. 0) THEN
                  INFO = -7
                  RETURN
               END IF
-              VN = SCALE(VN, T)
-              VS = VS + T
+              T = EXPONENT(HUGE(VN)) - EXPONENT(VN) - 2
+              IF (T .LT. 0) THEN
+                 L = 0
+                 !$ IF (LOMP) L = OMP_GET_NUM_THREADS()
+                 CALL SCALG(N, N, V, LDV, T, L)
+                 IF (L .NE. 0) THEN
+                    INFO = -7
+                    RETURN
+                 END IF
+                 VN = SCALE(VN, T)
+                 VS = VS + T
+              END IF
            END IF
         END IF
      END IF
