@@ -36,6 +36,7 @@ endif # Linux
 ifdef STATIC
 LDFLAGS=-static
 ifneq ($(STATIC),true)
+# e.g., STATIC=-s
 LDFLAGS += $(STATIC)
 endif # !true
 else # !STATIC

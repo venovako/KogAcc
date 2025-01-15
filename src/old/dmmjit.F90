@@ -1,5 +1,6 @@
 !>@brief \b DMMJIT prepares a jitted matrix multiply.
 SUBROUTINE DMMJIT(TRANSA, TRANSB, M, N, K, ALPHA, LDA, LDB, BETA, LDC, JITTER, JFNPTR, INFO)
+  ! TODO: not tested
   USE, INTRINSIC :: ISO_C_BINDING
 #ifdef MKL
 #if (MKL .EQ. 1)

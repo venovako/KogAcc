@@ -1,5 +1,6 @@
 !>@brief \b DMMEXEC executes a jitted matrix multiply.
 SUBROUTINE DMMEXEC(JITTER, JFNPTR, A, B, C, INFO)
+  ! TODO: not tested
   USE, INTRINSIC :: ISO_C_BINDING
 #ifdef MKL
 #if (MKL .EQ. 1)

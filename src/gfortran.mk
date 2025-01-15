@@ -36,6 +36,7 @@ FCFLAGS += -Wall -Wextra -Wno-array-temporaries -Wno-compare-reals -Wno-c-bindin
 ifdef STATIC
 LDFLAGS=-static
 ifneq ($(STATIC),true)
+# e.g., STATIC=-s
 LDFLAGS += $(STATIC)
 endif # !true
 else # !STATIC
@@ -59,7 +60,7 @@ LDFLAGS += -Wl,--start-group ${MKLROOT}/lib/libmkl_gf_$(ABI).a ${MKLROOT}/lib/li
 LDFLAGS += $(shell if [ -L /usr/lib64/libmemkind.so ]; then echo '-lmemkind'; fi)
 endif # ?Darwin
 else # !MKLROOT
-LDFLAGS += -L$(LAPACK) -ltmglib -llapack -lrefblas
+LDFLAGS += -L$(LAPACK) -llapack -lrefblas #-ltmglib
 endif # ?MKLROOT
 endif # LAPACK
 LDFLAGS += -L../../../../libpvn/src -lpvn -ldl
