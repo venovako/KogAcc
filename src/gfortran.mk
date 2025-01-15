@@ -26,7 +26,7 @@ else # PROFILE != 0
 FCFLAGS += -fopenmp
 endif # PROFILE ?= 0
 endif # ?PROFILE
-FCFLAGS += -fPIC -fexceptions -fasynchronous-unwind-tables -fno-omit-frame-pointer -ffp-contract=fast -ffree-line-length-none -fstack-arrays
+FCFLAGS += -fPIC -fexceptions -fasynchronous-unwind-tables -fno-omit-frame-pointer -ffp-contract=fast -ffree-line-length-none -fstack-arrays #-funsigned
 ifdef NDEBUG
 FCFLAGS += -fno-math-errno -fvect-cost-model=unlimited
 else # !NDEBUG

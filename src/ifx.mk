@@ -66,7 +66,7 @@ GFCFLAGS=-O$(NDEBUG)
 else # !NDEBUG
 GFCFLAGS=-Og -ggdb3
 endif # ?NDEBUG
-GFCFLAGS += -march=native -frecursive -fPIC -fexceptions -fasynchronous-unwind-tables -fno-omit-frame-pointer -ffp-contract=fast -ffree-line-length-none -fstack-arrays
+GFCFLAGS += -march=native -frecursive -fPIC -fexceptions -fasynchronous-unwind-tables -fno-omit-frame-pointer -ffp-contract=fast -ffree-line-length-none -fstack-arrays #-funsigned
 ifdef NDEBUG
 GFCFLAGS += -fno-math-errno -fvect-cost-model=unlimited
 else # !NDEBUG
