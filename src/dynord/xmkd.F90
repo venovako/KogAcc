@@ -42,8 +42,11 @@ SUBROUTINE XMKD(N, G, LDG, D, O, INFO)
   IF (LDG .LT. N) INFO = -3
   IF (N .LT. 0) INFO = -1
   IF (L .GE. 0) THEN
-     ! TODO: 128 => 256
+#ifdef HAVE_UNSIGNED
+     IF (N .GT. 256) INFO = -1
+#else
      IF (N .GT. 128) INFO = -1
+#endif
   ELSE ! L .LT. 0
 #ifdef CLS
      IF (N .GT. 1073741824) INFO = -1

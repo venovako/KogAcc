@@ -45,8 +45,11 @@
   IF (INFO .NE. 0) RETURN
 
   N = 2 * B
-  ! TODO: 128 => 256
+#ifdef HAVE_UNSIGNED
+  IF (((LX .LT. 0) .AND. (N .GT. 32)) .OR. ((LX .GT. 0) .AND. (N .GT. 256))) LX = 0
+#else
   IF (((LX .LT. 0) .AND. (N .GT. 32)) .OR. ((LX .GT. 0) .AND. (N .GT. 128))) LX = 0
+#endif
   M_P = M_B / 2
   ! split W
   IGB = 1

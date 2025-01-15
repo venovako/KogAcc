@@ -67,6 +67,7 @@ else # !NDEBUG
 GFCFLAGS=-Og -ggdb3
 endif # ?NDEBUG
 GFCFLAGS += -march=native -frecursive -fPIC -fexceptions -fasynchronous-unwind-tables -fno-omit-frame-pointer -ffp-contract=fast -ffree-line-length-none -fstack-arrays #-funsigned
+GFCFLAGS += $(shell if [ `$(GFC) -dumpversion | cut -f1 -d.` -ge 15 ]; then echo '-funsigned -DHAVE_UNSIGNED'; fi)
 ifdef NDEBUG
 GFCFLAGS += -fno-math-errno -fvect-cost-model=unlimited
 else # !NDEBUG

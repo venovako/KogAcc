@@ -133,16 +133,28 @@ SUBROUTINE XMKDPQ(N, M, D, O, INFO)
 CONTAINS
   PURE SUBROUTINE XDECAP(H, P, Q)
     USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
-    USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: INT8 ! TODO: UINT8
+#ifdef HAVE_UNSIGNED
+    USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: UINT8
+#else
+    USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: INT8
+#endif
     IMPLICIT NONE
     REAL(KIND=c_long_double), INTENT(IN) :: H
     INTEGER, INTENT(OUT) :: P, Q
     REAL(KIND=c_long_double) :: W
-    ! TODO: UNSIGNED(KIND=UNIT8) :: B(16)
+#ifdef HAVE_UNSIGNED
+    UNSIGNED(KIND=UNIT8) :: B(16)
+#else
     INTEGER(KIND=INT8) :: B(16)
+#endif
     EQUIVALENCE(W, B)
     W = H
-    Q = B(1) + 1 ! TODO: Q = INT(B(1)) + 1
-    P = B(2) + 1 ! TODO: P = INT(B(2)) + 1
+#ifdef HAVE_UNSIGNED
+    Q = INT(B(1)) + 1
+    P = INT(B(2)) + 1
+#else
+    Q = B(1) + 1
+    P = B(2) + 1
+#endif
   END SUBROUTINE XDECAP
 END SUBROUTINE XMKDPQ

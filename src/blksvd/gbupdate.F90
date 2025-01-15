@@ -19,17 +19,7 @@
   L = INFO
   INFO = 0
   IF (NB .EQ. 0) RETURN
-  IF (L .LT. 0) THEN
-     ! TODO: consider updating U and V from the right concurrently.
-     IF (LDU .GT. 0) THEN
-#include "gbupU.F90"
-     END IF
-     IF (LDV .GT. 0) THEN
-#include "gbupV.F90"
-     END IF
-#include "gbupGc.F90"
-#include "gbupGr.F90"
-  ELSE ! L .GE. 0
+  IF (L .GE. 0) THEN
      ! Reuse the block transformations already (potentially) in the cache.
      IF (LDU .GT. 0) THEN
 #include "gbupU.F90"
@@ -39,4 +29,14 @@
      IF (LDV .GT. 0) THEN
 #include "gbupV.F90"
      END IF
+  ELSE ! L .LT. 0
+     ! TODO: consider updating U and V from the right concurrently.
+     IF (LDU .GT. 0) THEN
+#include "gbupU.F90"
+     END IF
+     IF (LDV .GT. 0) THEN
+#include "gbupV.F90"
+     END IF
+#include "gbupGc.F90"
+#include "gbupGr.F90"
   END IF

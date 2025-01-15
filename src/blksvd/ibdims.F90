@@ -93,7 +93,8 @@ PURE SUBROUTINE IBDIMS(N, B, M, M_B, NW, ND, NO, INFO)
   ! D(M_B) [ if dynamic block-ordering ]
   ! D(2*B)_1 ... D(2*B)_M_P
   IF ((JS1 .EQ. 3) .OR. (JS1 .EQ. 6)) THEN
-     ND = MAX((NO + 1), (B_P + 1) * M_P)
+     ND = NO + 1
+     IF ((JS0 .EQ. 3) .OR. (JS0 .EQ. 6)) ND = MAX(ND, (B_P + 1) * M_P)
   ELSE IF ((JS0 .EQ. 3) .OR. (JS0 .EQ. 6)) THEN
      ND = (B_P + 1) * M_P
   ELSE ! not dynamic ordering

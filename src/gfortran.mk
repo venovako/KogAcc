@@ -26,13 +26,14 @@ else # PROFILE != 0
 FCFLAGS += -fopenmp
 endif # PROFILE ?= 0
 endif # ?PROFILE
-FCFLAGS += -fPIC -fexceptions -fasynchronous-unwind-tables -fno-omit-frame-pointer -ffp-contract=fast -ffree-line-length-none -fstack-arrays #-funsigned
+FCFLAGS += -fPIC -fexceptions -fasynchronous-unwind-tables -fno-omit-frame-pointer -ffp-contract=fast -ffree-line-length-none -fstack-arrays
+FCFLAGS += $(shell if [ `$(FC) -dumpversion | cut -f1 -d.` -ge 15 ]; then echo '-funsigned -DHAVE_UNSIGNED'; fi)
 ifdef NDEBUG
 FCFLAGS += -fno-math-errno -fvect-cost-model=unlimited
 else # !NDEBUG
 FCFLAGS += -fcheck=all,no-recursion -finit-local-zero -finit-real=snan -finit-derived -Wcharacter-truncation -Wimplicit-procedure -Wfunction-elimination -Wrealloc-lhs-all
 endif # ?NDEBUG
-FCFLAGS += -Wall -Wextra -Wno-array-temporaries -Wno-compare-reals -Wno-c-binding-type #-pedantic
+FCFLAGS += -pedantic -Wall -Wextra -Wno-array-temporaries -Wno-compare-reals -Wno-c-binding-type
 ifdef STATIC
 LDFLAGS=-static
 ifneq ($(STATIC),true)
