@@ -7,7 +7,7 @@ do
 	printf "%4d " $I >> z4.out
 	OMP_NUM_THREADS=64 ${HOME}/Downloads/KogAcc/bin/ifx/Linux-x86_64-lp64/zksvd0.exe 4 ${I} zR${I} >> z4.out 2>> z4.err
 done
-echo '"N", "TIMEs", "PSTEPS", "SVDRES", "UORTHO", "VORTHO", "MINAE", "MAXAE", "AVGAE", "MINRE", "MAXRE", "AVGRE"' > z4.csv
+echo '"N", "SVDRES", "UORTHO", "VORTHO", "MINAE", "MAXAE", "AVGAE", "MINRE", "MAXRE", "AVGRE"' > z4.csv
 for ((I=128;I<=5376;I+=128))
 do
 	B=zR${I}

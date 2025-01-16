@@ -7,7 +7,7 @@ do
 	printf "%4d " $I >> d4.out
 	OMP_NUM_THREADS=64 ${HOME}/Downloads/KogAcc/bin/ifx/Linux-x86_64-lp64/dksvd0.exe 4 ${I} dR${I} >> d4.out 2>> d4.err
 done
-echo '"N", "TIMEs", "PSTEPS", "SVDRES", "UORTHO", "VORTHO", "MINAE", "MAXAE", "AVGAE", "MINRE", "MAXRE", "AVGRE"' > d4.csv
+echo '"N", "SVDRES", "UORTHO", "VORTHO", "MINAE", "MAXAE", "AVGAE", "MINRE", "MAXRE", "AVGRE"' > d4.csv
 for ((I=128;I<=5376;I+=128))
 do
 	B=dR${I}

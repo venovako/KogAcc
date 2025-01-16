@@ -39,8 +39,8 @@ The available Jacobi strategies:
 | 0 |        row-cyclic (sequential) |
 | 1 |     column-cyclic (sequential) |
 | 2 | generalized Mantharam-Eberlein |
-| 3 |                        dynamic |
-| 4 |               modified modulus |
+| 3 |  dynamic (max ``N / 2`` pairs) |
+| 4 | modified modulus: quasi-cyclic |
 | 5 |   2, but executed sequentially |
 | 6 |   3, but executed sequentially |
 | 7 |   4, but executed sequentially |
@@ -76,7 +76,7 @@ In general, the in-out `INFO` argument of the above routines should be preset in
 
 The test executables always choose the latter option, and should be consulted for examples of properly allocating the various buffers and calling the routines.
 
-Please note that `xKSVD2` routines are just wrappers around the ``2×2`` SVD routines from `libpvn`.
+Please note that the `xKSVD2` routines are just wrappers around the ``2×2`` SVD routines from `libpvn`.
 
 ## TODO
 

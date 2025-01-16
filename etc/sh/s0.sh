@@ -8,7 +8,7 @@ do
 	sleep 1
 done
 wait
-echo '"N", "TIMEs", "SWEEPS", "SVDRES", "UORTHO", "VORTHO", "MINAE", "MAXAE", "AVGAE", "MINRE", "MAXRE", "AVGRE"' > s0.csv
+echo '"N", "SVDRES", "UORTHO", "VORTHO", "MINAE", "MAXAE", "AVGAE", "MINRE", "MAXRE", "AVGRE"' > s0.csv
 for ((I=128;I<=5376;I+=128))
 do
 	B=s${I}

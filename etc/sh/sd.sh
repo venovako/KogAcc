@@ -7,7 +7,7 @@ do
 	printf "%4d " $I >> sd.out
 	OMP_NUM_THREADS=64 ${HOME}/Downloads/KogAcc/bin/ifx/Linux-x86_64-lp64/sksvdd.exe ${I} s${I} >> sd.out 2>> sd.err
 done
-echo '"N", "TIMEs", "PSTEPS", "SVDRES", "UORTHO", "VORTHO", "MINAE", "MAXAE", "AVGAE", "MINRE", "MAXRE", "AVGRE"' > sd.csv
+echo '"N", "PSTEPS", "SVDRES", "UORTHO", "VORTHO", "MINAE", "MAXAE", "AVGAE", "MINRE", "MAXRE", "AVGRE"' > sd.csv
 for ((I=128;I<=1920;I+=128))
 do
 	B=s${I}

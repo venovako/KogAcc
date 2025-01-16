@@ -9,7 +9,7 @@ do
 	printf "%4d " $I >> sb$1-$2-$4.out
 	OMP_NUM_THREADS="${T},$4" ${HOME}/Downloads/KogAcc/bin/ifx/Linux-x86_64-lp64/sksvd1.exe $1 ${I} $2 s${I} >> sb$1-$2-$4.out 2>> sb$1-$2-$4.err
 done
-echo '"N", "TIMEs", "PSTEPS", "SVDRES", "UORTHO", "VORTHO", "MINAE", "MAXAE", "AVGAE", "MINRE", "MAXRE", "AVGRE"' > sb$1-$2-$4.csv
+echo '"N", "SVDRES", "UORTHO", "VORTHO", "MINAE", "MAXAE", "AVGAE", "MINRE", "MAXRE", "AVGRE"' > sb$1-$2-$4.csv
 for ((I=128;I<=5376;I+=128))
 do
 	B=s${I}

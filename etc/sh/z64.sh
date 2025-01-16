@@ -6,7 +6,7 @@ for ((I=128;I<=5376;I+=128))
 do
 	OMP_NUM_THREADS=64 ${HOME}/Downloads/VecJac/src/tzgesvj-lp64_3q.exe ${I} ${I} zR${I} >> z64.out 2>> z64.err
 done
-echo '"N", "TIMEs", "SWEEPS", "SVDRES", "UORTHO", "VORTHO", "MINAE", "MAXAE", "AVGAE", "MINRE", "MAXRE", "AVGRE"' > z64.csv
+echo '"N", "SVDRES", "UORTHO", "VORTHO", "MINAE", "MAXAE", "AVGAE", "MINRE", "MAXRE", "AVGRE"' > z64.csv
 for ((I=128;I<=5376;I+=128))
 do
 	B=zR${I}
