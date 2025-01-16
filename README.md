@@ -76,6 +76,8 @@ In general, the in-out `INFO` argument of the above routines should be preset in
 
 The test executables always choose the latter option, and should be consulted for examples of properly allocating the various buffers and calling the routines.
 
+Please note that `xKSVD2` routines are just wrappers around the ``2×2`` SVD routines from `libpvn`.
+
 ## TODO
 
 The complex routines have not been tested as thoroughly as the real ones.
