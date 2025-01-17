@@ -39,7 +39,7 @@ The available Jacobi strategies:
 | 0 |        row-cyclic (sequential) |
 | 1 |     column-cyclic (sequential) |
 | 2 | generalized Mantharam-Eberlein |
-| 3 |  dynamic (max ``N / 2`` pairs) |
+| 3 |    dynamic (max ``N/2`` pairs) |
 | 4 | modified modulus: quasi-cyclic |
 | 5 |   2, but executed sequentially |
 | 6 |   3, but executed sequentially |
@@ -50,6 +50,7 @@ A block strategy pair is computed as:
 J_inner + J_outer * 8
 ```
 where `J_inner` and `J_outer` are taken from the table above.
+The GNU Fortran compiler is recommended for the ``J_outer = 3`` case.
 
 Please, set the block size `B` to at least `4`, for now.
 For both the blocked and the pointwise routines it is recommended that the matrix order be even.

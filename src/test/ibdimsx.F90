@@ -55,27 +55,27 @@ PROGRAM IBDIMSX
      WRITE (OUTPUT_UNIT,*) 'Assuming the row-cyclic block-ordering.'
   CASE (1)
      WRITE (OUTPUT_UNIT,*) 'Assuming the column-cyclic block-ordering.'
-  CASE (2)
+  CASE (2,5)
      WRITE (OUTPUT_UNIT,*) 'Assuming the generalized Mantharam-Eberlein block-ordering.'
-  CASE (3)
+  CASE (3,6)
      WRITE (OUTPUT_UNIT,*) 'Assuming the dynamic block-ordering.'
-  CASE (4)
+  CASE (4,7)
      WRITE (OUTPUT_UNIT,*) 'Assuming the modified modulus block-ordering.'
   CASE DEFAULT
-     STOP 'J must be one of 0, 1, 2, 3, 4'
+     STOP 'J must be between 0 and 7'
   END SELECT
 
-  WRITE (OUTPUT_UNIT,*) 'N [   initial order of G] =', N
-  WRITE (OUTPUT_UNIT,*) 'B [block row/column size] =', B
+  WRITE (OUTPUT_UNIT,*) 'N [    initial order of G] =', N
+  WRITE (OUTPUT_UNIT,*) 'B [ block row/column size] =', B
   LDG = N
   LDB = B
   CALL IBDIMS(LDG, LDB, M, M_B, NW, ND, NO, INFO)
-  WRITE (OUTPUT_UNIT,*) 'M [ order of G, bordered] =', M
-  WRITE (OUTPUT_UNIT,*) 'LDG [  leading dim for M] =', LDG
-  WRITE (OUTPUT_UNIT,*) 'LDB [leading dim for 2*B] =', LDB
-  WRITE (OUTPUT_UNIT,*) 'M / B                     =', M_B
-  WRITE (OUTPUT_UNIT,*) 'len(W)                    =', NW
-  WRITE (OUTPUT_UNIT,*) 'len(D)                    =', ND
-  WRITE (OUTPUT_UNIT,*) 'ncols(O) [        O(2,:)] =', NO
-  WRITE (OUTPUT_UNIT,*) 'values in an L1 cache line=', INFO
+  WRITE (OUTPUT_UNIT,*) 'M [  order of G, bordered] =', M
+  WRITE (OUTPUT_UNIT,*) 'LDG [   leading dim for M] =', LDG
+  WRITE (OUTPUT_UNIT,*) 'LDB [ leading dim for 2*B] =', LDB
+  WRITE (OUTPUT_UNIT,*) 'M / B [    exact division] =', M_B
+  WRITE (OUTPUT_UNIT,*) 'len(W) [element type of G] =', NW
+  WRITE (OUTPUT_UNIT,*) 'len(D) [ higher precision] =', ND
+  WRITE (OUTPUT_UNIT,*) 'ncols(O) [ integer O(2,:)] =', NO
+  WRITE (OUTPUT_UNIT,*) 'values in an L1 cache line =', INFO
 END PROGRAM IBDIMSX
