@@ -54,12 +54,13 @@ PROGRAM SRND2T
 #ifdef UPPER
   REAL(KIND=D), PARAMETER :: ZERO = 0.0_D
 #endif
-  REAL(KIND=D) :: G(2,2), U(2,2), V(2,2), S(2), T
+  REAL(KIND=D) :: G(2,2), U(2,2), V(2,2), S(2)
   REAL(KIND=REAL128) :: QG(2,2), QU(2,2), QV(2,2), QS(2)
 #ifdef UPPER
   REAL(KIND=REAL128) :: E(5,2), F(2,18), Q
   INTEGER(KIND=c_long) :: NS(2)
 #else
+  REAL(KIND=D) :: T
   REAL(KIND=REAL128) :: E(5,1), F(2,8), Q
   INTEGER(KIND=c_long) :: NS(1)
 #endif
