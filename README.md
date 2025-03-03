@@ -4,7 +4,7 @@ A Kogbetliantz-type SVD for general matrices.
 (... work in progress ...)
 
 This software is a supplementary material for:
-- the preprint arXiv:[2407.13116](https://arxiv.org/abs/2407.13116 "Arithmetical enhancements of the Kogbetliantz method for the SVD of order two").
+- the paper doi:[10.1007/s11075-025-02035-7](https://doi.org/10.1007/s11075-025-02035-7 "Arithmetical enhancements of the Kogbetliantz method for the SVD of order two").
 
 ## Prerequisites
 
