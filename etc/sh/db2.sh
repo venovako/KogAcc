@@ -1,5 +1,5 @@
 #!/bin/bash
-source ${HOME}/Downloads/KogAcc/etc/env.sh 2
+source ${HOME}/Downloads/KogAcc/etc/env.sh new
 hostname > db$1-$2-$4.out
 date > db$1-$2-$4.err
 let "T=$3/$4"

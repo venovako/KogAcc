@@ -1,10 +1,10 @@
 #!/bin/bash
 source ${HOME}/Downloads/KogAcc/etc/env.sh
-hostname > z64.out
-date > z64.err
+hostname > z$1.out
+date > z$1.err
 for ((I=128;I<=5376;I+=128))
 do
-	OMP_NUM_THREADS=64 ${HOME}/Downloads/VecJac/src/tzgesvj-lp64_3q.exe ${I} ${I} zR${I} >> z64.out 2>> z64.err
+	OMP_NUM_THREADS=$1 ${HOME}/Downloads/VecJac/src/tzgesvj-lp64_3q.exe ${I} ${I} zR${I} >> z$1.out 2>> z$1.err
 done
 echo '"N", "SVDRES", "UORTHO", "VORTHO", "MINAE", "MAXAE", "AVGAE", "MINRE", "MAXRE", "AVGRE"' > z64.csv
 for ((I=128;I<=5376;I+=128))

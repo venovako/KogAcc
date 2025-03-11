@@ -12,9 +12,9 @@ echo '"N", "SVDRES", "UORTHO", "VORTHO", "MINAE", "MAXAE", "AVGAE", "MINRE", "MA
 for ((I=128;I<=5376;I+=128))
 do
 	B=dR${I}
-	A=`OMP_NUM_THREADS=64 ${HOME}/Downloads/JACSD/tgensvd/derrsvd.exe ${I} ${I} ${B}.G ${B}.UL ${B}.SL ${B}.VL`
-	U=`OMP_NUM_THREADS=64 ${HOME}/Downloads/JACSD/tortho/dortho.exe ${B}.UL ${I} ${I}`
-	V=`OMP_NUM_THREADS=64 ${HOME}/Downloads/JACSD/tortho/dortho.exe ${B}.VL ${I} ${I}`
+	A=`OMP_NUM_THREADS=$1 ${HOME}/Downloads/JACSD/tgensvd/derrsvd.exe ${I} ${I} ${B}.G ${B}.UL ${B}.SL ${B}.VL`
+	U=`OMP_NUM_THREADS=$1 ${HOME}/Downloads/JACSD/tortho/dortho.exe ${B}.UL ${I} ${I}`
+	V=`OMP_NUM_THREADS=$1 ${HOME}/Downloads/JACSD/tortho/dortho.exe ${B}.VL ${I} ${I}`
 	S=`${HOME}/Downloads/JACSD/tgensvd/dsverr.exe ${I} ${B}.S ${B}.SL`
 	printf "%4d," $I >> d0.csv
 	echo "${A},${U},${V},${S}" >> d0.csv
