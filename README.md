@@ -55,12 +55,12 @@ The GNU Fortran compiler is recommended for the ``J_outer = 3`` case.
 Please, set the block size `B` to at least `4`, for now.
 For both the blocked and the pointwise routines it is recommended that the matrix order be even.
 
-The `etc/env.sh` script should be sourced, without arguments or with a single argument `2`, as:
+The `etc/env.sh` script should be sourced, without arguments or with a single argument `old` or `new`, as:
 ```bash
 source etc/env.sh
 ```
 before running any OpenMP-parallel executable.
-The argument `2` enables the experimental, nested, two-level OpenMP parallelism for the block-method executables `?ksvd1.exe`.
+The presence of the second argument enables the experimental, nested, two-level OpenMP parallelism, with an older or a newer set of OpenMP environment variables, for the block-method executables `?ksvd1.exe`.
 
 ### Selecting a proper method
 

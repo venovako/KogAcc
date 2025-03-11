@@ -8,7 +8,7 @@ if [ -n "${OMP_PLACES}" ]
 then
 	unset OMP_PLACES
 fi
-if [ "$1" = "2" ]
+if [ "$1" != "" ]
 then
 	export OMP_PLACES=THREADS
 else
@@ -18,7 +18,7 @@ if [ -n "${OMP_PROC_BIND}" ]
 then
 	unset OMP_PROC_BIND
 fi
-if [ "$1" = "2" ]
+if [ "$1" != "" ]
 then
 	export OMP_PROC_BIND="SPREAD,CLOSE"
 else
@@ -34,27 +34,20 @@ then
 	unset MKL_DYNAMIC
 fi
 export MKL_DYNAMIC=FALSE
-if [ -n "${OMP_NESTED}" ]
+if [ "$1" != "" ]
 then
-	unset OMP_NESTED
-fi
-if [ -n "${OMP_MAX_ACTIVE_LEVELS}" ]
-then
-	unset OMP_MAX_ACTIVE_LEVELS
-fi
-if [ "$1" = "2" ]
-then
-	if [ "$2" = "old" ]
+	if [ -n "${OMP_NESTED}" ]
+	then
+		unset OMP_NESTED
+	fi
+	if [ -n "${OMP_MAX_ACTIVE_LEVELS}" ]
+	then
+		unset OMP_MAX_ACTIVE_LEVELS
+	fi
+	if [ "$1" = "old" ]
 	then
 		export OMP_NESTED=TRUE
 	else
 		export OMP_MAX_ACTIVE_LEVELS=2
-	fi
-else
-	if [ "$1" = "old" ]
-	then
-		export OMP_NESTED=FALSE
-	else
-		export OMP_MAX_ACTIVE_LEVELS=1
 	fi
 fi
