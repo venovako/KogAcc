@@ -1,5 +1,5 @@
 #!/usr/bin/env wolframscript -print all
-If[Length[$ScriptCommandLine]<4,Quit[]];
+If[Length[$ScriptCommandLine]<5,Quit[]];
 p=FullSimplify[ToExpression[$ScriptCommandLine[[2]]]];
 n=FullSimplify[ToExpression[$ScriptCommandLine[[3]]]];
 t=FullSimplify[ToExpression[$ScriptCommandLine[[4]]]];
