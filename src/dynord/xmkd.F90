@@ -15,13 +15,13 @@ SUBROUTINE XMKD(N, G, LDG, D, O, INFO)
 #define CR_HYPOT HYPOT
 #endif
   INTERFACE
-     PURE SUBROUTINE XENC(E, S, P, Q) BIND(C,NAME='pvn_djs_xenc_')
+     PURE SUBROUTINE PVN_DJS_XENC(E, S, P, Q)
        USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
        USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: REAL64
        REAL(KIND=c_long_double), INTENT(OUT) :: E
        REAL(KIND=REAL64), INTENT(IN) :: S
        INTEGER, INTENT(IN) :: P, Q
-     END SUBROUTINE XENC
+     END SUBROUTINE PVN_DJS_XENC
   END INTERFACE
 
   REAL(KIND=c_long_double), PARAMETER :: WZERO = 0.0_c_long_double
@@ -99,7 +99,7 @@ SUBROUTINE XMKD(N, G, LDG, D, O, INFO)
            H = CR_HYPOT(G(Q,P), G(P,Q))
         END IF
         IF ((H .GT. ZERO) .OR. (SIGN(ONE,G(P,P)) .NE. ONE) .OR. (SIGN(ONE,G(Q,Q)) .NE. ONE) .OR. (G(P,P) .LT. G(Q,Q))) THEN
-           CALL XENC(D(K), H, P, Q)
+           CALL PVN_DJS_XENC(D(K), H, P, Q)
            W = MAX(W, D(K))
         ELSE ! no transformation
            D(K) = -H

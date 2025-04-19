@@ -3,11 +3,11 @@ SUBROUTINE XMKDPQ(N, M, D, O, INFO)
   USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
   IMPLICIT NONE
   INTERFACE
-     PURE SUBROUTINE XDEC(E, P, Q) BIND(C,NAME='pvn_djs_xdec_')
+     PURE SUBROUTINE PVN_DJS_XDEC(E, P, Q)
        USE, INTRINSIC :: ISO_C_BINDING, ONLY: c_long_double
        REAL(KIND=c_long_double), INTENT(IN) :: E
        INTEGER, INTENT(OUT) :: P, Q
-     END SUBROUTINE XDEC
+     END SUBROUTINE PVN_DJS_XDEC
   END INTERFACE
 
   REAL(KIND=c_long_double), PARAMETER :: WZERO = 0.0_c_long_double
@@ -37,7 +37,7 @@ SUBROUTINE XMKDPQ(N, M, D, O, INFO)
      L = 0
      S = M
      DO INFO = 1, R
-        CALL XDEC(W, P, Q)
+        CALL PVN_DJS_XDEC(W, P, Q)
         O(1,INFO) = P
         O(2,INFO) = Q
         IF (INFO .GE. R) EXIT
@@ -45,7 +45,7 @@ SUBROUTINE XMKDPQ(N, M, D, O, INFO)
         K = 1
         DO WHILE (K .LE. S)
            IF (D(K) .GT. WZERO) THEN
-              CALL XDEC(D(K), I, J)
+              CALL PVN_DJS_XDEC(D(K), I, J)
               IF ((I .NE. P) .AND. (I .NE. Q) .AND. (J .NE. P) .AND. (J .NE. Q)) THEN
                  W = MAX(W, D(K))
                  K = K + 1
@@ -110,7 +110,7 @@ SUBROUTINE XMKDPQ(N, M, D, O, INFO)
   ELSE ! L .LT. -1
      L = L + 1
      DO INFO = 1, R
-        CALL XDEC(W, P, Q)
+        CALL PVN_DJS_XDEC(W, P, Q)
         O(1,INFO) = P
         O(2,INFO) = Q
         IF (INFO .GE. R) EXIT
@@ -118,7 +118,7 @@ SUBROUTINE XMKDPQ(N, M, D, O, INFO)
         !$OMP PARALLEL DO DEFAULT(NONE) SHARED(D,M,P,Q) PRIVATE(I,J,K) REDUCTION(MAX:W)
         DO K = 1, M
            IF (D(K) .GT. WZERO) THEN
-              CALL XDEC(D(K), I, J)
+              CALL PVN_DJS_XDEC(D(K), I, J)
               IF ((I .NE. P) .AND. (I .NE. Q) .AND. (J .NE. P) .AND. (J .NE. Q)) THEN
                  W = MAX(W, D(K))
               ELSE ! colliding
