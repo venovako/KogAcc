@@ -38,16 +38,16 @@
 	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /Fezran.exe ..\..\..\src\test\zran.F90 /link /RELEASE /LIBPATH:..\..\..\lib\$(PLAT) faux.lib $(LDFLAGS)
 
 ..\bin\$(PLAT)\srnd.exe: test\srnd.F90 test\grnd.F90 $(MKFS)
-	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /Fesrnd.exe ..\..\..\src\test\srnd.F90 $(LDFLAGS)
+	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /Fesrnd.exe ..\..\..\src\test\srnd.F90 /link /RELEASE $(LDFLAGS)
 
 ..\bin\$(PLAT)\crnd.exe: test\crnd.F90 test\hrnd.F90 $(MKFS)
-	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /Fecrnd.exe ..\..\..\src\test\crnd.F90 $(LDFLAGS)
+	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /Fecrnd.exe ..\..\..\src\test\crnd.F90 /link /RELEASE $(LDFLAGS)
 
 ..\bin\$(PLAT)\drnd.exe: test\drnd.F90 test\grnd.F90 $(MKFS)
-	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /Fedrnd.exe ..\..\..\src\test\drnd.F90 $(LDFLAGS)
+	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /Fedrnd.exe ..\..\..\src\test\drnd.F90 /link /RELEASE $(LDFLAGS)
 
 ..\bin\$(PLAT)\zrnd.exe: test\zrnd.F90 test\hrnd.F90 $(MKFS)
-	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /Fezrnd.exe ..\..\..\src\test\zrnd.F90 $(LDFLAGS)
+	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /Fezrnd.exe ..\..\..\src\test\zrnd.F90 /link /RELEASE $(LDFLAGS)
 
 ..\bin\$(PLAT)\sran2u.exe: test\sran2t.F90 test\gran2t.F90 test\gran2u.F90 test\gr2ud.F90 ..\lib\$(PLAT)\ksvd2.lib ..\lib\$(PLAT)\faux.lib $(MKFS)
 	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) -DUPPER /Fesran2u.exe ..\..\..\src\test\sran2t.F90 /link /RELEASE /LIBPATH:..\..\..\lib\$(PLAT) ksvd2.lib faux.lib $(LDFLAGS)
@@ -86,7 +86,7 @@
 	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /Fezrnd2g.exe ..\..\..\src\test\zrnd2t.F90 /link /RELEASE /LIBPATH:..\..\..\lib\$(PLAT) ksvd2.lib faux.lib $(LDFLAGS)
 
 ..\bin\$(PLAT)\seedsz.exe: test\seedsz.F90 $(MKFS)
-	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /Feseedsz.exe ..\..\..\src\test\seedsz.F90 $(LDFLAGS)
+	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /Feseedsz.exe ..\..\..\src\test\seedsz.F90 /link /RELEASE $(LDFLAGS)
 
 ..\bin\$(PLAT)\sthalt.exe: test\sthaltx.F90 ..\lib\$(PLAT)\faux.lib $(MKFS)
 	cd ..\bin\$(PLAT) && $(FC) $(FCFLAGS) /Festhalt.exe ..\..\..\src\test\sthaltx.F90 /link /RELEASE /LIBPATH:..\..\..\lib\$(PLAT) faux.lib $(LDFLAGS)
