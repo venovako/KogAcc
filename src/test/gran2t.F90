@@ -25,9 +25,10 @@
   J = MIN(I + (L - 1), N)
   O = PVN_RAN_OPEN()
   IF (O .LT. 0_c_int) STOP 'cannot open /dev/random for reading'
-  NSTIME(1) = 0_c_long
+  Q9 = PVN_TIME_MONO_RES()
+  NSTIME(1) = 0_c_long_long
 #ifdef UPPER
-  NSTIME(2) = 0_c_long
+  NSTIME(2) = 0_c_long_long
 #endif
   DO K = I, J
      G(1,1) = RAN_SAFE(O, P)
