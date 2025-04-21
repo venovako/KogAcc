@@ -40,11 +40,7 @@
 #else
   ALLOCATE(NSTIME(1,L))
 #endif
-#ifdef _WIN32
   Q9 = PVN_TIME_MONO_FREQ()
-#else
-  Q9 = 1.0E9_REAL128
-#endif
   !DIR$ VECTOR ALWAYS
   NSTIME = 0_c_long_long
   Q = QZERO

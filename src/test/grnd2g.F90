@@ -22,18 +22,10 @@
      ! \kappa_2(G)
      F(1,1) = MAX(Q, F(1,1))
      F(2,1) = MAX(-Q, F(2,1))
-#ifdef _WIN32
      NS(1) = PVN_TIME_MONO_TICKS()
-#else
-     NS(1) = PVN_TIME_MONO_NS()
-#endif
      INFO = 0
      CALL KSVD2(G, U, V, S, INFO)
-#ifdef _WIN32
      NS(1) = PVN_TIME_MONO_TICKS() - NS(1)
-#else
-     NS(1) = PVN_TIME_MONO_NS() - NS(1)
-#endif
      IF (INFO(1) .LT. -HUGE(0)) CALL STHALT('KSVD2')
      NSTIME(1,P) = NSTIME(1,P) + NS(1)
      CALL KERR2(G, U, V, S, E(1,1), INFO)
