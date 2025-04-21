@@ -16,7 +16,7 @@ MARCH=Host
 !IFNDEF NDEBUG
 NDEBUG=d
 !ENDIF # NDEBUG
-FCFLAGS=/nologo /fpp /Qopenmp /standard-semantics /traceback /DNDEBUG=$(NDEBUG) /DCR_MATH=bundled_noerrno /I. /O$(NDEBUG) /Qx$(MARCH) /fp:precise /Qfma /Qftz- /Qprec-div /Qprotect-parens /Qopt-report:3 /Qvec-threshold:0
+FCFLAGS=/nologo /fpp /Qopenmp /standard-semantics /traceback /DNDEBUG=$(NDEBUG) /DCR_MATH=bundled_noerrno /DLAPACK=sequential /I. /O$(NDEBUG) /Qx$(MARCH) /fp:precise /Qfma /Qftz- /Qprec-div /Qprotect-parens /Qopt-report:3 /Qvec-threshold:0
 !IF "$(ABI)"=="ilp64"
 FCFLAGS=$(FCFLAGS) /4I8 /DMKL_ILP64 /Qmkl-$(ABI):sequential
 !ELSE # lp64
@@ -26,8 +26,8 @@ LDFLAGS=/LIBPATH:..\..\..\..\libpvn\src pvn.lib
 !IFNDEF PLAT
 PLAT=ifx\Windows-x64-$(ABI)
 !ENDIF # !PLAT
-MKFS=obj.mk Makefile arrbio\Makefile blksvd\Makefile dynord\Makefile ksvd2\Makefile faux\Makefile test\Makefile
-!INCLUDE obj.mk
+MKFS=out.mk Makefile arrbio\Makefile blksvd\Makefile dynord\Makefile ksvd2\Makefile faux\Makefile test\Makefile
+!INCLUDE out.mk
 
 all: dirs $(LIBS) $(EXES)
 	@echo $(PLAT)
