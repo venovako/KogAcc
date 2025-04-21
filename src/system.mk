@@ -16,9 +16,6 @@ endif # !DEL
 ifndef MKD
 MKD=mkdir -pv
 endif # !MKD
-ifndef MOV
-MOV=mv -fv
-endif # !MOV
 ifeq ($(filter asm,$(MAKECMDGOALS)),asm)
 CFLG=-S
 OXT=s
