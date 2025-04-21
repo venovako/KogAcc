@@ -30,7 +30,7 @@ MKFS=out.mk Makefile arrbio\Makefile blksvd\Makefile dynord\Makefile ksvd2\Makef
 !INCLUDE out.mk
 
 all: dirs $(LIBS) $(EXES)
-	@echo $(PLAT)
+	copy /Y /V ..\..\..\..\libpvn\src\pvn.dll ..\bin\$(PLAT)
 
 help:
 	@echo "nmake.exe [MARCH=Host|...] [NDEBUG=d|1|2|3|...] [all|clean|dirs|help]"
