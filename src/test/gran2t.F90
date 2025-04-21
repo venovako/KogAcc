@@ -26,7 +26,7 @@
   O = PVN_RAN_OPEN()
   IF (O .LT. 0_c_int) STOP 'cannot open /dev/random for reading'
 #ifdef _WIN32
-  Q9 = PVN_TIME_MONO_RES()
+  Q9 = PVN_TIME_MONO_FREQ()
 #else
   Q9 = 1.0E9_REAL128
 #endif
