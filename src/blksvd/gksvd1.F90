@@ -58,7 +58,12 @@
   IVB = IUB + LB
   IWB = IVB + LB
   IF ((JS0 .EQ. 3) .OR. (JS0 .EQ. 6)) THEN
+#ifdef _WIN32
+     INFO = -1
+     RETURN
+#else
      LW = MAX((N - 1), 3) * N
+#endif
   ELSE ! not dynamic ordering
      LW = MAX(6, (3 * N))
   END IF
