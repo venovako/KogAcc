@@ -291,7 +291,9 @@
            J = 0
            !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
         END IF
+#ifndef _WIN32
         CALL BKSVDD(Q, N, NB, W(IGB), W(IUB), W(IVB), LDB, SV, W(IWB), LW, D, LD, O(1,IOD), O(1,IO0), O(1,R), J)
+#endif
      ELSE ! not dynamic ordering
         Q = -JS0 - 1
         J = 0
