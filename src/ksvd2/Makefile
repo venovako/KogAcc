@@ -1,4 +1,4 @@
-..\lib\$(PLAT)\libksvd2.a: $(OBJS_KSVD2) $(MKFS)
+..\lib\$(PLAT)\ksvd2.lib: $(OBJS_KSVD2) $(MKFS)
 	$(AR) $(ARFLAGS) /OUT:$@ $(OBJS_KSVD2)
 
 ..\obj\$(PLAT)\sksvd2.obj: ksvd2\sksvd2.F90 ksvd2\gksvd2.F90 $(MKFS)
