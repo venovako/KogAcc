@@ -25,7 +25,11 @@
   J = MIN(I + (L - 1), N)
   O = PVN_RAN_OPEN()
   IF (O .LT. 0_c_int) STOP 'cannot open /dev/random for reading'
+#ifdef _WIN32
   Q9 = PVN_TIME_MONO_RES()
+#else
+  Q9 = 1.0E9_REAL128
+#endif
   NSTIME(1) = 0_c_long_long
 #ifdef UPPER
   NSTIME(2) = 0_c_long_long
