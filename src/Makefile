@@ -34,6 +34,7 @@ all: dirs $(LIBS) $(EXES)
 
 help:
 	@echo "nmake.exe [MARCH=Host|...] [NDEBUG=d|1|2|3|...] [all|clean|dirs|help]"
+	@echo "libpvn has to be build beforehand with the CRT=MD build option"
 
 dirs:
 	-$(MKD) ..\bin\$(PLAT)
