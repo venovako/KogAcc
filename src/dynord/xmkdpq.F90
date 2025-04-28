@@ -143,7 +143,7 @@ CONTAINS
     INTEGER, INTENT(OUT) :: P, Q
     REAL(KIND=c_long_double) :: W
 #ifdef HAVE_UNSIGNED
-    UNSIGNED(KIND=UNIT8) :: B(16)
+    UNSIGNED(KIND=UINT8) :: B(16)
 #else
     INTEGER(KIND=INT8) :: B(16)
 #endif
