@@ -38,9 +38,6 @@ ifdef STATIC
 LDFLAGS=-static $(STATIC)
 else # !STATIC
 LDFLAGS=-rdynamic
-ifeq ($(OS),Darwin)
-LDFLAGS += -static-libgcc -static-libgfortran -static-libquadmath
-endif # Darwin
 endif # ?STATIC
 ifdef LAPACK
 FCFLAGS += -DLAPACK=$(LAPACK)
