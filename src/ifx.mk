@@ -34,13 +34,9 @@ FCFLAGS += -debug parallel
 endif # !NDEBUG
 endif # Linux
 ifdef STATIC
-LDFLAGS=-static
-ifneq ($(STATIC),true)
-# e.g., STATIC=-s
-LDFLAGS += $(STATIC)
-endif # !true
+LDFLAGS=-static $(STATIC)
 else # !STATIC
-LDFLAGS=-rdynamic -static-intel -static-libgcc #-pie
+LDFLAGS=-rdynamic
 endif # ?STATIC
 ifdef LAPACK
 FCFLAGS += -DLAPACK=$(LAPACK)
@@ -59,18 +55,18 @@ endif # ?LAPACK
 FCFLAGS += -I${MKLROOT}/include
 LDFLAGS += $(shell if [ -L /usr/lib64/libmemkind.so ]; then echo '-lmemkind'; fi)
 endif # LAPACK
-LDFLAGS += -L../../../../libpvn/src -lpvn -ldl $(realpath $(shell gcc -print-file-name=libquadmath.a))
+LDFLAGS += -L../../../../libpvn/src -lpvn -lquadmath -lgcc_s -ldl
 GFC=gfortran
 ifdef NDEBUG
 GFCFLAGS=-O$(NDEBUG)
 else # !NDEBUG
 GFCFLAGS=-Og -ggdb3
 endif # ?NDEBUG
-GFCFLAGS += -march=native -frecursive -fPIC -fexceptions -fasynchronous-unwind-tables -fno-omit-frame-pointer -ffp-contract=fast -ffree-line-length-none -fstack-arrays #-funsigned
+GFCFLAGS += -march=native -frecursive -fPIC -fexceptions -fasynchronous-unwind-tables -fno-omit-frame-pointer -ffp-contract=fast -ffree-line-length-none -fstack-arrays
 GFCFLAGS += $(shell if [ `$(GFC) -dumpversion | cut -f1 -d.` -ge 15 ]; then echo '-funsigned -DHAVE_UNSIGNED'; fi)
 ifdef NDEBUG
 GFCFLAGS += -fno-math-errno -fvect-cost-model=unlimited
 else # !NDEBUG
 GFCFLAGS += -finit-local-zero -finit-real=snan -finit-derived -Wcharacter-truncation -Wimplicit-procedure -Wfunction-elimination -Wrealloc-lhs-all
 endif # ?NDEBUG
-GFCFLAGS += -Wall -Wextra -Wno-array-temporaries -Wno-compare-reals -Wno-c-binding-type #-pedantic
+GFCFLAGS += -Wall -Wextra -Wno-array-temporaries -Wno-compare-reals -Wno-c-binding-type

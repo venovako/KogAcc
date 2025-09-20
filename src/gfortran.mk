@@ -35,13 +35,12 @@ FCFLAGS += -fcheck=all,no-recursion -finit-local-zero -finit-real=snan -finit-de
 endif # ?NDEBUG
 FCFLAGS += -pedantic -Wall -Wextra -Wno-array-temporaries -Wno-compare-reals -Wno-c-binding-type
 ifdef STATIC
-LDFLAGS=-static
-ifneq ($(STATIC),true)
-# e.g., STATIC=-s
-LDFLAGS += $(STATIC)
-endif # !true
+LDFLAGS=-static $(STATIC)
 else # !STATIC
-LDFLAGS=-rdynamic -static-libgcc -static-libgfortran -static-libquadmath #-pie
+LDFLAGS=-rdynamic
+ifeq ($(OS),Darwin)
+LDFLAGS += -static-libgcc -static-libgfortran -static-libquadmath
+endif # Darwin
 endif # ?STATIC
 ifdef LAPACK
 FCFLAGS += -DLAPACK=$(LAPACK)
@@ -61,7 +60,7 @@ LDFLAGS += -Wl,--start-group ${MKLROOT}/lib/libmkl_gf_$(ABI).a ${MKLROOT}/lib/li
 LDFLAGS += $(shell if [ -L /usr/lib64/libmemkind.so ]; then echo '-lmemkind'; fi)
 endif # ?Darwin
 else # !MKLROOT
-LDFLAGS += -L$(LAPACK) -llapack -lrefblas #-ltmglib
+LDFLAGS += -L$(LAPACK) -llapack -lrefblas
 endif # ?MKLROOT
 endif # LAPACK
 LDFLAGS += -L../../../../libpvn/src -lpvn -ldl
