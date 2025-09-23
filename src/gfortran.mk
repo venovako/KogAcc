@@ -53,13 +53,13 @@ ifeq ($(LAPACK),intel_thread)
 LDFLAGS += ${CMPLR_ROOT}/mac/compiler/lib/libiomp5.a
 endif # intel_thread
 else # Linux
-LDFLAGS += -Wl,--start-group ${MKLROOT}/lib/libmkl_gf_$(ABI).a ${MKLROOT}/lib/libmkl_$(LAPACK).a ${MKLROOT}/lib/libmkl_core.a -Wl,--end-group
+LDFLAGS += -L${MKLROOT}/lib -Wl,-rpath=${MKLROOT}/lib -Wl,--no-as-needed -lmkl_gf_$(ABI) -lmkl_$(LAPACK) -lmkl_core -lgomp
 LDFLAGS += $(shell if [ -L /usr/lib64/libmemkind.so ]; then echo '-lmemkind'; fi)
 endif # ?Darwin
 else # !MKLROOT
 LDFLAGS += -L$(LAPACK) -llapack -lrefblas
 endif # ?MKLROOT
 endif # LAPACK
-LDFLAGS += -L../../../../libpvn/src -lpvn -ldl
+LDFLAGS += -L../../../../libpvn/src -lpvn -lpthread -lm -ldl
 GFC=$(FC)
 GFCFLAGS=$(FCFLAGS)

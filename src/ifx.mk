@@ -55,7 +55,7 @@ endif # ?LAPACK
 FCFLAGS += -I${MKLROOT}/include
 LDFLAGS += $(shell if [ -L /usr/lib64/libmemkind.so ]; then echo '-lmemkind'; fi)
 endif # LAPACK
-LDFLAGS += -L../../../../libpvn/src -lpvn -lquadmath -lgcc_s -ldl
+LDFLAGS += -L../../../../libpvn/src -lpvn -lquadmath -lgcc_s -lpthread -lm -ldl
 GFC=gfortran
 ifdef NDEBUG
 GFCFLAGS=-O$(NDEBUG)
