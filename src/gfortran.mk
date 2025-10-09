@@ -60,6 +60,15 @@ else # !MKLROOT
 LDFLAGS += -L$(LAPACK) -llapack -lrefblas
 endif # ?MKLROOT
 endif # LAPACK
-LDFLAGS += -L../../../../libpvn/src -lpvn -lpthread -lm -ldl
+ifndef LIBPVN
+LIBPVN=$(realpath ../../../../libpvn)
+endif # !LIBPVN
+LDFLAGS += -L$(LIBPVN)/src
+ifeq ($(OS),Darwin)
+LDFLAGS += -Wl,-rpath,$(LIBPVN)/src
+else # !Darwin
+LDFLAGS += -Wl,-rpath=$(LIBPVN)/src
+endif # ?Darwin
+LDFLAGS += -lpvn -lpthread -lm -ldl
 GFC=$(FC)
 GFCFLAGS=$(FCFLAGS)

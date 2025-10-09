@@ -14,7 +14,10 @@ FCFLAGS=-cpp -march=$(MARCH) -fPIC -fno-omit-frame-pointer -ffp-contract=fast -f
 ifeq ($(ARCH),Darwin)
 FCFLAGS += -fintegrated-as
 endif # Darwin
-LDFLAGS=-rdynamic -L../../../../libpvn/src -lpvn -ldl
+ifndef LIBPVN
+LIBPVN=$(realpath ../../../../libpvn)
+endif # !LIBPVN
+LDFLAGS=-rdynamic -L$(LIBPVN)/src -lpvn -ldl
 GFC=gfortran
 ifdef NDEBUG
 GFCFLAGS=-O$(NDEBUG)
