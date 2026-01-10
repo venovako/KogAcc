@@ -59,7 +59,7 @@
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/drotca.F90
 
 ../obj/$(PLAT)/drotcx.$(OXT): faux/drotcx.F90 $(MKFS) faux/grotca.F90
-	cd ../obj/$(PLAT) && $(GFC) $(GFCFLAGS) $(CFLG) ../../../src/faux/drotcx.F90
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/drotcx.F90
 
 ../obj/$(PLAT)/zrotc.$(OXT): faux/zrotc.F90 faux/hrotc.F90 $(MKFS)
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/zrotc.F90
@@ -68,7 +68,7 @@
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/zrotca.F90
 
 ../obj/$(PLAT)/zrotcx.$(OXT): faux/zrotcx.F90 $(MKFS) faux/hrotca.F90
-	cd ../obj/$(PLAT) && $(GFC) $(GFCFLAGS) $(CFLG) ../../../src/faux/zrotcx.F90
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/zrotcx.F90
 
 ../obj/$(PLAT)/sbrotc.$(OXT): faux/sbrotc.F90 faux/gbrotc.F90 $(MKFS)
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/sbrotc.F90
@@ -101,7 +101,7 @@
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/drotra.F90
 
 ../obj/$(PLAT)/drotrx.$(OXT): faux/drotrx.F90 faux/grotra.F90 $(MKFS)
-	cd ../obj/$(PLAT) && $(GFC) $(GFCFLAGS) $(CFLG) ../../../src/faux/drotrx.F90
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/drotrx.F90
 
 ../obj/$(PLAT)/zrotr.$(OXT): faux/zrotr.F90 faux/hrotr.F90 $(MKFS)
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/zrotr.F90
@@ -110,7 +110,7 @@
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/zrotra.F90
 
 ../obj/$(PLAT)/zrotrx.$(OXT): faux/zrotrx.F90 faux/hrotra.F90 $(MKFS)
-	cd ../obj/$(PLAT) && $(GFC) $(GFCFLAGS) $(CFLG) ../../../src/faux/zrotrx.F90
+	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/zrotrx.F90
 
 ../obj/$(PLAT)/sbrotr.$(OXT): faux/sbrotr.F90 faux/gbrotr.F90 $(MKFS)
 	cd ../obj/$(PLAT) && $(FC) $(FCFLAGS) $(CFLG) ../../../src/faux/sbrotr.F90

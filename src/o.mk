@@ -80,17 +80,20 @@ OBJS_DYNORD=\
 ../obj/$(PLAT)/db2enc.$(OXT)\
 ../obj/$(PLAT)/smkd.$(OXT)\
 ../obj/$(PLAT)/dmkd.$(OXT)\
-../obj/$(PLAT)/xmkd.$(OXT)\
 ../obj/$(PLAT)/cmkd.$(OXT)\
 ../obj/$(PLAT)/zmkd.$(OXT)\
-../obj/$(PLAT)/wmkd.$(OXT)\
 ../obj/$(PLAT)/smkdpq.$(OXT)\
 ../obj/$(PLAT)/dmkdpq.$(OXT)\
-../obj/$(PLAT)/xmkdpq.$(OXT)\
 ../obj/$(PLAT)/smkbpq.$(OXT)\
 ../obj/$(PLAT)/dmkbpq.$(OXT)\
 ../obj/$(PLAT)/cmkbpq.$(OXT)\
 ../obj/$(PLAT)/zmkbpq.$(OXT)
+ifeq ($(COMPILER),gf)
+OBJS_DYNORD += \
+../obj/$(PLAT)/xmkd.$(OXT)\
+../obj/$(PLAT)/wmkd.$(OXT)\
+../obj/$(PLAT)/xmkdpq.$(OXT)
+endif # gfortran
 
 OBJS_KSVD2=\
 ../obj/$(PLAT)/sksvd2.$(OXT)\
@@ -136,10 +139,8 @@ OBJS_FAUX=\
 ../obj/$(PLAT)/crotca.$(OXT)\
 ../obj/$(PLAT)/drotc.$(OXT)\
 ../obj/$(PLAT)/drotca.$(OXT)\
-../obj/$(PLAT)/drotcx.$(OXT)\
 ../obj/$(PLAT)/zrotc.$(OXT)\
 ../obj/$(PLAT)/zrotca.$(OXT)\
-../obj/$(PLAT)/zrotcx.$(OXT)\
 ../obj/$(PLAT)/sbrotc.$(OXT)\
 ../obj/$(PLAT)/cbrotc.$(OXT)\
 ../obj/$(PLAT)/dbrotc.$(OXT)\
@@ -150,10 +151,8 @@ OBJS_FAUX=\
 ../obj/$(PLAT)/crotra.$(OXT)\
 ../obj/$(PLAT)/drotr.$(OXT)\
 ../obj/$(PLAT)/drotra.$(OXT)\
-../obj/$(PLAT)/drotrx.$(OXT)\
 ../obj/$(PLAT)/zrotr.$(OXT)\
 ../obj/$(PLAT)/zrotra.$(OXT)\
-../obj/$(PLAT)/zrotrx.$(OXT)\
 ../obj/$(PLAT)/sbrotr.$(OXT)\
 ../obj/$(PLAT)/cbrotr.$(OXT)\
 ../obj/$(PLAT)/dbrotr.$(OXT)\
@@ -168,6 +167,13 @@ OBJS_FAUX=\
 ../obj/$(PLAT)/initmm.$(OXT)\
 ../obj/$(PLAT)/jstep.$(OXT)\
 ../obj/$(PLAT)/jsweep.$(OXT)
+ifeq ($(COMPILER),gf)
+OBJS_FAUX += \
+../obj/$(PLAT)/drotcx.$(OXT)\
+../obj/$(PLAT)/zrotcx.$(OXT)\
+../obj/$(PLAT)/drotrx.$(OXT)\
+../obj/$(PLAT)/zrotrx.$(OXT)
+endif # gfortran
 
 ifndef LAPACK
 OBJS_FAUX += \
