@@ -7,7 +7,7 @@ endif # LIBPVN
 include $(LIBPVN)/src/pvn.mk
 FC=$(PVN_FC)
 ifeq ($(findstring ifx,$(FC)),ifx)
-COMPILER=ifx
+COMPILER=intel
 else # gfortran
 COMPILER=gf
 endif # ifx
@@ -33,11 +33,7 @@ endif # ?ABI
 ifeq ($(OS),Darwin)
 MKLFLAGS=${MKLROOT}/lib/libmkl_intel_$(ABI).a ${MKLROOT}/lib/libmkl_$(LAPACK).a ${MKLROOT}/lib/libmkl_core.a
 else # Linux
-MKLFLAGS=-Wl,--start-group ${MKLROOT}/lib/libmkl_$(COMPILER)_$(ABI).a ${MKLROOT}/lib/libmkl_$(LAPACK).a ${MKLROOT}/lib/libmkl_core.a -Wl,--end-group
-ifeq ($(COMPILER),ifx)
-MKLFLAGS += ${ONEAPI_ROOT}/compiler/latest/lib/libifcoremt_pic.a
-endif # ifx
-MKLFLAGS += $(shell if [ -L /usr/lib64/libmemkind.so ]; then echo '-lmemkind'; fi)
+MKLFLAGS=-Wl,--start-group ${MKLROOT}/lib/libmkl_$(COMPILER)_$(ABI).a ${MKLROOT}/lib/libmkl_$(LAPACK).a ${MKLROOT}/lib/libmkl_core.a -Wl,--end-group $(shell if [ -L /usr/lib64/libmemkind.so ]; then echo '-lmemkind'; fi)
 endif # ?Darwin
 else # !MKLROOT
 MKLFLAGS=-L$(LAPACK) -llapack -lrefblas
