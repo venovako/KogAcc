@@ -188,7 +188,7 @@ OBJS_FAUX += \
 ../obj/$(PLAT)/cmm.$(OXT)\
 ../obj/$(PLAT)/dmm.$(OXT)\
 ../obj/$(PLAT)/zmm.$(OXT)
-endif
+endif # !LAPACK
 
 EXES_BLKSVD=\
 ../bin/$(PLAT)/sksvd0.exe\

@@ -8,20 +8,14 @@ ARFLAGS=/NOLOGO /VERBOSE
 !IFNDEF LIBPVN
 LIBPVN=..\..\libpvn
 !ENDIF # !LIBPVN
-!INCLUDE 
-FC=ifx.exe
-!IFNDEF MARCH
-MARCH=Host
-!ENDIF # !MARCH
-!IFNDEF NDEBUG
-NDEBUG=d
-!ENDIF # !NDEBUG
-FCFLAGS=/nologo /fpp /Qopenmp /standard-semantics /traceback /DNDEBUG=$(NDEBUG) /DCR_MATH=bundled_noerrno /DLAPACK=sequential /I. /MD /O$(NDEBUG) /Qx$(MARCH) /fp:precise /Qfma /Qftz- /Qprec-div /Qprotect-parens /Qopt-report:3 /Qvec-threshold:0
+!INCLUDE $(LIBPVN)\src\pvn.mk
+FC=$(PVN_FC)
 !IF "$(ABI)"=="ilp64"
-FCFLAGS=$(FCFLAGS) /4I8 /DMKL_ILP64 /Qmkl-$(ABI):sequential
+FCFLAGS=$(PVN_FCFLAGS) /4I8 /Qmkl-$(ABI):sequential /DMKL_ILP64
 !ELSE # lp64
-FCFLAGS=$(FCFLAGS) /Qmkl:sequential
+FCFLAGS=$(PVN_FCFLAGS) /Qmkl:sequential
 !ENDIF # ilp64
+FCFLAGS=$(FCFLAGS) /DCR_MATH=bundled_noerrno /DLAPACK=sequential $(PVN_CPPFLAGS)
 LDFLAGS=/LIBPATH:..\..\..\..\libpvn\src pvn.lib
 !IFNDEF PLAT
 PLAT=ifx\Windows-x64-$(ABI)

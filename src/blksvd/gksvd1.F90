@@ -58,7 +58,7 @@
   IVB = IUB + LB
   IWB = IVB + LB
   IF ((JS0 .EQ. 3) .OR. (JS0 .EQ. 6)) THEN
-#ifdef _WIN32
+#ifdef __INTEL_COMPILER
      INFO = -1
      RETURN
 #else
@@ -296,7 +296,7 @@
            J = 0
            !$ IF (LOMP) J = OMP_GET_NUM_THREADS()
         END IF
-#ifndef _WIN32
+#ifndef __INTEL_COMPILER
         CALL BKSVDD(Q, N, NB, W(IGB), W(IUB), W(IVB), LDB, SV, W(IWB), LW, D, LD, O(1,IOD), O(1,IO0), O(1,R), J)
 #endif
      ELSE ! not dynamic ordering

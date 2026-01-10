@@ -166,7 +166,6 @@ OBJS_FAUX= \
 ..\obj\$(PLAT)\dmm.obj    \
 ..\obj\$(PLAT)\zmm.obj
 
-
 EXES_BLKSVD= \
 ..\bin\$(PLAT)\sksvd0.exe \
 ..\bin\$(PLAT)\cksvd0.exe \
