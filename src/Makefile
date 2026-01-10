@@ -20,8 +20,8 @@ LDFLAGS=/LIBPATH:..\..\..\..\libpvn\src pvn.lib
 !IFNDEF PLAT
 PLAT=ifx\Windows-x64-$(ABI)
 !ENDIF # !PLAT
-MKFS=out.mk Makefile arrbio\Makefile blksvd\Makefile dynord\Makefile ksvd2\Makefile faux\Makefile test\Makefile
 !INCLUDE out.mk
+MKFS=out.mk Makefile arrbio\Makefile blksvd\Makefile dynord\Makefile ksvd2\Makefile faux\Makefile test\Makefile
 
 all: dirs $(LIBS) $(EXES)
 	copy /Y /V ..\..\libpvn\src\*.dll ..\bin\$(PLAT)
