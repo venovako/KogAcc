@@ -53,10 +53,8 @@ OBJS_BLKSVD=\
 ../obj/$(PLAT)/zksvd1.$(OXT)\
 ../obj/$(PLAT)/sksvdd.$(OXT)\
 ../obj/$(PLAT)/dksvdd.$(OXT)\
-../obj/$(PLAT)/xksvdd.$(OXT)\
 ../obj/$(PLAT)/cksvdd.$(OXT)\
 ../obj/$(PLAT)/zksvdd.$(OXT)\
-../obj/$(PLAT)/wksvdd.$(OXT)\
 ../obj/$(PLAT)/sbksvd0.$(OXT)\
 ../obj/$(PLAT)/cbksvd0.$(OXT)\
 ../obj/$(PLAT)/dbksvd0.$(OXT)\
@@ -66,6 +64,11 @@ OBJS_BLKSVD=\
 ../obj/$(PLAT)/dbksvdd.$(OXT)\
 ../obj/$(PLAT)/zbksvdd.$(OXT)\
 ../obj/$(PLAT)/ibdims.$(OXT)
+ifeq ($(COMPILER),gf)
+OBJS_BLKSVD += \
+../obj/$(PLAT)/xksvdd.$(OXT)\
+../obj/$(PLAT)/wksvdd.$(OXT)
+endif # gfortran
 
 OBJS_DYNORD=\
 ../obj/$(PLAT)/snrm2o.$(OXT)\
@@ -200,9 +203,12 @@ EXES_BLKSVD=\
 ../bin/$(PLAT)/dksvdd.exe\
 ../bin/$(PLAT)/cksvdd.exe\
 ../bin/$(PLAT)/zksvdd.exe\
-../bin/$(PLAT)/xksvdd.exe\
-../bin/$(PLAT)/wksvdd.exe\
 ../bin/$(PLAT)/ibdims.exe
+ifdef ($(COMPILER),gf)
+EXES_BLKSVD += \
+../bin/$(PLAT)/xksvdd.exe\
+../bin/$(PLAT)/wksvdd.exe
+endif # gfortran
 
 EXES_DYNORD=\
 ../bin/$(PLAT)/smkbpq.exe\

@@ -62,7 +62,7 @@ asm: dirs $(OBJS)
 	@echo $(CFLG) $(PLAT)
 
 help:
-	@echo $(MAKE) "[LAPACK=sequential|...] [PRINTOUT=ERROR_UNIT|OUTPUT_UNIT] [PRINT0UT=ERROR_UNIT|OUTPUT_UNIT] [ANIMATE=ppe] [all|asm|clean|dirs|doc|help]"
+	@echo $(MAKE) "[LIBPVN=...] [LAPACK=sequential|...] [PRINTOUT=ERROR_UNIT|OUTPUT_UNIT] [PRINT0UT=ERROR_UNIT|OUTPUT_UNIT] [ANIMATE=ppe] [all|asm|clean|dirs|doc|help]"
 
 dirs:
 	@$(MKD) ../bin/$(PLAT) ../lib/$(PLAT) ../obj/$(PLAT)

@@ -1,14 +1,14 @@
 !IFNDEF ABI
 ABI=lp64
 !ENDIF # !ABI
-!IFNDEF DEL
 DEL=rd /S /Q
-!ENDIF # !DEL
-!IFNDEF MKD
 MKD=md
-!ENDIF # !MKD
 AR=lib.exe
 ARFLAGS=/NOLOGO /VERBOSE
+!IFNDEF LIBPVN
+LIBPVN=..\..\libpvn
+!ENDIF # !LIBPVN
+!INCLUDE 
 FC=ifx.exe
 !IFNDEF MARCH
 MARCH=Host
@@ -33,7 +33,7 @@ all: dirs $(LIBS) $(EXES)
 	copy /Y /V ..\..\libpvn\src\*.dll ..\bin\$(PLAT)
 
 help:
-	@echo "nmake.exe [MARCH=Host|...] [NDEBUG=d|1|2|3|...] [all|clean|dirs|help]"
+	@echo "nmake.exe [LIBPVN=...] [all|clean|dirs|help]"
 	@echo "libpvn has to be build beforehand with the CRT=MD build option"
 
 dirs:
