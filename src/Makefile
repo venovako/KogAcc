@@ -16,7 +16,7 @@ FCFLAGS=$(PVN_FCFLAGS) /4I8 /Qmkl-$(ABI):sequential /DMKL_ILP64
 FCFLAGS=$(PVN_FCFLAGS) /Qmkl:sequential
 !ENDIF # ilp64
 FCFLAGS=$(FCFLAGS) /DCR_MATH=bundled_noerrno /DLAPACK=sequential $(PVN_CPPFLAGS)
-LDFLAGS=/LIBPATH:..\..\..\..\libpvn\src pvn.lib
+LDFLAGS=$(PVN_LIBS)
 !IFNDEF PLAT
 PLAT=ifx\Windows-x64-$(ABI)
 !ENDIF # !PLAT
