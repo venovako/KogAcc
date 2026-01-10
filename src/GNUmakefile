@@ -2,8 +2,8 @@ include system.mk
 AR=ar
 ARFLAGS=rsv
 ifndef LIBPVN
-LIBPVN=../../libpvn
-endif # LIBPVN
+LIBPVN=$(realpath ../../libpvn)
+endif # !LIBPVN
 include $(LIBPVN)/src/pvn.mk
 FC=$(PVN_FC)
 ifeq ($(findstring ifx,$(FC)),ifx)
