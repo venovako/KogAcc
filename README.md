@@ -1,8 +1,6 @@
 # KogAcc
 A Kogbetliantz-type SVD for general matrices.
 
-(... work in progress ...)
-
 This software is a supplementary material for:
 - the paper doi:[10.1007/s11075-025-02035-7](https://doi.org/10.1007/s11075-025-02035-7 "Arithmetical enhancements of the Kogbetliantz method for the SVD of order two").
 
