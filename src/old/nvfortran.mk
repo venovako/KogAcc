@@ -10,7 +10,7 @@ endif # ?NDEBUG
 ifndef MARCH
 MARCH=native
 endif # !MARCH
-FCFLAGS += -m64 -mp -KPIC -Mdclchk -Mframe -Meh_frame -Minfo -Mlarge_arrays -Mrecursive -Mstack_arrays -tp=$(MARCH) -Kieee -Mfma -Mnodaz -Mnoflushz -Mnofpapprox -Mnofprelaxed -Mno-recip-div -nvmalloc -traceback
+FCFLAGS += -m64 -mp -fpic -Mdclchk -Mframe -Meh_frame -Minfo -Mlarge_arrays -Mrecursive -Mstack_arrays -tp=$(MARCH) -Kieee -Mfma -Mnodaz -Mnoflushz -Mnofpapprox -Mnofprelaxed -Mno-recip-div -nvmalloc -traceback
 ifdef NDEBUG
 FCFLAGS += -O$(NDEBUG)
 else # !NDEBUG
