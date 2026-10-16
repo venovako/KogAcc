@@ -1,8 +1,8 @@
 ifeq ($(findstring -DNDEBUG,$(PVN_CPPFLAGS)),-DNDEBUG)
-DEBUG=
+DEBUG:=
 CPPFLAGS=-DCR_MATH=bundled_noerrno
 else # !NDEBUG
-DEBUG=g
+DEBUG:=g
 CPPFLAGS=-DCR_MATH=bundled
 endif # ?NDEBUG
 ifdef PRINTOUT

@@ -1,15 +1,15 @@
 include system.mk
-AR=ar
-ARFLAGS=rsv
+AR:=ar
+ARFLAGS:=rsv
 ifndef LIBPVN
-LIBPVN=$(realpath ../../libpvn)
+LIBPVN:=$(realpath ../../libpvn)
 endif # !LIBPVN
 include $(LIBPVN)/src/pvn.mk
-FC=$(PVN_FC)
+FC:=$(PVN_FC)
 ifeq ($(findstring ifx,$(FC)),ifx)
-COMPILER=intel
+COMPILER:=intel
 else # gfortran
-COMPILER=gf
+COMPILER:=gf
 endif # ifx
 include debug.mk
 MKFS=system.mk debug.mk $(LIBPVN)/src/pvn.mk
@@ -31,12 +31,12 @@ else # lp64
 CPPFLAGS += -DMKL_LP64=$(LAPACK)
 endif # ?ABI
 ifeq ($(OS),Darwin)
-MKLFLAGS=${MKLROOT}/lib/libmkl_intel_$(ABI).a ${MKLROOT}/lib/libmkl_$(LAPACK).a ${MKLROOT}/lib/libmkl_core.a
+MKLFLAGS:=${MKLROOT}/lib/libmkl_intel_$(ABI).a ${MKLROOT}/lib/libmkl_$(LAPACK).a ${MKLROOT}/lib/libmkl_core.a
 else # Linux
-MKLFLAGS=-Wl,--start-group ${MKLROOT}/lib/libmkl_$(COMPILER)_$(ABI).a ${MKLROOT}/lib/libmkl_$(LAPACK).a ${MKLROOT}/lib/libmkl_core.a -Wl,--end-group $(shell if [ -L /usr/lib64/libmemkind.so ]; then echo '-lmemkind'; fi)
+MKLFLAGS:=-Wl,--start-group ${MKLROOT}/lib/libmkl_$(COMPILER)_$(ABI).a ${MKLROOT}/lib/libmkl_$(LAPACK).a ${MKLROOT}/lib/libmkl_core.a -Wl,--end-group $(shell if [ -L /usr/lib64/libmemkind.so ]; then echo '-lmemkind'; fi)
 endif # ?Darwin
 else # !MKLROOT
-MKLFLAGS=-L$(LAPACK) -llapack -lrefblas
+MKLFLAGS:=-L$(LAPACK) -llapack -lrefblas
 endif # ?MKLROOT
 endif # LAPACK
 ifeq ($(COMPILER),gf)
@@ -45,8 +45,8 @@ FCFLAGS += $(shell if [ `$(FC) -dumpversion | cut -f1 -d.` -ge 15 ]; then echo '
 endif # gfortran
 CPPFLAGS += $(PVN_CPPFLAGS)
 FCFLAGS += $(PVN_FCFLAGS) $(CPPFLAGS)
-FLFLAGS=$(subst PIC,PIE,$(FCFLAGS))
-LDFLAGS=$(MKLFLAGS) $(PVN_LIBS)
+FLFLAGS:=$(subst PIC,PIE,$(FCFLAGS))
+LDFLAGS:=$(MKLFLAGS) $(PVN_LIBS)
 ifndef PLAT
 PLAT=$(COMPILER)/$(OS)-$(ARCH)-$(ABI)$(DEBUG)
 endif # !PLAT

@@ -1,4 +1,4 @@
-OBJS_ARRBIO=\
+OBJS_ARRBIO:=\
 ../obj/$(PLAT)/bfopen.$(OXT)\
 ../obj/$(PLAT)/ibrd1.$(OXT)\
 ../obj/$(PLAT)/jbrd1.$(OXT)\
@@ -98,7 +98,7 @@ OBJS_DYNORD += \
 ../obj/$(PLAT)/xmkdpq.$(OXT)
 endif # gfortran
 
-OBJS_KSVD2=\
+OBJS_KSVD2:=\
 ../obj/$(PLAT)/sksvd2.$(OXT)\
 ../obj/$(PLAT)/cksvd2.$(OXT)\
 ../obj/$(PLAT)/dksvd2.$(OXT)\
@@ -210,13 +210,13 @@ EXES_BLKSVD += \
 ../bin/$(PLAT)/wksvdd.exe
 endif # gfortran
 
-EXES_DYNORD=\
+EXES_DYNORD:=\
 ../bin/$(PLAT)/smkbpq.exe\
 ../bin/$(PLAT)/dmkbpq.exe\
 ../bin/$(PLAT)/cmkbpq.exe\
 ../bin/$(PLAT)/zmkbpq.exe
 
-EXES_KSVD2=\
+EXES_KSVD2:=\
 ../bin/$(PLAT)/sksvd2.exe\
 ../bin/$(PLAT)/cksvd2.exe\
 ../bin/$(PLAT)/dksvd2.exe\
@@ -227,11 +227,11 @@ EXES_KSVD2=\
 ../bin/$(PLAT)/dlwsv2.exe\
 ../bin/$(PLAT)/qlwsv2.exe
 
-EXES_FAUX=\
+EXES_FAUX:=\
 ../bin/$(PLAT)/sthalt.exe\
 ../bin/$(PLAT)/jsweep.exe
 
-EXES_TEST=\
+EXES_TEST:=\
 ../bin/$(PLAT)/sran.exe\
 ../bin/$(PLAT)/cran.exe\
 ../bin/$(PLAT)/dran.exe\
@@ -254,13 +254,13 @@ EXES_TEST=\
 ../bin/$(PLAT)/drnd2g.exe\
 ../bin/$(PLAT)/zrnd2g.exe
 
-OBJS=$(OBJS_ARRBIO) $(OBJS_BLKSVD) $(OBJS_DYNORD) $(OBJS_KSVD2) $(OBJS_FAUX)
+OBJS:=$(OBJS_ARRBIO) $(OBJS_BLKSVD) $(OBJS_DYNORD) $(OBJS_KSVD2) $(OBJS_FAUX)
 
-LIBS=\
+LIBS:=\
 ../lib/$(PLAT)/libarrbio.a\
 ../lib/$(PLAT)/libblksvd.a\
 ../lib/$(PLAT)/libdynord.a\
 ../lib/$(PLAT)/libksvd2.a\
 ../lib/$(PLAT)/libfaux.a
 
-EXES=$(EXES_BLKSVD) $(EXES_DYNORD) $(EXES_KSVD2) $(EXES_FAUX) $(EXES_TEST)
+EXES:=$(EXES_BLKSVD) $(EXES_DYNORD) $(EXES_KSVD2) $(EXES_FAUX) $(EXES_TEST)
